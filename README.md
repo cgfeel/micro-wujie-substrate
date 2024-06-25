@@ -129,7 +129,7 @@
 难点，劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`：
 
 - 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
-- 返回一个 `Proxy` 对象，代理 `document.querySelector`
+- 返回一个 `Proxy` 对象，代理 `sandbox.shadowRoot.querySelector`
 - 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
 
 `Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]，第一次：
