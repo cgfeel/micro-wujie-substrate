@@ -132,7 +132,7 @@
 - 返回一个 `Proxy` 对象，代理 `document.querySelector`
 - 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
 
-`Object.defineProperty` 劫持对象会执行两次：
+`Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]：
 
 - 第一次由 `iframe` 中的子应用发起 `document.querySelector`
 - 通过 `Object.defineProperty` 劫持 `document.querySelector` 并返回 `Promise` 对象
