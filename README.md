@@ -132,12 +132,15 @@
 - 返回一个 `Proxy` 对象，代理 `document.querySelector`
 - 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
 
-`Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]：
+`Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]，第一次：
 
-- 第一次由 `iframe` 中的子应用发起 `document.querySelector`
+- 由 `iframe` 中的子应用发起 `document.querySelector`
 - 通过 `Object.defineProperty` 劫持 `document.querySelector` 并返回 `Promise` 对象
 - 在 `Promise` 对象的 `apply` 中 `thisArgs` 指向 `iframeWindow.Document.prototype`
 - 返回的 `thisArgs.querySelector.apply` 相当于 `iframeWindow.Document.prototype.querySelector`，通过 `apply` 将上下文指向 `sandbox.shadowRoot`
+
+第二次：
+
 - 由于返回的对象再次调用了 `iframe` 对象的 `querySelector`，于是第二次进入 `Object.defineProperty`
 - 这个时候返回的 `Promise` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
 - 于是相当于在 `shadowDOM` 中执行了 `sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
