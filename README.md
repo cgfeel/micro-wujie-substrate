@@ -94,3 +94,42 @@
 通过以上了解对 `wujie` 初步印象：
 
 - `Tencent` 真的对通信非常偏爱，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
+
+---- 分割线 ----
+
+## `wujie` 复现
+
+简单实现 `iframe` 和 `shadowRoot` 通信，详细见项目中的源码：
+
+- 项目：`static-project` [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
+- 文件：`index.html` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/index.html)]
+- 运行方式：直接点开浏览器预览
+
+整体分 4 部分：
+
+- `index.html`：基座 `html` 文件
+- `template`：子应用要运行的 `css` 和 `html`，要放入 `shadowDOM` 中
+- `script string`：子应用要执行的脚本字符
+- `web component`：主应用自定义组件
+
+流程分 4 部分：
+
+1. `createSandbox`：创建沙箱
+2. `attachShadow`：创建 `shadowDom`
+3. `injectTemplate`：将 `css` 和 `html` 注入 `shadowDom`
+4. `runScriptInSandbox`：将 `js` 注入 `iframe`
+
+沙箱分 2 个：
+
+- `shadowRoot`：直接将 `css` 和 `html` 全部打包到一个 `div`，塞入 `shadowRoot`
+- `iframe`：创建一个 `script` 元素，将执行的 `js` 作为元素内容插入 `iframe` 的 `head`
+
+难点，劫持 `iframe` 内的脚本交互上下文指向 `shadowRoot`，方法：
+
+- 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 指定对象
+- 演示中劫持了 `iframeWindow.Document.prototype`，目的是代理 `document.querySelector`
+- 每次调用 `document.querySelector` 会通过 `get` 方法，返回一个代理对象 `Proxy`
+
+代理对象 `Proxy`
+
+-
