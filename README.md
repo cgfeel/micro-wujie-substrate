@@ -32,7 +32,7 @@
 | `micro-app` | 创建 `web component` 拉取资源，替换标签为自定义组件，展示在 `Dom tree` 中   |
 | `qiankun`   | 基于 `single-spa`，拉取 `template`，劫持 `url` 经过计算将资源渲染到指定容器 |
 
-> `micro-app` 也支持 `shadowDom` 和 `iframe` 沙箱，但需要手动启用
+> `micro-app` 也支持 `shadowDom` 和 `iframe` 沙箱，但需要在 `start` 时手动启用
 
 ---
 
@@ -111,7 +111,7 @@
 
 - `index.html`：基座 `html` 文件
 - `template`：子应用要运行的 `css` 和 `html`，要放入 `shadowDOM` 中
-- `script string`：子应用要执行的脚本字符
+- `script string`：子应用要执行的脚本字符，要放入 `iframe` 中
 - `web component`：主应用自定义组件
 
 流程分 4 部分：
