@@ -134,7 +134,7 @@
 
 `Object.defineProperty` 劫持对象会执行两次：
 
-- 第一次由 `iframe` 发起 `document.querySelector`，返回 `Promise` 对象
+- 第一次由 `iframe` 中的子应用发起 `document.querySelector`，返回 `Promise` 对象
 - 在 `Promise` 对象的 `apply` 中 `thisArgs` 指向 `iframe`
 - 返回 `thisArgs.querySelector.apply`，相当于 `iframeWindow.Document.prototype.querySelector` 并通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 - 由于 `iframeWindow.Document.prototype.querySelector`，于是第二次进入 `Object.defineProperty`
