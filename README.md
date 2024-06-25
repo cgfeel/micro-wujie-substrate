@@ -135,9 +135,9 @@
 `Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]，第一次：
 
 - 由 `iframe` 中的子应用发起 `document.querySelector`
-- 通过 `Object.defineProperty` 劫持 `document.querySelector` 并返回 `Promise` 对象
-- 在 `Promise` 对象的 `apply` 中 `thisArgs` 指向 `iframeWindow.Document.prototype`
-- 返回的 `thisArgs.querySelector.apply` 相当于 `iframeWindow.Document.prototype.querySelector`，通过 `apply` 将上下文指向 `sandbox.shadowRoot`
+- 通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 并返回 `Promise` 对象
+- 在 `Promise` 对象首次 `apply` 时，参数 `thisArgs` 指向 `Object.defineProperty` 劫持的对象
+- 并返回 `thisArgs.querySelector.apply`，相当于 `iframeWindow.Document.prototype.querySelector`，通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 
 第二次：
 
