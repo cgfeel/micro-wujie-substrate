@@ -126,7 +126,7 @@
 - `shadowRoot`：直接将 `css` 和 `html` 全部打包到一个 `div`，塞入 `shadowRoot`
 - `iframe`：创建一个 `script` 元素，将执行的 `js` 作为元素内容插入 `iframe` 的 `head`
 
-难点，劫持 `iframe` 内的 `script API`，上下文指向 `shadowRoot`，方法：
+难点，劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`：
 
 - 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
 - 返回一个 `Proxy` 对象，代理 `document.querySelector`
