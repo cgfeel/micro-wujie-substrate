@@ -139,6 +139,11 @@
 - 返回 `thisArgs.querySelector.apply`，相当于 `iframeWindow.Document.prototype.querySelector` 并通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 - 由于 `iframeWindow.Document.prototype.querySelector`，于是第二次进入 `Object.defineProperty`
 - 这个时候返回的 `Promise` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
-- 于是相当于将 `shadowDOM` 中执行了 `sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
+- 于是相当于在 `shadowDOM` 中执行了 `sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
+
+劫持对象场景发散：
+
+- 浮窗，劫持到全局的 `window` 去执行：`document.body.appendChild(document.createElement())`
+- `iframe` 中的路由管理 `history.pushState`，将这些方法同步到主应用
 
 ---- 分割线 ----
