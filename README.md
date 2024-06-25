@@ -85,6 +85,8 @@
 
 - 需要允许 `cors`：`vue.config.js` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3/blob/main/vue.config.js)]
 
+### 总结
+
 `wujie` 配置相对来说更简单，但是它存在两个致命的缺点：
 
 - 对 `React v18` 并不友好、路由同步只能使用 `hash`
