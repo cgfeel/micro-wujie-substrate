@@ -24,5 +24,7 @@
 | 分类        | 原理                                                                        |
 | ----------- | --------------------------------------------------------------------------- |
 | `wujie`     | 拉取 `template` 放入 `web component`，将自定义组件插入 `Dom`                |
-| `micro-app` | 创建一个 `web component` 拉取资源，替换标签为自定义组件，插入 `Dom`         |
+| `micro-app` | 创建一个 `web component` 拉取资源，替换标签为自定义组件插入 `Dom`           |
 | `qiankun`   | 基于 `single-spa`，拉取 `template`，劫持 `url` 经过计算将资源渲染到指定容器 |
+
+> `micro-app` 也支持 `shadowDom` 和 `iframe` 沙箱，但需要手动启用
