@@ -132,7 +132,7 @@
 - 返回一个 `Proxy` 对象，代理 `document.querySelector`
 - 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
 
-`Object.defineProperty` 劫持对象在这里会执行两次：
+`Object.defineProperty` 劫持对象会执行两次：
 
 - 第一次由 `iframe` 发起 `document.querySelector`，返回 `Promise` 对象
 - 在 `Promise` 对象的 `apply` 中 `thisArgs` 指向 `iframe`
