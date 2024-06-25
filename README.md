@@ -126,10 +126,17 @@
 
 难点，劫持 `iframe` 内的脚本交互上下文指向 `shadowRoot`，方法：
 
-- 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 指定对象
-- 演示中劫持了 `iframeWindow.Document.prototype`，目的是代理 `document.querySelector`
-- 每次调用 `document.querySelector` 会通过 `get` 方法，返回一个代理对象 `Proxy`
+- 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
+- 返回一个 `Proxy` 对象，代理 `document.querySelector`
+- 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
 
-代理对象 `Proxy`
+`Object.defineProperty` 劫持对象在这里会执行两次：
 
--
+- 第一次由 `iframe` 发起 `document.querySelector`，返回 `Promise` 对象
+- 在 `Promise` 对象的 `apply` 中 `thisArgs` 指向 `iframe`
+- 返回 `thisArgs.querySelector.apply`，相当于 `iframeWindow.Document.prototype.querySelector` 并通过 `apply` 将上下文指向 `sandbox.shadowRoot`
+- 由于 `iframeWindow.Document.prototype.querySelector`，于是第二次进入 `Object.defineProperty`
+- 这个时候返回的 `Promise` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
+- 于是相当于将 `shadowDOM` 中执行了 `sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
+
+---- 分割线 ----
