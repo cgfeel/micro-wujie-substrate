@@ -14,6 +14,10 @@
 - 不需要自定义沙箱，直接使用 `iframe` 天然隔离
 - 不需要遍历 `css` 计算 `scoped`
 
+亮点：
+
+- 理论上 `wujie` 可以把任何对外提供访问的网页做成子应用
+
 缺点：
 
 - 对 `React v18` 并不友好，严格模式下会产生协议错误 [[查看](https://github.com/Tencent/wujie/issues/672)]
