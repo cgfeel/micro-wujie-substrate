@@ -145,7 +145,7 @@
 - 这个时候返回的 `Promise` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
 - 于是相当于在 `shadowDOM` 中执行了 `sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
 
-> 可以打开调试窗口 `sources` 在 `Object.defineProperty` 的 `get` 方法中打上断点，刷新查看每次执行的上下文
+> 可以打开调试窗口 `sources` 在 `Proxy` 对象的 `apply` 方法中打上断点，刷新查看每次执行的上下文 `thisArgs` 的变化
 
 劫持对象场景发散：
 
