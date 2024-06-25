@@ -13,7 +13,7 @@ const Wujie: FC<WujieProps> = (props) => {
     myRef.current && startAppFunc(myRef.current);
   }, [myRef, props]);
 
-  return <div ref={myRef} />;
+  return <div className="container" ref={myRef} />;
 };
 
 export interface WujieProps
