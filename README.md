@@ -217,9 +217,10 @@
 
 目录：`index.ts` - `startApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L185)]
 
-**`getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]，获取已存在的沙箱：**
+**`getWujieById`，获取已存在的沙箱：**
 
 - 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱实例
+- 目录：`common.ts` - `getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]
 
 添加映射表有 2 个方法，分别为：
 
