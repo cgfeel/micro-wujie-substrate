@@ -160,9 +160,9 @@
 
 > 这一章节链接指向官方仓库，由于内容比较长，每一条信息我都暴露了关键的对象名，可以打开链接复制关键的对象名，查看上下文对照理解。
 
-### `packages` - `react`
+### `packages` - `wujie-react`
 
-先大致看下 `wujie` 提供的包，分别为：
+先大致看下 `wujie` 提供的包，分别为 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages)]：
 
 - `wujie-core`：核心包
 - `wujie-react`：`React` 封装组件
