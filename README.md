@@ -336,3 +336,15 @@
 > - 最后将过滤后的事件更新沙箱实例中的 `elementEventCacheMap` 属性
 >
 > 如果存在子应用的 `document`，不是 `alive` 模式：
+>
+> - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中
+> - 在方法内部通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素，并把 `template` 作为元素内容并返回回来
+> - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
+> - 将处理后的 `processedHtml` 替换创建的 `iframe` 的 `html`
+> - 创建一个 `iframe` 中的 `html` 劫持对象，使其 `parentNode` 这个属性，可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
+> - 通过 `patchRenderEffect`，重写了 `head`、`body` 的事件、 `appendChild` 或 `insertBefore` 方法
+> - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，原理和 `recoverEventListeners` 是一样的
+>
+> 对于不存在子应用 `document` 的情况，只需通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中。
+>
+> 最后无论有没有子应用 `document`，都将创建的 `iframe.contentDocument` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
