@@ -211,15 +211,15 @@
 
 `WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
 
-### `wujie-core` 核心包
-
-这里只看 `startApp` 启动流程
+### `startApp` 启动流程
 
 目录：`index.ts` - `startApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L185)]
 
-**`getWujieById`，获取已存在的沙箱：**
+#### 1. 获取实例和配置：
 
-- 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱实例
+**1.1 `getWujieById`，获取已存在的沙箱的实例**
+
+- 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱中的实例，如果沙箱不存在返回 `null`
 - 目录：`common.ts` - `getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]
 
 添加映射表有 2 个方法，分别为：
@@ -227,7 +227,112 @@
 - `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23C17-L23C41)]：通过 `Wujie` 这个类创建的应用
 - `addSandboxCacheWithOptions`：通过 `setupApp` 设置应用信息，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
-有两个方法会使用 `Wujie` 创建应用：
+创建 `Wujie` 实例有 2 个地方：
 
 - `preloadApp`：预加载，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
 - `startApp`：启动应用，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
+从这里可以知道：
+
+- `preloadApp`：预加载可以极大的提升子应用首次打开速度
+- `startApp`：只要应用名和链接没变，通过组件重复插入子应用不会重复创建实例
+- `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
+
+关于映射表 `idToSandboxCacheMap`：
+
+- 一个 `Map` 对象：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
+- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：非别来自 `preloadApp` 和 `startApp` 配置信息
+- `getWujieById` 获取的就是 `wujie` 实例
+
+**1.2 获取应用配置**
+
+`getOptionsById` 获取配置信息：
+
+- `getWujieById` 获取 `wujie` 实例，`getOptionsById` 拿应用名获取实例配置 `options`，不存在返回 `null`
+
+`mergeOptions` 合并配置配置：
+
+- 将 `startApp` 拿到的 `options` 和已存在实例的 `options` 合并得到新的配置信息，并结构提取必要的信息，见源文件 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L190)]
+
+#### 2. 已经初始化过的应用，快速渲染：
+
+渲染前的准备：
+
+- 通过 `getPlugins` 更新实例的 `plugins`，关于 `wujie` 的插件见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+- 更新实例的 `lifecycles`， 关于 `wujie` 的生命周期见文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html)]
+- 获取实例的 `iframe` 对象的 `window`：`sandbox.iframe.contentWindow`，和上面复现演示一样
+- 如果实例有预加载时挂载的微任务，优先执行
+
+根据情况进行渲染：
+
+#### 2.1 `alive` 保活模式
+
+和 `micro-app` 的 `keep-alive` 模式一样，详细见文档说明 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+
+- 优点：切换路由不销毁应用实例，路由、状态不会丢失，在没有生命周期管理的情况下，减少白屏时间
+- 缺点：多个菜单栏跳转到子应用的不同页面，不同菜单栏无法跳转到指定子应用路由
+
+流程分 3 步：
+
+- 激活子应用：`sandbox.active`，注 ①
+- 预加载但是没有执行的情况 `!sandbox.execFlag`，提取执行脚本重新 `start` 实例，注 ②
+- 将 `iframeWindow` 传递过去通知 `activated`，并返回注销应用的方法
+
+> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用
+>
+> 目录：`sandbox.ts` - `Wujie` - `active` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L139)]
+>
+> 第一步：更新配置信息
+>
+> - 将 `props` 拿到的信息更新当前实例
+> - 等待 `iframe` 初始化 `await this.iframeReady`
+>
+> 关于 `iframeReady`：
+>
+> 目录：`iframe.ts` - `iframeGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L815)]
+>
+> - 目的用于确保 `iframe` 初始化
+> - 在 `Wujie` 实例构造函数时 `iframeGenerator` 已发起了 `stopIframeLoading` 微任务
+> - 在激活时通过 `this.iframeReady` 确保已完成了初始化
+> - 保活的情况下切回应用可能不需要考虑，除此之外在应用加载也需要通过 `active` 来激活应用，这个时候 `frameworkStartedDefer` 就很有用了
+>
+> 还记得 `qiankun` 里的 `frameworkStartedDefer` 吧，`iframeReady` 和 `frameworkStartedDefer` 用途是一样的
+>
+> 第二步：动态修改 `fetch`
+>
+> - 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)] 将 `url` 结合 `baseurl`
+> - 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
+>
+> 第三步：同步路由
+>
+> - `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
+> - 如果是 `alive` 模式，重新激活不需要 `syncUrlToIframe`
+> - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
+>
+> 第四步：注入 `template` 更新 `this.template`
+>
+> 第五步：`degrade` 主动降级
+>
+> - 采用 `iframe` 替换 `webcomponent`，`Object.defineProperty` 替换 `proxy`
+> - 对于不支持的环境会自动降级，除此之外还可以通过 `degrade` 主动降级
+> - 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
+> - 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+>
+> 原理：
+>
+> - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
+> - `initRenderIframeAndContainer` 优先挂载到指定容器，不存在挂载在刚才的拿到的 `iframeBody`
+> - `initRenderIframeAndContainer` 内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`
+> - 为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的称作 `iframe`，用于代替 `web component`
+> - 将挂载的容器更新 `this.el`
+> - `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
+> - `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
+>
+> 如果存在子应用的 `document`，且 `alive` 模式下：
+>
+> - 将子应用的 `<html>` 替换新创建的 `iframe` 的 `<html>`
+> - 通过 `recoverEventListeners` 遍历子应用的 `<html>` 所有元素
+> - 通过 `elementEventCacheMap` 获取每个元素的事件集合做两件事：将集合添加到新的 `WeakMap` 对象 `elementEventCacheMap`，遍历集合为子应用对应的元素添加事件
+> - 最后将过滤后的事件更新沙箱实例中的 `elementEventCacheMap` 属性
+>
+> 如果存在子应用的 `document`，不是 `alive` 模式：

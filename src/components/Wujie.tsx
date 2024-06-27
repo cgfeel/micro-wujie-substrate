@@ -16,7 +16,6 @@ const Wujie: FC<WujieProps> = (props) => {
   return <div className="container" ref={myRef} />;
 };
 
-export interface WujieProps
-  extends Pick<startOptions, "name" | "sync" | "url"> {}
+export interface WujieProps extends Omit<startOptions, "el"> {}
 
 export default Wujie;
