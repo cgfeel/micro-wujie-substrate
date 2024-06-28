@@ -168,12 +168,12 @@
 
 先大致看下 `wujie` 提供的包，分别为 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages)]：
 
-- `wujie-core`：核心包
-- `wujie-react`：`React` 封装组件
+- `wujie-core`：核心包 [[查看](#定义-web-component)]
+- `wujie-react`：`React` 封装组件 [[查看](#packages---wujie-react)]
 - `wujie-vue2`：`Vue2` 封装组件
 - `wujie-vue3`：`Vue3` 封装组件
 
-> 不是 `vue` 技术栈，所以这里只看核心包和 `react` 封装组件
+> 不是 `vue` 技术栈，所以这里暂且略过，除了最后一章为 `react` 封装组件，以下内容均来自核心包
 
 ### 定义 `web component`
 
@@ -274,7 +274,7 @@
 - 预加载但是没有执行的情况 `!sandbox.execFlag`，提取执行脚本重新 `start` 实例，注 ②
 - 将 `iframeWindow` 传递过去通知 `activated`，并返回注销应用的方法
 
-> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用，详细见：1. `active` 激活应用
+> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用，详细见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
 
 ### `Wujie` 应用类
 
