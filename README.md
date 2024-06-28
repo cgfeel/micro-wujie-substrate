@@ -220,7 +220,7 @@
 
 添加映射表有 2 个方法，分别为：
 
-- `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23C17-L23C41)]：通过 `Wujie` 这个类创建的应用
+- `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23C17-L23C41)]：通过 `Wujie` 这个类创建的应用，详细见 todo
 - `addSandboxCacheWithOptions`：通过 `setupApp` 设置应用信息，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
 创建 `Wujie` 实例有 2 个地方：
@@ -274,15 +274,27 @@
 - 预加载但是没有执行的情况 `!sandbox.execFlag`，提取执行脚本重新 `start` 实例，注 ②
 - 将 `iframeWindow` 传递过去通知 `activated`，并返回注销应用的方法
 
-> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用
->
-> 目录：`sandbox.ts` - `Wujie` - `active` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L139)]
->
-> 第一步：更新配置信息
->
-> - 将 `props` 拿到的信息更新当前实例
-> - 等待 `iframe` 初始化 `await this.iframeReady`
->
+> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用，详细见：1. `active` 激活应用
+
+### `Wujie` 应用类
+
+目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
+
+用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 是一样的，它们共同点：
+
+- 都可以创建应用实例
+- `CreateApp` 将自身添加到 `appInstanceMap` 作为映射表，`Wujie` 将自身通过 `addSandboxCacheWithWujie` 添加到映射表 `idToSandboxCacheMap`
+- 都提供 `mount` 和 `unmount` 这两个方法，用于加载和卸载应用
+
+这里先从 `active` 来看，按照 `startApp` 的流程顺序来
+
+#### 1. `active` 激活应用
+
+第一步：更新配置信息
+
+- 将 `props` 拿到的信息更新当前实例
+- 等待 `iframe` 初始化 `await this.iframeReady`
+
 > 关于 `iframeReady`：
 >
 > 目录：`iframe.ts` - `iframeGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L815)]
@@ -292,28 +304,28 @@
 > - 在激活时通过 `this.iframeReady` 确保已完成了初始化
 > - 保活的情况下切回应用可能不需要考虑，除此之外在应用加载也需要通过 `active` 来激活应用，这个时候 `frameworkStartedDefer` 就很有用了
 >
-> 还记得 `qiankun` 里的 `frameworkStartedDefer` 吧，`iframeReady` 和 `frameworkStartedDefer` 用途是一样的
->
-> 第二步：动态修改 `fetch`
->
-> - 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)] 将 `url` 结合 `baseurl`
-> - 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
->
-> 第三步：同步路由
->
-> - `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
-> - 如果是 `alive` 模式，重新激活不需要 `syncUrlToIframe`
-> - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
->
-> 第四步：注入 `template` 更新 `this.template`
->
-> 第五步：`degrade` 主动降级
->
-> - 采用 `iframe` 替换 `webcomponent`，`Object.defineProperty` 替换 `proxy`
-> - 对于不支持的环境会自动降级，除此之外还可以通过 `degrade` 主动降级
-> - 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
-> - 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
->
+> 在 `qiankun` 中有一个 `frameworkStartedDefer`，和 `iframeReady` 用途是一样的
+
+第二步：动态修改 `fetch`
+
+- 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)] 将 `url` 结合 `baseurl`
+- 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
+
+第三步：同步路由
+
+- `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
+- 如果是 `alive` 模式，重新激活不需要 `syncUrlToIframe`
+- 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
+
+第四步：注入 `template` 更新 `this.template`
+
+第五步：`degrade` 主动降级
+
+- 采用 `iframe` 替换 `webcomponent`，`Object.defineProperty` 替换 `proxy`
+- 对于不支持的环境会自动降级，除此之外还可以通过 `degrade` 主动降级
+- 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
+- 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
 > 原理：
 >
 > - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
