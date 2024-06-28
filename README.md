@@ -217,6 +217,38 @@
 
 `WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
 
+### 定义 `web component`
+
+这里之所以提自定义组件，是为了便于了解组件生命周期触发的事件
+
+`wujie` 定义组件和 `micro-app` 最大不同在于：
+
+- `wujie` 不需要直接在 `Dom tree` 中直接挂载组件，因此也不需要自定义组件名
+- `wujie` 不检查组件上任何属性的变更
+- 作为 `web component` 对于 `wujie` 来说只是一个承载 `template` 的容器
+
+因此：
+
+- 使用者几乎可以不用关心 `WujieApp` 这个自定义组件类
+- `WujieApp` 自定义组件类，在入口文件通过 `defineWujieWebComponent` 直接声明 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
+- 当引入 `startApp` 的时候，就已经定义好了 `web component`
+
+关于 `defineWujieWebComponent`：
+
+目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
+
+只提供了两个方法：
+
+- `connectedCallback`：完成挂载将自身设置为 `shadowDOM`，通过应用名获取实例 `sandbox`，将自身作为实例的 `shadowRoot`
+- `disconnectedCallback`：卸载组件通过应用名获取实例 `sandbox`，并调用实例 `unmount`
+
+在挂载组件时，将自身作为实例 `shadowRoot` 之前需要通过 `patchElementEffect` 打补丁：
+
+- 根据沙箱 `iframe` 的 `proxyLocation` 去定义 `shadowRoot` 的 `baseURI`
+- 将 `ownerDocument` 指向 `iframe` 沙箱的 `iframeWindow.document`
+- 告知已补丁 `_hasPatch`，不再需要补丁
+- 通过 `execHooks` 遍历 `plugins`，提取 `patchElementHook`，将 `shadowRoot` 和沙箱 `iframe` 传递过去挨个执行
+
 ### `startApp` 启动流程
 
 目录：`index.ts` - `startApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L185)]
