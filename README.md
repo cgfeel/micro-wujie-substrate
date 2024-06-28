@@ -321,41 +321,73 @@
 
 第五步：`degrade` 主动降级
 
+概述：
+
 - 采用 `iframe` 替换 `webcomponent`，`Object.defineProperty` 替换 `proxy`
 - 对于不支持的环境会自动降级，除此之外还可以通过 `degrade` 主动降级
 - 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
 - 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-> 原理：
->
-> - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
-> - `initRenderIframeAndContainer` 优先挂载到指定容器，不存在挂载在刚才的拿到的 `iframeBody`
-> - `initRenderIframeAndContainer` 内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`
-> - 为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的称作 `iframe`，用于代替 `web component`
+创建 `iframe`：
+
+- `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
+- `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
+- 优先挂载 `iframe` 到指定容器，不存在挂载在刚才的拿到的 `iframeBody`
+
+> 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的称作 `iframe`，用于代替 `web component`
+
+更新容器，销毁 `iframeBody` 记录
+
 > - 将挂载的容器更新 `this.el`
 > - `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
 > - `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
+
+> `onunload` 可以不用考虑，源码只做了声明没有调用
+
+如果存在子应用的 `document`，且 `alive` 模式下：
+
+- 将子应用的 `<html>` 替换新创建的 `iframe` 的 `<html>`
+- 通过 `recoverEventListeners` 遍历子应用的 `<html>` 所有元素
+- 通过 `elementEventCacheMap` 获取每个元素的事件集合做两件事：将集合添加到新的 `WeakMap` 对象 `elementEventCacheMap`，遍历集合为子应用对应的元素添加事件
+- 最后将过滤后的事件更新沙箱实例中的 `elementEventCacheMap` 属性
+
+如果存在子应用的 `document`，不是 `alive` 模式：
+
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n
+- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，原理和 `recoverEventListeners` 是一样的
+
+> 注 n： `renderTemplateToIframe`：
 >
-> 如果存在子应用的 `document`，且 `alive` 模式下：
->
-> - 将子应用的 `<html>` 替换新创建的 `iframe` 的 `<html>`
-> - 通过 `recoverEventListeners` 遍历子应用的 `<html>` 所有元素
-> - 通过 `elementEventCacheMap` 获取每个元素的事件集合做两件事：将集合添加到新的 `WeakMap` 对象 `elementEventCacheMap`，遍历集合为子应用对应的元素添加事件
-> - 最后将过滤后的事件更新沙箱实例中的 `elementEventCacheMap` 属性
->
-> 如果存在子应用的 `document`，不是 `alive` 模式：
->
-> - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中
 > - 在方法内部通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素，并把 `template` 作为元素内容并返回回来
 > - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
 > - 将处理后的 `processedHtml` 替换创建的 `iframe` 的 `html`
 > - 创建一个 `iframe` 中的 `html` 劫持对象，使其 `parentNode` 这个属性，可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了 `head`、`body` 的事件、 `appendChild` 或 `insertBefore` 方法
-> - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，原理和 `recoverEventListeners` 是一样的
->
-> 对于不存在子应用 `document` 的情况，只需通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中。
->
-> 最后无论有没有子应用 `document`，都将创建的 `iframe.contentDocument` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
+
+如果不存在子应用的 `document`
+
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n
+
+最后无论有没有子应用 `document`，都将创建的 `iframe.contentDocument` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
+
+第六步：挂载子应用到容器
+
+根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
+
+- 正常加载组件 `shadowRoot` 为 `web component` 的 `shadowRoot`
+- `preloadApp` 时 `shadowRoot` 为 `null`
+
+不是预加载时：
+
+- 会将 `web component` 挂载到指定容器，这里通过 `this.shadowRoot.host` 获取整个 `web component`
+- 如果是 `alive` 模式挑出来，以下流程都不再继续
+
+当预加载时会创建一个 `wujie-app`，挂载到指定容器：
+
+- 如果指定容器不存在就挂载到沙箱的 `iframe` 的 `body` 中
+- 当创建自定义组件 `wujie-app` 时，自然会触发 `connectedCallback` 从而赋值 `this.shadowRoot`
+
+第七部：挂载子应用到容器
 
 ### `packages` - `wujie-react`
 
