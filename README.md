@@ -9,9 +9,9 @@
 | `js`   | 直接放到 `iframe` 里                           | 放到自己实现的沙箱，如：`proxy`、快照中实现 |
 | `css`  | 直接放到 `web component` 通过 `shadowDOM` 渲染 | 修改 `css` 作用域 `scopedCSS`               |
 
-优点，效率高：
+优点，天然隔离：
 
-- 不需要自定义沙箱，直接使用 `iframe` 天然隔离
+- 不需要自定义沙箱，直接使用 `iframe`
 - 不需要遍历 `css` 计算 `scoped`
 
 亮点：
@@ -23,6 +23,12 @@
 
 - 对 `React v18` 并不友好，严格模式下会产生协议错误 [[查看](https://github.com/Tencent/wujie/issues/672)]
 - 路由同步并不友好，子应用路由只能通过 `hash` 反应到主应用中，目前还没看到解决方案
+
+疑惑：
+
+- 频繁的草哟 `Dom` 是 H 直接影响 `js` 性能的原因
+- 目前微前端框架都会有设置到，但 `wujie` 需要频繁劫持 `iframe` 和 `shadowDom` 进行通信
+- 比如说默认情况下 `wuijie` 的每次应用切换，就是一次 `iframe` 的注销和重建
 
 渲染原理：
 
