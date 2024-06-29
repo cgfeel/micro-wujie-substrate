@@ -344,8 +344,10 @@
 主动降级分 3 个部分：
 
 1. 创建 `iframe` 并挂载到容器
-2. 销毁沙箱记录，为创建的 `iframe` 容器打补丁
+2. 销毁沙箱记录，为创建的 `iframe` 新容器打补丁
 3. 注入 `template` 渲染
+
+> 为了便于理解在“1.2. 主动降级渲染”描述中 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。
 
 渲染分 3 种情况：
 
@@ -361,7 +363,7 @@
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
 - 优先挂载 `iframe` 到指定容器，不存在挂载在刚才从沙箱 `iframe` 中拿到的 `iframeBody`
 
-> 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。从第六步开始，`iframe` 指沙箱 `iframe`
+> `initRenderIframeAndContainer` 内部做了两件事：i. 创建 `iframe` 并写入 `attrs`，ii. 渲染到容器后重写 `iframe` 的 `document`
 
 第二步：更新容器，销毁 `iframeBody`
 
