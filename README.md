@@ -359,7 +359,7 @@
 
 第一步：创建 `iframe`
 
-- `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
+- `rawDocumentQuerySelector` 获取 `window` 或子应用内的 `iframeBody`
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
 - 优先挂载 `iframe` 到指定容器，不存在挂载在刚才从沙箱 `iframe` 中拿到的 `iframeBody`
 
