@@ -440,13 +440,20 @@
 
 切换应用时：
 
-- 会将 `web component` 挂载到指定容器，这里通过 `this.shadowRoot.host` 获取整个 `web component`
-- 如果是 `alive` 模式跳出来，以下流程都不再继续
+- 通过 `renderElementToContainer` 将 `this.shadowRoot.host` 挂载到指定容器
+- 如果是 `alive` 模式跳出来，以下流程不再继续
 
-当预加载时会创建一个 `wujie-app`，挂载到指定容器：
+> `this.shadowRoot.host`：
+>
+> - 指的是 `shadowRoot` 外层的 `web component`
+> - 而 `this.shadowRoot` 是在组件 `connectedCallback` 时定义为组件的 `shadowRoot`
+> - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 会在初始化时注入
+> - 而非 `active` 模式下切换应用，稍后会更新 `template`
 
-- 如果指定容器不存在就挂载到沙箱的 `iframe` 的 `body` 中
-- 当创建自定义组件 `wujie-app` 时，自然会触发 `connectedCallback` 从而赋值 `this.shadowRoot`
+应用初始化时会挂载到指定容器：
+
+- 先获取 `iframeBody`，如果容器不存在时作为备用容器
+- 通过 `createWujieWebComponent` 创建组件
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
