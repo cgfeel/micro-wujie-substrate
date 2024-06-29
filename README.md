@@ -376,7 +376,7 @@
 > - 并把 `template` 注入 `html` 元素并返回元素对象（没明白为啥不直接在“新容器”创建）
 > - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
 > - 将处理后的 `processedHtml` 替换“新容器”的 `html`
-> - 创建一个 `iframe` 中的 `html` 劫持对象，使其 `parentNode` 这个属性，可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
+> - 劫持 `iframe` 中的 `html` 使其 `parentNode` 可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
 
 如果不存在子应用的 `document`
@@ -391,20 +391,29 @@
 
 根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
 
-- 正常加载组件 `shadowRoot` 为 `web component` 的 `shadowRoot`
+- 正常加载组件 `this.shadowRoot` 为 `web component` 的 `shadowRoot`
 - `preloadApp` 时 `shadowRoot` 为 `null`
 
 不是预加载时：
 
 - 会将 `web component` 挂载到指定容器，这里通过 `this.shadowRoot.host` 获取整个 `web component`
-- 如果是 `alive` 模式挑出来，以下流程都不再继续
+- 如果是 `alive` 模式跳出来，以下流程都不再继续
 
 当预加载时会创建一个 `wujie-app`，挂载到指定容器：
 
 - 如果指定容器不存在就挂载到沙箱的 `iframe` 的 `body` 中
 - 当创建自定义组件 `wujie-app` 时，自然会触发 `connectedCallback` 从而赋值 `this.shadowRoot`
 
-第七部：挂载子应用到容器
+第七部：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
+
+和 `renderTemplateToIframe` 注 n (`renderTemplateToIframe`) 原理一样：
+
+- 相同点：将 `template` 注入沙箱的 `iframe`，提取出 `html` 元素通过 `processCssLoaderForTemplate` 进行处理
+- 不同点：将处理后的 `processedHtml` 插入 `shadowRoot`
+- 不同点：在 `processedHtml` 第一个子集前面插入一个全屏无边距的 `div`，用于撑开容器为屏幕大小，便于展示浮窗等元素
+- 不同点：获取 `shadowRoot` 的头部和尾部分别指向 `head` 和 `body`
+- 部分相同：劫持 `shadowRoot.firstChild` 的 `parentNode` 指向 `iframeWindow.document`
+- 部分相同：通过 `patchRenderEffect` 给 `shadowRoot` 打补丁
 
 ### `packages` - `wujie-react`
 
