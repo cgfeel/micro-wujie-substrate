@@ -434,7 +434,7 @@
 根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
 
 1. 切换应用
-2. 初次加载，包含预渲染
+2. 初次加载，包含预加载
 
 > `degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分
 
