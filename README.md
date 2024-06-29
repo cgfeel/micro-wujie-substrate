@@ -433,10 +433,12 @@
 
 根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
 
-- 正常加载组件 `this.shadowRoot` 为 `web component` 的 `shadowRoot`
-- `preloadApp` 时 `shadowRoot` 为 `null`
+1. 切换应用
+2. 初次加载，包含预渲染
 
-不是预加载时：
+> `degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分
+
+切换应用时：
 
 - 会将 `web component` 挂载到指定容器，这里通过 `this.shadowRoot.host` 获取整个 `web component`
 - 如果是 `alive` 模式跳出来，以下流程都不再继续
