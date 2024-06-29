@@ -191,6 +191,11 @@
 - `WujieApp` 自定义组件类，在入口文件通过 `defineWujieWebComponent` 直接声明 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
 - 当引入 `startApp` 的时候，就已经定义好了 `web component`
 
+挂载组件：
+
+- 上面说了 `wuie` 不需要手动挂载组件，挂载组件的办法只能通过 `createWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L60)]
+- 而 `createWujieWebComponent` 只在 `Wujie` 实例初始化调用 `active` 方法时才会执行，见：1.3. 挂载子应用 [[查看](#13-挂载子应用)]
+
 关于 `defineWujieWebComponent`：
 
 目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
@@ -390,25 +395,30 @@
 第三步：`分支 2` - 非 `alive` 模式下切换应用
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
-- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失
+- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，注 n (`recoverDocumentListeners`)
 
-> `recoverDocumentListeners` 原理和 `recoverEventListeners` 注 n， 是一样的，不同在于：
->
-> - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
-> - 将 `docuemnt` 对象从根节点提取出来，添加到“新容器”的 `document` 中
-> - 最后用 `document` 上的事件覆盖 `sandbox.elementEventCacheMap`
-> - 这就意味着 `document` 所有子节点的事件记录将被删除
->
 > 注 n：`renderTemplateToIframe`
 >
-> - 在方法内部通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素
-> - 并把 `template` 注入 `html` 元素并返回元素对象（没明白为啥不直接在“新容器”创建）
+> - 通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素
+> - 并把 `template` 注入 `html` 元素并返回元素对象
 > - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
 > - 将处理后的 `processedHtml` 替换“新容器”的 `html`
 > - 劫持 `iframe` 中的 `html` 使其 `parentNode` 可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
+>
+> 补充说明：为什么在“新容器”创建 `html` 元素，直接注入 `template`
+>
+> - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
+> - 将 `html` 元素的 `head` 和 `body` 分别指向实例
 
-如果不存在子应用的 `document`
+> 注 n：`recoverDocumentListeners` 原理和 `recoverEventListeners` 注 n，不同在于：
+>
+> - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
+> - 声明一个 `elementEventCacheMap` 用于记录新的事件
+> - 将之前记录的应用 `<html>` 绑定的事件取出来，添加到“新容器”的 `<html>` 中
+> - 最后用 `elementEventCacheMap` 更新 `sandbox.elementEventCacheMap`
+
+第三步：`分支 3` - 初次渲染
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 
