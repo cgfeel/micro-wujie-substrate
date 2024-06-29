@@ -193,7 +193,7 @@
 
 挂载组件：
 
-- 上面说了 `wuie` 不需要手动挂载组件，挂载组件的办法只能通过 `createWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L60)]
+- `wuie` 不需要手动挂载组件，挂载组件的办法只能通过 `createWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L60)]
 - 而 `createWujieWebComponent` 只在 `Wujie` 实例初始化调用 `active` 方法时才会执行，见：1.3. 挂载子应用 [[查看](#13-挂载子应用)]
 
 关于 `defineWujieWebComponent`：
@@ -383,7 +383,7 @@
 - 恢复 `html`：将之前记录子应用的 `<html>` 替换“新容器”的 `<html>`
 - 在保活场景恢复全部事件：`recoverEventListeners` 注 n (`recoverEventListeners`)
 
-> 注 n：`recoverEventListeners` 遍历节点时，“新容器”已替换了 `html` 节点
+> 注 n：`recoverEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L324)] 遍历节点时，“新容器”已替换了 `html` 节点
 >
 > - 声明一个新的 `elementEventCacheMap` 用于收集筛选的事件
 > - 通过 `iframeBody` 拿到沙箱实例 `sandbox`
@@ -397,7 +397,7 @@
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，注 n (`recoverDocumentListeners`)
 
-> 注 n：`renderTemplateToIframe`
+> 注 n：`renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
 >
 > - 通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素
 > - 并把 `template` 注入 `html` 元素并返回元素对象
