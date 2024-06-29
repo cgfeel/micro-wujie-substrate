@@ -355,7 +355,7 @@
 
 > 在这里通过 `this.document` 来区分是切换应用还是初次加载
 
-先从创建 `iframe` 开始：
+第一步：创建 `iframe`
 
 - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
@@ -363,7 +363,7 @@
 
 > 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。从第六步开始，`iframe` 指沙箱 `iframe`
 
-更新容器，销毁 `iframeBody` 记录：
+第二步：更新容器，销毁 `iframeBody`
 
 - 将挂载的容器更新 `this.el`
 - `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
@@ -371,7 +371,7 @@
 
 > `onunload` 可以不用考虑，源码只做了声明没有调用
 
-如果存在子应用的 `document`，且 `alive` 模式下：
+第三步：`分支 1` - `alive` 模式下切换应用
 
 - 将 `document` 的 `<html>` 替换“新容器”的 `<html>`
 - 通过 `recoverEventListeners` 在保活场景恢复全部事件，注 n
