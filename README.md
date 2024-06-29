@@ -377,13 +377,15 @@
 > - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
 > - 将处理后的 `processedHtml` 替换“新容器”的 `html`
 > - 创建一个 `iframe` 中的 `html` 劫持对象，使其 `parentNode` 这个属性，可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
-> - 通过 `patchRenderEffect`，重写了 `head`、`body` 的事件、 `appendChild` 或 `insertBefore` 方法
+> - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
 
 如果不存在子应用的 `document`
 
-- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 
-最后无论有没有子应用 `document`，都将创建的 `iframe.contentDocument` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
+最后无论有没有子应用 `document`
+
+- 都将“新容器”的 `document` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
 
 第六步：挂载子应用到容器
 
