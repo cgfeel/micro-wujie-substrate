@@ -367,7 +367,7 @@
 
 第二步：更新容器，销毁 `iframeBody`
 
-- 将挂载的容器更新 `this.el`
+- 将挂载的容器更新为 `this.el`
 - `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
 - `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
 
@@ -376,7 +376,7 @@
 第三步：`分支 1` - `alive` 模式下切换应用
 
 - 将 `document` 的 `<html>` 替换“新容器”的 `<html>`
-- 通过 `recoverEventListeners` 在保活场景恢复全部事件，注 n
+- 通过 `recoverEventListeners` 在保活场景恢复全部事件，注 n (`recoverEventListeners`)
 
 > 注 n：`recoverEventListeners` 恢复事件：
 >
