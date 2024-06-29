@@ -411,7 +411,7 @@
 > - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
 > - 将 `html` 元素的 `head` 和 `body` 分别指向实例
 
-> 注 n：`recoverDocumentListeners` 原理和 `recoverEventListeners` 注 n，不同在于：
+> 注 n：`recoverDocumentListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L348)] 原理和 `recoverEventListeners` 注 n，不同在于：
 >
 > - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
 > - 声明一个 `elementEventCacheMap` 用于记录新的事件
