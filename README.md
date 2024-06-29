@@ -290,6 +290,19 @@
 
 #### 1. `active` 激活应用
 
+分 2 部分：
+
+1. 更新配置应用信息，包含：沙箱 `iframe` 初始化、修正 `fetch`、同步路由
+2. 渲染子应用
+
+渲染子应用又可以分为 3 种情况：
+
+1. `degrade` 主动降级渲染
+2. `alive` 模式正常加载应用
+3. 其他渲染，包含：预加载、加载非 `alive` 模式应用
+
+#### 1.1. 更新配置应用信息
+
 第一步：更新配置信息
 
 - 将 `props` 拿到的信息更新当前实例
@@ -317,9 +330,9 @@
 - 如果是 `alive` 模式，重新激活不需要 `syncUrlToIframe`
 - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
 
-第四步：注入 `template` 更新 `this.template`
+第四步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
-第五步：`degrade` 主动降级
+#### 1.2. `degrade` 主动降级渲染
 
 概述：
 
@@ -328,7 +341,7 @@
 - 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
 - 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-创建 `iframe`：
+先从创建 `iframe` 开始：
 
 - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
@@ -336,7 +349,7 @@
 
 > 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。从第六步开始，`iframe` 指沙箱 `iframe`
 
-更新容器，销毁 `iframeBody` 记录
+更新容器，销毁 `iframeBody` 记录：
 
 - 将挂载的容器更新 `this.el`
 - `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
@@ -383,11 +396,11 @@
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 
-最后无论有没有子应用 `document`
+最后无论有没有子应用 `document`，都将“新容器”的 `document` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用。至此整个降级过程完成，如果设置主动降级玩成这步将直接返回，不再执行下面流程
 
-- 都将“新容器”的 `document` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用，至此整个降级过程完成
+#### 1.3. 挂载子应用
 
-第六步：挂载子应用到容器
+第一步：挂载子应用到容器
 
 根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
 
@@ -404,7 +417,7 @@
 - 如果指定容器不存在就挂载到沙箱的 `iframe` 的 `body` 中
 - 当创建自定义组件 `wujie-app` 时，自然会触发 `connectedCallback` 从而赋值 `this.shadowRoot`
 
-第七部：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
+第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
 和 `renderTemplateToIframe` 注 n (`renderTemplateToIframe`) 原理一样：
 
@@ -414,6 +427,11 @@
 - 不同点：获取 `shadowRoot` 的头部和尾部分别指向 `head` 和 `body`
 - 部分相同：劫持 `shadowRoot.firstChild` 的 `parentNode` 指向 `iframeWindow.document`
 - 部分相同：通过 `patchRenderEffect` 给 `shadowRoot` 打补丁
+
+第三步：通过 `patchCssRules` 为子应用样式打补丁
+
+- `degrade` 主动降级不处理、已处理过不处理
+- test
 
 ### `packages` - `wujie-react`
 
