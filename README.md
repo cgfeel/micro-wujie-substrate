@@ -334,7 +334,7 @@
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
 - 优先挂载 `iframe` 到指定容器，不存在挂载在刚才从沙箱 `iframe` 中拿到的 `iframeBody`
 
-> 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的称作 `iframe`，用于代替 `web component`。从第六步开始，`iframe` 统一值沙箱 `iframe`
+> 函数内部做了两件事：创建 `iframe` 并写入 `attrs`，渲染到容器后重写 `iframe` 的 `document`，为了便于理解以下描述 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。从第六步开始，`iframe` 指沙箱 `iframe`
 
 更新容器，销毁 `iframeBody` 记录
 
@@ -346,21 +346,36 @@
 
 如果存在子应用的 `document`，且 `alive` 模式下：
 
-- 将子应用的 `<html>` 替换新创建的 `iframe` 的 `<html>`
-- 通过 `recoverEventListeners` 遍历子应用的 `<html>` 所有元素
-- 通过 `elementEventCacheMap` 获取每个元素的事件集合做两件事：将集合添加到新的 `WeakMap` 对象 `elementEventCacheMap`，遍历集合为子应用对应的元素添加事件
-- 最后将过滤后的事件更新沙箱实例中的 `elementEventCacheMap` 属性
+- 将 `document` 的 `<html>` 替换“新容器”的 `<html>`
+- 通过 `recoverEventListeners` 在保活场景恢复全部事件，注 n
+
+> 注 n：`recoverEventListeners` 恢复事件：
+>
+> - 声明一个新的 `elementEventCacheMap` 用于收集筛选的事件
+> - 通过 `iframeBody` 拿到沙箱实例 `sandbox`
+> - 通过 `TreeWalker` 遍历 “新容器”的 `<html>`，每个节点对象为 `nextElement`
+> - 从 `sandbox.elementEventCacheMap` 获取每个元素的事件集合
+> - 遍历集合塞入新的 `elementEventCacheMap`，同时为 `nextElement` 添加事件监听
+> - 最后将过滤后的事件更新沙箱实例中的 `sandbox.elementEventCacheMap`
 
 如果存在子应用的 `document`，不是 `alive` 模式：
 
-- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n
-- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，原理和 `recoverEventListeners` 是一样的
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
+- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失
 
-> 注 n： `renderTemplateToIframe`：
+> `recoverDocumentListeners` 原理和 `recoverEventListeners` 注 n， 是一样的，不同在于：
 >
-> - 在方法内部通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素，并把 `template` 作为元素内容并返回回来
+> - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
+> - 将 `docuemnt` 对象从根节点提取出来，添加到“新容器”的 `document` 中
+> - 最后用 `document` 上的事件覆盖 `sandbox.elementEventCacheMap`
+> - 这就意味着 `document` 所有子节点的事件记录将被删除
+>
+> 注 n：`renderTemplateToIframe`
+>
+> - 在方法内部通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素
+> - 并把 `template` 注入 `html` 元素并返回元素对象（没明白为啥不直接在“新容器”创建）
 > - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
-> - 将处理后的 `processedHtml` 替换创建的 `iframe` 的 `html`
+> - 将处理后的 `processedHtml` 替换“新容器”的 `html`
 > - 创建一个 `iframe` 中的 `html` 劫持对象，使其 `parentNode` 这个属性，可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了 `head`、`body` 的事件、 `appendChild` 或 `insertBefore` 方法
 
