@@ -375,10 +375,10 @@
 
 第三步：`分支 1` - `alive` 模式下切换应用
 
-- 将 `document` 的 `<html>` 替换“新容器”的 `<html>`
-- 通过 `recoverEventListeners` 在保活场景恢复全部事件，注 n (`recoverEventListeners`)
+- 恢复 `html`：将之前记录子应用的 `<html>` 替换“新容器”的 `<html>`
+- 在保活场景恢复全部事件：`recoverEventListeners` 注 n (`recoverEventListeners`)
 
-> 注 n：`recoverEventListeners` 恢复事件：
+> 注 n：`recoverEventListeners` 遍历节点时，“新容器”已替换了 `html` 节点
 >
 > - 声明一个新的 `elementEventCacheMap` 用于收集筛选的事件
 > - 通过 `iframeBody` 拿到沙箱实例 `sandbox`
@@ -387,7 +387,7 @@
 > - 遍历集合塞入新的 `elementEventCacheMap`，同时为 `nextElement` 添加事件监听
 > - 最后将过滤后的事件更新沙箱实例中的 `sandbox.elementEventCacheMap`
 
-如果存在子应用的 `document`，不是 `alive` 模式：
+第三步：`分支 2` - 非 `alive` 模式下切换应用
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失
