@@ -341,6 +341,20 @@
 - 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
 - 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
+主动降级分 3 个部分：
+
+1. 创建 `iframe` 并挂载到容器
+2. 销毁沙箱记录，为创建的 `iframe` 容器打补丁
+3. 注入 `template` 渲染
+
+渲染分 3 种情况：
+
+1. `alive` 模式切换应用
+2. 非 `alive` 模式切换应用
+3. 初次渲染
+
+> 在这里通过 `this.document` 来区分是切换应用还是初次加载
+
 先从创建 `iframe` 开始：
 
 - `rawDocumentQuerySelector` 获取 `window` 或子应用内沙箱 `iframe` 的 `body`
