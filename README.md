@@ -422,7 +422,10 @@
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
 
-最后无论有没有子应用 `document`，都将“新容器”的 `document` 作为当前实例（子应用）的 `document`，方便下次激活时直接使用。至此整个降级过程完成，如果设置主动降级玩成这步将直接返回，不再执行下面流程
+最后：
+
+- 无论哪种方式渲染，都将“新容器”的 `document` 作为当前实例的 `document`，方便下次切换应用 `active` 时直接使用。
+- 至此整个降级过程完成，直接返回不再执行下面流程
 
 #### 1.3. 挂载子应用
 
