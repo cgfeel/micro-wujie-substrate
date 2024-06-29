@@ -361,7 +361,7 @@
 
 - `rawDocumentQuerySelector` 获取 `window` 或子应用内的 `iframeBody`
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
-- 优先挂载 `iframe` 到指定容器，不存在挂载在刚才从沙箱 `iframe` 中拿到的 `iframeBody`
+- 优先挂载 `iframe` 到指定容器，不存则在挂载到 `iframeBody`
 
 > `initRenderIframeAndContainer` 内部做了两件事：i. 创建 `iframe` 并写入 `attrs`，ii. 渲染到容器后重写 `iframe` 的 `document`
 
