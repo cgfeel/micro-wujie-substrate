@@ -332,8 +332,9 @@
 第三步：同步路由
 
 - `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
-- 如果是 `alive` 模式，重新激活不需要 `syncUrlToIframe`
 - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
+
+> 如果子应用已启动，又是 `alive` 模式，切换应用重新激活不需要 `syncUrlToIframe`
 
 第四步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
