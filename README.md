@@ -447,13 +447,13 @@
 >
 > - 指的是 `shadowRoot` 外层的 `web component`
 > - 而 `this.shadowRoot` 是在组件 `connectedCallback` 时定义为组件的 `shadowRoot`
-> - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 会在初始化时注入
-> - 而非 `active` 模式下切换应用，稍后会更新 `template`
+> - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 已在初始化时注入
+> - 而非 `active` 模式下切换应用，稍后会再次更新 `template`
 
 应用初始化时会挂载到指定容器：
 
 - 先获取 `iframeBody`，如果容器不存在时作为备用容器
-- 通过 `createWujieWebComponent` 创建组件
+- 通过 `createWujieWebComponent` 将创建的组件添加到指定容器
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
