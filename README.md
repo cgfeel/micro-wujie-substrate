@@ -453,7 +453,7 @@
 应用初始化时会挂载到指定容器：
 
 - 先获取 `iframeBody`，如果容器不存在时作为备用容器
-- 通过 `createWujieWebComponent` 将创建的组件添加到指定容器
+- 通过 `createWujieWebComponent` 将创建的组件挂载到指定容器
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
@@ -462,14 +462,30 @@
 - 相同点：将 `template` 注入沙箱的 `iframe`，提取出 `html` 元素通过 `processCssLoaderForTemplate` 进行处理
 - 不同点：将处理后的 `processedHtml` 插入 `shadowRoot`
 - 不同点：在 `processedHtml` 第一个子集前面插入一个全屏无边距的 `div`，用于撑开容器为屏幕大小，便于展示浮窗等元素
-- 不同点：获取 `shadowRoot` 的头部和尾部分别指向 `head` 和 `body`
+- 不同点：获取 `shadowRoot` 的头部和尾部分别指向沙箱的 `head` 和 `body`
 - 部分相同：劫持 `shadowRoot.firstChild` 的 `parentNode` 指向 `iframeWindow.document`
 - 部分相同：通过 `patchRenderEffect` 给 `shadowRoot` 打补丁
 
 第三步：通过 `patchCssRules` 为子应用样式打补丁
 
-- `degrade` 主动降级不处理、已处理过不处理
-- test
+`degrade` 主动降级不处理、已处理过不处理
+
+1. 兼容 `:root` 选择器样式到 `:host` 选择器上
+2. 将 `@font-face` 定义到 `shadowRoot` 外部
+
+> 这里我有点没看明白沙箱中的 `iframe` 里的 `:root` 哪来的
+>
+> - `iframe` 是在构造函数里通过 `iframeGenerator` 创建的
+> - 创建时可以通过 `startApp` 通过 `attrs` 设置 `style`，问题是 `:root` 不能直接写在元素 `style` 上
+> - 剩下就是 `template` 注入，而 `iframe` 在这个环节只做了一件事，创建一个 `html` 元素挂载到 `shadowRoot` 上
+> - 最后剩下主动降级 `degrade`，但创建使用的 `iframe` 和沙箱的 `iframe` 不是同一个
+
+第四步：更新 `this.provide.shadowRoot`
+
+- `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
+- 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
+
+至此整个激活过程结束
 
 ### `packages` - `wujie-react`
 
