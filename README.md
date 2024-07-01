@@ -218,20 +218,41 @@
 
 #### 1. 获取实例和配置：
 
-**1.1 `getWujieById`，获取已存在的沙箱的实例**
+分 2 步：
+
+1. 获取更新配置信息
+2. 切换或创建应用
+
+切换应用分为 3 个情况：
+
+1. `alive` 保活模式启动
+2. 子应用通过 `window.__WUJIE_MOUNT` 发起渲染
+3. 其他方式都注销当前实例
+
+> `alive` 模式和子应用 `mount` 切换应用后会直接返回，其他情况销毁应用后会重新创建实例，如果你的应用在切换时看到白屏建议使用 `alive` 或 `mount`
+
+#### 1.1 `getWujieById`：获取已存在的沙箱的实例
 
 - 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱中的实例，如果沙箱不存在返回 `null`
 - 目录：`common.ts` - `getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]
 
 添加映射表有 2 个方法，分别为：
 
-- `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23C17-L23C41)]：通过 `Wujie` 这个类创建的应用，详细见 todo
-- `addSandboxCacheWithOptions`：通过 `setupApp` 设置应用信息，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
+- `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23)]：收集 `Wujie` 实例对象，存在在每个映射对象的 `wujie` 属性
+- `addSandboxCacheWithOptions`：收集 `setupApp` 设置应用信息，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]，存在在每个映射对象的 `options` 属性
+
+使用 `addSandboxCacheWithWujie` 只有 1 处调用；
+
+- `Wujie` 构造函数 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L532)]
 
 创建 `Wujie` 实例有 2 个地方：
 
 - `preloadApp`：预加载，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
 - `startApp`：启动应用，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
+使用 `addSandboxCacheWithOptions` 只有一处：
+
+- `setupApp` 缓存子应用配置 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L179)]
 
 从这里可以知道：
 
@@ -242,10 +263,10 @@
 关于映射表 `idToSandboxCacheMap`：
 
 - 一个 `Map` 对象：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
-- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：非别来自 `preloadApp` 和 `startApp` 配置信息
+- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：分别来自 `preloadApp` 和 `startApp` 配置信息
 - `getWujieById` 获取的就是 `wujie` 实例
 
-**1.2 获取应用配置**
+#### 1.2 获取应用配置
 
 `getOptionsById` 获取配置信息：
 
