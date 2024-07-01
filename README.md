@@ -216,8 +216,6 @@
 
 目录：`index.ts` - `startApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L185)]
 
-#### 1. 获取实例和配置：
-
 分 2 步：
 
 1. 获取更新配置信息
