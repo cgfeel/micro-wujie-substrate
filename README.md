@@ -295,11 +295,9 @@
 
 流程分 3 步：
 
-- 激活子应用：`sandbox.active`，注 ①
+- 将拿到的配置信息激活子应用：`sandbox.active`，详细见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
 - 预加载但是没有执行的情况 `!sandbox.execFlag`，提取执行脚本重新 `start` 实例，注 ②
 - 将 `iframeWindow` 传递过去通知 `activated`，并返回注销应用的方法
-
-> 注 ①：将拿到的最新的配置信息传递给 `sandbox.active` 激活应用，详细见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
 
 ### `Wujie` 应用类
 
@@ -551,3 +549,61 @@
 总结：
 
 `WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
+
+### 辅助方法
+
+罗列阅读过程中一些重要的方法
+
+#### `importHTML`
+
+用于加载和处理资源内容，先从入参和返回看：
+
+参数为包含 3 个属性的 `params`：
+
+- `url`：远程资源连接
+- `html`：静态资源，存在则优先使用
+- `opts`：包含加载和处理 `HTML` 的相关配置
+
+`opts` 包含 4 个可选属性：
+
+- `fetch`：默认的 `fetch` 还是自定义的 `fetch`
+- `plugins`：子应插件，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+- `loadError`：子应用加载资源失败后触发，`startApp` 时配置
+- `fiber`：空闲加载
+
+最终返回 `Promise<htmlParseResult>`，其中 `htmlParseResult` 包含：
+
+- `template`：资源内容
+- `assetPublicPath`：资源路径
+- `getExternalScripts`：提取外部 `script` 的方法，返回 `ScriptResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
+- `getExternalStyleSheets`：提取外部 `style` 的方法，返回 `StyleResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
+
+返回的资源会根据 `plugins` 是否存在 `htmlLoader` 来处理结果：
+
+- 存在：使用自定义的 `loader` 函数处理 `html`，不缓存
+- 不存在：使用默认的 `loader` 函数 `defaultGetTemplate` 处理，将结果缓存到 `embedHTMLCache` 以避免重复加载资源
+
+用到 `importHTML` 的地方有 3 处：
+
+- `preloadApp` 预加载
+- `startApp` 切换 `alive` 模式的应用
+- `startApp` 初次加载沙箱实例
+
+整个流程分 3 步：
+
+1. 提取必要的配置
+2. 远程加载或直接返回要加载的资源
+3. 处理资源
+
+**1.提取必要的资源：**
+
+- `fetch`：只能是自定义的 `fetch` 或 `window.fetch`
+- `fiber`：是否空闲加载
+- 提取 `plugins` 用于自定义 `loader` 处理资源，提取 `loadError` 用于提取外部资源失败时使用
+- `htmlLoader`：根据 `plguins` 返回自定义处理 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
+- 通过 `getEffectLoaders` 提取 `jsExcludes`：`js` 排除列表
+- 通过 `getEffectLoaders` 提取 `cssExcludes`：`css` 排除列表
+- 通过 `getEffectLoaders` 提取 `jsIgnores`：`js` 忽略列表
+- 通过 `getEffectLoaders` 提取 `cssIgnores`：`css` 忽略列表
+
+> `getEffectLoaders` 将提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象，在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
