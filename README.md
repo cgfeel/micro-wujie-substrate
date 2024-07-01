@@ -216,10 +216,11 @@
 
 目录：`index.ts` - `startApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L185)]
 
-分 2 步：
+分 3 步：
 
 1. 获取更新配置信息
-2. 切换或创建应用
+2. 存在沙箱实例就切换或销毁应用
+3. 不存在沙箱实例或被销毁的应用，创建新的沙箱实例
 
 切换应用分为 3 个情况：
 
