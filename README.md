@@ -218,7 +218,7 @@
 
 分 3 步：
 
-1. 获取更新配置信息
+1. 获取、更新配置信息
 2. 存在沙箱实例就切换或销毁应用
 3. 不存在沙箱实例或被销毁的应用，创建新的沙箱实例
 
@@ -227,6 +227,8 @@
 1. `alive` 保活模式启动
 2. 子应用通过 `window.__WUJIE_MOUNT` 发起渲染
 3. 其他方式都注销当前实例
+
+详细见文档：运行模式 [[查看](https://wujie-micro.github.io/doc/guide/mode.html)]
 
 > `alive` 模式和子应用 `mount` 切换应用后会直接返回，其他情况销毁应用后会重新创建实例，如果你的应用在切换时看到白屏建议使用 `alive` 或 `mount`
 
@@ -269,26 +271,24 @@
 
 `getOptionsById` 获取配置信息：
 
-- `getWujieById` 获取 `wujie` 实例，`getOptionsById` 拿应用名获取实例配置 `options`，不存在返回 `null`
+- 拿应用名，从映射表 `idToSandboxCacheMap` 获取实例配置 `options`，不存在返回 `null`
 
 `mergeOptions` 合并配置配置：
 
 - 将 `startApp` 拿到的 `options` 和已存在实例的 `options` 合并得到新的配置信息，并结构提取必要的信息，见源文件 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L190)]
 
-#### 2. 已经初始化过的应用，快速渲染：
+#### 2. 存在沙箱实例，切换应用：
 
 渲染前的准备：
 
-- 通过 `getPlugins` 更新实例的 `plugins`，关于 `wujie` 的插件见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
-- 更新实例的 `lifecycles`， 关于 `wujie` 的生命周期见文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html)]
-- 获取实例的 `iframe` 对象的 `window`：`sandbox.iframe.contentWindow`，和上面复现演示一样
-- 如果实例有预加载时挂载的微任务，优先执行
+- 通过 `getPlugins` 更新实例的 `plugins`，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+- 更新实例的 `lifecycles`， 详细见文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html)]
+- 获取实例的 `iframeWindow` 对象，用于查看子应用挂载方法 `__WUJIE_MOUNT`
+- 如果实例预加载应用，需要等待预加载执行完毕
 
-根据情况进行渲染：
+#### 2.1 `alive` 保活模式切换应用
 
-#### 2.1 `alive` 保活模式
-
-和 `micro-app` 的 `keep-alive` 模式一样，详细见文档说明 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+和 `micro-app` 的 `keep-alive` 模式一样：
 
 - 优点：切换路由不销毁应用实例，路由、状态不会丢失，在没有生命周期管理的情况下，减少白屏时间
 - 缺点：多个菜单栏跳转到子应用的不同页面，不同菜单栏无法跳转到指定子应用路由
