@@ -558,9 +558,16 @@
 
 #### `importHTML`
 
-用于加载和处理资源内容，先从入参和返回看：
+目录：`entry.ts` - `importHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L200)]
 
-参数为包含 3 个属性的 `params`：
+用于加载和处理资源内容，相当于
+
+- `qiankun` 的 `importEntry` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#212-prefetch-%E6%89%A7%E8%A1%8C%E9%A2%84%E5%8A%A0%E8%BD%BD)]
+- `micro-app` 的 `HTMLLoader` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#12-htmlloader-%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90)]
+
+> 除了 `qiankun` 使用的是 `import-html-entry` [[查看](https://github.com/kuitos/import-html-entry)]，其他都是单独开发的
+
+先从入参和返回看，参数为包含 3 个属性的 `params`：
 
 - `url`：远程资源连接
 - `html`：静态资源，存在则优先使用
@@ -575,7 +582,7 @@
 
 最终返回 `Promise<htmlParseResult>`，其中 `htmlParseResult` 包含：
 
-- `template`：资源内容
+- `template`：处理后的资源内容
 - `assetPublicPath`：资源路径
 - `getExternalScripts`：提取外部 `script` 的方法，返回 `ScriptResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 - `getExternalStyleSheets`：提取外部 `style` 的方法，返回 `StyleResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
@@ -603,9 +610,40 @@
 - `fiber`：是否空闲加载
 - 提取 `plugins` 用于自定义 `loader` 处理资源，提取 `loadError` 用于提取外部资源失败时使用
 - `htmlLoader`：根据 `plguins` 返回自定义处理 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
-- 通过 `getEffectLoaders` 提取 `jsExcludes`：`js` 排除列表
+- 通过 `getEffectLoaders` 提取 `jsExcludes`：`js` 排除列表，注 n (`getEffectLoaders`)
 - 通过 `getEffectLoaders` 提取 `cssExcludes`：`css` 排除列表
 - 通过 `getEffectLoaders` 提取 `jsIgnores`：`js` 忽略列表
 - 通过 `getEffectLoaders` 提取 `cssIgnores`：`css` 忽略列表
+- 通过 `defaultGetPublicPath` 将子应用的 `url` 和 `localhost.href` 计算出资源路径
 
-> `getEffectLoaders` 将提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象，在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
+> 注 n：`assetPublicPath`
+>
+> - `qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径
+> - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
+> - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
+> - `wujie` 不需要配置 `__webpack_public_path__`，默认是子应用入口 `url` 为 `baseurl`
+
+**2.获取资源：**
+
+通过 `getHtmlParseResult` 获取资源，接受 3 个参数：
+
+- `url`：资源远程链接
+- `html`：现有的资源
+- `htmlLoader`：通过 `plugins` 传入的 `htmlLoader`，不存在使用 `defaultGetTemplate`
+
+提供 `html` 时优先使用，否则通过 `fetch` 获取资源链接，如果获取失败记录在 `embedHTMLCache`，下次不再获取
+
+**3.处理返回资源：**
+
+- 获取资源路径 `assetPublicPath`，注 n (`assetPublicPath`)
+- 通过 `htmlLoader` 处理获取的资源，默认的 `defaultGetTemplate` 不处理直接返回
+- 如果通过 `plugins` 传入 `htmlLoader` 处理，会将获取的资源作为字符参数传递过去
+- 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、提取的 `script`、提取的 `style`
+- 最终返回资源对抗，即一开始描述的返回对象
+
+> 注 n：`getEffectLoaders`
+>
+> - 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
+> - 在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
+
+#### `processTpl` 提取资源
