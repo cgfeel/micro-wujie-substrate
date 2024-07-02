@@ -560,7 +560,7 @@
 
 目录：`entry.ts` - `importHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L200)]
 
-用于加载和处理资源内容，相当于
+用于加载和处理资源内容，相当于：
 
 - `qiankun` 的 `importEntry` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#212-prefetch-%E6%89%A7%E8%A1%8C%E9%A2%84%E5%8A%A0%E8%BD%BD)]
 - `micro-app` 的 `HTMLLoader` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#12-htmlloader-%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90)]
@@ -647,3 +647,91 @@
 > - 在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
 
 #### `processTpl` 提取资源
+
+目录：`template.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
+
+用于从加载内容中提取出 `scripts` 和 `styles`，相当于：
+
+- `micro-app` 中的 `extractSourceDom` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]
+
+从入参开始，接受 3 个参数：
+
+- `tpl`：字符类型，要提取的源内容
+- `baseURI`：字符类型，资源 `url`
+- `postProcessTemplate`：可选参数，传入会在提取资源返回前进行最后处理
+
+返回一个 `TemplateResult` 对象 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L64)] 包含 4 个属性：
+
+- `template`：替换特定内容后的资源
+- `scripts`：提取的脚本
+- `styles`：提取的样式
+- `entry`：入口资源
+
+函数内部作了 2 件事：
+
+- 声明对象用于收集提取的资源，分别是：`scripts`、`styles`、`entry`、`moduleSupport`、`template`
+- 执行替换，每一个 `replace` 就做几件事
+
+分别执行：
+
+**1.替换备注：**
+
+全部替换为空
+
+**2.提取或替换 `link` 标签：**
+
+有 3 个情况会将 `link` 标签替换为备注：
+
+1. `ref="stylesheet"` 的样式文件，且存在 `href`
+2. `ref="stylesheet"` 的样式文件，且存在 `href`，带有 `ignore` 属性
+3. `preload|prefetch|modulepreload` 模式下，存在 `href` 的 `font` 类型资源
+
+补充：
+
+- 除了情况 2 注释不一样，其他都一样
+- 只有情况 1，且没有`ignore` 属性的 `href` 链接，才会提取为 `{ src: newHref }` 添加到 `styles`
+- 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换
+
+**3.提取或替换 `style` 内联样式：**
+
+- 所有内联样式都会被注释替换
+- 只有没有 `ignore` 的 `style` 才会被提取标签内容，作为 `{ src: "", content: code }` 添加到 `styles`
+
+**4.提取或替换 `script`：**
+
+先获取以下对象：
+
+- `scriptIgnore`：带有 `ignore` 属性的 `script`
+- `isModuleScript`：带有 `module` 属性的 `script`
+- `isCrossOriginScript`：带有 `crossorigin` 属性的 `script`
+- `crossOriginType`：跨端的类型，`crossorigin` 不存在默认为空字符
+- `moduleScriptIgnore`：当浏览器支持 `module` 并且标签带有 `nomodule`，或浏览器不支持 `module` 并且标签带有 `module`
+- `matchedScriptTypeMatch`：是可执行的 `js`
+- `matchedScriptType`：脚本类型
+
+分 3 个情况：
+
+- 不是有效的可执行 `script`，直接返回
+- 有效的外部链接：不包含 `type="text/ng-template"` 且有 `src` 的外部 `script`
+- 其他情况，如：内联脚本、`ng-template`
+
+有效的外部链接，现提取 3 个对象：
+
+- `matchedScriptEntry`：带有 `entry` 的主入口
+- `matchedScriptSrcMatch`：匹配 `src`
+- `matchedScriptSrc`：`src` 链接或 `null`
+
+以下情况会报错：
+
+- 多入口：`entry` 和 `matchedScriptEntry` 同时存在
+
+以下情况会设置入口 `entry`
+
+- `entry` 为 `null`，`matchedScriptEntry` 存在，设置为 `matchedScriptSrc`
+- 在设置之前会检查并更新 `matchedScriptSrc` 为有效的 `url`
+
+以下情况会用备注替换 `script`：
+
+- `scriptIgnore` 或 `moduleScriptIgnore` 或 `matchedScriptSrc` 存在时
+
+以下情况
