@@ -776,4 +776,13 @@
 - 遍历每一行查看是否为空或已单行注释得到 `isPureCommentBlock`
 - 如果是有效的内联 `script` 和上面外链 `script` 一样添加到 `scripts`
 
-> 这里 `wujie` 没有考虑多行注释啊
+> 这里 `wujie` 好像没有考虑多行注释
+
+插入 `scripts` 的 `item` 和外链不同点
+
+```
+{
+    src: "",
+    content: code,
+}
+```
