@@ -638,8 +638,8 @@
 - 获取资源路径 `assetPublicPath`，注 n (`assetPublicPath`)
 - 通过 `htmlLoader` 处理获取的资源，默认的 `defaultGetTemplate` 不处理直接返回
 - 如果通过 `plugins` 传入 `htmlLoader` 处理，会将获取的资源作为字符参数传递过去
-- 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、提取的 `script`、提取的 `style`
-- 最终返回资源对抗，即一开始描述的返回对象
+- 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、`script`、`style`，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
+- 最终返回资源对象，即上述最终返回的 `Promise<htmlParseResult>`
 
 > 注 n：`getEffectLoaders`
 >
