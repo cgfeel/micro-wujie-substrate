@@ -604,7 +604,7 @@
 2. 远程加载或直接返回要加载的资源
 3. 处理资源
 
-**1.提取必要的资源：**
+**1. 提取必要的资源：**
 
 - `fetch`：只能是自定义的 `fetch` 或 `window.fetch`
 - `fiber`：是否空闲加载
@@ -618,7 +618,7 @@
 
 > 注 n：`getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
-**2.获取资源：**
+**2. 获取资源：**
 
 通过 `getHtmlParseResult` 获取资源，接受 3 个参数：
 
@@ -626,14 +626,16 @@
 - `html`：现有的资源
 - `htmlLoader`：通过 `plugins` 传入的 `htmlLoader`，不存在使用 `defaultGetTemplate`
 
+> 默认的 `defaultGetTemplate` 将不处理资源直接将传入的 `template` 返回
+
 提供 `html` 时优先使用，否则通过 `fetch` 获取资源链接，如果获取失败记录在 `embedHTMLCache`，下次不再获取。
 
 > `getHtmlParseResult` 相当于 `micro-app` 中的 `extractSourceDom` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]
 
-**3.处理返回资源：**
+**3. 处理返回资源：**
 
 - 获取资源路径 `assetPublicPath`，注 n (`assetPublicPath`)
-- 通过 `htmlLoader` 处理获取的资源，默认的 `defaultGetTemplate` 不处理直接返回
+- 通过 `htmlLoader` 处理获取的资源
 - 如果通过 `plugins` 传入 `htmlLoader` 处理，会将获取的资源作为字符参数传递过去
 - 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、`script`、`style`，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 - 最终返回资源对象，即上述最终返回的 `Promise<htmlParseResult>`
@@ -644,6 +646,32 @@
 > - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
 > - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
 > - `wujie` 不需要配置 `__webpack_public_path__`，通过 `defaultGetPublicPath` 计算子应用入口 `url` 为 `baseurl`
+
+**4. 获取外部资源：**
+
+`getExternalScripts` 获取 `script`，`getExternalStyleSheets` 获取 `css`，获取前都将资源遍历一遍：
+
+- 剔除拥有外链且被 `jsExcludes｜cssExcludes` 排除的资源
+- 遍历过滤后的集合，对拥有外链且被 `jsIgnores|cssIgnores` 资源对象打上 `ignore` 的属性
+
+除此之外他们都会将 `fetch`、`loadError` 传过去作为处理，不同在于 `script` 还会将 `fiber` 传过去
+
+**4.1. `getExternalScripts`：**
+
+传过去一个集合 `ScriptObject[]`，直接 `map` 后返回。不同的是为每一项资源添加了一个 `promise` 方法 `contentPromise`，分为 3 个情况：
+
+1. 有 `src`，且不是 `ES` 模块，通过 `fetchAssets` 加载资源
+2. 有 `src` 的 `ES` 模块，返回一个空字符的 `promise`
+3. 内联脚本内容作为 `promise` 返回
+
+> 对于外链 `script` 且存在 `async` 或 `defer`，会根据 `fiber` 决定是在 `requestIdleCallback` 空闲情况下 `fetchAssets` 加载资源
+
+**4.2. `getExternalStyleSheets`：**
+
+传过去一个集合 `StyleObject[]`，直接 `map` 后返回。分为 2 个情况：
+
+1. 内联样式用 `content` 换成一个 `promise` 对象 `contentPromise`
+2. 外链样式添加 `promise` 对象 `contentPromise`，根据 `ignore` 决定返回空字符还是通过 `fetchAssets` 加载资源
 
 #### `processTpl` 提取资源
 
