@@ -616,10 +616,7 @@
 - 通过 `getEffectLoaders` 提取 `cssIgnores`：`css` 忽略列表
 - 通过 `defaultGetPublicPath` 将子应用的 `url` 和 `localhost.href` 计算出资源路径
 
-> 注 n：`getEffectLoaders`
->
-> - 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
-> - 在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
+> 注 n：`getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
 **2.获取资源：**
 
@@ -654,7 +651,7 @@
 
 用于从加载内容中提取出 `scripts` 和 `styles`，相当于：
 
-- `micro-app` 中的 `extractSourceDom` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]
+- `micro-app` 中的 `flatChildren`，见：`micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
 
 从入参开始，接受 3 个参数：
 
