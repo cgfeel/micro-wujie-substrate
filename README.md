@@ -701,27 +701,35 @@
 
 先获取以下对象：
 
-- `scriptIgnore`：带有 `ignore` 属性的 `script`
-- `isModuleScript`：带有 `module` 属性的 `script`
-- `isCrossOriginScript`：带有 `crossorigin` 属性的 `script`
-- `crossOriginType`：跨端的类型，`crossorigin` 不存在默认为空字符
-- `moduleScriptIgnore`：当浏览器支持 `module` 并且标签带有 `nomodule`，或浏览器不支持 `module` 并且标签带有 `module`
-- `matchedScriptTypeMatch`：是可执行的 `js`
-- `matchedScriptType`：脚本类型
+- `scriptIgnore`：提取带有 `ignore` 属性的 `script`
+- `isModuleScript`：判断是否是 `ES` 模块的 `script`
+- `isCrossOriginScript`：提取跨域行 `crossorigin` 为的 `script`
+- `crossOriginType`：跨端的类型的值
+  - 这里只提取 `anonymous` 不发送凭据和 `use-credentials` 发送凭据 2 个类型
+  - `crossorigin` 不存在默认为空字符
+- `moduleScriptIgnore`：`script` 作为被忽略的 `ES` 模块
+  - 当浏览器支持 `ES` 模块而 `script` 标签带有 `nomodule` 属性
+  - 或浏览器不支持 `ES` 模块并且当前 `script` 是 `module` 类型
+- `matchedScriptTypeMatch`：提取 `script` 的 `type`，不存在为 `null`
+- `matchedScriptType`：`script` 的 `type` 值，不存在为 `null`
 
 分 3 个情况：
 
-- 不是有效的可执行 `script`，直接返回
+- 不是有效的可执行 `script`，直接返回不处理
 - 有效的外部链接：不包含 `type="text/ng-template"` 且有 `src` 的外部 `script`
-- 其他情况，如：内联脚本、`ng-template`
+- 其他情况，如：内联 `script`、`ng-template`
 
-有效的外部链接，现提取 3 个对象：
+以下情况会用注释替换 `script`：
 
-- `matchedScriptEntry`：带有 `entry` 的主入口
-- `matchedScriptSrcMatch`：匹配 `src`
-- `matchedScriptSrc`：`src` 链接或 `null`
+- `scriptIgnore`、`moduleScriptIgnore`
 
-以下情况会报错：
+**4.1 有效的外部链接，现提取 3 个对象：**
+
+- `matchedScriptEntry`：提取的 `script` 是带有 `entry` 的主入口
+- `matchedScriptSrcMatch`：提取的 `script` 是带有 `src` 属性
+- `matchedScriptSrc`：`script` 的 `src` 链接或 `null`
+
+以下情况会 `throw`：
 
 - 多入口：`entry` 和 `matchedScriptEntry` 同时存在
 
@@ -730,8 +738,43 @@
 - `entry` 为 `null`，`matchedScriptEntry` 存在，设置为 `matchedScriptSrc`
 - 在设置之前会检查并更新 `matchedScriptSrc` 为有效的 `url`
 
-以下情况会用备注替换 `script`：
+> 如果 `src` 提供的是相对路径，会根据资源路由 `baseURI` 获取相对 `url`
 
-- `scriptIgnore` 或 `moduleScriptIgnore` 或 `matchedScriptSrc` 存在时
+注释替换 `script` 的情况追加一种：
 
-以下情况
+- `matchedScriptSrc` 存在时
+
+`matchedScriptSrc`：对于已提取出 `src` 的情况会提取出一个对象插入 `scripts`
+
+```
+{
+    src: matchedScriptSrc,
+    module: isModuleScript,
+    crossorigin: !!isCrossOriginScript,
+    crossoriginType: crossOriginType,
+    attrs: parseTagAttributes(match),
+}
+```
+
+> 以上属性上述已说明， `parseTagAttributes` 会提取 `<script(.*)>` 标签所有属性作为字符串返回
+
+除此之外还会提取 `script` 中的 `async` 和 `defer` 属性，只有有一个属性存在，会在插入对象中添加如下属性
+
+```
+{
+    async: isAsyncScript,
+    defer: isDeferScript,
+}
+```
+
+其他情况带有外链的 `script` 将直接返回不做任何处理
+
+**4.2 内联 `script`：**
+
+无论哪种情况内联 `script` 都会被注释代替，当内联 `script` 不存在 `scriptIgnore`，也不存在 `moduleScriptIgnore` 时：
+
+- 通过 `getInlineCode` 提取 `script` 中的脚本内容
+- 遍历每一行查看是否为空或已单行注释得到 `isPureCommentBlock`
+- 如果是有效的内联 `script` 和上面外链 `script` 一样添加到 `scripts`
+
+> 这里 `wujie` 没有考虑多行注释啊
