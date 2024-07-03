@@ -644,7 +644,7 @@
 > - `qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径
 > - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
 > - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
-> - `wujie` 不需要配置 `__webpack_public_path__`，默认是子应用入口 `url` 为 `baseurl`
+> - `wujie` 不需要配置 `__webpack_public_path__`，通过 `defaultGetPublicPath` 计算子应用入口 `url` 为 `baseurl`
 
 #### `processTpl` 提取资源
 
