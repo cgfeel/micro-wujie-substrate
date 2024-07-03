@@ -616,12 +616,10 @@
 - 通过 `getEffectLoaders` 提取 `cssIgnores`：`css` 忽略列表
 - 通过 `defaultGetPublicPath` 将子应用的 `url` 和 `localhost.href` 计算出资源路径
 
-> 注 n：`assetPublicPath`
+> 注 n：`getEffectLoaders`
 >
-> - `qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径
-> - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
-> - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
-> - `wujie` 不需要配置 `__webpack_public_path__`，默认是子应用入口 `url` 为 `baseurl`
+> - 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
+> - 在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
 
 **2.获取资源：**
 
@@ -641,10 +639,12 @@
 - 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、`script`、`style`，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 - 最终返回资源对象，即上述最终返回的 `Promise<htmlParseResult>`
 
-> 注 n：`getEffectLoaders`
+> 注 n：`assetPublicPath`
 >
-> - 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
-> - 在 `micro-app` 中有个 `flatChildren` 方法，和 `getEffectLoaders` 的用处是一样的，见 `micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
+> - `qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径
+> - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
+> - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
+> - `wujie` 不需要配置 `__webpack_public_path__`，默认是子应用入口 `url` 为 `baseurl`
 
 #### `processTpl` 提取资源
 
