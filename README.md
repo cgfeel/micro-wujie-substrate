@@ -297,9 +297,15 @@
 
 流程分 3 步：
 
-- 将拿到的配置信息激活子应用：`sandbox.active`，详细见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
-- 预加载但是没有执行的情况 `!sandbox.execFlag`，提取执行脚本重新 `start` 实例，注 ②
-- 将 `iframeWindow` 传递过去通知 `activated`，并返回注销应用的方法
+- 将拿到的配置信息激活子应用：`sandbox.active`，见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
+- 预加载但是没有执行的情况 `!sandbox.execFlag`，`importHTML` 请求资源后 `start` 子应用
+- 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
+
+`!sandbox.execFlag` 情况下 `start` 子应用分 3 步：
+
+- 调用生命周期中的 `beforeLoad`
+- 通过 `importHTML` 提取需要加载的 `script`，见：`importHTML` [[查看](#importhtml)]
+- 将提取的方法 `getExternalScripts` 传入应用 `sandbox.start`，执行启动
 
 ### `Wujie` 应用类
 
