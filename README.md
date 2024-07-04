@@ -518,9 +518,9 @@
 
 - `getExternalScripts`：返回一个要加载的 `script` 集合的函数
 
-返回一个 `Promise<void>`，但如果 `this.iframe` 被销毁的情况会直接返回不再处理：
+`start` 本身是一个返回 `Promise<void>` 异步函数：
 
-- `this.iframe` 只有在销毁应用 `destroy` 设为 `null`，见 `destroy`
+- 但如果 `this.iframe` 被销毁的情况会直接返回不再处理，`this.iframe` 只有在销毁应用 `destroy` 设为 `null`，见 `destroy`
 
 `start` 有 3 个地方调用：
 
