@@ -319,7 +319,7 @@
 
 这里先从 `active` 来看，按照 `startApp` 的流程顺序来
 
-#### 1. `active` 激活应用
+#### `active` 激活应用
 
 分 2 部分：
 
@@ -332,7 +332,7 @@
 2. 切换应用
 3. 应用初始化，包含：正常加载、预加载
 
-#### 1.1. 更新配置应用信息
+#### 1. 更新配置应用信息
 
 第一步：更新配置信息
 
@@ -364,7 +364,7 @@
 
 第四步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
-#### 1.2. `degrade` 主动降级渲染
+#### 2. `degrade` 主动降级渲染
 
 概述：
 
@@ -454,7 +454,7 @@
 - 无论哪种方式渲染，都将“新容器”的 `document` 作为当前实例的 `document`，方便下次切换应用 `active` 时直接使用。
 - 至此整个降级过程完成，直接返回不再执行下面流程
 
-#### 1.3. 挂载子应用
+#### 3. 挂载子应用
 
 第一步：挂载子应用到容器
 
@@ -512,7 +512,7 @@
 - `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
 - 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
 
-至此整个激活过程结束
+### `Wujie` 应用类
 
 ### `packages` - `wujie-react`
 
