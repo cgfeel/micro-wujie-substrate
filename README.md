@@ -512,7 +512,23 @@
 - `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
 - 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
 
-### `Wujie` 应用类
+#### `start` 启动应用
+
+参数：
+
+- `getExternalScripts`：返回一个要加载的 `script` 集合的函数
+
+返回一个 `Promise<void>`，但如果 `this.iframe` 被销毁的情况会直接返回不再处理：
+
+- `this.iframe` 只有在销毁应用 `destroy` 设为 `null`，见 `destroy`
+
+`start` 有 3 个地方调用：
+
+- `startApp` 切换一个 `alive` 模式的子应用时，子应用未启动
+- `startApp` 创建一个应用实例后
+- `preloadApp` 预加载应用配置 `exec` 预执行
+
+> 执行 `start` 启动应用前必须先 `active` 激活应用
 
 ### `packages` - `wujie-react`
 
