@@ -319,7 +319,7 @@
 
 这里先从 `active` 来看，按照 `startApp` 的流程顺序来
 
-#### `active` 激活应用
+#### 📝 `active` 激活应用
 
 分 2 部分：
 
@@ -519,7 +519,7 @@
 - `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
 - 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
 
-#### `start` 启动应用
+#### 📝 `start` 启动应用
 
 参数：
 
