@@ -537,6 +537,57 @@
 
 > 执行 `start` 启动应用前必须先 `active` 激活应用
 
+#### 1. 收集队列
+
+整个 `start` 的流程就是对 `this.execQueue` 队列的收集和提取并执行：
+
+- 在队列中 `push` 的下标都是一个同步的执行函数，执行队列通过 `shift` 实现先入先出
+- 在队列下标的每个函数中存在微任务，微任务执行顺序先看所在队列执行的前后
+
+**`this.execQueue.push` 共计 7 处：**
+
+- `beforeScriptResultList`：插入代码前
+- `syncScriptResultList` + `deferScriptResultList`：同步代码
+- `this.mount`：框架主动调用 `mount` 方法
+- `domContentLoadedTrigger`：触发 `DOMContentLoaded` 事件
+- `afterScriptResultList`：插入代码后
+- `domLoadedTrigger`：触发 `loaded` 事件
+- 返回 `promise`：所有的 `execQueue` 队列执行完毕，`start` 才算结束，保证串行的执行子应用
+
+**有 1 处存在即执行：**
+
+- `asyncScriptResultList`：异步代码
+
+> 以上说明来自备注整理，可以直接复制搜索位置；如果以上总结还没看明白没关系，往下继续看就明白了
+
+**必须会添加到队列有 4 处：**
+
+- `this.mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回 `promise`
+
+**根据集合添加到队列：**
+
+- `beforeScriptResultList`：见 `js-before-loaders` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
+- `afterScriptResultList`：见 `js-after-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-after-loader)]
+- `syncScriptResultList` + `deferScriptResultList`：根据参数 `getExternalScripts` 提取子应用的 `script`
+
+> `beforeScriptResultList` 和 `afterScriptResultList` 下标类型文档介绍有限，建议查看源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)]
+
+**提取子应用的 `script`：**
+
+通过 `getExternalScripts` 得到 `scriptResultList`，详细见：`importHTML` [[查看](#importhtml)]
+
+声明 3 个集合：
+
+- `syncScriptResultList`：同步代码
+- `asyncScriptResultList`：`async` 代码无需保证顺序，所以不用放入执行队列
+- `deferScriptResultList`：`defer` 代码需要保证顺序并且 `DOMContentLoaded` 前完成，这里统一放置同步脚本后执行
+
+遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
+
+#### 2. 执行队列
+
+- test
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
