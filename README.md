@@ -542,7 +542,8 @@
 整个 `start` 的流程就是对 `this.execQueue` 队列的收集和提取并执行：
 
 - 在队列中 `push` 的下标都是同步的执行函数，执行队列通过 `shift` 实现先入先出
-- 在队列下标的每个函数中有可能存在宏任务，宏任务执行顺序先看所在执行的队列前后顺序
+- 在队列下标的每个函数中有可能存在微任务和宏任务，但执行顺序看所在执行的队列前后顺序
+- 因为每个队列的执行都是在上一个队列调用过程中的提取
 
 **`this.execQueue.push` 共计 7 处：**
 
@@ -564,7 +565,7 @@
 
 - `this.mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回 `promise`
 
-**根据集合添加到队列：**
+**根据集合添加到队列有 3 处：**
 
 - `beforeScriptResultList`：见 `js-before-loaders` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
 - `afterScriptResultList`：见 `js-after-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-after-loader)]
@@ -584,54 +585,95 @@
 
 遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
+**遍历的集合下标是 `promise` 有 2 处：**
+
+- 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
+- 共同点：集合中的每一项都是 `promise`、需要在微任务中
+
 #### 2. 执行队列
 
 无论怎么添加，最终都是通过 `this.execQueue.shift()()` 从头部弹出插入队列的函数并执行
 
-- 主动发起只有 1 处 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，所有队列的执行是从 334 行开始的
+开始执行：
 
-循环插入队列共有 4 处：
+- 执行队列从 334 行开始 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，按照上下文主动提取并发起执行
+- `asyncScriptResultList`：异步代码不加入队列，会以 `promise` 微任务的形式在当前上下文执行完毕后依次执行
 
-- 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`asyncScriptResultList`、`afterScriptResultList`
+循环插入队列共有 3 处：
+
+- 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`afterScriptResultList`
 - 执行的通过 `insertScriptToIframe` 将 `window.__WUJIE.execQueue.shift()()` 注入容器
 - 这样每 `push` 一个队列，会在容器中 `shift`，实现每次执行队列后都会顺利调用下一个队列
 
-主动插入队列有 3 处：
+同步代码 `syncScriptResultList` + `deferScriptResultList`：
 
-- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`
+- 每个队列都是一个 `promise` 微任务，如果 `asyncScriptResultList` 存在，会将子集的微任务添加到异步代码所有微任务后面
+- 然后等待上下文执行结束之后依次执行每一个微任务
+
+> 无论是同步代码还是异步代码，在 `fiber` 情况下每个微任务执行过程中都会添加一个宏任务，其顺序和微任务添加和执行顺序一致
+
+主动插入队列有 4 处：
+
+- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回的 `Promise` 实例函数中
 - 这种情况会在执函数末尾添加 `this.execQueue.shift()?.();` 以便执行下一个队列
 
 如果 `fiber` 为 `true`（默认）：
 
 - 循环插入队列：会在空闲时间 `requestIdleCallback` 执行 `insertScriptToIframe`
 - 主动插入队列：会在空闲时间 `requestIdleCallback` 执行队列中的函数
+- 由于 `requestIdleCallback` 是一个宏图任务，会在当前所有的 `promise` 微任务执行后依次执行
 
 > 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
 
-最终返回 `Promise` 1 处：
+通过返回的 `Promise` 添加到末尾的队列：
 
-- 执行 `resolve` 再次调用 `this.execQueue.shift()?.();`
+- 只做一件事：执行 `resolve`，以便通知外部 `start` 完成
 
 #### 3. 队列执行顺序
 
-整个队列只有 1 处微任务：
+队列 3 处微任务：
 
-- 返回的 `promise`：在 `start` 内部会同步执行 `Promise` 对象提供的方法，在队列末尾添加一个执行方法
-- 这个 `promise` 用于对外确保 `start` 完毕
-- 而 `start` 内部依旧按照 `this.execQueue.shift` 一个接一个执行
+- `syncScriptResultList` + `deferScriptResultList`：同步代码，如果存在的情况
+- `asyncScriptResultList`：异步代码，如果存在的情况
+- 返回的 `promise` 对象
 
-无论 `this.fiber` 的值与否都是按照上下文顺序执行：
+> 返回的 `promise` 对象用于 `start` 外部通知执行完毕，在 `start` 内部 `promise` 的函数是同步的，队列的执行需要通过上下文调用 `this.execQueue.shift`
 
-- 即便开启 `fiber` 状态下，每次都将调用的函数通过 `requestIdleCallback` 将其放入下一个宏任务中执行
-- 但是要执行下一个队列 `this.execQueue.shift`，就一定要在上一个队列执行方法中触发
+`fiber` 开启的情况下有 7 处宏任务：
+
+- 除了通过返回的 `promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
+- 其中 `syncScriptResultList` + `deferScriptResultList` 和 `asyncScriptResultList` 会在微任务中添加宏任务
+
+无论 `this.fiber` 的值与否都是按照队列的顺序执行：
+
+- 即便开启 `fiber` 状态下，每次都将调用的函数通过 `requestIdleCallback` 将其放入一个宏任务中执行
+- 但是要执行下一个队列，就一定要在上一个宏任务中提取 `this.execQueue.shift` 并执行
 
 不同的是：
 
 - 开启 `fiber` 会将执行方法包裹在 `requestIdleCallback`，在浏览器空闲时交给下一个宏任务执行
 
-小结：
+`fiber` 模式下执行顺序：
 
-- 不管微任务的 `promise` 还是宏任务的 `requestIdleCallback`，最终执行的顺序都按照 `this.execQueue` 队列顺序先入先出
+1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 n (`asyncScriptResultList`)
+2. 334 行开始执行第一个队列 `this.execQueue.shift()()`
+3. 执行 `beforeScriptResultList` 宏任务集合，如果存在的话
+4. 执行 `syncScriptResultList` + `deferScriptResultList` 微任务集合，如果存在的话
+5. 依次执行 `mount`、`domContentLoadedTrigger`
+6. 执行 `afterScriptResultList` 微任务集合，如果存在的话
+7. 执行 `domLoadedTrigger`
+8. 执行返回的 `promise` 对象中添加的末尾的队列
+
+> 注 n：`asyncScriptResultList` 执行顺序如下
+>
+> - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
+> - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
+> - 如果以上都不存在，会在 `mount` 之后执行，因为微任务需要在上下文结束后执行
+> - 同理在 `mount` 之后会继续执行 `domContentLoadedTrigger`
+> - 如果 `afterScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
+> - 如果以上都不存在，会在 `domLoadedTrigger` 之后执行，因为微任务需要在上下文结束后执行
+
+除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
 ### `packages` - `wujie-react`
 
