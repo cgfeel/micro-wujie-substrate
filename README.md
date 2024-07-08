@@ -635,8 +635,8 @@
 
 队列有 3 处微任务：
 
-- `syncScriptResultList` + `deferScriptResultList`：同步代码，如果存在的情况
-- `asyncScriptResultList`：异步代码，如果存在的情况
+- `syncScriptResultList` + `deferScriptResultList`：同步代码
+- `asyncScriptResultList`：异步代码
 - 返回的 `promise` 对象
 
 > 返回的 `promise` 对象用于 `start` 外部通知执行完毕，在 `start` 内部 `promise` 的函数是同步的，队列的执行需要通过上下文调用 `this.execQueue.shift`
