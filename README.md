@@ -589,6 +589,7 @@
 
 - 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
 - 共同点：集合中的每一项都是 `promise`、需要在微任务中
+- 不同点：`syncScriptResultList` 需要等待队列提取执行，`asyncScriptResultList` 不需要
 
 #### 2. 执行队列
 
