@@ -623,7 +623,7 @@
 
 - 循环插入队列：会在空闲时间 `requestIdleCallback` 执行 `insertScriptToIframe`
 - 主动插入队列：会在空闲时间 `requestIdleCallback` 执行队列中的函数
-- 由于 `requestIdleCallback` 是一个宏图任务，会在当前所有的 `promise` 微任务执行后依次执行
+- 由于执行队列需要先提取队列，所以无论是宏任务还是微任务，都会是在任务方法执行过程中提取下一个队列再执行
 
 > 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
 
