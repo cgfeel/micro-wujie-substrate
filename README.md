@@ -586,7 +586,52 @@
 
 #### 2. 执行队列
 
-- test
+无论怎么添加，最终都是通过 `this.execQueue.shift()()` 从头部弹出插入队列的函数并执行
+
+- 主动发起只有 1 处 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，所有队列的执行是从 334 行开始的
+
+循环插入队列共有 4 处：
+
+- 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`asyncScriptResultList`、`afterScriptResultList`
+- 执行的通过 `insertScriptToIframe` 将 `window.__WUJIE.execQueue.shift()()` 注入容器
+- 这样每 `push` 一个队列，会在容器中 `shift`，实现每次执行队列后都会顺利调用下一个队列
+
+主动插入队列有 3 处：
+
+- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`
+- 这种情况会在执函数末尾添加 `this.execQueue.shift()?.();` 以便执行下一个队列
+
+如果 `fiber` 为 `true`（默认）：
+
+- 循环插入队列：会在空闲时间 `requestIdleCallback` 执行 `insertScriptToIframe`
+- 主动插入队列：会在空闲时间 `requestIdleCallback` 执行队列中的函数
+
+> 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
+
+最终返回 `Promise` 1 处：
+
+- 执行 `resolve` 再次调用 `this.execQueue.shift()?.();`
+
+#### 3. 队列执行顺序
+
+整个队列只有 1 处微任务：
+
+- 返回的 `promise`：在 `start` 内部会同步执行 `Promise` 对象提供的方法，在队列末尾添加一个执行方法
+- 这个 `promise` 用于对外确保 `start` 完毕
+- 而 `start` 内部依旧按照 `this.execQueue.shift` 一个接一个执行
+
+无论 `this.fiber` 的值与否都是按照上下文顺序执行：
+
+- 即便开启 `fiber` 状态下，每次都将调用的函数通过 `requestIdleCallback` 将其放入下一个宏任务中执行
+- 但是要执行下一个队列 `this.execQueue.shift`，就一定要在上一个队列执行方法中触发
+
+不同的是：
+
+- 开启 `fiber` 会将执行方法包裹在 `requestIdleCallback`，在浏览器空闲时交给下一个宏任务执行
+
+小结：
+
+- 不管微任务的 `promise` 还是宏任务的 `requestIdleCallback`，最终执行的顺序都按照 `this.execQueue` 队列顺序先入先出
 
 ### `packages` - `wujie-react`
 
