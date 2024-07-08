@@ -653,18 +653,18 @@
 
 - 开启 `fiber` 会将执行方法包裹在 `requestIdleCallback`，在浏览器空闲时交给下一个宏任务执行
 
-`fiber` 模式下执行顺序：
+执行顺序：
 
 1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 n (`asyncScriptResultList`)
 2. 334 行开始执行第一个队列 `this.execQueue.shift()()`
-3. 执行 `beforeScriptResultList` 宏任务集合，如果存在的话
-4. 执行 `syncScriptResultList` + `deferScriptResultList` 微任务集合，如果存在的话
+3. 执行 `beforeScriptResultList`，如果存在的话
+4. 执行 `syncScriptResultList` + `deferScriptResultList`，如果存在的话
 5. 依次执行 `mount`、`domContentLoadedTrigger`
-6. 执行 `afterScriptResultList` 微任务集合，如果存在的话
+6. 执行 `afterScriptResultList`，如果存在的话
 7. 执行 `domLoadedTrigger`
 8. 执行返回的 `promise` 对象中添加的末尾的队列
 
-> 注 n：`asyncScriptResultList` 执行顺序如下
+> 注 n：`fiber` 模式下 `asyncScriptResultList` 执行顺序如下
 >
 > - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
@@ -672,6 +672,8 @@
 > - 同理在 `mount` 之后会继续执行 `domContentLoadedTrigger`
 > - 如果 `afterScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果以上都不存在，会在 `domLoadedTrigger` 之后执行，因为微任务需要在上下文结束后执行
+>
+> 非 `fiber` 模式下 `asyncScriptResultList` 将在最后执行，因为上下文优先于微任务前执行
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
