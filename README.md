@@ -675,7 +675,10 @@
 > - 如果 `afterScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果以上都不存在，会在 `domLoadedTrigger` 之后执行，因为微任务需要在上下文结束后执行
 >
-> 非 `fiber` 模式下 `asyncScriptResultList` 将在最后执行，因为上下文优先于微任务前执行
+> 非 `fiber` 模式下 `asyncScriptResultList` 有 2 种情况：
+>
+> - `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行
+> - 否则最后执行，因为上下文优先于微任务前执行
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
