@@ -633,7 +633,7 @@
 
 #### 3. 队列执行顺序
 
-队列 3 处微任务：
+队列有 3 处微任务：
 
 - `syncScriptResultList` + `deferScriptResultList`：同步代码，如果存在的情况
 - `asyncScriptResultList`：异步代码，如果存在的情况
