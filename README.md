@@ -682,6 +682,16 @@
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
+#### 4. 队列前的准备
+
+因为相对重要性比较小且内容不多，所以放到最后：
+
+- `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示已经启动应用了
+- `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
+- `scriptResultList` 提取要执行的 `script`
+- `iframeWindow` 提取沙箱的 `window`
+- 为子应用注入全局对象：`__POWERED_BY_WUJIE__`
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
