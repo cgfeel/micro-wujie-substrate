@@ -561,6 +561,8 @@
 
 > 以上说明来自备注整理，可以直接复制搜索位置；如果以上总结还没看明白没关系，往下继续看就明白了
 
+总共 8 处，然后根据用途还可以细分如下
+
 **必须会添加到队列有 4 处：**
 
 - `this.mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回 `promise`
