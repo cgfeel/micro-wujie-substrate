@@ -610,9 +610,9 @@
 
 同步代码 `syncScriptResultList` + `deferScriptResultList`：
 
-- 每个队列都是一个 `promise` 微任务，在微任务中根据 `fiber` 决定立即执行还是空闲执行
+- 每个队列都是一个 `promise` 微任务，在微任务中根据 `fiber` 决定立即执行还是通过 `requestIdleCallback` 空闲执行
 
-> 无论是同步代码还是异步代码，在 `fiber` 情况下每个微任务执行过程中都会添加一个宏任务，其顺序依旧是按照队列，提取一次执行一次
+> 无论是同步代码还是异步代码，在 `fiber` 情况下每个微任务执行过程中都会添加一个宏任务 `requestIdleCallback`，其顺序依旧是按照队列，提取一次执行一次
 
 主动插入队列有 4 处：
 
