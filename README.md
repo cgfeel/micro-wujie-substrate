@@ -573,7 +573,7 @@
 - `afterScriptResultList`：见 `js-after-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-after-loader)]
 - `syncScriptResultList` + `deferScriptResultList`：根据参数 `getExternalScripts` 提取子应用的 `script`
 
-> `beforeScriptResultList` 和 `afterScriptResultList` 下标类型文档介绍有限，建议查看源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)]
+> `beforeScriptResultList` 和 `afterScriptResultList` 下标类型文档介绍有限，建议查看源码 `TS` 类型 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)]
 
 **提取子应用的 `script`：**
 
@@ -590,8 +590,8 @@
 **遍历的集合下标是 `promise` 有 2 处：**
 
 - 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
-- 共同点：集合中的每一项都是 `promise`、需要在微任务中
-- 不同点：`syncScriptResultList` 需要等待队列提取执行，`asyncScriptResultList` 不需要
+- 共同点：集合中的每一项函数执行并返回 `promise`、需要在微任务中执行 `insertScriptToIframe`，见：
+- 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
 #### 2. 执行队列
 
