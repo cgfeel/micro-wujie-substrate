@@ -617,7 +617,7 @@
 主动插入队列有 4 处：
 
 - `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回的 `Promise` 实例函数中
-- 这种情况会在执函数末尾添加 `this.execQueue.shift()?.();` 以便执行下一个队列
+- 这种情况会在执函数末尾添加 `this.execQueue.shift()?.();` 执行一次提取一次
 
 如果 `fiber` 为 `true`（默认）：
 
