@@ -622,7 +622,7 @@
 如果 `fiber` 为 `true`（默认）：
 
 - 循环插入队列：会在空闲时间 `requestIdleCallback` 执行 `insertScriptToIframe`
-- 主动插入队列：会在空闲时间 `requestIdleCallback` 执行队列中的函数
+- 主动插入队列：会在空闲时间 `requestIdleCallback` 执行指定的函数
 - 由于执行队列需要先提取队列，所以无论是宏任务还是微任务，都会是在任务方法执行过程中提取下一个队列再执行
 
 > 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
