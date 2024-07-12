@@ -670,16 +670,49 @@
 >
 > - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
-> - 如果以上都不存在，会在 `mount` 之前执行，因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 这个宏任务中，而 `mount` 又是必须插入队列的方法，所以要执行 `mount` 之后的方法，一定要先执行 `mount` 外的宏任务，要执行宏任务一定要先执行当前任务中的微任务
+> - 如果以上都不存在，会在 `mount` 之前执行
+>   - 因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 这个宏任务中
+>   - 而 `mount` 是必须插入队列的方法，所以要执行 `mount` 方法以及后续队列，一定要先执行 `mount` 外的宏任务
+>   - 要执行宏任务一定要先执行 `asyncScriptResultList` 微任务集合
 >
-> 非 `fiber` 模式下 `asyncScriptResultList` 有 2 种情况：
+> 非 `fiber` 模式下，不存在同步代码，但通过循环的队列集合中，存在带有 `src` 的 `script`：
 >
-> - `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行
-> - 否则会在返回的 `Promise` 中执行最后一个队列后再执 ``，因为上下文优先于微任务前执行
+> - 虽然宏任务 `requestIdleCallback` 不存在
+> - 但带有 `src` 的 `script` 会通过 `onload` 去调用 `window.__WUJIE.execQueue.shift()()`
+> - `onload` 也是宏任务，会在当前宏任务下微任务结束后开始执行
+>
+> 非 `fiber` 模式下，存在同步代码：
+>
+> - 会在 `syncScriptResultList` + `deferScriptResultList` 集合的微任务之前执行
+>
+> 非 `fiber` 模式下，不存在同步代码，不存在脚本集合循环队列，或循环队列的脚本没有 `src`：
+>
+> - 会在 `start` 之后执行，但是这里存在一个 `bug`，见：4
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
-#### 4. 队列前的准备
+#### 4. `start` 启动应用的 `bug`：
+
+存在于 `start` 返回的 `Promise` 添加到队列末尾的任务，先说问题：
+
+- 如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
+- 也会导致 `startApp` 这个微任务永远停留在 `start`，不会返回 `destory`
+
+因为：
+
+- `this.execQueue.shift()()` 优先返回的 `promise` 执行
+- 如果没有微任务和宏任务，那么当最后一个 `this.execQueue.shift()()` 执行完才将最后一个队列插入 `execQueue`
+
+问题的场景包括：
+
+- 没有 `fiber`、不存在同步代码、没有通过循环插入的队列
+- 没有 `fiber`、不存在同步代码、通过循环插入的队列的 `script` 没有 `src`
+
+以下情况都会正常返回：
+
+- `fiber`：因为要执行下一个队列就要设置
+
+#### 5. 队列前的准备
 
 因为相对重要性比较小且内容不多，所以放到最后：
 
