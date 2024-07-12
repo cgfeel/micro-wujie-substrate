@@ -670,15 +670,12 @@
 >
 > - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
-> - 如果以上都不存在，会在 `mount` 之后执行，因为微任务需要在上下文结束后执行
-> - 同理在 `mount` 之后会继续执行 `domContentLoadedTrigger`
-> - 如果 `afterScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
-> - 如果以上都不存在，会在 `domLoadedTrigger` 之后执行，因为微任务需要在上下文结束后执行
+> - 如果以上都不存在，会在 `mount` 之前执行，因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 这个宏任务中，而 `mount` 又是必须插入队列的方法，所以要执行 `mount` 之后的方法，一定要先执行 `mount` 外的宏任务，要执行宏任务一定要先执行当前任务中的微任务
 >
 > 非 `fiber` 模式下 `asyncScriptResultList` 有 2 种情况：
 >
 > - `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行
-> - 否则最后执行，因为上下文优先于微任务前执行
+> - 否则会在返回的 `Promise` 中执行最后一个队列后再执 ``，因为上下文优先于微任务前执行
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
