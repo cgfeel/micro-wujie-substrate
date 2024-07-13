@@ -698,7 +698,7 @@
 | 对比项   | `wujie`                                                        | `micro-app`                                                 |
 | -------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
 | 添加队列 | 根据不同类型，手动添加每一组队列                               | `injectFiberTask`                                           |
-| 队列集合 | `execQueue`                                                    | `fiberLinkTasks`                                            |
+| 集合对象 | `execQueue`                                                    | `fiberLinkTasks`                                            |
 | 添加方式 | `push`                                                         | `push`                                                      |
 | 执行方式 | `this.execQueue.shift()?.()`，由上一个队列提取下一个队列并执行 | `serialExecFiberTasks`，通过 `array.redus` 拍平队列依次执行 |
 | 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行            | `injectFiberTask`，提供的 `fiberTasks` 为 `null`            |
