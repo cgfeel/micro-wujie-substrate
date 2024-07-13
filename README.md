@@ -696,21 +696,65 @@
 存在于 `start` 返回的 `Promise` 添加到队列末尾的任务，先说问题：
 
 - 如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
-- 也会导致 `startApp` 这个微任务永远停留在 `start`，不会返回 `destory`
+- 也会暂停执行 `await sandbox.start()` 的微任务不再继续执行
 
 因为：
 
 - `this.execQueue.shift()()` 优先返回的 `promise` 执行
 - 如果没有微任务和宏任务，那么当最后一个 `this.execQueue.shift()()` 执行完才将最后一个队列插入 `execQueue`
+- 而最后的 `promise` 需要在 `execQueue` 队列的方法中执行 `resove`，而这是永远不会执行的
+
+导致的问题：
+
+- `preloadApp` 预加载：影响程度几乎等于 0，预加载在方法最后执行 `start`，最后一个队列执行或不执行都不影响
+- `startApp` 创建应用实例：不会返回 `destroy` 方法
+- `startApp` 切换 `alive` 模式的子应用：不会执行生命周期中 `activated` 方法，不会返回 `destroy` 方法
 
 问题的场景包括：
 
-- 没有 `fiber`、不存在同步代码、没有通过循环插入的队列
-- 没有 `fiber`、不存在同步代码、通过循环插入的队列的 `script` 没有 `src`
+- 非 `fiber` 模式，只有主动插入 `execQueue` 的 4 个方法，见：1. 收集队列 [[查看](#1-收集队列)]
+- 非 `fiber` 模式，不存在同步代码、通过循环插入的队列的 `script` 没有 `src`
 
-以下情况都会正常返回：
+`fiber` 模式都会正常执行：
 
-- `fiber`：因为要执行下一个队列就要设置
+- 默认的模式，要执行下一个队列就要通过宏任务 `requestIdleCallback`
+- 返回的 `promise` 函数内部在当前任务属于上下文，优先于下一个宏任务添加到队列
+
+非 `fiber` 模式同步代码 `syncScriptResultList` + `deferScriptResultList` 会正常执行：
+
+- 因为同步代码是通过一个个微任务执行，通过 `then` 添加的微任务会在当前宏任务的上下文之后执行
+- 返回的 `promise` 函数内部在当前任务属于上下文，优先于微任务添加到队列
+
+非 `fiber` 模式，通过循环插入队列加载的 `script` 带有 `src` 属性：
+
+- 因为 `window.__WUJIE.execQueue.shift()()` 是通过 `script` 的 `onload` 执行
+- `onload` 是一个宏任务，会在当前宏任务执行完毕之后再执行
+
+复现问题：
+
+- `static-app`：创建一个没有 `script`，没有 `style` 的静态子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
+- 添加一个 `StaticPage.tsx` 页面组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/StaticPage.tsx)]，关闭 `fiber`，不添加 `js-before-loaders`、`js-after-loader`
+- 应用组件 `Wujie.tsx`：添加 `startApp` 返回的函数 `destroy` 并打印 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]
+
+复现结果：
+
+- 点开 `static` 应用，打开调试面板，刷新页面什么都没返回
+- 点开 `react` 应用，返回 `destroy` 方法
+
+修复问题：
+
+- 在 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第一个执行队列入口 `this.execQueue.shift()();` 之前主动添加一个微任务
+- 这样确保最后一个队列提取一定是在微任务下执行，而当前上下文一定会在最后一个微任务之前插入队列
+- 这样确保了队列最后能够顺利 `resolve`
+
+```
+this.execQueue.push(() => Promise.resolve().then(
+  () => this.execQueue.shift()?.()
+));
+this.execQueue.shift()();
+```
+
+> 由于目前还在研究阶段，没有对官方提 PR
 
 #### 5. 队列前的准备
 
