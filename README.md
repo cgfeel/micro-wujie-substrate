@@ -700,7 +700,7 @@
 
 因为：
 
-- `this.execQueue.shift()()` 优先返回的 `promise` 执行
+- `this.execQueue.shift()()` 优先于返回的 `promise` 函数执行，他们是上下文关系
 - 如果没有微任务和宏任务，那么当最后一个 `this.execQueue.shift()()` 执行完才将最后一个队列插入 `execQueue`
 - 而最后的 `promise` 需要在 `execQueue` 队列的方法中执行 `resove`，而这是永远不会执行的
 
