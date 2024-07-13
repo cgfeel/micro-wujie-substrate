@@ -691,6 +691,20 @@
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
+**关于微任务队列：**
+
+在 `micro-app` 有一个 `injectFiberTask`，见 `micro-app` 源码分析中注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]，对比如下：
+
+| 对比项   | `wujie`                                                        | `micro-app`                                                 |
+| -------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
+| 添加队列 | 根据不同类型，手动添加每一组队列                               | `injectFiberTask`                                           |
+| 队列集合 | `execQueue`                                                    | `fiberLinkTasks`                                            |
+| 添加方式 | `push`                                                         | `push`                                                      |
+| 执行方式 | `this.execQueue.shift()?.()`，由上一个队列提取下一个队列并执行 | `serialExecFiberTasks`，通过 `array.redus` 拍平队列依次执行 |
+| 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行            | `injectFiberTask`，提供的 `fiberTasks` 为 `null`            |
+
+> 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
+
 #### 4. `start` 启动应用的 `bug`：
 
 存在于 `start` 返回的 `Promise` 添加到队列末尾的任务，先说问题：
@@ -754,17 +768,27 @@ this.execQueue.push(() => Promise.resolve().then(
 this.execQueue.shift()();
 ```
 
-> 由于目前还在研究阶段，没有对官方提 PR
+> 由于目前还在研究阶段，没有对官方提 PR。对于这个问题也通常不会遇到，首先 `wujie` 默认就是 `fiber` 运行，其次如果手动关掉的话，如果你的子应用是 `React`、`Vue` 这样的框架搭建，都存在需要提取页面资源并同步执行代码，而同步执行代码的过程就是通过微任务执行
 
 #### 5. 队列前的准备
 
-因为相对重要性比较小且内容不多，所以放到最后：
+因为重要性相对比较小且内容不多，所以放到最后：
 
-- `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示已经启动应用了
+- `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示是否启动应用
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
 - `scriptResultList` 提取要执行的 `script`
 - `iframeWindow` 提取沙箱的 `window`
 - 为子应用注入全局对象：`__POWERED_BY_WUJIE__`
+
+关闭加载状态：
+
+- 在第一次提取队列前会通过 `removeLoading` 关闭 `loading` 状态
+
+执行条件：
+
+- 没有提供 `__WUJIE_UNMOUNT` 的 `umd` 模式，或非 `umd` 模式
+
+> 这里
 
 ### `packages` - `wujie-react`
 
