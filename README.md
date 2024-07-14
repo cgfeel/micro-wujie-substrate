@@ -782,7 +782,7 @@ this.execQueue.shift()();
 
 关闭加载状态：
 
-- 在第一次提取队列前 `this.execQueue.shift()?.()` 会通过 `removeLoading` 关闭 `loading` 状态
+- 在第一次提取队列 `this.execQueue.shift()?.()` 之前，会通过 `removeLoading` 关闭 `loading` 状态
 
 > 在 `wujie` 中可以通过 `loading` 自定义一个加载元素，见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
@@ -790,7 +790,7 @@ this.execQueue.shift()();
 
 - 没有提供 `__WUJIE_UNMOUNT` 的 `umd` 模式，或非 `umd` 模式
 
-> 这里虽然提供了 `this.alive` 模式作为检测，但是同时也增加了 `this.iframe.contentWindow.__WUJIE_UNMOUNT` 判断，只要不是 `umd` 方式加载应用，都会执行关闭 `loading` 状态
+> 这里虽然提供了 `this.alive` 模式作为检测，但是同时也增加了 `!isFunction(this.iframe.contentWindow.__WUJIE_UNMOUNT)` 判断，只要不是 `umd` 方式卸载应用，都会执行关闭 `loading` 状态
 
 ### `packages` - `wujie-react`
 
