@@ -353,6 +353,8 @@
 - 在 `patchRenderEffect` 内部会通过 `rewriteAppendOrInsertChild` 重写相应的方法
 - 在 `rewriteAppendOrInsertChild` 中通过 `insertScriptToIframe` 在容器内插入脚本
 
+> 当然这个参数并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe`
+
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
 > 关于 `iframeReady`：
@@ -849,7 +851,9 @@ this.execQueue.shift()();
 
 罗列阅读过程中一些重要的方法
 
-#### `importHTML`
+#### `importHTML` 加载资源
+
+加载子应用资源、获取提取资源的方法
 
 目录：`entry.ts` - `importHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L200)]
 
