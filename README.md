@@ -451,6 +451,11 @@
 > - 劫持 `iframe` 中的 `html` 使其 `parentNode` 可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
 >
+> `patchRenderEffect` 为“新容器” 打补丁
+>
+> - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
+> - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+>
 > 补充说明：为什么在“新容器”创建 `html` 元素，直接注入 `template`
 >
 > - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
@@ -1111,3 +1116,14 @@ this.execQueue.shift()();
     content: code,
 }
 ```
+
+#### `insertScriptToIframe` 为沙箱插入 `script`
+
+向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
+
+目录：`iframe.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
+
+参数：
+
+- `scriptResult`：需要插入的 `script` 对象，类型：`ScriptObject | ScriptObjectLoader`
+- `iframeWindow`：沙箱的 `window`
