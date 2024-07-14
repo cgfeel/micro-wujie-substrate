@@ -344,7 +344,16 @@
 第一步：更新配置信息
 
 - 将 `props` 拿到的信息更新当前实例
-- 等待 `iframe` 初始化 `await this.iframeReady`
+
+其中 `this.replace` 需要说明下：
+
+- 来自：`startApp`、`setupApp`、`preloadApp` 配置 `replace`，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#replace)]
+- 用于替换已提取应用的 `script` 内容
+- 在激活应用时在分别在 `renderTemplateToIframe` 或 `renderTemplateToShadowRoot` 中调用 `patchRenderEffect` 为渲染的 `document` 打补丁
+- 在 `patchRenderEffect` 内部会通过 `rewriteAppendOrInsertChild` 重写相应的方法
+- 在 `rewriteAppendOrInsertChild` 中通过 `insertScriptToIframe` 在容器内插入脚本
+
+第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
 > 关于 `iframeReady`：
 >
@@ -357,19 +366,19 @@
 >
 > 在 `qiankun` 中有一个 `frameworkStartedDefer`，和 `iframeReady` 用途是一样的
 
-第二步：动态修改 `fetch`
+第三步：动态修改 `fetch`
 
 - 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)] 将 `url` 结合 `baseurl`
 - 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
 
-第三步：同步路由
+第四步：同步路由
 
 - `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
 - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
 
 > 如果子应用已启动，又是 `alive` 模式，切换应用重新激活不需要 `syncUrlToIframe`
 
-第四步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
+第五步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
 #### 2. `degrade` 主动降级渲染
 
