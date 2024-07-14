@@ -456,7 +456,7 @@
 > - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
 > - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
 >
-> 补充说明：为什么在“新容器”创建 `html` 元素，直接注入 `template`
+> 补充说明：为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template`
 >
 > - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
 > - 将 `html` 元素的 `head` 和 `body` 分别指向实例
@@ -1127,3 +1127,9 @@ this.execQueue.shift()();
 
 - `scriptResult`：需要插入的 `script` 对象，类型：`ScriptObject | ScriptObjectLoader`
 - `iframeWindow`：沙箱的 `window`
+- `rawElement`：子应用通过如：`insertBefore` 指定的第二个参考节点
+
+不需要返回，这个函数围绕两个对象展开：
+
+- `scriptResult`：插入沙箱 `iframe` 的 `script`
+- `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
