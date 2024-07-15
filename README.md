@@ -1039,7 +1039,7 @@ this.execQueue.shift()();
 - `moduleScriptIgnore`：`script` 作为被忽略的 `ES` 模块
   - 当浏览器支持 `ES` 模块而 `script` 标签带有 `nomodule` 属性
   - 或浏览器不支持 `ES` 模块并且当前 `script` 是 `module` 类型
-- `matchedScriptTypeMatch`：提取 `script` 的 `type`，不存在为 `null`
+- `matchedScriptTypeMatch`：提取 `script` 的 `type`，不存在为 `undefined`
 - `matchedScriptType`：`script` 的 `type` 值，不存在为 `null`
 
 分 3 个情况：
@@ -1056,7 +1056,7 @@ this.execQueue.shift()();
 
 - `matchedScriptEntry`：提取的 `script` 是带有 `entry` 的主入口
 - `matchedScriptSrcMatch`：提取的 `script` 是带有 `src` 属性
-- `matchedScriptSrc`：`script` 的 `src` 链接或 `null`
+- `matchedScriptSrc`：`script` 的 `src` 链接或 `undefined`
 
 以下情况会 `throw`：
 
@@ -1129,7 +1129,30 @@ this.execQueue.shift()();
 - `iframeWindow`：沙箱的 `window`
 - `rawElement`：子应用通过如：`insertBefore` 指定的第二个参考节点
 
-不需要返回，这个函数围绕两个对象展开：
+不需要返回，这个函数围绕 2 个对象展开：
 
 - `scriptResult`：插入沙箱 `iframe` 的 `script`
 - `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
+
+调用场景有 2 个：
+
+- `rewriteAppendOrInsertChild`：重写渲染容器对于 `script`节点的操作方法
+- `Wujie.start`：启动应用，详细见：`start` 启动应用 [[查看](#-start-启动应用)]
+
+> 重写渲染有 2 种情况，且都来自 `active` 激活应用，见：`active` 激活应用 [[查看](#-active-激活应用)]：
+>
+> - `degrade` 降级处理：优化 `iframe` 容器
+> - 非 `dagrade`：优化 `shadowDom` 容器
+>
+> 它们的目的只有全都满足以下 2 个条件才可以：
+>
+> - 重写 `node` 操作，详细见：注 n (`renderTemplateToIframe`) - `patchRenderEffect` 为“新容器” 打补丁
+> - 操作的节点元素为 `script`，让其添加到沙箱的 `iframe` 中
+
+**第一步：获取配置**
+
+将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置：
+
+- `src`：`script` 的 `url`，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`
+
+> 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
