@@ -1032,7 +1032,7 @@ this.execQueue.shift()();
 
 - `scriptIgnore`：提取带有 `ignore` 属性的 `script`
 - `isModuleScript`：判断是否是 `ES` 模块的 `script`
-- `isCrossOriginScript`：提取跨域行 `crossorigin` 为的 `script`
+- `isCrossOriginScript`：提取跨域行为 `crossorigin` 的 `script`
 - `crossOriginType`：跨端的类型的值
   - 这里只提取 `anonymous` 不发送凭据和 `use-credentials` 发送凭据 2 个类型
   - `crossorigin` 不存在默认为空字符
@@ -1085,7 +1085,7 @@ this.execQueue.shift()();
 }
 ```
 
-> 以上属性上述已说明， `parseTagAttributes` 会提取 `<script(.*)>` 标签所有属性作为字符串返回
+> 以上属性上述已说明， `parseTagAttributes` 会提取 `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为 `key`、`value` 的键值对象返回
 
 除此之外还会提取 `script` 中的 `async` 和 `defer` 属性，只有有一个属性存在，会在插入对象中添加如下属性
 
@@ -1151,8 +1151,31 @@ this.execQueue.shift()();
 
 **第一步：获取配置**
 
-将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置：
+将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`：
 
-- `src`：`script` 的 `url`，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`
+- `src`：`script` 的 `url`，可选类型：`string`
+- `module`：是否为 `ES` 模块，可选类型：`boolean`
+- `content`：`script` 的内容，可选类型：`string`
+- `crossorigin`：是否为跨域类型的 `script`，可选类型：`boolean`
+- `crossoriginType`：跨域类型，可选类型：`"" | "anonymous" | "use-credentials"`
+- `async`：是否为异步加载的 `script`，可选类型：`boolean`
+- `attrs`：`script` 带有 `=` 属性的键值对象
+- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，详细见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后调用
 
 > 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
+
+创建两个 `script` 对象：
+
+- `scriptElement`、`nextScriptElement`
+
+从沙箱对象中提取 3 个配置：
+
+- `replace`：替换 `script` 内容的函数，见：1. 更新配置应用信息 [[查看](#1-更新配置应用信息)]
+- `plugins`：提桶的 `plugins`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `proxyLocation`：根据引用入库链接提取的 `location` 对象
+
+通过 `getJsLoader` 提取要插入 `script` 最终的代码：
+
+- `getJsLoader` 是一个柯里化函数，接受两个参数：`plugins`、`replace`
+- 返回一个执行函数，函数接受 3 个参数：``
