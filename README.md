@@ -1039,8 +1039,8 @@ this.execQueue.shift()();
 - `moduleScriptIgnore`：`script` 作为被忽略的 `ES` 模块
   - 当浏览器支持 `ES` 模块而 `script` 标签带有 `nomodule` 属性
   - 或浏览器不支持 `ES` 模块并且当前 `script` 是 `module` 类型
-- `matchedScriptTypeMatch`：提取 `script` 的 `type`，不存在为 `undefined`
-- `matchedScriptType`：`script` 的 `type` 值，不存在为 `null`
+- `matchedScriptTypeMatch`：提取 `script` 的 `type`，不存在为 `null`
+- `matchedScriptType`：`script` 的 `type` 值，不存在为 `undefined`
 
 分 3 个情况：
 
