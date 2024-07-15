@@ -1178,4 +1178,57 @@ this.execQueue.shift()();
 通过 `getJsLoader` 提取要插入 `script` 最终的代码：
 
 - `getJsLoader` 是一个柯里化函数，接受两个参数：`plugins`、`replace`
-- 返回一个执行函数，函数接受 3 个参数：``
+- 返回一个执行函数，函数接受 3 个参数：
+  - `code` 替换前的 `script` 内容
+  - `src` 脚本 `url`
+  - `base`：子应用入口链接，包括 `protocol`、`host`、`pathname`
+- 返回的函数内部通过 `compose`，遍历 `plugins` 提取 `jsLoader` 作为参数，并将上面收到的 3 个参数传过去作为参数
+
+`compose` 也是一个柯里化函数：
+
+- 返回一个函数，接受上面提供的 3 个参数
+- 在函数内部通过 `array.redus` 将 `plugins` 拍平
+- 存在 `js-loader` 函数交由函数处理，否则将处理过的 `code` 交给下一个 `js-loader`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
+
+最终返回：
+
+- `js-loader` 过滤后的代码，如果 `js-loader` 没有提供，则将传入的 `code` 原封不动返回
+- 如果提取的是带有 `src` 的 `script`，脚本的 `code` 内容是空，且没有提供 `js-loader`，那么返回的是一个空字符
+
+从上面知道：
+
+- 上面的处理过程围绕 `js-loader` 展开，`js-loader` 只能作为过滤替换，不是加载资源的函数
+- `js-loader` 是通过柯里化延迟处理，在函数内部通过 `map` 过滤，通过 `redus` 拍平
+- 都是在同一个宏任务中进行，即便 `script` 只提供了 `src` 链接，也不可以通过 `fetch` 这样的方式用微任务获取脚本
+- 加载脚本在此之前通过 `importHTML` [[查看](#importhtml-加载资源)] 加载
+
+为 `scriptElement` 添加属性：
+
+- 将 `attrs` 提取排除和上述 `scriptResult` 提取的配置同名的属性添加到 `scriptElement`
+
+**第二步：配置 `script`**
+
+内联 `script`：
+
+- 在非降级 `degrade` 状态下并且不是 `es` 模块的情况下，将整个 `script` 内容包裹在一个函数模块里
+- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`，使用 `proxyLocation` 作为模块的 `location`
+
+提取内联 `script` 的 `src` 属性：
+
+- 但凡是个正规浏览器，通过 `Object.getOwnPropertyDescriptor` 拿 `script` 的 `src` 都是 `undefined`
+- 因为 `src` 属性是从 `HTMLScriptElement` 接口继承的，而不是直接定义在特定的 `scriptElement` 对象上，见演示 [[查看](https://codepen.io/levi0001/pen/abgvWQj)]
+
+> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样
+
+外联 `script`：
+
+- 设置 `src`，如果存在的话
+- 设置 `crossorigin`，如果存在的话
+
+`script` 补充操作：
+
+- 如果 `module` 成立，设置 `scriptElement` 为 `es` 模块，
+- 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
+- 设置 `nextScriptElement` 的脚本内容
+
+**第二步：插入 `script`**
