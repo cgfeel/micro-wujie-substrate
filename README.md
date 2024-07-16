@@ -1222,7 +1222,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `async`：是否为异步加载的 `script`，可选类型：`boolean`
 - `attrs`：`script` 带有 `=` 属性的键值对象
 - `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，详细见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
-- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后调用
+- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
 
 > 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
 
@@ -1292,9 +1292,44 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
 - 设置 `nextScriptElement` 的脚本内容，用于插入 `script` 完成后，调用下一个队列
 
-**第二步：插入 `script`**
+**第三步：声明监听方法并处理 `script`**
 
-添加 `script` 完成后要执行的函数：
+声明 `script` 完成后要执行的函数：
 
 - 将沙箱的 `iframe` 的 `head` 作为容器 `container`
-- 只要
+- 声明一个函数 `execNextScript`，只要 `async` 不存在就会将 `nextScriptElement` 添加到容器并执行
+- 声明一个 `afterExecScript`，用于在 `scriptElement` 添加到容器后执行，函数做 2 件事：
+  - 触发 `onload`：通过 `jsBeforeLoaders` 或 `jsAfterLoaders` 添加
+  - 触发 `execNextScript`：以便执行下一个队列 `window.__WUJIE.execQueue.shift()()`
+
+> 这里的逻辑是有问题的，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+检查错误：如果插入的 `script` 内容是 `html`
+
+- 通过 `error` 输出错误，调用 `execNextScript` 以便执行下个队列
+
+> 理论上说这里的逻辑在非 `fiber` 下是会有问题的，导致 `start` 启动应用中断，但由于捕获的情况本身就是错误的，那逻辑错误又如何呢？
+
+打标记：
+
+- 根据提供的 `script` 为插入的 `script` 打上标记 `WUJIE_SCRIPT_ID`，值是一个自增数字
+- 调用场景：`rewriteAppendOrInsertChild`，见注 n：`renderTemplateToIframe` - `patchRenderEffect`
+
+外联脚本执行后的处理：
+
+- 要求：`script` 带有 `src`，内容为空
+- 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
+
+**第四步：插入 `script`**
+
+- 在容器 `container` 中添加 `scriptElement`
+- 调用 `callback` 并将沙箱的 `iframeWindow` 作为参数
+- 提取并执行 `appendOrInsertElementHook`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
+- 对于内联 `script` 元素无法触发 `onload`，直接调用 `afterExecScript`
+
+**总结：**
+
+- `insertScriptToIframe`：用处是将 `script` 添加到沙箱 `iframe` 中
+- 包含：子应用的 `script`、启动应用是手动配置的、在应用中通过节点操作添加的
+- 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
+- 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
