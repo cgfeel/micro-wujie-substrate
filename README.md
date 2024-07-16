@@ -765,12 +765,12 @@
 - 同步代码是一个微任务集合，执行前返回的 `Promise` 函数内部已 `push` 最后一个任务
 - 由于同步代码没有 `async` 所以每个执行完毕都会调用下一个队列
 
-非 `fiber` 模式，通过循环插入队列加载的 `script` 带有 `src` 属性：
+非 `fiber` 模式遍历队列集合，`script` 带有 `src` 且 `content` 为空，不存在 `async` 可正常执行：
 
 - 因为 `window.__WUJIE.execQueue.shift()()` 是通过 `script` 的 `onload` 执行
 - `onload` 是一个宏任务，会在当前宏任务执行完毕之后再执行
 
-复现问题：
+复现问题 1：没有 `script`
 
 - `static-app`：创建一个没有 `script`，没有 `style` 的静态子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
 - 添加一个 `StaticPage.tsx` 页面组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/StaticPage.tsx)]，关闭 `fiber`，不添加 `js-before-loaders`、`js-after-loader`
@@ -781,7 +781,25 @@
 - 点开 `static` 应用，打开调试面板，刷新页面什么都没返回
 - 点开 `react` 应用，返回 `destroy` 方法
 
-修复问题：
+复现问题 2：存在 `async` 的 `script`
+
+- 原理和问题 1 一样，子应用中添加路由 `/async`，在页面中添加一段 `async` 属性的 `script` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/async/index.html)]
+- 在主应用中按照 `StaticPage.tsx` 添加相应的组件 `AsyncPage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/AsyncPage.tsx)]
+
+复现结果：
+
+- 和问题 1 一样
+
+复现问题 3：`jsBeforeLoaders` 打断应用加载
+
+- 复现前确保 `react` 应用正常，复制一份 `ReactPage.tsx` 作为 `BeforePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/BeforePage.tsx)]
+- 添加 `jsBeforeLoaders`：要求带有 `src` 和 `async`
+
+复现结果：
+
+- `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
+
+修复问题 1：
 
 - 在 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第一个执行队列入口 `this.execQueue.shift()();` 之前主动添加一个微任务
 - 这样确保最后一个队列提取一定是在微任务下执行，而当前上下文一定会在最后一个微任务之前插入队列
@@ -794,7 +812,11 @@ this.execQueue.push(() => Promise.resolve().then(
 this.execQueue.shift()();
 ```
 
-> 由于目前还在研究阶段，没有对官方提 PR。对于这个问题也通常不会遇到，首先 `wujie` 默认就是 `fiber` 运行，其次如果手动关掉的话，如果你的子应用是 `React`、`Vue` 这样的框架搭建，都存在需要提取页面资源并同步执行代码，而同步执行代码的过程就是通过微任务执行
+修复问题 2、问题 3：
+
+- 去掉 `script` 插入 `iframe` 后调用 `execNextScript` 中的 `async` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L761)]
+
+> 由于目前还在研究阶段，没有对官方提 PR。对于这个问题建议使用过程中谨慎关闭 `fiber`
 
 #### 5. 队列前的准备
 
