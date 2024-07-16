@@ -751,8 +751,8 @@
 
 追加问题：由于集合队列存在一个带有 `async` 的 `script` 会中断后续所有队列执行
 
-- 包含：模式 ③ `beforeScriptResultList`、模式 ④ `asyncScriptResultList`、模式 ⑤ `afterScriptResultList`
-- 从而有可能导致子应用启动失败，详细见问题复现中的演示
+- 模式 ③ `beforeScriptResultList`：导致 `mount` 等队列没有执行，可能造成应用无法挂载
+- 模式 ④ `afterScriptResultList`：`loaded` 事件不会执行
 
 `fiber` 模式都会正常执行：
 
