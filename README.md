@@ -750,8 +750,6 @@
 | 模式 ④：通过 `asyncScriptResultList` 异步插入队列的 `script`  | 提取子应用所有 `async` 的 `script`，所有 `script` 全部通过 `getExternalScripts` 已获取 `content`，但 `async` 仍旧存在 | 和模式 ③ 一样                                                                                                                                            |
 | 模式 ⑤：通过 `afterScriptResultList` 异步插入队列的 `script`  | 由启动前通过 `js-after-loader`配置，当集合中有一个队列带有 `async` 的 `script`                                        | 和模式 ③ 一样                                                                                                                                            |
 
-> 同步代码 `syncScriptResultList` + `deferScriptResultList` 不会产生问题，因为同步代码是一个微任务集合，执行前返回的 `Promise` 函数内部已 `push` 最后一对任务，由于同步代码没有 `async` 所以每个执行完毕都会调用下一个队列
-
 由于集合队列存在一个带有 `async` 的 `script` 会中断后续所有队列执行：
 
 - 包含：模式 ③ `beforeScriptResultList`、模式 ④ `asyncScriptResultList`、模式 ⑤ `afterScriptResultList`
@@ -764,8 +762,8 @@
 
 非 `fiber` 模式同步代码 `syncScriptResultList` + `deferScriptResultList` 会正常执行：
 
-- 因为同步代码是通过一个个微任务执行，通过 `then` 添加的微任务会在当前宏任务的上下文之后执行
-- 返回的 `promise` 函数内部在当前任务属于上下文，优先于微任务添加到队列
+- 同步代码是一个微任务集合，执行前返回的 `Promise` 函数内部已 `push` 最后一个任务
+- 由于同步代码没有 `async` 所以每个执行完毕都会调用下一个队列
 
 非 `fiber` 模式，通过循环插入队列加载的 `script` 带有 `src` 属性：
 
