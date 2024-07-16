@@ -742,14 +742,20 @@
 
 问题的场景全部都在非 `fiber` 模式，但情况稍微有点不同：
 
-| 模式                                                              | 触发前提                                                                                           | 问题原因                                                                                                                                                     |
-| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 模式 ①：没有要插入的 `script`                                     | 只有必须插入 `execQueue` 的 4 个方法                                                               | 按照上下文执行队列，最后一个 `this.execQueue.shift()?.()` 提取执行时，返回的 `Promise` 函数中还没有 `push` 添加通知已完成的队列                              |
-| 模式 ②：只有通过循环插入队列的内联 `script`                       | `script` 全部为内联元素没有 `src`                                                                  | 和模式 ① 一样                                                                                                                                                |
-| 模式 ③：通过 `beforeScriptResultList` 插入队列的异步 `script`     | 由启动前通过 `js-before-loaders`配置，除了内联 `script` 全部为带有 `async` 的外联 `script`         | 队列通知已完成的 `Promise` 已添加到队列，但在插入 `script` 到 `iframe` 中由于 `script` 是 `async`，不会执行 `nextScriptElement` 从而导致后续队列无法执行     |
-| 模式 ④：同步代码 `syncScriptResultList` + `deferScriptResultList` | 提取子应用所有非 `async` 的 `script`，所有 `script` 全部通过 `getExternalScripts` 已获取 `content` | 队列通知已完成的 `Promise` 已添加到队列，但由于队列执行方法不存在微任务，在最后一个队列执行完成后，返回的 `Promise` 函数中还没有 `push` 添加通知已完成的队列 |
-| 模式 ⑤：通过 `asyncScriptResultList` 异步插入队列的 `script`      | 提取子应用所有 `async` 的 `script`，所有 `script` 全部通过 `getExternalScripts` 已获取 `content`   | 和模式 ④ 一样                                                                                                                                                |
-| 模式 ⑥：通过 `afterScriptResultList` 异步插入队列的 `script`      | 由启动前通过 `js-after-loader`配置，除了内联 `script` 全部为带有 `async` 的外联 `script`           | 和模式 ③ 一样                                                                                                                                                |
+| 模式                                                          | 触发前提                                                                                                              | 问题原因                                                                                                                                                 |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 模式 ①：没有要插入的 `script`                                 | 只有必须插入 `execQueue` 的 4 个方法                                                                                  | 按照上下文执行队列，最后一个 `this.execQueue.shift()?.()` 提取执行时，返回的 `Promise` 函数中还没有 `push` 添加通知已完成的队列                          |
+| 模式 ②：只有通过循环插入队列的内联 `script`                   | `script` 全部为内联元素没有 `src`                                                                                     | 和模式 ① 一样                                                                                                                                            |
+| 模式 ③：通过 `beforeScriptResultList` 插入队列的异步 `script` | 由启动前通过 `js-before-loaders`配置，当集合中有一个队列带有 `async` 的 `script`                                      | 队列通知已完成的 `Promise` 已添加到队列，但在插入 `script` 到 `iframe` 中由于 `script` 是 `async`，不会执行 `nextScriptElement` 从而导致后续队列无法执行 |
+| 模式 ④：通过 `asyncScriptResultList` 异步插入队列的 `script`  | 提取子应用所有 `async` 的 `script`，所有 `script` 全部通过 `getExternalScripts` 已获取 `content`，但 `async` 仍旧存在 | 和模式 ③ 一样                                                                                                                                            |
+| 模式 ⑤：通过 `afterScriptResultList` 异步插入队列的 `script`  | 由启动前通过 `js-after-loader`配置，当集合中有一个队列带有 `async` 的 `script`                                        | 和模式 ③ 一样                                                                                                                                            |
+
+> 同步代码 `syncScriptResultList` + `deferScriptResultList` 不会产生问题，因为同步代码是一个微任务集合，执行前返回的 `Promise` 函数内部已 `push` 最后一对任务，由于同步代码没有 `async` 所以每个执行完毕都会调用下一个队列
+
+由于集合队列存在一个带有 `async` 的 `script` 会中断后续所有队列执行：
+
+- 包含：模式 ③ `beforeScriptResultList`、模式 ④ `asyncScriptResultList`、模式 ⑤ `afterScriptResultList`
+- 从而有可能导致子应用启动失败，详细见问题复现中的演示
 
 `fiber` 模式都会正常执行：
 
