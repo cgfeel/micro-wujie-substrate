@@ -736,7 +736,7 @@
 
 导致的问题：
 
-- `preloadApp` 预加载：影响程度几乎等于 0，预加载在方法最后执行 `start`，最后一个队列执行或不执行都不影响
+- `preloadApp` 预加载：预加载本身不会有影响，建议往下看追加问题
 - `startApp` 创建应用实例：不会返回 `destroy` 方法
 - `startApp` 切换 `alive` 模式的子应用：不会执行生命周期中 `activated` 方法，不会返回 `destroy` 方法
 
@@ -750,7 +750,7 @@
 | 模式 ④：通过 `asyncScriptResultList` 异步插入队列的 `script`  | 提取子应用所有 `async` 的 `script`，所有 `script` 全部通过 `getExternalScripts` 已获取 `content`，但 `async` 仍旧存在 | 和模式 ③ 一样                                                                                                                                            |
 | 模式 ⑤：通过 `afterScriptResultList` 异步插入队列的 `script`  | 由启动前通过 `js-after-loader`配置，当集合中有一个队列带有 `async` 的 `script`                                        | 和模式 ③ 一样                                                                                                                                            |
 
-由于集合队列存在一个带有 `async` 的 `script` 会中断后续所有队列执行：
+追加问题：由于集合队列存在一个带有 `async` 的 `script` 会中断后续所有队列执行
 
 - 包含：模式 ③ `beforeScriptResultList`、模式 ④ `asyncScriptResultList`、模式 ⑤ `afterScriptResultList`
 - 从而有可能导致子应用启动失败，详细见问题复现中的演示
