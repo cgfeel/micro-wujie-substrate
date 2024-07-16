@@ -807,7 +807,7 @@
 
 - `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
 
-修复问题 1：
+修复问题 1、问题 2：
 
 - 在 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第一个执行队列入口 `this.execQueue.shift()();` 之前主动添加一个微任务
 - 这样确保最后一个队列提取一定是在微任务下执行，而当前上下文一定会在最后一个微任务之前插入队列
@@ -820,7 +820,13 @@ this.execQueue.push(() => Promise.resolve().then(
 this.execQueue.shift()();
 ```
 
-修复问题 2、问题 3：
+问题 3 的设计初衷：
+
+- 因为异步代码 `asyncScriptResultList` 它本身和 `execQueue` 队列集合是没有关系的
+- 但异步代码也是执行 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe` 中
+- 如果异步代码也去调用 `execQueue.shift()()`，那么就会造成队列执行顺序错乱了
+
+修复问题 3：
 
 - 去掉 `script` 插入 `iframe` 后调用 `execNextScript` 中的 `async` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L761)]
 
