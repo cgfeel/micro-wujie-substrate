@@ -771,7 +771,7 @@
 
 非 `fiber` 模式异步代码 `asyncScriptResultList` 会正常执行：
 
-- 异步代码直接遍历 `promise` 队列，不受 `execQueue` 影响，即便不提执行也会按照微任务添加的顺序执行
+- 异步代码直接遍历 `promise` 队列，不受 `execQueue` 影响，即便不提取队列也会按照微任务添加的顺序执行
 
 非 `fiber` 模式遍历队列集合，`script` 带有 `src` 且 `content` 为空，不存在 `async` 可正常执行：
 
