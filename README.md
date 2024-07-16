@@ -829,9 +829,7 @@ this.execQueue.shift()();
 
 修复问题 3：
 
-- 去掉 `script` 插入 `iframe` 后调用 `execNextScript` 中的 `async` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L761)]
-
-或者在遍历 `beforeScriptResultList` 和 `afterScriptResultList` 时去掉 `script` 的 `async`，如下：
+- 遍历 `beforeScriptResultList` 和 `afterScriptResultList` 时去掉 `script` 的 `async`，如下：
 
 ```
 beforeScriptResultList.forEach(({ async, ...beforeScriptResult }) => {})
