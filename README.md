@@ -836,7 +836,7 @@ beforeScriptResultList.forEach(({ async, ...beforeScriptResult }) => {})
 afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 ```
 
-因为只有通过启动配置时使用 `loaders` 添加 `async` 的 `script` 才会出现这个问题
+因为只有在启动时，配置添加 `async` 的 `script` 才会出现这个问题
 
 > 由于目前还在研究阶段，没有对官方提 PR。
 
