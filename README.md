@@ -743,7 +743,8 @@
 问题的场景包括：
 
 - 非 `fiber` 模式，只有必须插入 `execQueue` 的 4 个方法，见：1. 收集队列 [[查看](#1-收集队列)]
-- 非 `fiber` 模式，不存在同步代码、通过循环插入的队列的 `script` 没有 `src`
+- 非 `fiber` 模式，只有通过循环插入队列的 `script`，且 `script` 全部为内联元素没有 `src`
+- 非 `fiber` 模式，只有通过循环插入队列的 `script`，除了内联 `script` 全部为带有 `async` 的外联 `script`
 
 `fiber` 模式都会正常执行：
 
@@ -1218,7 +1219,7 @@ this.execQueue.shift()();
 - 但凡是个正规浏览器，通过 `Object.getOwnPropertyDescriptor` 拿 `script` 的 `src` 都是 `undefined`
 - 因为 `src` 属性是从 `HTMLScriptElement` 接口继承的，而不是直接定义在特定的 `scriptElement` 对象上，见演示 [[查看](https://codepen.io/levi0001/pen/abgvWQj)]
 
-> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样
+> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样，待指正
 
 外联 `script`：
 
@@ -1229,6 +1230,11 @@ this.execQueue.shift()();
 
 - 如果 `module` 成立，设置 `scriptElement` 为 `es` 模块，
 - 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
-- 设置 `nextScriptElement` 的脚本内容
+- 设置 `nextScriptElement` 的脚本内容，用于插入 `script` 完成后，调用下一个队列
 
 **第二步：插入 `script`**
+
+添加 `script` 完成后要执行的函数：
+
+- 将沙箱的 `iframe` 的 `head` 作为容器 `container`
+- 只要
