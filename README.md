@@ -842,7 +842,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **总结：**
 
-1. 建议使用 `wujie` 过程中谨慎关闭 `fiber`，默认是不会关闭 `fiber` 的
+1. 使用 `wujie` 过程中谨慎关闭 `fiber`，默认是不会关闭 `fiber` 的
 2. 不要在 `beforeScriptResultList` 或 `afterScriptResultList` 传入带有 `async` 属性的对象，虽然 `ScriptObjectLoader` 这个对象是允许配置 `async` 的，虽然官方在文档中也并没有说 `async` 是可选配置，但是擅自添加 `async` 在源码中是有逻辑问题的
 
 > 请不用担心子应用中是否存在 `async` 属性的 `script`，即便有也是走 `asyncScriptResultList`，和队列 `execQueue` 毫不相干
