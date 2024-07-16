@@ -796,7 +796,8 @@
 
 复现结果：
 
-- 和问题 1 一样
+- 和问题 1 一样，子应用中 `script` 的 `async` 会通过异步集合 `asyncScriptResultList` 添加到沙箱 `iframe` 中
+- `asyncScriptResultList` 不会影响 `execQueue`
 
 复现问题 3：`jsBeforeLoaders` 打断应用加载
 
