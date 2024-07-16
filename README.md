@@ -759,7 +759,7 @@
 - 模式 ③ `beforeScriptResultList`：导致 `mount` 等队列没有执行，可能造成应用无法挂载
 - 模式 ④ `afterScriptResultList`：`loaded` 事件不会执行
 
-`fiber` 模式都会正常执行：
+`fiber` 模式下只要不在模式 ③、模式 ④ 情况下都是正常的：
 
 - 默认的模式，要执行下一个队列就要通过宏任务 `requestIdleCallback`
 - 返回的 `promise` 函数内部在当前任务属于上下文，优先于下一个宏任务添加到队列
@@ -833,7 +833,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 因为只有通过启动配置时使用 `loaders` 添加 `async` 的 `script` 才会出现这个问题
 
-> 由于目前还在研究阶段，没有对官方提 PR。对于这个问题建议使用过程中谨慎关闭 `fiber`
+> 由于目前还在研究阶段，没有对官方提 PR。
+
+**总结：**
+
+1. 建议使用 `wujie` 过程中谨慎关闭 `fiber`，默认是不会关闭 `fiber` 的
+2. 不要在 `beforeScriptResultList` 或 `afterScriptResultList` 传入带有 `async` 属性的对象，虽然 `ScriptObjectLoader` 这个对象是允许配置 `async` 的，虽然官方在文档中也并没有说 `async` 是可选配置，但是源码中是有逻辑问题的
 
 #### 5. 队列前的准备
 
