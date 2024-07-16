@@ -819,6 +819,15 @@ this.execQueue.shift()();
 
 - 去掉 `script` 插入 `iframe` 后调用 `execNextScript` 中的 `async` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L761)]
 
+或者在遍历 `beforeScriptResultList` 和 `afterScriptResultList` 时去掉 `script` 的 `async`，如下：
+
+```
+beforeScriptResultList.forEach(({ async, ...beforeScriptResult }) => {})
+afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
+```
+
+因为只有通过启动配置时使用 `loaders` 添加 `async` 的 `script` 才会出现这个问题
+
 > 由于目前还在研究阶段，没有对官方提 PR。对于这个问题建议使用过程中谨慎关闭 `fiber`
 
 #### 5. 队列前的准备
