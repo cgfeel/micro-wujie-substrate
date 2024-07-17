@@ -1289,7 +1289,22 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 }
 ```
 
-#### `insertScriptToIframe` 为沙箱插入 `script`
+#### `processCssLoader`：处理 `css-loader`
+
+目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56C23-L56C39)]
+
+参数：
+
+- `sandbox`：应用实例
+- `template`：已完成替换的入口资源，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
+- `getExternalStyleSheets`：提取 `css` 资源的函数，返回 `css` 集合，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)]
+
+流程：
+
+- 通过 `getCurUrl` 获取 `base url`
+- 通过 `compose` 柯里化插件 `cssLoader`
+
+#### `insertScriptToIframe`：为沙箱插入 `script`
 
 向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
 
