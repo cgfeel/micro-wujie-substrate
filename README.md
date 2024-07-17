@@ -307,6 +307,44 @@
 - 通过 `importHTML` 提取需要加载的 `script`，见：`importHTML` [[查看](#importhtml)]
 - 将提取的方法 `getExternalScripts` 传入应用 `sandbox.start`，执行启动
 
+### `preloadApp` 预加载流程
+
+目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
+
+参数：`preOptions`，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
+
+`preloadApp` 预加载通过 `requestIdleCallback` 在空闲时间处理，不处理的情况有 2 个：
+
+- 应用实例已存在
+- 当前的 `url` 挂载的应用中包含预加载的应用，无需预加载直接加载
+
+整体分 3 步：
+
+1. 获取配置
+2. 声明一个应用实例 `sandbox`
+3. 挂起预加载微任务 `runPreload`
+
+#### 1. 获取配置
+
+- 通过 `getOptionsById` 获取配置信息 `cacheOptions`
+- 通过 `mergeOptions` 合并参数 `preOptions` 和 `cacheOptions`，优先采用 `preOptions`
+- 从合并的 `options` 中提取配置用于预加载
+
+> `cacheOptions` 存在于：
+>
+> - 通过 `startApp` 提前配置 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]，如果没有配置则不存在。
+> - 配置信息只能通过 `startApp` 缓存
+
+#### 2. 声明一个实例
+
+- 将拿到的配置信息通过 `Wujie` 声明实例 `sandbox`
+- 通过 `runPreload` 为实例挂起一个微任务 `preload`
+
+#### 3. 预加载微任务 `runPreload`
+
+- 使用 `iframeWindow` 调用生命周期 `beforeLoad`
+- 通过 `importHTML` 获取：`template`、`getExternalScripts`、`getExternalStyleSheets`，见 `importHTML` [[查看](#importhtml-加载资源)]
+
 ### `Wujie` 应用类
 
 目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
