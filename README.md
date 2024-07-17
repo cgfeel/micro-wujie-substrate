@@ -606,7 +606,7 @@
 **遍历的集合下标是 `promise` 有 2 处：**
 
 - 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
-- 共同点：集合中的每一项函数执行并返回 `promise`、需要在微任务中执行 `insertScriptToIframe`，见：
+- 共同点：集合中的每一项函数执行并返回 `promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe-为沙箱插入-script)]
 - 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
 #### 2. 执行队列
