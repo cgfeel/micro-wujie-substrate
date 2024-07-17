@@ -687,11 +687,11 @@
 > - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
 > - 如果以上都不存在，会在 `mount` 之前执行
->   - 因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 这个宏任务中
->   - 而 `mount` 是必须插入队列的方法，所以要执行 `mount` 方法以及后续队列，一定要先执行 `mount` 外的宏任务
->   - 要执行宏任务一定要先执行 `asyncScriptResultList` 微任务集合
+>   - 因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 中作为下一个宏任务中
+>   - 而 `mount` 是必须插入队列的方法，所以要执行 `mount` 方法以及后续队列，一定要执行下一个宏任务
+>   - 要执行下一个宏任务一定要先执行当前宏任务中的 `asyncScriptResultList` 微任务集合
 >
-> 非 `fiber` 模式下，不存在同步代码，但通过循环的队列集合中，存在带有 `src` 的 `script`：
+> 非 `fiber` 模式下，通过 `jsBeforeLoaders` 循环插入队列集合，带有 `src` 的外联 `script`：
 >
 > - 虽然宏任务 `requestIdleCallback` 不存在
 > - 但带有 `src` 的 `script` 会通过 `onload` 去调用 `window.__WUJIE.execQueue.shift()()`
