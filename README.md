@@ -853,9 +853,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 请不用担心子应用中是否存在 `async` 属性的 `script`，即便有也是走 `asyncScriptResultList`，和队列 `execQueue` 毫不相干
 
+下面内容因为重要性相对比较小且内容不多，所以放到 `start` 启动应用最后：
+
 #### 5. 队列前的准备
 
-因为重要性相对比较小且内容不多，所以放到最后：
+包含：
 
 - `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示是否启动应用
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
@@ -898,6 +900,26 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 没有提供 `__WUJIE_UNMOUNT` 的 `umd` 模式，或非 `umd` 模式
 
 > 这里虽然提供了 `this.alive` 模式作为检测，但是同时也增加了 `!isFunction(this.iframe.contentWindow.__WUJIE_UNMOUNT)` 判断，只要不是 `umd` 方式卸载应用，都会执行关闭 `loading` 状态
+
+#### 6. 必须添加队列的 4 个方法
+
+**1. 主动调用 `mount` 方法**
+
+- 见：`mount` 挂载应用 [[查看](#-mount-挂载应用)]
+
+**2. 触发 `DOMContentLoaded` 事件**
+
+- 创建一个 `DOMContentLoaded` 自定义事件，分别由 `iframeWindow.document` 和 `iframeWindow` 触发
+
+**3. 触发 `loaded` 事件**
+
+- 自定义事件 `readystatechange`，由 `iframeWindow.document` 触发
+- 自定义事件 `load`，由 `iframeWindow` 触发
+
+**4. 返回 `Promise`**
+
+- 通过在返回的 `Promise` 函数中添加队列最后要执行的任务
+- `resolve` 释放返回的微任务，用于通知 `start` 完毕
 
 #### 📝 `mount` 挂载应用
 
