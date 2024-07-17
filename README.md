@@ -711,6 +711,8 @@
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
+> 一道思考题：在子应用中所有带有 `src` 的链接将被分类为“同步代码”和“异步代码”，这类 `script` 会怎样插入 `iframe`？这个问题会在下面解答：5. 队列前的准备 [[查看](#test)]
+
 **关于微任务队列：**
 
 在 `micro-app` 有一个 `injectFiberTask`，见 `micro-app` 源码分析中注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]，对比如下：
@@ -857,9 +859,33 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示是否启动应用
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
-- `scriptResultList` 提取要执行的 `script`
+- `scriptResultList` 提取要执行的 `script`，注 n (`scriptResultList`)
 - `iframeWindow` 提取沙箱的 `window`
 - 为子应用注入全局对象：`__POWERED_BY_WUJIE__`
+
+> 注 n：`scriptResultList`，这是个不影响使用的问题
+>
+> - 类型声明 `getExternalScripts` 是 `() => ScriptResultList`，没有 `promise` 是不需要 `await` 的
+> - `getExternalScripts` 返回一个数组集合，集合中包含带有类型为 `promise` 的属性 `contentPromise`，函数本身不是微任务
+>
+> 由此可以知道：
+>
+> - 在遍历子应用每一项 `script` 时，都是一个微任务
+> - 这也就是为什么同步不代码和异步代码都是通过微任务将 `script` 添加到 `iframe` 中的原因了
+> - 而其他的循环插入队列的 `script` 都是当前宏任务上下文执行
+> - 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
+>
+> 在来看一道思考题：子应用中所有带有 `src` 的外联 `script` 在 `wujie` 中会怎么处理
+>
+> 1. 过 `importHTML` 将将子应用整个资源分类：`template`、`assetPublicPath`、`script`、`css` [[查看](#importhtml-加载资源)]
+> 2. 通过 `processTpl` 将 `script` 分类配置：`scr`、`async`、`defer`、`content` 等 [[查看](#processtpl-提取资源)]
+> 3. 通过 `getExternalScripts` 遍历 `script` 集合
+> 4. 为每项 `script` 增加一个类型为 `promise` 的属性 `contentPromise`，详细见：`importHTML` 加载资源 - 4.1. `getExternalScripts` [[查看](#importhtml-加载资源)]
+>
+> 因此：
+>
+> - 子应用 `script` 只有外联的 `ES` 模块或带有 `ignore` 属性，会当做空内容
+> - 其他情况都作为内联 `script` 处理，外联的 `script` 会在插入 `iframe` 前下载下来，即便是 `async` 或 `defer`
 
 关闭加载状态：
 
