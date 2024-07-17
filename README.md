@@ -691,7 +691,7 @@
 >   - 而 `mount` 是必须插入队列的方法，所以要执行 `mount` 方法以及后续队列，一定要执行下一个宏任务
 >   - 要执行下一个宏任务一定要先执行当前宏任务中的 `asyncScriptResultList` 微任务集合
 >
-> 非 `fiber` 模式下，通过 `jsBeforeLoaders` 循环插入队列集合，带有 `src` 的外联 `script`：
+> 非 `fiber` 模式下，通过 `beforeScriptResultList` 循环插入队列集合，带有 `src` 的外联 `script`：
 >
 > - 虽然宏任务 `requestIdleCallback` 不存在
 > - 但带有 `src` 的 `script` 会通过 `onload` 去调用 `window.__WUJIE.execQueue.shift()()`
@@ -701,9 +701,13 @@
 >
 > - 会在 `syncScriptResultList` + `deferScriptResultList` 集合的微任务之前执行
 >
-> 非 `fiber` 模式下，不存在同步代码，不存在脚本集合循环队列，或循环队列的脚本没有 `src`：
+> 非 `fiber` 模式下，通过 `afterScriptResultList` 循环插入队列集合，带有 `src` 的外联 `script`：
 >
-> - 会在 `start` 之后执行，但是这里存在一个 `bug`，见：4
+> - 同 `beforeScriptResultList`
+>
+> 非 `fiber` 模式下，如果以上都不存在：
+>
+> - 会在 `start` 之后执行，但是这里存在一个 `bug`，见：4. `start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
 除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
 
