@@ -875,9 +875,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 > - 而其他的循环插入队列的 `script` 不需要通过微任务去执行操作
 > - 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
 >
-> 在来看一道思考题：子应用中所有带有 `src` 的外联 `script` 在 `wujie` 中会怎么处理
+> 一道思考题：子应用中所有带有 `src` 的外联 `script` 在 `wujie` 中会怎么处理
 >
-> 1. 过 `importHTML` 将将子应用整个资源分类：`template`、`assetPublicPath`、`script`、`css` [[查看](#importhtml-加载资源)]
+> 1. 通过 `importHTML` 将将子应用整个资源分类：`template`、`assetPublicPath`、`script`、`css` [[查看](#importhtml-加载资源)]
 > 2. 通过 `processTpl` 将 `script` 分类配置：`scr`、`async`、`defer`、`content` 等 [[查看](#processtpl-提取资源)]
 > 3. 通过 `getExternalScripts` 遍历 `script` 集合
 > 4. 为每项 `script` 增加一个类型为 `promise` 的属性 `contentPromise`，详细见：`importHTML` 加载资源 - 4.1. `getExternalScripts` [[查看](#importhtml-加载资源)]
