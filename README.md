@@ -869,6 +869,27 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 这里虽然提供了 `this.alive` 模式作为检测，但是同时也增加了 `!isFunction(this.iframe.contentWindow.__WUJIE_UNMOUNT)` 判断，只要不是 `umd` 方式卸载应用，都会执行关闭 `loading` 状态
 
+#### 📝 `mount` 挂载应用
+
+挂载应用会做 3 件事
+
+**1. `umd` 方式启动**
+
+- 如果应用是 `umd` 方式挂载应用时触发
+- 再次关闭挂载容器 `loading` 状态，见：5. 队列前的准备 [[查看](#5-队列前的准备)]
+- 使用 `iframeWindow` 调用生命周期 `beforeMount`
+- 调用子应用的 `__WUJIE_MOUNT` 去挂载应用
+- 使用 `iframeWindow` 调用生命周期 `afterMount`
+- 设置 `mountFlag` 避免重复挂载，`mountFlag` 会在 `unmount` 和 `destroy` 时更新
+
+**2. `alive` 模式**
+
+- 使用 `iframeWindow` 调用生命周期 `activated`
+
+**3. 执行下一个队列**
+
+- `this.execQueue.shift()?.()`
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
