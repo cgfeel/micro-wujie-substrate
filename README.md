@@ -963,7 +963,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 挂载应用会做 3 件事
 
-**1. `umd` 方式启动**
+#### 1. `umd` 方式启动
 
 - 如果应用是 `umd` 方式挂载应用时触发
 - 再次关闭挂载容器 `loading` 状态，见：5. 队列前的准备 [[查看](#5-队列前的准备)]
@@ -972,11 +972,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载，`mountFlag` 会在 `unmount` 和 `destroy` 时更新
 
-**2. `alive` 模式**
+#### 2. `alive` 模式
 
 - 使用 `iframeWindow` 调用生命周期 `activated`
 
-**3. 执行下一个队列**
+#### 3. 执行下一个队列
 
 - `this.execQueue.shift()?.()`
 
@@ -1072,13 +1072,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `startApp` 切换 `alive` 模式的应用
 - `startApp` 初次加载沙箱实例
 
-子应用样式流程概览：
+子应用样式提取概览：
 
 - 匹配的外联样式和内联样式会通过 `processTpl` 替换为注释 [[查看](#processtpl-提取资源)]
 - 通过 `getExternalStyleSheets` 为每个 `style` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
 - 通过 `processCssLoader` 统一在 `getEmbedHTML` 中再次替换成内联样式 [[查看](#getembedhtml-转换样式)]
 
-子应用 `script` 流程概览：
+子应用 `script` 提取概览：
 
 - 只对 `ignore` 和 `ES` 不匹配的情况的 `script` 注释，注释后不会再还原 [[查看](#processtpl-提取资源)]
 - 其他情况通过 `getExternalScripts` 为每个 `script` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
