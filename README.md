@@ -1072,6 +1072,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `startApp` 切换 `alive` 模式的应用
 - `startApp` 初次加载沙箱实例
 
+子应用样式流程概览：
+
+- 匹配的外联样式和内联样式会通过 `processTpl` 替换为注释 [[查看](#processtpl-提取资源)]
+- 通过 `getExternalStyleSheets` 为每个 `style` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
+- 通过 `processCssLoader` 统一在 `getEmbedHTML` 中再次替换成内联样式 [[查看](#getembedhtml-转换样式)]
+
+子应用 `script` 流程概览：
+
+- 只对 `ignore` 和 `ES` 不匹配的情况的 `script` 注释，注释后不会再还原 [[查看](#processtpl-提取资源)]
+- 其他情况通过 `getExternalScripts` 为每个 `script` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
+- 在启动应用 `start` 时，会将子应用的 `script` 分为：同步代码通过 `execQueue` 队列执行、异步代码通过微任务执行 [[查看](#-start-启动应用)]
+
 整个流程分 3 步：
 
 1. 提取必要的配置
@@ -1185,14 +1197,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 函数内部作了 2 件事：
 
 - 声明对象用于收集提取的资源，分别是：`scripts`、`styles`、`entry`、`moduleSupport`、`template`
-- 执行替换，按照 `replace` 分别执行
-
-需要知道的几件事：
-
-- 匹配的外联样式和内联样式会替换为注释，然后统一在 `getEmbedHTML` 中替换成内联样式 [[查看](#getembedhtml-转换样式)]
--
-
-分别执行：
+- 执行替换，按照 `replace` 分别执行如下
 
 **1.替换备注：**
 
