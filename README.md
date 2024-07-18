@@ -1334,7 +1334,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 遍历 `getExternalStyleSheets()`，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - `getExternalStyleSheets`
 - 目的是用 `cssLoader` 替换每一项 `css` 的 `contentPromise`，见文档：`css-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 
-#### `getEmbedHTML` 转换样式
+#### `getEmbedHTML`：转换样式
 
 无论外联的 `link` 还是内联的 `style`，统一转换成内联样式，用来提升效率，还记得在 `processTpl` [[查看](#processtpl-提取资源)] 中样式替换成特定的备注吗，在这里将替换回来。
 
