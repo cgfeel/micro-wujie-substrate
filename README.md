@@ -391,7 +391,9 @@
 - 在 `patchRenderEffect` 内部会通过 `rewriteAppendOrInsertChild` 重写相应的方法
 - 在 `rewriteAppendOrInsertChild` 中通过 `insertScriptToIframe` 在容器内插入脚本
 
-> 当然这个参数并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+`this.replace` 并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+> 在官方文档中说，`replace` 用于 `html`、`js`、`css`，回调的参数只有 `code`，拿不到具体的类型，只能根据具体代码进行替换
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
@@ -1333,12 +1335,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `template`：已完成替换的入口资源，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 - `getExternalStyleSheets`：提取 `css` 资源的函数，返回 `css` 集合，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)]
 
-流程：
+获取并更新样式集合：
 
 - 通过 `getCurUrl` 获取 `base url`
-- 通过 `compose` 柯里化插件 `cssLoader`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] - `compose`
+- 通过 `compose` 柯里化获取插件 `cssLoader`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] - `compose`
 - 遍历 `getExternalStyleSheets()`，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - `getExternalStyleSheets`
 - 目的是用 `cssLoader` 替换每一项 `css` 的 `contentPromise`，见文档：`css-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+
+替换资源中的样式：
+
+- 通过 `getEmbedHTML` 将之前注释的样式替换成内联样式 [[查看](#getembedhtml转换样式)]
+- 通过 `replace` 更新资源 [[查看](#getembedhtml转换样式)]
 
 #### `getEmbedHTML`：转换样式
 
@@ -1351,7 +1358,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 返回：
 
-- 将替换后的资源通过 `promise` 的方式返回回去
+- 将替换后的资源通过 `promise` 的方式返回
 
 流程，关联参考：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]：
 
@@ -1361,7 +1368,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 从这里知道每一个 `style` 已通过微任务确保替换前已完成加载
 
-替换样式的 `bug`：`ignore` 无效，见：[[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
+替换样式的 `bug`，`ignore` 无效，见：[[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
 
 - 首先在提取样式时不会记录 `ignore`，所以在替换时候取 `ignore` 是一个无效值
 - 其次对于包含 `ignore` 的外联 `style`，注释通过 `genIgnoreAssetReplaceSymbol` 替换，而不是 `genLinkReplaceSymbol`
