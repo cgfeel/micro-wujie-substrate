@@ -1187,6 +1187,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 声明对象用于收集提取的资源，分别是：`scripts`、`styles`、`entry`、`moduleSupport`、`template`
 - 执行替换，按照 `replace` 分别执行
 
+需要知道的几件事：
+
+- 匹配的外联样式和内联样式会替换为注释，然后统一在 `getEmbedHTML` 中替换成内联样式 [[查看](#getembedhtml-转换样式)]
+-
+
 分别执行：
 
 **1.替换备注：**
@@ -1248,11 +1253,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 有效的外部链接：不包含 `type="text/ng-template"` 且有 `src` 的外部 `script`
 - 其他情况，如：内联 `script`、`ng-template`
 
-以下情况会用注释替换 `script`：
+用注释替换 `script` 有 2 种：
 
 - `scriptIgnore`、`moduleScriptIgnore`
 
-**4.1 有效的外部链接，现提取 3 个对象：**
+**4.1 有效的外部链接，先提取 3 个对象：**
 
 - `matchedScriptEntry`：提取的 `script` 是带有 `entry` 的主入口
 - `matchedScriptSrcMatch`：提取的 `script` 是带有 `src` 属性
@@ -1268,10 +1273,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 在设置之前会检查并更新 `matchedScriptSrc` 为有效的 `url`
 
 > 如果 `src` 提供的是相对路径，会根据资源路由 `baseURI` 获取相对 `url`
-
-注释替换 `script` 的情况追加一种：
-
-- `matchedScriptSrc` 存在时
 
 `matchedScriptSrc`：对于已提取出 `src` 的情况会提取出一个对象插入 `scripts`
 
