@@ -1347,6 +1347,21 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 将替换后的资源通过 `promise` 的方式返回回去
 
+流程，关联参考：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]：
+
+- 通过 `Promise.all` 迭代 `style` 集合中每一项的 `contentPromise`
+- 如果是带有 `src` 的外联 `style` 替换 `genLinkReplaceSymbol` 注释的样式
+- 如果是带有 `content` 的内联 `style` 替换 `getInlineStyleReplaceSymbol` 注释的样式
+
+> 从这里知道每一个 `style` 已通过微任务确保替换前已完成加载
+
+替换样式的 `bug`：`ignore` 无效，见：[[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
+
+- 首先在提取样式时不会记录 `ignore`，所以在替换时候取 `ignore` 是一个无效值
+- 其次对于包含 `ignore` 的外联 `style`，注释通过 `genIgnoreAssetReplaceSymbol` 替换，而不是 `genLinkReplaceSymbol`
+- 恰巧两个错误起到了“负负得正”的效果，永远不会因为找到错误的注释替换成了错误的样式链接
+- 最后对于内联 `style`，在替换时就没有考虑 `ignore`，即便 `ignore` 存在，也会在 `getExternalStyleSheets` 时候作为空值
+
 #### `insertScriptToIframe`：为沙箱插入 `script`
 
 向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
