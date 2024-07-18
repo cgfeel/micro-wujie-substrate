@@ -391,7 +391,7 @@
 - 在 `patchRenderEffect` 内部会通过 `rewriteAppendOrInsertChild` 重写相应的方法
 - 在 `rewriteAppendOrInsertChild` 中通过 `insertScriptToIframe` 在容器内插入脚本
 
-> 当然这个参数并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe`
+> 当然这个参数并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
@@ -644,7 +644,7 @@
 **遍历的集合下标是 `promise` 有 2 处：**
 
 - 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
-- 共同点：集合中的每一项函数执行并返回 `promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe-为沙箱插入-script)]
+- 共同点：集合中的每一项函数执行并返回 `promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
 #### 2. 执行队列
@@ -659,7 +659,7 @@
 循环插入队列共有 3 处：
 
 - 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`afterScriptResultList`
-- 执行的通过 `insertScriptToIframe` [[查看](#insertscripttoiframe-为沙箱插入-script)] 将 `window.__WUJIE.execQueue.shift()()` 注入容器
+- 执行的通过 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] 将 `window.__WUJIE.execQueue.shift()()` 注入容器
 - 这样每个 `push` 添加的队列，会在容器中 `shift` 提取下一个任务并执行
 
 同步代码 `syncScriptResultList` + `deferScriptResultList`：
@@ -1181,17 +1181,24 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **2.提取或替换 `link` 标签：**
 
-有 3 个情况会将 `link` 标签替换为备注：
+有 2 个情况会将 `link` 标签替换为备注：
 
-1. `ref="stylesheet"` 的样式文件，且存在 `href`
-2. `ref="stylesheet"` 的样式文件，且存在 `href`，带有 `ignore` 属性
-3. `preload|prefetch|modulepreload` 模式下，存在 `href` 的 `font` 类型资源
+1. `ref="stylesheet"` 的外联样式
+2. `preload|prefetch|modulepreload` 模式下，存在 `href` 的 `font` 类型资源
 
-补充：
+> 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换
 
-- 除了情况 2 注释不一样，其他都一样
-- 只有情况 1，且没有`ignore` 属性的 `href` 链接，才会提取为 `{ src: newHref }` 添加到 `styles`
-- 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换
+替换备注有 2 种方式：
+
+- `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的外联样式
+- `genLinkReplaceSymbol`：默认替换的方式
+
+`genLinkReplaceSymbol` 在 2 中情况注释的不同处：
+
+- 样式：不提供第二个参数，无无加载
+- 字体：提供第二个参数，作为 `perfetch` 或 `preload`
+
+> 记住这个模式在启动应用前 `processCssLoader` 需要根据注释替换注释资源
 
 **3.提取或替换 `style` 内联样式：**
 
@@ -1302,7 +1309,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 流程：
 
 - 通过 `getCurUrl` 获取 `base url`
-- 通过 `compose` 柯里化插件 `cssLoader`
+- 通过 `compose` 柯里化插件 `cssLoader`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] - `compose`
+- 遍历 `getExternalStyleSheets()`，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - `getExternalStyleSheets`
+- 目的是用 `cssLoader` 替换每一项 `css` 的 `contentPromise`，见文档：`css-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 
 #### `insertScriptToIframe`：为沙箱插入 `script`
 
@@ -1347,7 +1356,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `crossoriginType`：跨域类型，可选类型：`"" | "anonymous" | "use-credentials"`
 - `async`：是否为异步加载的 `script`，可选类型：`boolean`
 - `attrs`：`script` 带有 `=` 属性的键值对象
-- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，详细见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
 - `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
 
 > 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
