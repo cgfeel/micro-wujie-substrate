@@ -344,6 +344,11 @@
 
 - 使用 `iframeWindow` 调用生命周期 `beforeLoad`
 - 通过 `importHTML` 获取：`template`、`getExternalScripts`、`getExternalStyleSheets`，见 `importHTML` [[查看](#importhtml-加载资源)]
+- 通过 `processCssLoader` 将执行 `importHTML` 时，替换成注释的样式更新为对应的内联样式
+- 激活应用 `active` [[查看](#-active-激活应用)]
+- 根据配置 `exec` 决定是否启动应用 `start`
+
+> 这里有个问题，当 `exec` 不成立时 `await getExternalScripts()` 没有任何效果，见：注 n `scriptResultList` [[查看](#5-队列前的准备)]
 
 ### `Wujie` 应用类
 
