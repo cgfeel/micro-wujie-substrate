@@ -1345,7 +1345,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 替换资源中的样式：
 
 - 通过 `getEmbedHTML` 将之前注释的样式替换成内联样式 [[查看](#getembedhtml转换样式)]
-- 通过 `replace` 更新资源 [[查看](#getembedhtml转换样式)]
+- 如果有提供的话通过 `replace` 更新资源 [[查看](#1-更新配置应用信息)]
+
+最后将更新的资源返回，至此整个样式替换过程结束
 
 #### `getEmbedHTML`：转换样式
 
