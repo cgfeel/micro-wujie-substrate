@@ -1186,7 +1186,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 1. `ref="stylesheet"` 的外联样式
 2. `preload|prefetch|modulepreload` 模式下，存在 `href` 的 `font` 类型资源
 
-> 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换
+> 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换，例如：`favicon`
 
 替换备注有 2 种方式：
 
