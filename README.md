@@ -1147,6 +1147,20 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 1. 内联样式用 `content` 换成一个 `promise` 对象 `contentPromise`
 2. 外链样式添加 `promise` 对象 `contentPromise`，根据 `ignore` 决定返回空字符还是通过 `fetchAssets` 加载资源
 
+这里存在 1 个似乎不影响使用的问题：
+
+- 先全局搜索 `styles.push` 只有 2 处，且都没有设置 `ignore`，见：`processTpl` 源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
+- 那么在整个通过 `importHTML` 提取出来的 `StyleObject` 都会被忽略 `ignore`
+
+产生的问题：
+
+- 子应用原版 `ignore` 属性的样式就真的被注释了啊。。。。
+
+说它不影响使用是因为：
+
+- 即便 `ignore` 正确收集，最终 `contentPromise` 还是以空字符输出 `Promise.resolve("")`
+- `getEmbedHTML` 在处理外联 `css` 稍微不同，但最终结果还是被忽略，见 `getEmbedHTML`
+
 #### `processTpl` 提取资源
 
 目录：`template.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
@@ -1319,6 +1333,19 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `compose` 柯里化插件 `cssLoader`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] - `compose`
 - 遍历 `getExternalStyleSheets()`，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - `getExternalStyleSheets`
 - 目的是用 `cssLoader` 替换每一项 `css` 的 `contentPromise`，见文档：`css-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+
+#### `getEmbedHTML` 转换样式
+
+无论外联的 `link` 还是内联的 `style`，统一转换成内联样式，用来提升效率，还记得在 `processTpl` [[查看](#processtpl-提取资源)] 中样式替换成特定的备注吗，在这里将替换回来。
+
+参数：
+
+- `template`：子应用的资源，虽然是 `any` 但它只能是 `string`，因为 `processCssLoader` 传过来就是 `string`
+- `styleResultList`：通过 `getExternalStyleSheets` 提取出来的 `styles` 集合，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
+
+返回：
+
+- 将替换后的资源通过 `promise` 的方式返回回去
 
 #### `insertScriptToIframe`：为沙箱插入 `script`
 
