@@ -1198,12 +1198,19 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 样式：不提供第二个参数，无无加载
 - 字体：提供第二个参数，作为 `perfetch` 或 `preload`
 
-> 记住这个模式在启动应用前 `processCssLoader` 需要根据注释替换注释资源
+> 记住这个模式在启动应用前 `processCssLoader` 根据注释替换资源
 
 **3.提取或替换 `style` 内联样式：**
 
-- 所有内联样式都会被注释替换
-- 只有没有 `ignore` 的 `style` 才会被提取标签内容，作为 `{ src: "", content: code }` 添加到 `styles`
+所有内联样式都会被注释替换，替换注释有 2 种：
+
+- `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的内联样式
+- `getInlineStyleReplaceSymbol`：默认替换方式
+
+默认替换方式做 2 件事：
+
+- 将 `{ src: "", content: code }` 添加到 `styles`
+- 记录当前样式在 `styles` 中的 `index`，在启动应用前 `processCssLoader` 根据注释替换资源
 
 **4.提取或替换 `script`：**
 
