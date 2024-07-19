@@ -526,13 +526,7 @@
 
 第一步：挂载子应用到容器
 
-根据 `this.shadowRoot` 来决定激活方式，有 3 个分支：
-
-1. 切换应用
-2. 初次激活子应用
-3. 预加载时激活子应用
-
-> `degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分
+`degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分，如下有 3 个分支。
 
 分支 1：切换应用
 
