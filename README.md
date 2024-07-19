@@ -536,7 +536,7 @@
 
 分支 1：切换应用
 
-- 通过 `renderElementToContainer` 将 `this.shadowRoot.host` 挂载到指定容器
+- 通过 `renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)] 将 `this.shadowRoot.host` 挂载到指定容器
 - 如果是 `alive` 模式跳出来，以下流程不再继续
 
 > `this.shadowRoot.host`：
@@ -549,7 +549,8 @@
 分支 2：应用初始化
 
 - 先获取 `iframeBody`，如果容器不存在时作为备用容器
-- 通过 `createWujieWebComponent` 将创建的组件挂载到指定容器
+- 通过 `createWujieWebComponent` 创建自定义组件
+- 通过 `renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)] 将创建的组件挂载到指定容器
 
 > 从这里可以知道：
 >
@@ -561,7 +562,7 @@
 
 - 预加载应用是不需要指定容器用来挂载应用，所以会挂载到沙箱的 `iframeBody` 中
 
-> 拓展阅读：`renderElementToContainer` [查看]，通过这个函数来了解加载应用时 `loading` 处理
+> 拓展阅读：`renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)]，通过这个函数来了解加载应用时 `loading` 处理
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
