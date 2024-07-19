@@ -526,14 +526,15 @@
 
 第一步：挂载子应用到容器
 
-根据 `this.shadowRoot` 来决定挂载，分 2 个情况：
+根据 `this.shadowRoot` 来决定激活方式，有 3 个分支：
 
 1. 切换应用
-2. 初次加载，包含预加载
+2. 初次激活子应用
+3. 预加载时激活子应用
 
 > `degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分
 
-切换应用时：
+分支 1：切换应用
 
 - 通过 `renderElementToContainer` 将 `this.shadowRoot.host` 挂载到指定容器
 - 如果是 `alive` 模式跳出来，以下流程不再继续
@@ -542,13 +543,25 @@
 >
 > - 指的是 `shadowRoot` 外层的 `web component`
 > - 而 `this.shadowRoot` 是在组件 `connectedCallback` 时定义为组件的 `shadowRoot`
-> - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 已在初始化时注入
-> - 而非 `active` 模式下切换应用，稍后会再次更新 `template`
+> - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 已在初始化时注入，所以激活后可以直接返回
+> - 而非 `active` 模式下切换应用，会再次更新 `template`
 
-应用初始化时会挂载到指定容器：
+分支 2：应用初始化
 
 - 先获取 `iframeBody`，如果容器不存在时作为备用容器
 - 通过 `createWujieWebComponent` 将创建的组件挂载到指定容器
+
+> 从这里可以知道：
+>
+> - 初始化应用是创建一个 `web component`，挂载到指定容器
+> - 创建组件时，通过 `defineWujieWebComponent` 会配置 `this.shadowRoot`
+> - 这样下次切换再激活应用时会通过：`分支 1` 的流程
+
+分支 3： 预加载应用
+
+- 预加载应用是不需要指定容器用来挂载应用，所以会挂载到沙箱的 `iframeBody` 中
+
+> 拓展阅读：`renderElementToContainer` [查看]，通过这个函数来了解加载应用时 `loading` 处理
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
 
@@ -1537,3 +1550,46 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 包含：子应用的 `script`、启动应用是手动配置的、在应用中通过节点操作添加的
 - 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
 - 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+#### `renderElementToContainer`：将节点元素挂载到容器
+
+目录：`shadow.ts` - `renderElementToContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L70)]
+
+参数：
+
+- `element`：挂载的节点，类型：`Element | ChildNode`
+- `selectorOrElement`：容器，类型：`string | HTMLElement`
+
+流程：
+
+- 通过 `getContainer` 定位到容器 `container`
+- 如果 `container` 存在，且包含提供的节点元素，将其添加到容器
+- 返回定位的容器 `container`
+
+需要注意的是：
+
+- 不存在 `LOADING_DATA_FLAG` 节点的情况下，挂载到容器前需要先 `clearChild` 清空容器
+
+什么时候会提供 `LOADING_DATA_FLAG`：
+
+- `addLoading` 时设置一个 `div` 用于挂载 `loading` 元素
+- 而使用 `addLoading` 只有 `startApp` 初始化应用前执行
+
+> 需要注意的是：
+>
+> - `startApp` 时可以通过配置 `loading` 来定义加载元素，见：文档[[查看](https://wujie-micro.github.io/doc/api/startApp.html#loading)]
+> - 不提供 `loading` 也会执行 `addLoading` 添加一个空的 `loading` 到容器
+
+为什么 `addLoading` 后就不需要清空容器：
+
+- 因为 `addLoading` 开头两行和 `renderElementToContainer` 一样，现定位容器再清空容器
+- 清空容器之后再添加样式、挂载 `loading`
+
+如果执行 `addLoading` 后，`loading` 在哪清除：
+
+- `start` 启动应用时，队列之前会 `removeLoading`，见：5. 队列前的准备 [[查看](#5-队列前的准备)]
+- `mount` 挂载 `umd` 模式应用时，这里可能会重复清除
+
+总结：
+
+- 只要不是通过 `startApp` 初始化添加 `loading` 元素，每次执行 `renderElementToContainer` 都会清空容器
