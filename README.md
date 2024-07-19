@@ -1563,7 +1563,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 流程：
 
 - 通过 `getContainer` 定位到容器 `container`
-- 如果 `container` 存在，且包含提供的节点元素，将其添加到容器
+- 如果 `container` 存在，且不包含提供的节点元素，将其添加到容器
 - 返回定位的容器 `container`
 
 需要注意的是：
