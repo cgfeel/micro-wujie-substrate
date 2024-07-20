@@ -340,6 +340,8 @@
 - 将拿到的配置信息通过 `Wujie` 声明实例 `sandbox`
 - 通过 `runPreload` 为实例挂起一个微任务 `preload`
 
+> 微任务挂载在实例上 `sandbox.preload`，在应用切换时候会作为 `await`，这种方式和 `qiankun` 中的 `frameworkStartedDefer` 原理是一样的
+
 #### 3. 预加载微任务 `runPreload`
 
 - 使用 `iframeWindow` 调用生命周期 `beforeLoad`
@@ -349,6 +351,14 @@
 - 根据配置 `exec` 决定是否启动应用 `start`
 
 > 这里有个问题，当 `exec` 不成立时 `await getExternalScripts()` 没有任何效果，见：注 n `scriptResultList` [[查看](#5-队列前的准备)]
+
+#### 4. 对比 `startApp` 的配置
+
+缺少 `loading`：
+
+- 预加载的应用不需要 `loading`，而 `startApp` 即便不传入 `loadinng` 的情况下也会插入一个空的 `loading`
+- 无论插入 `loading` 与否，都会在资源注入容器前遍历并清空容器
+- 不同的是提供 `loading` 的 `startApp` 是在 `addLoading` 清空，预加载是通过 `active` 在 `renderElementToContainer` 清空 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 ### `Wujie` 应用类
 
