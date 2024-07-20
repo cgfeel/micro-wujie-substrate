@@ -369,10 +369,17 @@
 
 在这里引发了一个思考：
 
-- 我把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
-- 答案是不会，对此我做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
+- 把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
+- 答案是不会，对此做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
 
-之后预加载允许提供 `exec` 预先执行：
+通过 `exec` 预先执行：
+
+- 仅预加载支持的配置项，一旦启用在预加载时启动应用 `start`
+- 预加载应用的资源会在 `active` 激活时注入沙箱 `iframe` 中
+- 启动应用 `start` 后 `execFlag` 为 `true`，按照队列加载应用的 `script` 并注入沙箱 `iframe`
+- `start` 后发起应用挂在 `mount`
+
+1. 通过 `active` 激活应用时，将资源
 
 ### `Wujie` 应用类
 
@@ -809,20 +816,36 @@
 
 存在于 `start` 返回的 `Promise` 添加到队列末尾的任务，先说问题：
 
-- 如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
-- 也会暂停执行 `await sandbox.start()` 的微任务不再继续执行
+- 问题 1：如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
+- 问题 2：如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 的 `script`
+
+导致结果：
+
+- 暂停队列，无法完成 `await sandbox.start()` 微任
 
 因为：
 
 - `this.execQueue.shift()()` 优先于返回的 `promise` 函数内部执行，他们是上下文关系
 - 如果没有微任务和宏任务，那么当最后一个 `this.execQueue.shift()()` 执行完才将最后一个队列插入 `execQueue`
-- 而最后的 `promise` 需要在 `execQueue` 队列的方法中执行 `resove`，而这是永远不会执行的
+- 或因为手动插入 `async` 代码导致队列中断
+- 而最后的 `promise` 需要在 `execQueue` 队列的方法中执行 `resove`，因此被中断
 
-导致的问题：
+预加载本身不会有影响，因为预加载默认不启动应用 `start`，即便启用也是在 `runPreload` 末尾，导致的问题主要体现在预加载应用后通过 `startApp` 切换应用，下面分别对描述挂载应用和预加载的情况。
 
-- `preloadApp` 预加载：预加载本身不会有影响，建议往下看追加问题
-- `startApp` 创建应用实例：不会返回 `destroy` 方法
-- `startApp` 切换 `alive` 模式的子应用：不会执行生命周期中 `activated` 方法，不会返回 `destroy` 方法
+| 场景                | 模式                       | 预执行             | 问题 1                                                                        | 问题 2 |
+| ------------------- | -------------------------- | ------------------ | ----------------------------------------------------------------------------- | ------ |
+| 初次 `startApp`     | 默认：非 `alive`，非 `umd` | 没有预加载和预执行 | 不返回 `destroy` 方法                                                         | 注 n   |
+| `startApp` 切换应用 | 默认：非 `alive`，非 `umd` | 没有预加载和预执行 | 同：初次 `startApp`                                                           | 注 n   |
+| 预加载后 `startApp` | 默认：非 `alive`，非 `umd` | 默认非 `exec`      | 同：初次 `startApp`                                                           | 注 n   |
+| 预加载后 `startApp` | `alive` 模式               | 默认非 `exec`      | 不执行生命周期 `activated`，不返回 `destroy` 方法                             | 注 n   |
+| `startApp` 切换应用 | `alive` 模式               | 默认非 `exec`      | 恢复正常                                                                      | 注 n   |
+| 预加载后 `startApp` | `umd` 模式                 | 默认非 `exec`      | `umd` 首次加载应用，因为 `mount` 还未挂载，所以需要和初次 `startApp` 一样     | 注 n   |
+| `startApp` 切换应用 | `umd` 模式                 | 默认非 `exec`      | 恢复正常                                                                      | 注 n   |
+| 预加载后 `startApp` | 所有模式                   | `exec` 预执行      | 应用资源在预加载时注入到 `iframe` 隐藏，因流程中断无法移动到 `shadowDom` 展示 | 注 n   |
+| `startApp` 切换应用 | `alive` 和 `umd` 模式      | `exec` 预执行      | 恢复正常                                                                      | 注 n   |
+| `startApp` 切换应用 | 默认：非 `alive`，非 `umd` | `exec` 预执行      | 同：初次 `startApp`                                                           | 注 n   |
+
+> 注 n：因插入 `async` 代码导致队列中断，有可能造成后面队列的 `script` 没有加载，这种错误是无法恢复的
 
 非 `fiber` 模式下出现问题的场景：
 
