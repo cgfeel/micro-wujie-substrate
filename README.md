@@ -354,11 +354,25 @@
 
 #### 4. 对比 `startApp` 的配置
 
-缺少 `loading`：
+只说几个关键性的配置
+
+预加载缺少 `loading`：
 
 - 预加载的应用不需要 `loading`，而 `startApp` 即便不传入 `loadinng` 的情况下也会插入一个空的 `loading`
 - 无论插入 `loading` 与否，都会在资源注入容器前遍历并清空容器
-- 不同的是提供 `loading` 的 `startApp` 是在 `addLoading` 清空，预加载是通过 `active` 在 `renderElementToContainer` 清空 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空，预加载是通过 `active` 在 `renderElementToContainer` 清空 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+
+预加载不需要提供挂载容器 `el`：
+
+- 作为应用沙箱的 `iframe` 将作为临时的容器，应用会在激活时 `active` 注入 `iframe`
+- 而 `iframe` 在页面中是不可见的，因此也看不到预加载的应用
+
+在这里引发了一个思考：
+
+- 我把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
+- 答案是不会，对此我做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
+
+之后预加载允许提供 `exec` 预先执行：
 
 ### `Wujie` 应用类
 
