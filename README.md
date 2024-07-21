@@ -373,7 +373,7 @@
 - 把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
 - 答案是不会，对此做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
 
-#### 5. 通过 `exec` 预执行：
+#### 5. 通过 `exec` 预执行
 
 - 仅 `preloadApp` 支持的配置项，`exec` 会在预加载时启动应用 `start`
 - 和 `startApp` 一样，也会将子应用中的 `script` 插入沙箱 `iframe`，调用 `mount` 等相关事件和方法
