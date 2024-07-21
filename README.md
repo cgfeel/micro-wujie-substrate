@@ -378,7 +378,7 @@
 - 仅 `preloadApp` 支持的配置项，`exec` 会在预加载时启动应用 `start`
 - 和 `startApp` 一样，也会将子应用中的 `script` 插入沙箱 `iframe`，调用 `mount` 等相关事件和方法
 
-在 `micro-app` 中也有预加载，区别在于
+在 `micro-app` 中也有预加载，区别在于：
 
 | 分类                         | `micro-app`                                                  | `wujie`                                                  |
 | ---------------------------- | ------------------------------------------------------------ | -------------------------------------------------------- |
@@ -391,6 +391,17 @@
 
 - 预加载参考，见：`microApp.start` - 注 ⑥ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#microappstart-%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8)]
 - `wujie` 预执行主要体现在沙箱对预渲染的处理，见：2.3. `WithSandBox` 默认沙箱 - 看预渲染相关部分 [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#23-withsandbox-%E9%BB%98%E8%AE%A4%E6%B2%99%E7%AE%B1)]
+
+#### 6.预加载中的 `bug`：
+
+问题：
+
+- 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在 `startApp` 启动应用的时候生命周期 `activated` 会执行 2 次
+
+为什么 2 次：
+
+- `start` 应用时 `mount` 执行 1 次
+- `start` 之后返回 `destory` 前执行 1 次
 
 ### `Wujie` 应用类
 
