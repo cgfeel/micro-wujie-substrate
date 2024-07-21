@@ -821,7 +821,7 @@
 
 导致结果：
 
-- 暂停队列，无法完成 `await sandbox.start()` 微任
+- 暂停队列，无法完成 `await sandbox.start()` 微任务
 
 原因：
 
