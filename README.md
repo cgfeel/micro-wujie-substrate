@@ -179,22 +179,22 @@
 
 这里之所以提自定义组件，是为了便于了解组件生命周期触发的事件
 
-`wujie` 定义组件和 `micro-app` 最大不同在于：
+`wujie` 和 `micro-app` 组件定义不同处：
 
-- `wujie` 不需要直接在 `Dom tree` 中直接挂载组件，因此也不需要自定义组件名
-- `wujie` 不检查组件上任何属性的变更
-- 作为 `web component` 对于 `wujie` 来说只是一个承载 `template` 的容器
+| 分类               | `micro-app`                                                                                                                                                                                                                       | `wujie`                                                                                                                      |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 挂载方式           | 手动：挂载 `web component` 到指定 `components tree` 中渲染                                                                                                                                                                        | 自动：初次激活 `active` 应用时通过 `createWujieWebComponent` 自动创建容器渲染到指定容器，见：挂载子应用 [[查看](挂载子应用)] |
+| 自定义组件名       | 支持                                                                                                                                                                                                                              | 不支持                                                                                                                       |
+| 检查组件上属性变更 | 变更 `name` 和 `url` 触发子应用更新，见：`attributeChangedCallback` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#11-attributechangedcallback-%E8%A7%82%E5%AF%9F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9)] | 不监听属性更新，但是子应用的 `name` 和 `url` 可以作为 `React` 组件的 `props`，更新后重新渲染并挂载到容器                     |
+| 自定义应用更新     | 开发人员只能配置规则，不能决定如何更新                                                                                                                                                                                            | 规则交由开发人员自己决定，一旦更新应用就一定是重新渲染                                                                       |
+| 应用生命周期       | 同 `web component` 的生命周期                                                                                                                                                                                                     | 只有 2 个：`connectedCallback` 已挂载、`disconnectedCallback` 已销毁                                                         |
+| 其他用途           | 应用通信、资源容器、派发事件、决定启动和注销方式                                                                                                                                                                                  | 资源容器                                                                                                                     |
+| 优缺点             | 强大，但功能上 `MicroAppElement` 处理完之后 `CreateApp` 还有做一遍对应操作，如：`mount`                                                                                                                                           | 简单，开发者几乎不用关心 `web component` 的存在                                                                              |
 
-因此：
+加载 `WujieApp` 自定义组件方式：
 
-- 使用者几乎可以不用关心 `WujieApp` 这个自定义组件类
-- `WujieApp` 自定义组件类，在入口文件通过 `defineWujieWebComponent` 直接声明 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
+- 在入口文件中直接调用 `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
 - 当引入 `startApp` 的时候，就已经定义好了 `web component`
-
-挂载组件：
-
-- `wuie` 不需要手动挂载组件，挂载组件的办法只能通过 `createWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L60)]
-- 而 `createWujieWebComponent` 只在 `Wujie` 实例初始化调用 `active` 方法时才会执行，见：1.3. 挂载子应用 [[查看](#13-挂载子应用)]
 
 关于 `defineWujieWebComponent`：
 
