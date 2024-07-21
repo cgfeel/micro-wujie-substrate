@@ -823,9 +823,9 @@
 
 > 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
 
-#### 4. `start` 启动应用的 `bug`：
+#### 4. `start` 启动应用的 `bug`
 
-先说问题
+先说问题：
 
 - 问题 1：如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
 - 问题 2：如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 的 `script`，导致无法提取执行下一个队列造成流程中断，后面的 `script` 将不能插入沙箱 `iframe`
