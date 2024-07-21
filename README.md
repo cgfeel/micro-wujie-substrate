@@ -873,10 +873,11 @@
 
 - 异步代码直接遍历 `promise` 队列，不受 `execQueue` 影响，即便不提取队列也会按照微任务添加的顺序执行
 
-非 `fiber` 模式遍历队列集合，`script` 带有 `src` 且 `content` 为空，不存在 `async` 可正常执行：
+非 `fiber` 模式，手动插入带有 `src` 且 `content` 为空的 `script`，不存在属性 `async` 可正常执行：
 
 - 因为 `window.__WUJIE.execQueue.shift()()` 是通过 `script` 的 `onload` 执行
 - `onload` 是一个宏任务，会在当前宏任务执行完毕之后再执行
+- 没有 `async` 就不会中断流程
 
 复现问题 1：没有 `script`
 
