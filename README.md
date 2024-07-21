@@ -858,7 +858,7 @@
 | 模式 ③：通过 `beforeScriptResultList` 插入队列的异步 `script` | 启动前通过 `js-before-loaders`配置，当集合中有一个队列带有 `async` 的 `script` | 队列通知已完成的 `Promise` 已添加到队列，但在插入 `script` 到 `iframe` 中由于 `script` 是 `async`，不会执行 `nextScriptElement` 从而导致后续队列无法执行 |
 | 模式 ④：通过 `afterScriptResultList` 异步插入队列的 `script`  | 启动前通过 `js-after-loader`配置，当集合中有一个队列带有 `async` 的 `script`   | 和模式 ③ 一样，区别在于 `afterScriptResultList` 在执行前，应用的 `script` 已插入沙箱 `iframe`，也完成了 `mount`，中断的只有 `loaded` 事件                |
 
-`fiber` 模式下只要不在模式 ③、模式 ④ 情况下都是正常的：
+`fiber` 模式下在模式 ①、模式 ② 情况下都是正常的：
 
 - 默认的模式，要执行下一个队列就要通过宏任务 `requestIdleCallback`
 - 返回的 `promise` 函数内部在当前任务属于上下文，优先于下一个宏任务添加到队列
