@@ -360,7 +360,7 @@
 
 - 预加载的应用不需要 `loading`，而 `startApp` 即便不传入 `loadinng` 的情况下也会插入一个空的 `loading`
 - 无论插入 `loading` 与否，都会在资源注入容器前遍历并清空容器
-- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空沙箱，预加载是通过 `active` 在 `renderElementToContainer` 清空沙箱 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空容器，预加载是通过 `active` 在 `renderElementToContainer` 清空容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 预加载不需要提供挂载容器 `el`：
 
