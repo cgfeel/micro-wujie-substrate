@@ -863,10 +863,11 @@
 - 默认的模式，要执行下一个队列就要通过宏任务 `requestIdleCallback`
 - 返回的 `promise` 函数内部在当前任务属于上下文，优先于下一个宏任务添加到队列
 
-非 `fiber` 模式同步代码 `syncScriptResultList` + `deferScriptResultList` 会正常执行：
+非 `fiber` 模式同步代码会正常执行：
 
+- 同步代码和异步代码指的是子应用的 `script`
 - 同步代码是一个微任务集合，执行前返回的 `Promise` 函数内部已 `push` 最后一个任务
-- 由于同步代码没有 `async` 所以每个执行完毕都会调用下一个队列
+- 对于子应用中带有 `async` 属性的 `script` 分到异步代码中执行，异步代码是不会干扰队列 `execQueue` 的提取和执行
 
 非 `fiber` 模式异步代码 `asyncScriptResultList` 会正常执行：
 
