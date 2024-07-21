@@ -825,7 +825,7 @@
 
 #### 4. `start` 启动应用的 `bug`：
 
-先说问题：
+先说问题
 
 - 问题 1：如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
 - 问题 2：如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 的 `script`，导致无法提取执行下一个队列造成流程中断，后面的 `script` 将不能插入沙箱 `iframe`
@@ -853,7 +853,7 @@
 | 非 `alive` 应用启动  | `umd` 预加载后首次启动，非 `active` 和 `umd` 的应用每次启动和切换 | 生命周期 `activated` 可能会不执行，`destroy` 不返回 | 流程中断导致后续 `script` 加载失败 |
 | `exec` 预执行后启动  | 所有模式                                                          | 卡在 `await sandbox.preload` 暂停不再执行           | 流程中断导致后续 `script` 加载失败 |
 
-> 在触发条件中有两个概念：预加载和预执行，见
+> 在触发条件中有两个概念：预加载和预执行，见：通过 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
 
 非 `fiber` 模式下出现问题的场景：
 
