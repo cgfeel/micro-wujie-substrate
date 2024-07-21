@@ -814,7 +814,7 @@
 
 #### 4. `start` 启动应用的 `bug`：
 
-存在于 `start` 返回的 `Promise` 添加到队列末尾的任务，先说问题：
+先说问题：
 
 - 问题 1：如果 `start` 中没有微任务，也没有宏任务，由于队列最后是通过 `Promise` 函数插入队列，那么永远不会执行末尾队列
 - 问题 2：如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 的 `script`
@@ -823,12 +823,12 @@
 
 - 暂停队列，无法完成 `await sandbox.start()` 微任
 
-因为：
+原因：
 
 - `this.execQueue.shift()()` 优先于返回的 `promise` 函数内部执行，他们是上下文关系
-- 如果没有微任务和宏任务，那么当最后一个 `this.execQueue.shift()()` 执行完才将最后一个队列插入 `execQueue`
-- 或因为手动插入 `async` 代码导致队列中断
+- 如果提取执行队列过程中，没有微任务和宏任务，那么当最后一个队列 `this.execQueue.shift()()` 执行完，才将最后返回的 `promise` 函数中插入 `execQueue` 队列中
 - 而最后的 `promise` 需要在 `execQueue` 队列的方法中执行 `resove`，因此被中断
+- 或因为手动插入 `async` 的 `script` 导致队列中断
 
 `preloadApp` 出现问题的场景：
 
