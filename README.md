@@ -375,7 +375,7 @@
 
 #### 5. 通过 `exec` 预执行：
 
-- 仅预加载支持的配置项，`exec` 会在预加载时启动应用 `start`
+- 仅 `preloadApp` 支持的配置项，`exec` 会在预加载时启动应用 `start`
 - 和 `startApp` 一样，也会将子应用中的 `script` 插入沙箱 `iframe`，调用 `mount` 等相关事件和方法
 
 在 `micro-app` 中也有预加载，区别在于
