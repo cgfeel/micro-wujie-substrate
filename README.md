@@ -414,7 +414,7 @@
 | 创建实例       | `CreateApp`：应用实例                                                                                     | `Wujie`：应用实例，也是沙箱实例                                            |
 | 映射表         | `appInstanceMap` 存应用实例，和组件映射表不同                                                             | `idToSandboxCacheMap` 唯一映射表，组件挂载时通过 `name` 从映射表获取实例   |
 | 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie`                                                 |
-| 加载资源       | 构造函数调用 `loadSourceCode`                                                                             | `active` 激活应用                                                          |
+| 加载资源       | 自动：构造函数调用 `loadSourceCode`                                                                       | 手动：`active` 激活应用                                                    |
 | 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator`                                             |
 | 沙箱支持       | `proxy`、`iframe`                                                                                         | `iframe`                                                                   |
 | 手动 `start`   | 不支持手动启动，自动通过 `mount`                                                                          | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                         |
