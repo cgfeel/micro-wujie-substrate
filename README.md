@@ -177,8 +177,6 @@
 
 ### 定义 `web component`
 
-这里之所以提自定义组件，是为了便于了解组件生命周期触发的事件
-
 `wujie` 和 `micro-app` 组件定义不同处：
 
 | 分类               | `micro-app`                                                                                                                                                                                                                       | `wujie`                                                                                                                      |
