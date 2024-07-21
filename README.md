@@ -360,7 +360,7 @@
 
 - 预加载的应用不需要 `loading`，而 `startApp` 即便不传入 `loadinng` 的情况下也会插入一个空的 `loading`
 - 无论插入 `loading` 与否，都会在资源注入容器前遍历并清空容器
-- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空，预加载是通过 `active` 在 `renderElementToContainer` 清空 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空沙箱，预加载是通过 `active` 在 `renderElementToContainer` 清空沙箱 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 预加载不需要提供挂载容器 `el`：
 
@@ -372,14 +372,10 @@
 - 把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
 - 答案是不会，对此做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
 
-通过 `exec` 预先执行：
+通过 `exec` 预执行：
 
-- 仅预加载支持的配置项，一旦启用在预加载时启动应用 `start`
-- 预加载应用的资源会在 `active` 激活时注入沙箱 `iframe` 中
-- 启动应用 `start` 后 `execFlag` 为 `true`，按照队列加载应用的 `script` 并注入沙箱 `iframe`
-- `start` 后发起应用挂在 `mount`
-
-1. 通过 `active` 激活应用时，将资源
+- 仅预加载支持的配置项，`exec` 会在预加载时启动应用 `start`
+- 和 `startApp` 一样，也会将子应用中的 `script` 插入沙箱 `iframe`，调用 `mount` 等相关事件和方法
 
 ### `Wujie` 应用类
 
