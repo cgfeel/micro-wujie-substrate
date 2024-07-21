@@ -407,13 +407,24 @@
 
 目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
 
-用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 是一样的，它们共同点：
+用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 是一样的：
 
-- 都可以创建应用实例
-- `CreateApp` 将自身添加到 `appInstanceMap` 作为映射表，`Wujie` 将自身通过 `addSandboxCacheWithWujie` 添加到映射表 `idToSandboxCacheMap`
-- 都提供 `mount` 和 `unmount` 这两个方法，用于加载和卸载应用
+| 分类           | `micro-app`                                                                                               | `wujie`                                                                    |
+| -------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 创建实例       | 应用实例                                                                                                  | 应用实例，也是沙箱实例                                                     |
+| 映射表         | `appInstanceMap` 存应用实例，和组件映射表不同                                                             | `idToSandboxCacheMap` 唯一映射表，组件挂载时通过 `name` 从映射表获取实例   |
+| 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie`                                                 |
+| 加载资源       | 构造函数调用 `loadSourceCode`                                                                             | `active` 激活应用                                                          |
+| 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator`                                             |
+| 沙箱支持       | `proxy`、`iframe`                                                                                         | `iframe`                                                                   |
+| 手动 `start`   | 不支持手动启动，自动通过 `mount`                                                                          | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                         |
+| `mount` 应用   | 自动：由组件或资源加载完毕决定                                                                            | 不支持外部调用，由 `start` 方法作为队列执行                                |
+| `unmount` 应用 | 由组件 `disconnectedCallback` 发起                                                                        | 由组件 `disconnectedCallback` 发起                                         |
+| 复杂度         | 分了 3 类，组件实例：`MicroAppElement`，应用实例：`CreateApp`，沙箱实例：`IframeSandbox` 或 `WithSandBox` | 只要关心实例 `Wujie`、组件实例几乎可以忽略                                 |
+| 优点           | 支持更广泛，支持多种沙箱，多个隔离方式                                                                    | 简单，专注 `iframe` 沙箱，支持降级处理                                     |
+| 缺点           | 过于复杂，从语意上看有的方法在 3 个实例将相互重叠，容易混淆，除此之外也不支持降级处理                     | 过于零散，缺乏逻辑抽象分离，有的地方会让人感觉是为了解决问题临时添加的分支 |
 
-这里先从 `active` 来看，按照 `startApp` 的流程顺序来
+> 另外，无论是 `wujie` 还是 `micro-app` 在节点的分支源码中都存在不同的逻辑问题
 
 #### 📝 `active` 激活应用
 
