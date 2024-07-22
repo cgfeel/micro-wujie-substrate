@@ -612,7 +612,7 @@
 - `patchEventTimeStamp`：修复 `vue` 的 `event.timeStamp` 问题
 - `onunload`：当销毁子应用时主动 `unmount` 子应用
 
-> `onunload` 是一个废弃的方法，随时可能被浏览器弃用。通过 `onunload` 可能会导致重复 `unmount`。
+> `onunload` 是一个废弃的方法，随时可能被浏览器弃用。这个监听方法只在 `iframe` 降级处理时存在与容器中，目的应该用于点击应用中第三方链接离开页面时注销应用。
 
 第三步：`分支 1` - `alive` 模式下切换应用
 
@@ -1156,7 +1156,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 触发场景：
 
-- `startApp`：切换 `umd` 模式的应用
+- `startApp` 切换 `umd` 模式的应
+- `iframe` 降级处理子应用 `onunload`。例如：跳转第三方页面
+- `destroy` 注销应用
+- `web component` 组件从 `Dom` 中卸载
 
 ### `packages` - `wujie-react`
 
