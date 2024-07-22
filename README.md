@@ -329,7 +329,7 @@
 
 > 应用启动没有根据 `execFlag` 来判断
 
-是不是有个问题，应用中的 `css` 在哪里处理？
+应用中的 `css` 在哪里处理？
 
 - 其实在启动之前已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 做了处理
 
