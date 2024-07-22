@@ -321,11 +321,11 @@
 
 **第二步：`start` 应用**
 
-预加载但是没有 `exec` 启动的情况下 `start` 应用：
+预加载但是没有 `exec` 启动的情况下需要 `start` 应用：
 
-- 调用生命周期中的 `beforeLoad`
-- 通过 `importHTML` 提取需要加载的 `script`，见：`importHTML` [[查看](#importhtml)]
-- 将提取的方法 `getExternalScripts` 传入应用 `sandbox.start`，执行启动
+- 调用生命周期中的 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#beforeload)]
+- 通过 `importHTML` 提取需要加载的 `script`，见：`importHTML` [[查看](#importhtml-加载资源)]
+- 将提取的方法 `getExternalScripts` 传入应用 `sandbox.start` 启动应用 [[查看](#-start-启动应用)]
 
 > 应用启动没有根据 `execFlag` 来判断
 
