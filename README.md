@@ -296,7 +296,7 @@
 - 获取实例的 `iframeWindow` 对象，用于查看子应用挂载方法 `__WUJIE_MOUNT`
 - 如果实例预加载应用，需要等待预加载执行完毕，见：`runPreload` [[查看](#3-预加载微任务-runpreload)]
 
-#### 2.1 `alive` 保活模式启动应用
+#### 2.1 `alive` 保活模式切换应用
 
 和 `micro-app` 的 `keep-alive` 模式一样：
 
@@ -309,16 +309,38 @@
 
 - 将拿到的配置信息激活子应用：`active`，见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
 
-test：
+这里会有个问题：
 
-- 预加载但是没有启动的情况下 `start` 应用
-- 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
+- 场景：预加载应用到启动应用，每次切换应用
+- 都会重复 `active` 激活应用，影响效率
 
-`!sandbox.execFlag` 情况下 `start` 子应用分 3 步：
+原因：
+
+- `active` 激活应用本身的意义就是将应用容器根据加载状态，在不同挂载点来回切换
+- 这是 `wujie` 天然缺陷，但通常不会影响使用
+
+**第二步：`start` 应用**
+
+预加载但是没有 `exec` 启动的情况下 `start` 应用：
 
 - 调用生命周期中的 `beforeLoad`
 - 通过 `importHTML` 提取需要加载的 `script`，见：`importHTML` [[查看](#importhtml)]
 - 将提取的方法 `getExternalScripts` 传入应用 `sandbox.start`，执行启动
+
+> 应用启动没有根据 `execFlag` 来判断
+
+是不是有个问题，应用中的 `css` 在哪里处理？
+
+- 其实在启动之前已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 做了处理
+
+`alive` 模式或 `umd` 模式下包含的场景：
+
+- 预加载时替换应用资源通过 `active` 将 `template` 挂载到容器，待启动应用时将容器移动到指定 `el` 节点，`template` 不需要变更
+- 初次启动应用通过 `active` 将 `template` 挂载到容器，下次切换应用时容器资源不变
+
+其他模式往下看初始化应用实例
+
+- 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
 
 ### `preloadApp` 预加载流程
 
