@@ -1471,10 +1471,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 如果有提供的话通过 `replace` 更新资源 [[查看](#1-更新配置应用信息)]
 - 最后将更新的资源返回
 
-`processCssLoader` 存在的重复执行的问题，包含以下场景：
-
-- `preloadApp` 预加载应用后，`startApp` 启动非 `alive` 模式的应用
-- `startApp` 切换非 `alive` 模式或 `umd` 模式的应用
+`processCssLoader` 存在的重复执行的问题，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
 
 #### `getEmbedHTML`：转换样式
 
