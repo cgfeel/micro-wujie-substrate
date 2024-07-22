@@ -1290,6 +1290,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 7.2. `start` 应用队触发事件        | 必要，如：`mount` 等 [[查看](#-mount-挂载应用)]                                                  | 必要                                                                                                                                                                                                                                                                                                                                                                   |
 | 8. 挂载后调用生命周期              | 必要，但存在重复调用的问题，见：6.预加载中的 `bug` [[查看](#6预加载中的-bug)]                    | 必要                                                                                                                                                                                                                                                                                                                                                                   |
 
+> 因此，对于非 `alive` 模式或 `umd` 模式的应用，在 `wujie` 切换时容器可能会有短暂的白屏问题
+
 #### `processTpl` 提取资源
 
 目录：`template.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
