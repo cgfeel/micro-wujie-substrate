@@ -409,20 +409,20 @@
 
 用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 是一样的：
 
-| 分类           | `micro-app`                                                                                               | `wujie`                                                                    |
-| -------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| 创建实例       | `CreateApp`：应用实例                                                                                     | `Wujie`：应用实例，也是沙箱实例                                            |
-| 映射表         | `appInstanceMap` 存应用实例，和组件映射表不同                                                             | `idToSandboxCacheMap` 唯一映射表，组件挂载时通过 `name` 从映射表获取实例   |
-| 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie`                                                 |
-| 加载资源       | 自动：构造函数调用 `loadSourceCode`                                                                       | 手动：`active` 激活应用                                                    |
-| 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator`                                             |
-| 沙箱支持       | `proxy`、`iframe`                                                                                         | `iframe`                                                                   |
-| 手动 `start`   | 不支持手动启动，通过 `mount` 挂载                                                                         | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                         |
-| `mount` 应用   | 自动：由组件或资源加载完毕决定，在 `mount` 中会 `start` 沙箱                                              | 不支持外部调用，由 `start` 方法通过队列执行                                |
-| `unmount` 应用 | 由组件 `disconnectedCallback` 发起                                                                        | 由组件 `disconnectedCallback` 发起                                         |
-| 复杂度         | 分了 3 类，组件实例：`MicroAppElement`，应用实例：`CreateApp`，沙箱实例：`IframeSandbox` 或 `WithSandBox` | 只要关心实例 `Wujie`、组件实例几乎可以忽略                                 |
-| 优点           | 支持更广泛，支持多种沙箱，多个隔离方式                                                                    | 简单，专注 `iframe` 沙箱，支持降级处理                                     |
-| 缺点           | 过于复杂，从语意上看，有的方法在 3 个实例上相互重叠，容易混淆，除此之外并不支持降级处理                   | 过于零散，缺乏逻辑抽象分离，有的地方会让人感觉是为了解决问题临时添加的分支 |
+| 分类           | `micro-app`                                                                                               | `wujie`                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 创建实例       | `CreateApp`：应用实例                                                                                     | `Wujie`：应用实例，也是沙箱实例                                          |
+| 映射表         | `appInstanceMap` 存应用实例，和组件映射表不同                                                             | `idToSandboxCacheMap` 唯一映射表，组件挂载时通过 `name` 从映射表获取实例 |
+| 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie`                                               |
+| 加载资源       | 自动：构造函数调用 `loadSourceCode`                                                                       | 手动：`active` 激活应用                                                  |
+| 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator`                                           |
+| 沙箱支持       | `proxy`、`iframe`                                                                                         | `iframe`                                                                 |
+| 手动 `start`   | 不支持手动启动，通过 `mount` 挂载                                                                         | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                       |
+| `mount` 应用   | 自动：由组件或资源加载完毕决定，在 `mount` 中会 `start` 沙箱                                              | 不支持外部调用，由 `start` 方法通过队列执行                              |
+| `unmount` 应用 | 由组件 `disconnectedCallback` 发起                                                                        | 由组件 `disconnectedCallback` 发起                                       |
+| 复杂度         | 分了 3 类，组件实例：`MicroAppElement`，应用实例：`CreateApp`，沙箱实例：`IframeSandbox` 或 `WithSandBox` | 只要关心实例 `Wujie`、组件实例几乎可以忽略                               |
+| 优点           | 支持更广泛，支持多种沙箱，多个隔离方式                                                                    | 简单，专注 `iframe` 沙箱，支持降级处理                                   |
+| 缺点           | 过于复杂，从语意上看，有的方法在 3 个实例上相互重叠，容易混淆，除此之外并不支持降级处理                   | 过于零散，缺乏逻辑抽象分离                                               |
 
 > 无论是 `wujie` 还是 `micro-app` 在解读的分支源码中都存在不同的逻辑问题
 
