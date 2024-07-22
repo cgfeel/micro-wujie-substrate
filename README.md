@@ -349,7 +349,8 @@
 
 通过 `umd` 切换应用的条件：
 
-- 子应用存在 `mount`
+- 子应用存在 `__WUJIE_MOUNT` 方法挂载到 `window`
+- 预加载时通过 `exec` 预执行，或完成首次加载后每次切换应用
 
 ### `preloadApp` 预加载流程
 
@@ -712,7 +713,7 @@
 
 第三步：通过 `patchCssRules` 为子应用样式打补丁
 
-`degrade` 主动降级不处理、已处理过不处理
+`degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
 1. 兼容 `:root` 选择器样式到 `:host` 选择器上
 2. 将 `@font-face` 定义到 `shadowRoot` 外部
