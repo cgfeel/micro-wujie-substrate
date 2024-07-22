@@ -1427,7 +1427,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `preloadApp`：预加载应用
 - `startApp`：初次加载应用（不包含预加载后 `alive` 模式的应用）
-- `startApp`：切换非 `alive` 模式或 `umd` 模式的应用
+- `startApp`：每次切换非 `alive` 模式或 `umd` 模式的应用
 
 参数：
 
