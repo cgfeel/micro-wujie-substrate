@@ -1269,7 +1269,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 说它不影响使用是因为：
 
 - 即便 `ignore` 正确收集，最终 `contentPromise` 还是以空字符输出 `Promise.resolve("")`
-- `getEmbedHTML` 在处理外联 `css` 稍微不同，但最终结果还是被忽略，见 `getEmbedHTML`
+- `getEmbedHTML` 在处理外联 `css` 稍微不同，但最终结果还是被忽略，见 `getEmbedHTML` [[查看](#getembedhtml转换样式)]
 
 一个重复加载的问题，包含场景：
 
