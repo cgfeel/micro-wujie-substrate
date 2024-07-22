@@ -305,8 +305,10 @@
 
 流程分 3 步：
 
-- 将拿到的配置信息激活子应用：`sandbox.active`，见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
-- 预加载但是没有执行的情况 `!sandbox.execFlag`，`importHTML` 请求资源后 `start` 子应用
+**第一步：激活应用**
+
+- 将拿到的配置信息激活子应用：`active`，见：1. `active` 激活应用 [[查看](#1-active-激活应用)]
+- 预加载但是没有启动的情况下 `start` 应用
 - 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
 
 `!sandbox.execFlag` 情况下 `start` 子应用分 3 步：
@@ -1420,6 +1422,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### `processCssLoader`：处理 `css-loader`
 
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56C23-L56C39)]
+
+触发场景有 3 个：
+
+- `preloadApp`：预加载应用
+- `startApp`：初次加载应用（不包含预加载后 `alive` 模式的应用）
+- `startApp`：切换非 `alive` 模式或 `umd` 模式的应用
 
 参数：
 
