@@ -333,7 +333,7 @@
 
 - 启动之前已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 做了处理
 
-`alive` 模式或 `umd` 模式下包含的场景：
+`alive` 模式或 `umd` 模式下加载样式的场景：
 
 - 预加载时替换应用资源通过 `active` 将 `template` 挂载到容器，待启动应用时将容器移动到指定 `el` 节点，`template` 不需要变更
 - 初次启动应用通过 `active` 将 `template` 挂载到容器，下次切换应用时容器资源不变
