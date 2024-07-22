@@ -418,7 +418,7 @@
 | 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator`                                             |
 | 沙箱支持       | `proxy`、`iframe`                                                                                         | `iframe`                                                                   |
 | 手动 `start`   | 不支持手动启动，通过 `mount` 挂载                                                                         | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                         |
-| `mount` 应用   | 自动：由组件或资源加载完毕决定，在 `mount` 中会 `start` 沙箱                                              | 不支持外部调用，由 `start` 方法作为队列执行                                |
+| `mount` 应用   | 自动：由组件或资源加载完毕决定，在 `mount` 中会 `start` 沙箱                                              | 不支持外部调用，由 `start` 方法通过队列执行                                |
 | `unmount` 应用 | 由组件 `disconnectedCallback` 发起                                                                        | 由组件 `disconnectedCallback` 发起                                         |
 | 复杂度         | 分了 3 类，组件实例：`MicroAppElement`，应用实例：`CreateApp`，沙箱实例：`IframeSandbox` 或 `WithSandBox` | 只要关心实例 `Wujie`、组件实例几乎可以忽略                                 |
 | 优点           | 支持更广泛，支持多种沙箱，多个隔离方式                                                                    | 简单，专注 `iframe` 沙箱，支持降级处理                                     |
