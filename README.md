@@ -352,6 +352,10 @@
 - 子应用存在 `__WUJIE_MOUNT` 方法挂载到 `window`
 - 预加载时通过 `exec` 预执行，或完成首次加载后每次切换应用
 
+流程：
+
+- 卸载应用实例 `unmount`
+
 ### `preloadApp` 预加载流程
 
 目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
@@ -604,10 +608,11 @@
 第二步：更新容器，销毁 `iframeBody`
 
 - 将挂载的容器更新为 `this.el`
-- `clearChild` 销毁 `js` 运行 `iframeBody` 容器内部 `dom`
-- `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
+- `clearChild`：清空 `iframeBody`，如果提供了 `el` 容器的话
+- `patchEventTimeStamp`：修复 `vue` 的 `event.timeStamp` 问题
+- `onunload`：当销毁子应用时主动 `unmount` 子应用
 
-> `onunload` 可以不用考虑，源码只做了声明没有调用
+> `onunload` 是一个废弃的方法，随时可能被浏览器弃用
 
 第三步：`分支 1` - `alive` 模式下切换应用
 
