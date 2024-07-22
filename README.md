@@ -612,7 +612,7 @@
 - `patchEventTimeStamp`：修复 `vue` 的 `event.timeStamp` 问题
 - `onunload`：当销毁子应用时主动 `unmount` 子应用
 
-> `onunload` 是一个废弃的方法，随时可能被浏览器弃用
+> `onunload` 是一个废弃的方法，随时可能被浏览器弃用。通过 `onunload` 可能会导致重复 `unmount`。
 
 第三步：`分支 1` - `alive` 模式下切换应用
 
@@ -1129,6 +1129,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `mount` 挂载应用
 
+触发场景：
+
+- 只能在应用 `start` 时通过 `execQueue` 队列执行 `mount`
+
 挂载应用会做 3 件事
 
 #### 1. `umd` 方式启动
@@ -1147,6 +1151,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 3. 执行下一个队列
 
 - `this.execQueue.shift()?.()`
+
+#### 📝 `unmount` 卸载应用
+
+触发场景：
+
+- `startApp`：切换 `umd` 模式的应用
 
 ### `packages` - `wujie-react`
 
