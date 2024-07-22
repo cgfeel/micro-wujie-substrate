@@ -484,7 +484,7 @@ test：
 问题 2：`preloadApp` 提供 `el` 容器，但不提供 `exec` 执行
 
 - 既然提供 `el` 挂载点，那么无论是 `iframe` 降级还是 `shadowDom`，都会将容器挂载到 `el` 节点
-- 而 🈶️ 不提供 `exec` 去队列将应用 `script` 注入沙箱
+- 不提供 `exec` 去队列将应用 `script` 注入沙箱
 - 假定 `el` 当前是一个可见节点，那么会看到一个没有 `script` 的应用
 
 解决办法：
