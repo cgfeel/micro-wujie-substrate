@@ -1255,7 +1255,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 1. 内联样式用 `content` 换成一个 `promise` 对象 `contentPromise`
 2. 外链样式添加 `promise` 对象 `contentPromise`，根据 `ignore` 决定返回空字符还是通过 `fetchAssets` 加载资源
 
-这里存在 1 个似乎不影响使用的问题：
+**5. 存在的 2 个问题：**
+
+一个似乎不影响使用的问题：
 
 - 先全局搜索 `styles.push` 只有 2 处，且都没有设置 `ignore`，见：`processTpl` 源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
 - 那么在整个通过 `importHTML` 提取出来的 `StyleObject` 都会被忽略 `ignore`
@@ -1268,6 +1270,25 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 即便 `ignore` 正确收集，最终 `contentPromise` 还是以空字符输出 `Promise.resolve("")`
 - `getEmbedHTML` 在处理外联 `css` 稍微不同，但最终结果还是被忽略，见 `getEmbedHTML`
+
+一个重复加载的问题，包含场景：
+
+- `preloadApp` 预加载应用后，`startApp` 启动非 `alive` 模式的应用
+- `startApp` 切换非 `alive` 模式或 `umd` 模式的应用
+
+试想一下每次切换非 `alive` 模式或 `umd` 模式的应用，会重复执行如下操作：
+
+| 操作步骤                           | 必要性                                                                                       | `micro-app` 怎么做                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. 清空容器，注入 `loading`        | 根据情况决定                                                                                 | 注销组件时需要考虑清理子应用的状态和事件                                                                                                                                                                                                                                                                                                                               |
+| 2. 创建新的应用实例 `Wujie`        | 非必要，`Wujie` 每次注销应用都是彻底销毁下次切换重建新实例                                   | 更改实例对应的属性用于对应下线的应用，待下次挂载时再次更新                                                                                                                                                                                                                                                                                                             |
+| 3. 挂载前调用生命周期              | 必要                                                                                         | 必要                                                                                                                                                                                                                                                                                                                                                                   |
+| 4. 加载 `css`                      | 非必要每次都加载，见：`processCssLoader` [[查看](#processcssloader处理-css-loader)]          | 所有的样式资源收集在资源映射表中 `sourceCenter.link`，见：`micro-app` - 注 ⑥ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#microappstart-%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8)]                                                                                                                                                             |
+| 5. 提取入口资源                    | 非必要每次都加载，见：`importHTML` [[查看](#importhtml-加载资源)]                            | 应用实例初始化时通过 `loadSourceCode` 加载资源 [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#11-loadsourcecode-%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90)]，完成后通过 `onLoad` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#31-onload-%E5%8A%A0%E8%BD%BD%E5%AE%8C%E6%AF%95)] 记录在 `this.source.html` 便于下次获取 |
+| 6. 激活应用 `active`               | 非必要，实例 `unmount` 并不会销毁实例对应的资源，但是每次切换应用的时候会通过 `destroy` 销毁 | 不需要每次手动激活，实例 `unmount` 并不会销毁实例对应的资源                                                                                                                                                                                                                                                                                                            |
+| 7.1. `start` 应用队列加载 `script` | 非必要每次都加载，见：`start` [[查看](#-start-启动应用)]                                     | 不需要每次手动启动                                                                                                                                                                                                                                                                                                                                                     |
+| 7.2. `start` 应用队触发事件        | 必要，如：`mount` 等 [[查看](#-mount-挂载应用)]                                              | 必要                                                                                                                                                                                                                                                                                                                                                                   |
+| 8. 挂载后调用生命周期              | 必要，但存在重复调用的问题，见：6.预加载中的 `bug` [[查看](#6预加载中的-bug)]                | 必要                                                                                                                                                                                                                                                                                                                                                                   |
 
 #### `processTpl` 提取资源
 
