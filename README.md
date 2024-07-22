@@ -479,7 +479,7 @@ test：
 触发情况：
 
 - 受影响：切换 `shadowDom` 容器的应用
-- 不受影响：`preloadApp`、`degrade` 降级处理，会将沙箱 `iframe` 作为容器
+- 不受影响：预加载、没有预加载初次启动、降级处理，会将沙箱 `iframe` 作为备用容器
 
 问题 2：`preloadApp` 提供 `el` 容器，但不提供 `exec` 执行
 
