@@ -1160,6 +1160,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `iframe` 降级处理子应用 `onunload`。例如：跳转第三方页面
 - `destroy` 注销应用
 - `web component` 组件从 `Dom` 中卸载
+- 监听 `popstate` 后退
+
+> `popstate`：后退页面链接是通过手动更新 `url`，或通过 `http` 开头的 `url.search`，在 `iframe` 降级处理过程中需要重建容器，包括重新 `onunload`
+
+`unmount` 是存在重复触发的可能的，例如：
+
+- 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
 
 ### `packages` - `wujie-react`
 
