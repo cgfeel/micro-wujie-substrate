@@ -1260,7 +1260,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 一个似乎不影响使用的问题：
 
 - 先全局搜索 `styles.push` 只有 2 处，且都没有设置 `ignore`，见：`processTpl` 源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
-- 那么在整个通过 `importHTML` 提取出来的 `StyleObject` 都会被忽略 `ignore`
+- 那么在所有通过 `importHTML` 提取出来的 `StyleObject` 都会被忽略 `ignore`
 
 产生的问题：
 
