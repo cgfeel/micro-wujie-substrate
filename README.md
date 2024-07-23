@@ -1697,7 +1697,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 >
 > 它们的目的只有全都满足以下 2 个条件才可以：
 >
-> - 通过 ``patchRenderEffect` 重写子应用 `node` 操作 [[查看](#patchrendereffect-为容器打补丁)]
+> - 通过 `patchRenderEffect` 重写子应用 `node` 操作 [[查看](#patchrendereffect-为容器打补丁)]
 > - 操作的节点元素为 `script`，让其添加到沙箱的 `iframe` 中
 
 **第一步：获取配置**
