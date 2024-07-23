@@ -654,15 +654,6 @@
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，注 n (`recoverDocumentListeners`)
 
-> 注 n：`renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
->
-> - 通过 `renderTemplateToHtml` 使用 `iframeWindow` 创建一个 `html` 根元素
-> - 并把 `template` 注入 `html` 元素并返回元素对象
-> - 通过 `processCssLoaderForTemplate` 处理 `html` 中的 `css-before-loader` 以及 `css-after-loader`，详细见插件系统 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
-> - 将处理后的 `processedHtml` 替换“新容器”的 `html`
-> - 劫持 `iframe` 中的 `html` 使其 `parentNode` 可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
-> - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
->
 > 关于 `_cacheListeners` 的用途就有点不明所以了：
 >
 > - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
