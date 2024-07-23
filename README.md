@@ -1959,3 +1959,30 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 **外部补丁：`patchElementHook`**
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
+
+#### `processCssLoaderForTemplate`：手动添加样式
+
+目录：`shadow.ts` - `processCssLoaderForTemplate` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L109)]
+
+参数：
+
+- `sandbox`：应用实例
+- `html`：由 `renderTemplateToHtml` [[查看](#rendertemplatetohtml渲染-template-为-html-元素)] 渲染的 `html` 元素
+
+返回：
+
+- 将更新后的 `html` 作为 `promise` 传回去，无论是 `resolve` 成功，还是 `reject` 拒绝
+
+先提取了 3 个 `plugin`：
+
+- `cssLoader`：用于每条样式加载成功后自定义处理，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+- `cssBeforeLoaders`：用于插入应用 `html` 头部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
+- `cssAfterLoaders`：用于插入应用 `html` 末尾的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
+
+> 其中 `cssLoader` 通过 `getCssLoader` 柯里化，方式和 `getJsLoader` 一致，见：`insertScriptToIframe` - 第一步 [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+提取样式的步骤和 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 提取应用内部样式一样：
+
+- 通过 `getExternalStyleSheets` 为每个样式添加一个 `promise` 对象 `contentPromise`
+- 通过 `contentPromise` 将所有样式都变成内联样式
+- 将拿到的内联样式创建 `style` 根据配置，插入应用 `html` 的头部或尾部
