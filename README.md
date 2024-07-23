@@ -1201,16 +1201,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 这里只列举部分关键的，不易懂的属性：
 
-| 属性         | 定义                                                                                                                                          | `constructor` 初始化                           | `destroy` 注销          |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------- |
-| `activeFlag` | 实例已激活                                                                                                                                    | `undefined`，在 `active` 时为 `true`           | 在 `unmount` 中 `false` |
-| `bus`        | 通信对象，使用 `appEventObjMap` 获取事件映射表，通过 `inject` 实现父子应用指向同一个对象，见 `inject` [[查看](#1-inject-注入子应用-3-个对象)] | `EventBus`                                     | `null`                  |
-| `degrade`    | 主动降级，用 `iframe` 作为应用容器                                                                                                            | 通过配置文件在构造函数中声明                   | 不处理                  |
-| `execFlag`   | `start` 应用则为 `true`                                                                                                                       | `undefined`                                    | `null`                  |
-| `execQueue`  | `start` 应用中的任务队列                                                                                                                      | `undefined`                                    | `null`                  |
-| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag`                                                                                                           | `undefined`                                    | `null`                  |
-| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false`                                                                                                           | `undefined`                                    | `null`                  |
-| `sync`       | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                     | `unndefined`，只在 `active` 时通过配置文件设置 | 不处理                  |
+| 属性                   | 定义                                                                                                                                          | `constructor` 初始化                                   | `destroy` 注销          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------- |
+| `activeFlag`           | 实例已激活                                                                                                                                    | `undefined`，在 `active` 时为 `true`                   | 在 `unmount` 中 `false` |
+| `bus`                  | 通信对象，使用 `appEventObjMap` 获取事件映射表，通过 `inject` 实现父子应用指向同一个对象，见 `inject` [[查看](#1-inject-注入子应用-3-个对象)] | `EventBus`                                             | `null`                  |
+| `degrade`              | 主动降级，用 `iframe` 作为应用容器                                                                                                            | 通过配置文件在构造函数中声明                           | 不处理                  |
+| `elementEventCacheMap` | 子应用 `dom` 监听事件留存，当降级时用于保存元素事件                                                                                           | `WeakMap`，在构造函数中通过 `iframeGenerator` 发起记录 | `null`                  |
+| `execFlag`             | `start` 应用则为 `true`                                                                                                                       | `undefined`                                            | `null`                  |
+| `execQueue`            | `start` 应用中的任务队列                                                                                                                      | `undefined`                                            | `null`                  |
+| `hrefFlag`             | 判断子应用的 `url`，注 n `hrefFlag`                                                                                                           | `undefined`                                            | `null`                  |
+| `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                           | `undefined`                                            | `null`                  |
+| `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                     | `unndefined`，只在 `active` 时通过配置文件设置         | 不处理                  |
 
 > 注 n：`hrefFlag`：
 >
@@ -2016,3 +2017,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `getExternalStyleSheets` 为每个样式添加一个 `promise` 对象 `contentPromise`
 - 通过 `contentPromise` 将所有样式都变成内联样式
 - 将拿到的内联样式创建 `style` 元素，根据配置插入应用 `html` 的头部或尾部
+
+#### 记录、恢复 `iframe` 容器事件
+
+目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
+
+仅用于 `degrade` 主动降级：
+
+- `recordEventListeners`：记录容器中所有事件
+- `recoverEventListeners`：恢复容器中所有元素事件
+- `recoverDocumentListeners`：恢复容器 `document` 事件
+
+**1.记录事件：**
+
+- 重写子应用 `addEventListener` 和 `removeEventListener`
+- 根据操作从实例 `elementEventCacheMap` 添加或删除记录
