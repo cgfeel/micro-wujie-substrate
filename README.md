@@ -1168,6 +1168,29 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
 
+#### 📝 `Wujie` 实例中关键属性
+
+| 属性         | 定义                                | 初始化                       | `destroy` 注销          |
+| ------------ | ----------------------------------- | ---------------------------- | ----------------------- |
+| `activeFlag` | 在 `active` 中 `true`               | `undefined`                  | 在 `unmount` 中 `false` |
+| `degrade`    | 主动降级                            | 通过配置文件在构造函数中声明 | 不处理                  |
+| `execFlag`   | `start` 应用则为 `true`             | `undefined`                  | `null`                  |
+| `execQueue`  | `start` 应用中的任务队列            | `undefined`                  | `null`                  |
+| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag` | `undefined`                  | `null`                  |
+| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false` | `undefined`                  | `null`                  |
+
+> 注 n：`hrefFlag`：
+>
+> - `locationHrefSet` 修改 `URL`：在应用中通过 `location` 设置 `href` 时候为 `true`
+> - `popstate` 后退时，前一个页面的 `location.search` 是 `http` 开头为 `true`
+> - `popstate` 后退时 `hrefFlag` 为 `true`，或 `active` 激活应用时为 `false`
+>
+> 由此可以得出 `hrefFlag` 表示当前应用的链接并非来自基座，因此 `hrefFlag` 为 `true` 时：
+>
+> - `umd` 模式 `unmount` 时，如果当前应用链接并非来自基座，不会触发子应用 `__WUJIE_UNMOUNT` 等操作
+> - 卸载应用时，`clearInactiveAppUrl` 不会清理 `queryMap`
+> - `popstate` 后退时判断后退路由的来路决定是否重绘应用
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
