@@ -1156,13 +1156,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 触发场景：
 
-- `startApp` 切换 `umd` 模式的应
-- `iframe` 降级处理子应用 `onunload`。例如：跳转第三方页面
+- `startApp` 切换 `umd` 模式的应用前先卸载
+- `iframe` 降级处理子应用 `onunload`，例如：跳转第三方页面
 - `destroy` 注销应用
 - `web component` 组件从 `Dom` 中卸载
-- 监听 `popstate` 后退
-
-> `popstate`：后退页面链接是通过手动更新 `url`，或通过 `http` 开头的 `url.search`，在 `iframe` 降级处理过程中需要重建容器，包括重新 `onunload`
+- 监听 `popstate` 后退，根据 `hrefFlag` [[查看](#-wujie-实例中关键属性)] 决定是否要重绘 `iframe` 触发 `onunload`
 
 `unmount` 是存在重复触发的可能的，例如：
 
@@ -1170,14 +1168,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `Wujie` 实例中关键属性
 
-| 属性         | 定义                                | 初始化                       | `destroy` 注销          |
-| ------------ | ----------------------------------- | ---------------------------- | ----------------------- |
-| `activeFlag` | 在 `active` 中 `true`               | `undefined`                  | 在 `unmount` 中 `false` |
-| `degrade`    | 主动降级                            | 通过配置文件在构造函数中声明 | 不处理                  |
-| `execFlag`   | `start` 应用则为 `true`             | `undefined`                  | `null`                  |
-| `execQueue`  | `start` 应用中的任务队列            | `undefined`                  | `null`                  |
-| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag` | `undefined`                  | `null`                  |
-| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false` | `undefined`                  | `null`                  |
+| 属性         | 定义                                                                                  | 初始化                                         | `destroy` 注销          |
+| ------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------- |
+| `activeFlag` | 在 `active` 中 `true`                                                                 | `undefined`                                    | 在 `unmount` 中 `false` |
+| `degrade`    | 主动降级                                                                              | 通过配置文件在构造函数中声明                   | 不处理                  |
+| `execFlag`   | `start` 应用则为 `true`                                                               | `undefined`                                    | `null`                  |
+| `execQueue`  | `start` 应用中的任务队列                                                              | `undefined`                                    | `null`                  |
+| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag`                                                   | `undefined`                                    | `null`                  |
+| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false`                                                   | `undefined`                                    | `null`                  |
+| `sync`       | 同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)] | `unndefined`，只在 `active` 时通过配置文件设置 | 不处理                  |
 
 > 注 n：`hrefFlag`：
 >
