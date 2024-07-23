@@ -654,16 +654,6 @@
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，注 n (`recoverDocumentListeners`)
 
-> 关于 `_cacheListeners` 的用途就有点不明所以了：
->
-> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
-> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
->
-> 补充说明：为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template`
->
-> - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
-> - 将 `html` 元素的 `head` 和 `body` 分别指向实例
-
 > 注 n：`recoverDocumentListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L348)] 原理和 `recoverEventListeners` 注 n，不同在于：
 >
 > - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
@@ -1915,6 +1905,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
 
 > 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
+>
+> 关于 `_cacheListeners` 的用途就有点不明所以了：
+>
+> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
+> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
+>
+> 补充说明：为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template`
+>
+> - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
+> - 将 `html` 元素的 `head` 和 `body` 分别指向实例
 
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
