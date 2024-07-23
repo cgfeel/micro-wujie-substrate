@@ -1910,11 +1910,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 >
 > - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
 > - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
->
-> 补充说明：为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template`
->
-> - 在 `renderTemplateToHtml` 中需要通过 `iframeWindow` 获取 `sandbox` 实例
-> - 将 `html` 元素的 `head` 和 `body` 分别指向实例
 
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
@@ -1945,7 +1940,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 因为当为一个 `html` 元素设置 `innerHTML` 时候，会根据情况自动补全
 - 所以完全不用担心 `head` 或 `body` 缺失造成下次切换应用提取实例时拿不到对象
 
-修正相对路基的细节：
+修正相对路径的细节：
 
 - 通过 `patchElementEffect` 为遍历中每一个可见元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 通过 `relativeElementTagAttrMap` 拿到资源链接 `url`
@@ -1954,6 +1949,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 绝对路径：`new URL(绝对路径，baseUrl).href`，原封不动返回绝对路径
 - 相对路径：`new URL(相对路径, baseUrl).href`，返回：`baseUrl/相对路径`
+
+为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template` 到容器
+
+- 需要通过 `iframeWindow` 获取 `sandbox` 实例，将 `html` 元素的 `head` 和 `body` 分别指向实例
+- 渲染容器的 `document` 指向沙箱 `iframe`
 
 #### `patchElementEffect`：为元素打补丁
 
