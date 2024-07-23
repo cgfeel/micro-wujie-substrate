@@ -1922,8 +1922,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 只有当资源的 `url` 存在时才进行处理，有 2 种情况：
 
-- 资源路径是绝对路径，那么 `new URL(绝对路径，baseUrl).href`，原封不动返回绝对路径
-- 资源路径是相对路径，那么 `new URL(相对路径, baseUrl).href`，返回：`baseUrl/相对路径`
+- 绝对路径，那么 `new URL(绝对路径，baseUrl).href`，原封不动返回绝对路径
+- 相对路径，那么 `new URL(相对路径, baseUrl).href`，返回：`baseUrl/相对路径`
 
 #### `patchElementEffect`：为元素打补丁
 
