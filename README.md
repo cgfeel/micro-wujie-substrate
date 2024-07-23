@@ -1907,11 +1907,23 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `Object.defineProperty` 劫持应用的 `parentNode`，指向沙箱 `iframeWindow.document`
 - 通过 `patchRenderEffect` 重写了容器的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法，注 n (`patchRenderEffect`)
 
-> 注 n：`patchRenderEffect` 为容器 `shadowRoot` 或 `document` 打补丁
->
-> - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
-> - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
-> - 记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
+#### `patchRenderEffect` 为容器打补丁
+
+目录：`effect.ts` - `patchRenderEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L427)]
+
+参数：
+
+- `render`：容器的 `shadowRoot` 或 `document`
+- `id`：应用名称
+- `degrade`：是否主动降级
+
+做的事情（部分）：
+
+- 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
+- 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+- 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
+
+> 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
 
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
