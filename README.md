@@ -659,12 +659,6 @@
 > - 劫持 `iframe` 中的 `html` 使其 `parentNode` 可枚举 `enumerable`，可修改值 `configurable`，调用方法时指向 `iframeWindow.document`，关于对象的属性劫持见上方复现 [[查看](#wujie-复现)]
 > - 通过 `patchRenderEffect`，重写了“新容器”的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
 >
-> `patchRenderEffect` 为“新容器” 打补丁
->
-> - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
-> - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
-> - 记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
->
 > 关于 `_cacheListeners` 的用途就有点不明所以了：
 >
 > - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
@@ -1907,7 +1901,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - 将更新后的 `html` 替换容器 `iframe` 的 `html`
 - 通过 `Object.defineProperty` 劫持应用的 `parentNode`，指向沙箱 `iframeWindow.document`
-- 通过 `patchRenderEffect`，重写了容器的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
+- 通过 `patchRenderEffect`，重写了容器的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法，注 n (`patchRenderEffect`)
+
+> 注 n：`patchRenderEffect` 为容器打补丁
+>
+> - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
+> - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+> - 记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
 
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
