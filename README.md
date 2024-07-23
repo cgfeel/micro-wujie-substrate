@@ -1886,7 +1886,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 和当前链接进行比对，如果不一致 `replace` 替换链接
 
-#### `renderTemplateToIframe` 喧嚷资源到 `iframe`
+#### `renderTemplateToIframe` 渲染资源到 `iframe`
 
 目录：`shadow.ts` - `renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
 
