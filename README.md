@@ -1916,7 +1916,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 用途：
 
 - 纠正子应用中动态创建 `style` 时 `document` 对象
-- 纠正子应用中创建 `iframe` 时 `querySelector` 上下文指向
+- 纠正子应用中动态创建 `iframe` 时 `querySelector` 上下文指向
 
 **内部补丁 3：`_hasPatch`**
 
