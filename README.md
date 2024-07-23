@@ -1188,11 +1188,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
 
-卸载流程：
+卸载流程分为 3 部分：
+
+#### 1. 卸载应用 - 所有模式
 
 - `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 清理路由，见 `clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
-- `alive` 模式使用沙箱 `iframeWindow` 触发生命周期 `deactivated`
+
+#### 2. 卸载 `alive` 模式的应用
+
+- 使用沙箱 `iframeWindow` 触发生命周期 `deactivated`
+
+#### 3. 卸载 `umd` 模式的应用
 
 准备卸载 `umd` 模式子应用，要求：
 
