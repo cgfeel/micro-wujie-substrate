@@ -1886,6 +1886,45 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 和当前链接进行比对，如果不一致 `replace` 替换链接
 
+#### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
+
+目录：`shadow.ts` - `renderTemplateToHtml` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L176)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `iframeWindow`
+- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+
+返回：
+
+- 整个渲染完成并更新资源的 `html` 元素
+
+做了 2 件事：
+
+- 通过沙箱 `iframe` 下的 `document` 创建一个 `html` 元素，并将 `template` 作为 `innerHTML`
+- 遍历 `html` 下所有可见元素，将所有 `a`、`img`、`source` 的相对路径通过 `patchElementEffect` 指向子应用
+
+优化 `umd` 模式加载的应用：
+
+- 组件多次渲染，`head` 和 `body` 必须一直使用同一个来应对被缓存的场景
+- 所以启动之前将 `head` 和 `body` 指向应用实例，以便下次通过 `replaceHeadAndBody` 直接替换
+
+在末尾可能是担心不存在 `head` 或 `body` 的情况进行了补全：
+
+- 但目前来看似乎做了多余的工作
+- 因为当为一个 `html` 元素设置 `innerHTML` 时候，会根据情况自动补全
+- 所以完全不用担心 `head` 或 `body` 缺失造成下次切换应用提取实例时拿不到对象
+
+修正相对路基的细节：
+
+- 通过 `patchElementEffect` 为遍历中每一个可见元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 通过 `relativeElementTagAttrMap` 拿到资源链接 `url`
+
+只有当资源的 `url` 存在时才进行处理，有 2 种情况：
+
+- 资源路径是绝对路径，那么 `new URL(绝对路径，baseUrl).href`，原封不动返回绝对路径
+- 资源路径是相对路径，那么 `new URL(相对路径, baseUrl).href`，返回：`baseUrl/相对路径`
+
 #### `patchElementEffect`：为元素打补丁
 
 目录：`iframe.ts` - `patchElementEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L668)]
@@ -1901,7 +1940,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 用途：
 
-- 通过获取元素的 `baseURI` 去纠正子应用中带有相对路径的资源，比如：`link`、`img` 等
+- 通过获取元素的 `baseURI` 去纠正子应用中带有相对路径的资源，比如：`a`、`img` 等
 - 使其路径相对于子应用，而不是基座
 
 **内部补丁 2：`ownerDocument`**
