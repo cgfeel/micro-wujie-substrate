@@ -1905,7 +1905,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - 将更新后的 `html` 替换容器 `iframe` 的 `html`
 - 通过 `Object.defineProperty` 劫持应用的 `parentNode`，指向沙箱 `iframeWindow.document`
-- 通过 `patchRenderEffect` 重写了容器的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法，注 n (`patchRenderEffect`)
+- 通过 `patchRenderEffect` 给容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
 
 #### `patchRenderEffect` 为容器打补丁
 
