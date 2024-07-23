@@ -479,7 +479,7 @@
 
 #### 1. `inject` 注入子应用 3 个对象：
 
-- `idToSandboxMap`：`appInstanceMap` 存应用实例映射表
+- `idToSandboxMap`：`appInstanceMap` 应用实例映射表
 - `appEventObjMap`：`EventBus` 事件映射表
 - `mainHostPath` 主应用 `host`
 
