@@ -1876,6 +1876,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### `clearInactiveAppUrl`：清理路由
 
+目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
+
 清理非激活态的子应用同步参数：
 
 - 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
@@ -1888,3 +1890,38 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 将条件匹配的 `searchkey` 全部删除，组合新的链接：
 
 - 和当前链接进行比对，如果不一致 `replace` 替换链接
+
+#### `patchElementEffect`：为元素打补丁
+
+目录：`iframe.ts` - `patchElementEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L668)]
+
+参数：
+
+- `element`：`html` 节点元素、`ShadowRoot`
+- `iframeWindow`：沙箱的 `iframeWindow`
+
+**内部补丁 1：`baseURI`**
+
+- 通过 `proxyLocation` 定位到当前应用的 `protocol` + `host` + `pathname`
+
+用途：
+
+- 通过获取元素的 `baseURI` 去纠正子应用中带有相对路径的资源，比如：`link`、`img` 等
+- 使其路径相对于子应用，而不是基座
+
+**内部补丁 2：`ownerDocument`**
+
+- 指向当前沙箱 `iframeWindow`
+
+用途：
+
+- 纠正子应用中动态创建 `style` 时 `document` 对象
+- 纠正子应用中创建 `iframe` 时 `querySelector` 上下文指向
+
+**内部补丁 3：`_hasPatch`**
+
+- 表明已给元素打过补丁，不用再打补丁
+
+**外部补丁：`patchElementHook`**
+
+通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
