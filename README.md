@@ -1886,6 +1886,29 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 和当前链接进行比对，如果不一致 `replace` 替换链接
 
+#### `renderTemplateToIframe` 喧嚷资源到 `iframe`
+
+目录：`shadow.ts` - `renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
+
+参数：
+
+- `renderDocument`：降级 `iframe` 容器的 `document`
+- `iframeWindow`：沙箱的 `iframeWindow`
+- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+
+主动降级时将资源渲染到 `iframe`，调用场景：
+
+- 应用初次激活 `active`
+- 非 `active` 模式切换应用
+
+流程：
+
+- 通过 `renderTemplateToHtml` 将 `template` 渲染为 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+- 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+- 将更新后的 `html` 替换容器 `iframe` 的 `html`
+- 通过 `Object.defineProperty` 劫持应用的 `parentNode`，指向沙箱 `iframeWindow.document`
+- 通过 `patchRenderEffect`，重写了容器的 `head`、`body` 的事件、`appendChild` 和 `insertBefore` 等方法
+
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
 目录：`shadow.ts` - `renderTemplateToHtml` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L176)]
