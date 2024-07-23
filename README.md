@@ -1166,6 +1166,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
 
+卸载流程：
+
+- `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- 清理路由，见 `clearInactiveAppUrl`
+
 #### 📝 `Wujie` 实例中关键属性
 
 | 属性         | 定义                                                                                      | 初始化                                         | `destroy` 注销          |
@@ -1813,3 +1818,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 总结：
 
 - 只要不是通过 `startApp` 初始化添加 `loading` 元素，每次执行 `renderElementToContainer` 都会清空容器
+
+#### `clearInactiveAppUrl`：清理路由
+
+清理非激活态的子应用同步参数：
+
+- 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
+- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对
+
+遍历 `search` 对象所有的 `key`，作为 `name` 提取并筛选应用：
+
+- 应用必须存在，且已经 `start` 启动、存在 `sync` 同步路由、路由全部来自基座、且应用已激活
+
+将条件匹配的 `searchkey` 全部删除，组合新的链接：
+
+- 和当前链接进行比对，如果不一致 `replace` 替换链接
