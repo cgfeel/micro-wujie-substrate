@@ -1985,4 +1985,4 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 通过 `getExternalStyleSheets` 为每个样式添加一个 `promise` 对象 `contentPromise`
 - 通过 `contentPromise` 将所有样式都变成内联样式
-- 将拿到的内联样式创建 `style` 根据配置，插入应用 `html` 的头部或尾部
+- 将拿到的内联样式创建 `style` 元素，根据配置插入应用 `html` 的头部或尾部
