@@ -475,6 +475,26 @@
 
 > 无论是 `wujie` 还是 `micro-app` 在解读的分支源码中都存在不同的逻辑问题
 
+#### 📝 `constructor` 构造函数
+
+#### 1. `inject` 注入子应用 3 个对象：
+
+- `idToSandboxMap`：`appInstanceMap` 存应用实例映射表
+- `appEventObjMap`：`EventBus` 事件映射表
+- `mainHostPath` 主应用 `host`
+
+这里做了个判断：
+
+| 所在环境                 | 嵌套情况   | 注入方式                                         |
+| ------------------------ | ---------- | ------------------------------------------------ |
+| 基座创建应用实例         | 作为子应用 | 通过 `window.__WUJIE.inject` 从上一层获取        |
+| 基座创建应用实例         | 最顶层基座 | 声明最初要注入的对象 `this.inject`               |
+| 子应用通过 `window` 调用 | 作为子应用 | `window.__WUJIE.inject[name]` 从上一层获取映射表 |
+
+> 这样无论是子应用还是基座，最终拿到的 `inject` 对象都是同一个
+
+提取配置初始化属性
+
 #### 📝 `active` 激活应用
 
 分 2 部分：
@@ -1169,7 +1189,21 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 卸载流程：
 
 - `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- 清理路由，见 `clearInactiveAppUrl`
+- 清理路由，见 `clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
+- `alive` 模式使用沙箱 `iframeWindow` 触发生命周期 `deactivated`
+
+准备卸载 `umd` 模式子应用，要求：
+
+- `mountFlag` 已卸载不处理，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- 子应用中不存在 `__WUJIE_UNMOUNT` 不处理
+- `alive` 模式或当前的 `url` 不是来自基座不处理
+
+卸载 `umd` 模式子应用：
+
+- 使用沙箱 `iframeWindow` 触发生命周期 `beforeUnmount`
+- 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
+- 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
+- `mountFlag` 失活
 
 #### 📝 `Wujie` 实例中关键属性
 
