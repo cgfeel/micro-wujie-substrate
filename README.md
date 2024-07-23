@@ -205,12 +205,7 @@
 - `connectedCallback`：完成挂载将自身设置为 `shadowDOM`，通过应用名获取实例 `sandbox`，将自身作为实例的 `shadowRoot`
 - `disconnectedCallback`：卸载组件通过应用名获取实例 `sandbox`，并调用实例 `unmount`
 
-在挂载组件时，将自身作为实例 `shadowRoot` 之前需要通过 `patchElementEffect` 打补丁：
-
-- 根据沙箱 `iframe` 的 `proxyLocation` 去定义 `shadowRoot` 的 `baseURI`
-- 将 `ownerDocument` 指向 `iframe` 沙箱的 `iframeWindow.document`
-- 告知已补丁 `_hasPatch`，不再需要补丁
-- 通过 `execHooks` 遍历 `plugins`，提取 `patchElementHook` 将 `shadowRoot` 和沙箱 `iframe` 传递过去挨个执行
+在挂载组件时，将自身作为实例 `shadowRoot` 之前需要通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
 
 ### `startApp` 启动流程
 
