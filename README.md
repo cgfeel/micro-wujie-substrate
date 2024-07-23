@@ -553,14 +553,18 @@
 其中 `this.replace` 需要说明下：
 
 - 来自：`startApp`、`setupApp`、`preloadApp` 配置 `replace`，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#replace)]
-- 用于替换已提取应用的 `script` 内容
-- 在激活应用时在分别在 `renderTemplateToIframe` 或 `renderTemplateToShadowRoot` 中调用 `patchRenderEffect` 为渲染的 `document` 打补丁
-- 在 `patchRenderEffect` 内部会通过 `rewriteAppendOrInsertChild` 重写相应的方法
-- 在 `rewriteAppendOrInsertChild` 中通过 `insertScriptToIframe` 在容器内插入脚本
 
-`this.replace` 并非必要的，不需要替换就不用提供，之所以在这里提一下是为了介绍 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+用途：
 
-> 在官方文档中说，`replace` 用于 `html`、`js`、`css`，回调的参数只有 `code`，拿不到具体的类型，只能根据具体代码进行替换
+- `processCssLoader`：替换应用的 `template` [[查看](#processcssloader处理-css-loader)]
+- `insertScriptToIframe`：通过 `getJsLoader` 替换每一个 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- `getCssLoader`：替换样式，包含 `rewriteAppendOrInsertChild` 和 `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]
+
+> `getCssLoader` 不能处理子应用内置样式
+
+`this.replace` 并非必要参数，不需要替换就不用提供：
+
+- `replace` 的回调的参数只有 `code`，拿不到具体的类型，只能根据具体代码进行替换
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
