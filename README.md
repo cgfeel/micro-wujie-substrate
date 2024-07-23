@@ -1690,7 +1690,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `rewriteAppendOrInsertChild`：重写渲染容器对于 `script`节点的操作方法
 - `Wujie.start`：启动应用，详细见：`start` 启动应用 [[查看](#-start-启动应用)]
 
-> 重写渲染有 2 种情况，且都来自 `active` 激活应用，见：`active` 激活应用 [[查看](#-active-激活应用)]：
+> `rewriteAppendOrInsertChild` 有 2 种情况，且都来自 `active` 激活应用，见：`active` [[查看](#-active-激活应用)]：
 >
 > - `degrade` 降级处理：优化 `iframe` 容器
 > - 非 `dagrade`：优化 `shadowDom` 容器
