@@ -1168,15 +1168,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `Wujie` 实例中关键属性
 
-| 属性         | 定义                                                                                  | 初始化                                         | `destroy` 注销          |
-| ------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------- |
-| `activeFlag` | 在 `active` 中 `true`                                                                 | `undefined`                                    | 在 `unmount` 中 `false` |
-| `degrade`    | 主动降级                                                                              | 通过配置文件在构造函数中声明                   | 不处理                  |
-| `execFlag`   | `start` 应用则为 `true`                                                               | `undefined`                                    | `null`                  |
-| `execQueue`  | `start` 应用中的任务队列                                                              | `undefined`                                    | `null`                  |
-| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag`                                                   | `undefined`                                    | `null`                  |
-| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false`                                                   | `undefined`                                    | `null`                  |
-| `sync`       | 同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)] | `unndefined`，只在 `active` 时通过配置文件设置 | 不处理                  |
+| 属性         | 定义                                                                                      | 初始化                                         | `destroy` 注销          |
+| ------------ | ----------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------- |
+| `activeFlag` | 在 `active` 中 `true`                                                                     | `undefined`                                    | 在 `unmount` 中 `false` |
+| `degrade`    | 主动降级                                                                                  | 通过配置文件在构造函数中声明                   | 不处理                  |
+| `execFlag`   | `start` 应用则为 `true`                                                                   | `undefined`                                    | `null`                  |
+| `execQueue`  | `start` 应用中的任务队列                                                                  | `undefined`                                    | `null`                  |
+| `hrefFlag`   | 判断子应用的 `url`，注 n `hrefFlag`                                                       | `undefined`                                    | `null`                  |
+| `mountFlag`  | `umd` 模式挂载 `true`，卸载 `false`                                                       | `undefined`                                    | `null`                  |
+| `sync`       | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)] | `unndefined`，只在 `active` 时通过配置文件设置 | 不处理                  |
 
 > 注 n：`hrefFlag`：
 >
