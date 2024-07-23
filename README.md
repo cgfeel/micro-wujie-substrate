@@ -1803,7 +1803,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 打标记：
 
 - 根据提供的 `script` 为插入的 `script` 打上标记 `WUJIE_SCRIPT_ID`，值是一个自增数字
-- 调用场景：`rewriteAppendOrInsertChild`，见注 n：`renderTemplateToIframe` - `patchRenderEffect`
+- 只有通过子应用 `rewriteAppendOrInsertChild` 动态添加的 `script` 才需要打标记，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 外联脚本执行后的处理：
 
