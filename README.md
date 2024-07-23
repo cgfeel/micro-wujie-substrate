@@ -684,7 +684,7 @@
 
 第三步：`分支 3` - 初次渲染
 
-- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` 中，注 n (`renderTemplateToIframe`)
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 
 最后：
 
