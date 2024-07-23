@@ -668,6 +668,12 @@
 >
 > - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
 > - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+> - 记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
+>
+> 关于 `_cacheListeners` 的用途就有点不明所以了：
+>
+> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
+> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
 >
 > 补充说明：为什么要通过沙箱创建 `html` 元素，而不是直接注入 `template`
 >
@@ -1213,6 +1219,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
 - 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
 - `mountFlag` 失活
+- `this.bus.$clear`：清空子应用所有监听的事件，注 n `$clear`
+
+> 注 n：`$clear`，在实例中 `this.bus` 只做 2 件事，在初始化时创建通信对象，在卸载和注销时清空事件，一旦清空就不会考虑还原，下次切换应用需要重新声明应用实例
 
 #### 📝 `Wujie` 实例中关键属性
 
