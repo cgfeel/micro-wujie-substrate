@@ -1929,10 +1929,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 整个渲染完成并更新资源的 `html` 元素
 
-做了 2 件事：
+做了 3 件事：
 
 - 通过沙箱 `iframe` 下的 `document` 创建一个 `html` 元素，并将 `template` 作为 `innerHTML`
-- 遍历 `html` 下所有可见元素，将所有 `a`、`img`、`source` 的相对路径通过 `patchElementEffect` 指向子应用
+- 遍历 `html` 下所有可见元素，通过 `patchElementEffect` 为每个元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 获取所有 `a`、`img`、`source` 元素，修正资源相对路径
 
 优化 `umd` 模式加载的应用：
 
