@@ -1864,8 +1864,43 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `renderTemplateToHtml` 将 `template` 渲染为 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - 将更新后的 `html` 替换容器 `iframe` 的 `html`
-- 通过 `Object.defineProperty` 劫持应用的 `parentNode`，指向沙箱 `iframeWindow.document`
+- 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `iframeWindow.document`
 - 通过 `patchRenderEffect` 给容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+
+#### `renderTemplateToShadowRoot` 渲染资源到 `shadowRoot`
+
+目录：`shadow.ts` - `renderTemplateToShadowRoot` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L212)]
+
+参数：
+
+- `shadowRoot`：注入的容器
+- `iframeWindow`：沙箱的 `iframeWindow`
+- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+
+调用场景：
+
+- 指有在非 `degrade` 降级情况下首次激活应用 `alive`
+
+流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]，不同在于：
+
+| 分类           | `renderTemplateToIframe` | `renderTemplateToShadowRoot`   |
+| -------------- | ------------------------ | ------------------------------ |
+| 容器           | `iframe.document`        | `shadowRoot`                   |
+| 指向实例属性   | `this.document`          | `this.shadowRoot`              |
+| 容器 `head`    | `this.document.head`     | `this.shadowRoot.head`         |
+| 容器 `body`    | `this.document.body`     | `this.shadowRoot.body`         |
+| 遮罩层 `shade` | 不支持                   | 作为在容器 `html` 第一个子元素 |
+
+> 因此 `patchRenderEffect` 打补丁的容器对象也不一样 [[查看](#patchrendereffect-为容器打补丁)]
+
+关于 `head`、`body`：
+
+- 容器的 `head`、`body` 主要用于容器事件、元素操作的代理和劫持
+- 除此之外无论是 `iframe` 还是 `shadowRoot`，都有一个实例的 `head`、`body`，用于渲染子应用的 `template`，见：`renderTemplateToHtml` [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+
+遮罩层 `shade`：
+
+- 在容器中看不见，用途是为了撑开容器中的弹窗和浮层
 
 #### `patchRenderEffect` 为容器打补丁
 
