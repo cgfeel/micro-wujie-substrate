@@ -1168,7 +1168,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `mountFlag` 失活
 - `this.bus.$clear`：清空子应用所有监听的事件，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-`degrade` 主动降级 `umd` 模式补充操作：
+非 `degrade` 主动降级 `umd` 模式补充操作：
+
+- 这里判断 `degrade` 是因为主动降级模式下没有 `shadowRoot`
+- 这里会清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
+
+最后将实例的 `head`、`body` 下的元素全部删除
+
+- 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
+- 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
 
 #### 📝 `Wujie` 实例中关键属性
 
