@@ -1892,6 +1892,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 遮罩层 `shade`：
 
 - 在容器中看不见，用途是为了撑开容器中的弹窗和浮层
+- 由于在 `iframe` 容器中无法撑开容器区域，所以仅限 `shadowRoot`
 
 #### `patchRenderEffect` 为容器打补丁
 
