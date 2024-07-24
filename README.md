@@ -1158,7 +1158,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `mountFlag` 已卸载不处理，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 子应用中不存在 `__WUJIE_UNMOUNT` 不处理
-- `alive` 模式或当前的 `url` 不是来自基座不处理
+- `alive` 模式或当前的 `url` 不是来自基座不处理，见：注 n `hrefFlag` [[查看](#-wujie-实例中关键属性)]
 
 卸载 `umd` 模式子应用：
 
