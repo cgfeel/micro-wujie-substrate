@@ -638,7 +638,7 @@
 第三步：`分支 1` - `alive` 模式下切换应用
 
 - 恢复 `html`：将之前记录子应用的 `<html>` 替换“新容器”的 `<html>`
-- 在保活场景恢复全部事件：`recoverEventListeners` 注 n (`recoverEventListeners`)
+- 在保活场景恢复所有元素事件，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
 > 注 n：`recoverEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L324)] 遍历节点时，“新容器”已替换了 `html` 节点
 >
