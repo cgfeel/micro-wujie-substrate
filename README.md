@@ -1166,9 +1166,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
 - 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
 - `mountFlag` 失活
-- `this.bus.$clear`：清空子应用所有监听的事件，注 n `$clear`
+- `this.bus.$clear`：清空子应用所有监听的事件，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-> 注 n：`$clear`，在实例中 `this.bus` 只做 2 件事，在初始化时创建通信对象，在卸载和注销时清空事件，一旦清空就不会考虑还原，下次切换应用需要重新声明应用实例
+`degrade` 主动降级 `umd` 模式补充操作：
 
 #### 📝 `Wujie` 实例中关键属性
 
@@ -1874,7 +1874,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 调用场景：
 
-- 指有在非 `degrade` 降级情况下首次激活应用 `alive`
+- 只要不是 `degrade` 主动降级，也不是 `alive` 模式切换应用，其他所有模式激活应用都会调用
 
 流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]，不同在于：
 
