@@ -640,15 +640,6 @@
 - 恢复 `html`：将之前记录子应用的 `<html>` 替换“新容器”的 `<html>`
 - 在保活场景恢复所有元素事件，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
-> 注 n：`recoverEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L324)] 遍历节点时，“新容器”已替换了 `html` 节点
->
-> - 声明一个新的 `elementEventCacheMap` 用于收集筛选的事件
-> - 通过 `iframeBody` 拿到沙箱实例 `sandbox`
-> - 通过 `TreeWalker` 遍历 “新容器”的 `<html>`，每个节点对象为 `nextElement`
-> - 从 `sandbox.elementEventCacheMap` 获取每个元素的事件集合
-> - 遍历集合塞入新的 `elementEventCacheMap`，同时为 `nextElement` 添加事件监听
-> - 最后将过滤后的事件更新沙箱实例中的 `sandbox.elementEventCacheMap`
-
 第三步：`分支 2` - 非 `alive` 模式下切换应用
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
