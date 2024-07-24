@@ -1874,7 +1874,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 调用场景：
 
-- 只要不是 `degrade` 主动降级，也不是 `alive` 模式切换应用，其他所有模式激活应用都会调用
+- 只要不是 `degrade` 主动降级，也不是 `alive` 模式切换应用
+- 其他所有模式激活应用都会通过 `renderTemplateToShadowRoot` 渲染 `shadowRoot`
 
 流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]，不同在于：
 
