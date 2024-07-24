@@ -2036,12 +2036,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **2. 恢复容器元素事件：**
 
-- 仅用于切换 `alive` 模式的应用
+- 仅用于 `degrade` 降级处理切换 `alive` 模式的应用
 - 通过 `createTreeWalker` 拿到应用下所有的可见元素
 - 遍历元素，通过 `elementEventCacheMap` 获取事件监听对象，将拿到的事件对象记录到一个新的 `WeakMap`
 - 更新实例 `elementEventCacheMap`
 
 **3. 恢复容器 `document` 事件：**
 
-- 仅用于切换非 `alive` 模式的应用
+- 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
 - 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
