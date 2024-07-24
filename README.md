@@ -643,14 +643,7 @@
 第三步：`分支 2` - 非 `alive` 模式下切换应用
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
-- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，注 n (`recoverDocumentListeners`)
-
-> 注 n：`recoverDocumentListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L348)] 原理和 `recoverEventListeners` 注 n，不同在于：
->
-> - `recoverDocumentListeners` 用于恢复根节点 `documen` 事件
-> - 声明一个 `elementEventCacheMap` 用于记录新的事件
-> - 将之前记录的应用 `<html>` 绑定的事件取出来，添加到“新容器”的 `<html>` 中
-> - 最后用 `elementEventCacheMap` 更新 `sandbox.elementEventCacheMap`
+- `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
 第三步：`分支 3` - 初次渲染
 
