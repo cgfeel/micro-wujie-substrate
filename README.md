@@ -1128,7 +1128,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 触发场景：
 
 - `startApp` 切换 `umd` 模式的应用前先卸载
-- `iframe` 降级处理子应用 `onunload`，例如：跳转第三方页面
+- `iframe` 降级处理子应用 `onunload`，例如：子应用跳转第三方页面
 - `destroy` 注销应用
 - `web component` 组件从 `Dom` 中卸载
 - 监听 `popstate` 后退，根据 `hrefFlag` [[查看](#-wujie-实例中关键属性)] 决定是否要重绘 `iframe` 触发 `onunload`
