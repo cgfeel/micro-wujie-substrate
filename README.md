@@ -685,16 +685,7 @@
 
 > 拓展阅读：`renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)]，通过这个函数来了解加载应用时 `loading` 处理
 
-第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot`
-
-和 `renderTemplateToIframe` 注 n (`renderTemplateToIframe`) 原理一样：
-
-- 相同点：将 `template` 注入沙箱的 `iframe`，提取出 `html` 元素通过 `processCssLoaderForTemplate` 进行处理
-- 不同点：将处理后的 `processedHtml` 插入 `shadowRoot`
-- 不同点：在 `processedHtml` 第一个子集前面插入一个全屏无边距的 `div`，用于撑开容器为屏幕大小，便于展示浮窗等元素
-- 不同点：获取 `shadowRoot` 的头部和尾部分别指向沙箱的 `head` 和 `body`
-- 部分相同：劫持 `shadowRoot.firstChild` 的 `parentNode` 指向 `iframeWindow.document`
-- 部分相同：通过 `patchRenderEffect` 给 `shadowRoot` 打补丁
+第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
 第三步：通过 `patchCssRules` 为子应用样式打补丁
 
