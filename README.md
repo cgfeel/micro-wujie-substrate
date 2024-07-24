@@ -1131,11 +1131,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `iframe` 降级处理子应用 `onunload`，例如：子应用跳转第三方页面
 - `destroy` 注销应用
 - `web component` 组件从 `Dom` 中卸载
-- 监听 `popstate` 后退，根据 `hrefFlag` [[查看](#-wujie-实例中关键属性)] 决定是否要重绘 `iframe` 触发 `onunload`
+- 浏览器前进后退触发子应用 `iframe` 降级容器 `onunload`
 
 `unmount` 是存在重复触发的可能的，例如：
 
 - 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
+
+重写 `onunload` 事件
+
+- 监听 `popstate` 后退，根据 `hrefFlag` [[查看](#-wujie-实例中关键属性)] 决定是否要重绘 `iframe` 触发 `onunload`
 
 卸载流程分为 3 部分：
 
