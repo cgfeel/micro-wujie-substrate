@@ -468,8 +468,8 @@
 
 #### 1. `inject` 注入子应用 3 个对象：
 
-- `idToSandboxMap`：`appInstanceMap` 应用实例映射表
-- `appEventObjMap`：`EventBus` 事件映射表
+- `idToSandboxMap`：`appInstanceMap` 应用实例映射表 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+- `appEventObjMap`：`EventBus` 事件映射表 [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
 - `mainHostPath` 主应用 `host`
 
 这里做了个判断：
