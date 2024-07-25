@@ -231,8 +231,8 @@
 
 #### 1.1 `getWujieById`：获取已存在的沙箱的实例
 
-- 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱中的实例，如果沙箱不存在返回 `null`
-- 目录：`common.ts` - `getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]
+- 使用应用名，通过 `getWujieById` [[源码](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)] 从映射表 `idToSandboxCacheMap` [[查看](#test)] 获取沙箱中的实例
+- 如果沙箱不存在返回 `null`
 
 #### 1.2 获取应用配置
 
@@ -2040,7 +2040,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 全局映射表
 
-#### 1. `idToSandboxCacheMap`
+#### 1. `idToSandboxCacheMap`：存储无界实例和配置
 
 全部无界实例和配置存储 `map`（来自备注）：
 
