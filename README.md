@@ -2102,6 +2102,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 类型：`new Map<String, EventObj>()`，实例名为 `key`，监听事件为 `EventObj`
 
-![无标题-2024-06-04-1410](https://github.com/user-attachments/assets/0139adca-49bb-40e3-bbe3-87838db32be8)
+事件映射表关联流程图（点开新窗口放大缩小查看细节）：
+
+![事件映射表关联流程图](https://github.com/user-attachments/assets/0139adca-49bb-40e3-bbe3-87838db32be8)
 
 #### 📝 `Wujie` 实例中映射表和队列
