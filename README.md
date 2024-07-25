@@ -425,7 +425,7 @@
 - 预加载但没有预执行的 `umd` 模式的应用
 - 非 `alive` 也非 `umd` 模式的应用
 
-试想下加载流程：
+试想下预加载流程：
 
 1. 预加载一个非 `alive` 模式的应用，通过 `WuJie` 创建一个实例 [[查看](#wujie-应用类)]，并添加到映射表 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 2. `startApp` 启动应用，通过 `getWujieById` 拿到应用实例，由于不是 `alive` 模式，随即销毁实例 `destroy`
