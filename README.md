@@ -409,14 +409,38 @@
 
 #### 6.预加载中的 `bug`
 
-问题：
+问题 1：`activated` 重复调用
 
-- 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在 `startApp` 启动应用的时候生命周期 `activated` 会执行 2 次
+- 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在 `startApp` 启动应用的时候生命周期 `activated` 会调用 2 次
 
 为什么 2 次：
 
-- `start` 应用时 `mount` 执行 1 次
-- `start` 之后返回 `destory` 前执行 1 次
+- `start` 应用时 `mount` 调用 1 次
+- `start` 之后返回 `destory` 前调用 1 次
+
+问题 2：预加载逻辑问题
+
+包含场景：
+
+- 预加载 `alive` 模式的应用
+- 预加载但没有预执行的 `umd` 模式的应用
+- 非 `alive` 也非 `umd` 模式的应用
+
+试想下加载流程：
+
+1. 预加载一个非 `alive` 模式的应用，通过 `WuJie` 创建一个实例 [[查看](#wujie-应用类)]，并添加到映射表 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+2. `startApp` 启动应用，通过 `getWujieById` 拿到应用实例，由于不是 `alive` 模式，随即销毁实例 `destroy`
+3. 最后重新通过 `WuJie` 创建实例，再次激活、启动并挂载应用
+
+问题来了：
+
+- 上述过程中的第一步 `preloadApp` 的意义在哪里呢
+- 反正都会在 `startApp` 启动应用时注销，反而是不通过 `preloadApp` 还能减少 `destory` 这一步骤
+
+这也包括了预加载没有预执行的 `umd` 模式应用：
+
+- 因为没有 `start` 启动应用 [[查看](#-start-启动应用)]，队列执行 `script`
+- 初次 `startApp` 没有 `__WUJIE_MOUNT` 方法，同样也会 `destory` 后重新创建实例
 
 ### `Wujie` 应用类
 
