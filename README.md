@@ -234,36 +234,6 @@
 - 使用应用名，从映射表 `idToSandboxCacheMap` 获取沙箱中的实例，如果沙箱不存在返回 `null`
 - 目录：`common.ts` - `getWujieById` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L15)]
 
-添加映射表有 2 个方法，分别为：
-
-- `addSandboxCacheWithWujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23)]：收集 `Wujie` 实例对象，收集在每个映射对象的 `wujie` 属性
-- `addSandboxCacheWithOptions`：收集 `setupApp` 设置应用信息，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]，收集在每个映射对象的 `options` 属性
-
-使用 `addSandboxCacheWithWujie` 只有 1 处调用；
-
-- `Wujie` 构造函数 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L532)]
-
-创建 `Wujie` 实例有 2 个地方：
-
-- `preloadApp`：预加载，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
-- `startApp`：启动应用，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
-
-使用 `addSandboxCacheWithOptions` 只有一处：
-
-- `setupApp` 缓存子应用配置 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L179)]
-
-从这里可以知道：
-
-- `preloadApp`：预加载可以极大的提升子应用首次打开速度
-- `startApp`：只要应用名和链接没变，通过组件重复插入子应用不会重复创建实例
-- `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
-
-关于映射表 `idToSandboxCacheMap`：
-
-- 一个 `Map` 对象：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
-- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：分别来自 `preloadApp` 和 `startApp` 配置信息
-- `getWujieById` 获取的就是 `wujie` 实例
-
 #### 1.2 获取应用配置
 
 `getOptionsById` 获取配置信息：
@@ -345,11 +315,12 @@
 通过 `umd` 切换应用的条件：
 
 - 子应用存在 `__WUJIE_MOUNT` 方法挂载到 `window`
-- 预加载时通过 `exec` 预执行，或完成首次加载后每次切换应用
+- 预加载时通过 `exec` 预执行后 `startApp`，或完成首次 `startApp` 后每次切换回应用
 
-流程：
+**第一步：重新加载资源**
 
-- 卸载应用实例 `unmount`
+- 卸载应用实例，见：`unmount` [[查看](#-unmount-卸载应用)]
+- 重新激活应用，见：`active` [[查看](#-active-激活应用)]
 
 ### `preloadApp` 预加载流程
 
@@ -2064,3 +2035,42 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
 - 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
+
+### 映射表和队列
+
+#### 📝 全局映射表
+
+#### 1. `idToSandboxCacheMap`
+
+全部无界实例和配置存储 `map`（来自备注）：
+
+- 一个 `Map` 对象：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
+- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：来自 `setupApp` 存储的配置信息
+
+添加映射表有 2 个方法，分别为：
+
+- `addSandboxCacheWithWujie`：收集 `Wujie` 实例对象，收集在每个映射对象的 `wujie` 属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23)]
+- `addSandboxCacheWithOptions`：收集 `setupApp` 设置应用信息，收集在每个映射对象的 `options` 属性，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
+
+使用 `addSandboxCacheWithWujie` 只有 1 处调用；
+
+- `Wujie` 构造函数，见：源码[[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L532)]
+
+创建 `Wujie` 实例有 2 个地方：
+
+- `preloadApp`：预加载，见：文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
+- `startApp`：启动应用，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
+使用 `addSandboxCacheWithOptions` 只有一处：
+
+- `setupApp` 缓存子应用配置，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L179)]
+
+从这里可以知道：
+
+- `preloadApp`：预加载可以极大的提升子应用首次打开速度
+- `startApp`：只要应用名和链接没变，通过组件重复插入子应用不会重复创建实例
+- `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
+
+> `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
+
+#### 📝 `Wujie` 实例中映射表和队列
