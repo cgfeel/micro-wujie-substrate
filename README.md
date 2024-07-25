@@ -2096,4 +2096,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
 
+#### 2. `appEventObjMap`：存储 `eventBus` 托管的事件
+
+全部事件存储 `map`（来自备注）：
+
+- 类型：`new Map<String, EventObj>()`，实例名为 `key`，监听事件为 `EventObj`
+
 #### 📝 `Wujie` 实例中映射表和队列
