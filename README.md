@@ -2098,6 +2098,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
 
+实例映射表在应用中具有唯一性：
+
+- 和 `appEventObjMap` 一样，通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
+
 #### 2. `appEventObjMap`：存储 `eventBus` 托管的事件
 
 目录：`event.ts` - `appEventObjMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/event.ts#L7)]
@@ -2141,5 +2145,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 问题 1：自行为每一个监听事件名称加上自身应用名作为前缀，使其成为一个命名空间，如：`{project_name}_{event_name}`
 - 问题 2：这是个无解的问题，最好的办法就是尽量不要层层潜逃，层层嵌套在 `wujie` 不仅仅只是事件通信存在问题
+
+除此之外：
+
+- `wujie` 还提供了其他 2 种通信方式，来避免 `EventBut`承担的责任过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
 
 #### 📝 `Wujie` 实例中映射表和队列
