@@ -2106,4 +2106,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 ![事件映射表关联流程图](https://github.com/user-attachments/assets/0139adca-49bb-40e3-bbe3-87838db32be8)
 
+总结：
+
+- `key` 分两种情况：基座以时间命名、子应用以子应用命名
+- `EventObj`：是一个事件集合，`event_name` 是键名，键值是监听函数集合的数组
+
+当子应用是嵌套关系的基座时：
+
+- 子应用的基座，以及基座下的子应用会通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
+- 这样就保证了整个映射表呈树状结构
+
 #### 📝 `Wujie` 实例中映射表和队列
