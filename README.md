@@ -2151,3 +2151,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `wujie` 还提供了 `props` 通信通信和 `window` 通信，来避免 `EventBut`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
 
 #### 📝 `Wujie` 实例中映射表和队列
+
+目录：`sandbox.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts)]
+
+所有属性初始和注销状态见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+
+#### `elementEventCacheMap` 记录降级容器事件
+
+见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
