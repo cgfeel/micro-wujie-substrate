@@ -2065,6 +2065,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 1. `idToSandboxCacheMap`：存储无界实例和配置
 
+目录：`common.ts` - `idToSandboxCacheMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L11)]
+
 全部无界实例和配置存储 `map`（来自备注）：
 
 - 类型：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
@@ -2098,6 +2100,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 2. `appEventObjMap`：存储 `eventBus` 托管的事件
 
+目录：`event.ts` - `appEventObjMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/event.ts#L7)]
+
 全部事件存储 `map`（来自备注）：
 
 - 类型：`new Map<String, EventObj>()`，实例名为 `key`，监听事件为 `EventObj`
@@ -2112,5 +2116,30 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 子应用的基座，以及基座下的子应用会通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
 - 这样就保证了整个映射表呈树状结构
+
+如何收集订阅的：
+
+- `EventBus` 构造函数中使用 `key` 从映射表找出对应的事件对象，没有则创建一个空对象 `{}`
+- 通过 `$on` 将要监听的事件名和方法以 `EventObj` 的方式添加到事件对象中
+
+如何派发事件：
+
+- 遍历所有的事件对象，从事件对象找到要触发的监听函数集合，添加到队列 `cbs` 数组中
+- 遍历并执行拿到的监听函数集合 `cbs`
+
+缺点：事件对象只有 1 级
+
+- 由于子应用是通过 `inject` 注入链一级级往上找，所以无论层级，最终只会有 1 级监听对象
+- 不过好在应用实例 `idToSandboxCacheMap` 也只有 1 级，实例名不能重复
+
+带来的问题：
+
+- 问题 1：尽可能为所有应用中要派发的事件取不同的名字，以避免错误触发
+- 问题 2：嵌套自身作为子应用，`on` 会造成重复监听
+
+解决办法：
+
+- 问题 1：自行为每一个监听事件名称加上自身应用名作为前缀，使其成为一个命名空间，如：`{project_name}_{event_name}`
+- 问题 2：这是个无解的问题，最好的办法就是尽量不要层层潜逃，层层嵌套在 `wujie` 不仅仅只是事件通信存在问题
 
 #### 📝 `Wujie` 实例中映射表和队列
