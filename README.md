@@ -1184,8 +1184,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 调用场景：
 
-- `active` 中渲染到 `shadowRoot` 之后（这是不是也说明 `iframe` 降级不需要）
+- `active` 中渲染到 `shadowRoot` 之后
 - `rebuildStyleSheets` 在 `umd` 模式切换应用重建样式之后
+
+不会执行操作的情况：
+
+- `degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
