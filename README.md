@@ -296,7 +296,8 @@
 
 应用中的 `css` 在哪里处理？
 
-- 启动之前已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 做了处理
+- `preloadApp` 预加载已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理应用内的静态样式
+- `startApp` 时无论预加载
 
 `alive` 模式或 `umd` 模式下加载样式的场景：
 
@@ -1190,6 +1191,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                           | `undefined`                                                                   | `null`                  |
 | `styleSheetElements`   | 收集应用中动态添加的样式，静态 `:root` 和 `font` 样式 [[查看](#2-stylesheetelements-收集样式表)]                                              | `[]`                                                                          | `null`                  |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                     | `unndefined`，只在 `active` 时通过配置文件设置                                | 不处理                  |
+| `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                 | `unndefined`，只在 `active` 时候记录                                          | 不处理                  |
 
 > 注 n：`hrefFlag`：
 >
@@ -2193,11 +2195,23 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `patchCssRules`：实例方法，用于子应用样式打补丁
 - `rewriteAppendOrInsertChild`：收集来自应用中动态添加的内联和外联样式
 
-加载流程和 `execQueue` 是一样的，但有个问题不能理解：
+加载流程和 `execQueue` 稍微不一样：
+
+1.  预加载应用或初次启动应用时通过 `processCssLoader` 替换应用中的静态样式 [[查看](#processcssloader处理-css-loader)]，这部分样式不会被收集
+2.  通过 `active` 激活应用，渲染 `template` 到容器
+3.  通过 `patchRenderEffect` 给容器打补丁收集来自应用中动态添加的 `style`，并将动态样式插入容器
+4.  `active` 激活最后 `shadowRoot` 下会遍历容器中所有 `style`，提取并记录 `:root` 和 `font` 样式
+
+问题：
 
 - `styleSheetElements` 并不收集应用内的除 `:root` 和 `font` 以外的静态样式
 - 而是每次激活应用时重复提取并加载样式，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
+- 当然可以通过 `alive` 模式和 `umd` 模式，在切换应用时避免重复加载
 
-#### `elementEventCacheMap` 记录降级容器事件
+不记录的样式，又不重新加载的情况怎么记录样式：
+
+- 通过 `template`
+
+#### 3. `elementEventCacheMap` 记录降级容器事件
 
 - 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
