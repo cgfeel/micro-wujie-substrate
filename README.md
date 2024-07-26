@@ -1184,7 +1184,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `patchCssRules` 一定是渲染完成后调用，否则拿不到最终样式
 - 在沙箱 `iframe` 提取最终样式，因为容器添加元素同时也会在沙箱 `iframe` 中添加，见：同时添加元素 [[查看](#同时添加元素)]
 
-`patchCssRules` 也存在合理的重复调用：
+`patchCssRules` 存在合理的重复调用：
 
 - 切换 `umd` 模式应用时，`active` 渲染模板之后，子应用不会再次动态添加样式，而是直接通过 `mount` 挂载应用
 - 这个时候需要再次通过 `rebuildStyleSheets` 将初始化时记录的样式添加到容器中
