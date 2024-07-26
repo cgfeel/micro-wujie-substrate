@@ -768,7 +768,7 @@
 
 遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
-> 注意：在这里无论是同步代码还是异步代码，所有的 `script` 都是应用中的静态 `script`，而不是动态添加的 `script`，而像 `React` 和 `Vue` 这样的 `SPA` 应用是通过动态添加的 `script`，见：`execQueue` 应用启动执行队列 [[查看](e#1-execqueue-应用启动执行队列)]
+> 注意：在这里无论是同步代码还是异步代码，所有的 `script` 都是应用中的静态 `script`，而不是动态添加的 `script`，而像 `React` 和 `Vue` 这样的 `SPA` 应用是通过动态添加的 `script`，见：`execQueue` 应用启动执行队列 [[查看](#1-execqueue-应用启动执行队列)]
 
 **遍历的集合下标是 `promise` 有 2 处：**
 
