@@ -1920,6 +1920,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
 - 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+- 在子应用动态添加内联或外联样式同时，会通过 `styleSheetElements.push` 收集添加的样式，以便 `umd` 切换应用时通过 `rebuildStyleSheets` 恢复样式
 - 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
 
 > 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
@@ -2210,7 +2211,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 不记录的样式，又不重新加载的情况怎么记录样式：
 
-- 通过 `template`
+- 通过 `template`，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
