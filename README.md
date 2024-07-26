@@ -1179,6 +1179,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
+注意：
+
+- `patchCssRules` 一定是渲染完成后调用，否则拿不到最终样式
+- 在沙箱 `iframe` 提取最终样式，因为容器添加元素同时也会在沙箱 `iframe` 中添加，见：同时添加元素 [[查看](#同时添加元素)]
+
+`patchCssRules` 也存在合理的重复调用：
+
+- 切换 `umd` 模式应用时，`active` 渲染模板之后，子应用不会再次动态添加样式，而是直接通过 `mount` 挂载应用
+- 这个时候需要再次通过 `rebuildStyleSheets` 将初始化时记录的样式添加到容器中
+
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
 当子应用再次激活后，只运行 `mount` 函数，样式需要重新恢复。`styleSheetElements` 的样式来自 2 处，见：`styleSheetElements` [[查看](#同时添加元素)]
