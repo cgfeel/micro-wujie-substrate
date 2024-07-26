@@ -1176,7 +1176,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `Wujie` 实例中关键属性
 
-这里只列举部分关键的，不易懂的属性：
+这里只列举部分关键的属性：
 
 | 属性                   | 定义                                                                                                                                          | `constructor` 初始化                                                          | `destroy` 注销          |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------- |
@@ -1188,6 +1188,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `execQueue`            | `start` 应用中的任务队列                                                                                                                      | `undefined`                                                                   | `null`                  |
 | `hrefFlag`             | 判断子应用的 `url`，注 n `hrefFlag`                                                                                                           | `undefined`                                                                   | `null`                  |
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                           | `undefined`                                                                   | `null`                  |
+| `styleSheetElements`   | 收集应用中动态添加的样式，静态 `:root` 和 `font` 样式                                                                                         | `[]`                                                                          | `null`                  |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                     | `unndefined`，只在 `active` 时通过配置文件设置                                | 不处理                  |
 
 > 注 n：`hrefFlag`：
@@ -2199,4 +2200,4 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### `elementEventCacheMap` 记录降级容器事件
 
-见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+- 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
