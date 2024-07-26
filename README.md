@@ -1175,6 +1175,27 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
 - 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
 
+#### 📝 `patchCssRules` 子应用样式打补丁
+
+在子应用渲染完毕之后，提取子应用所有的样式，筛选挂载到外部：
+
+1. 兼容 `:root` 选择器样式到 `:host` 选择器上
+2. 将 `@font-face` 定义到 `shadowRoot` 外部
+
+调用场景：
+
+- `active` 中渲染到 `shadowRoot` 之后（这是不是也说明 `iframe` 降级不需要）
+- `rebuildStyleSheets` 在 `umd` 模式切换应用重建样式之后
+
+#### 📝 `rebuildStyleSheets` 重新恢复样式
+
+当子应用再次激活后，只运行 `mount` 函数，样式需要重新恢复。`styleSheetElements` 的样式来自 2 处，见：`styleSheetElements` [[查看](#同时添加元素)]
+
+恢复方式：
+
+- 遍历 `styleSheetElements` 集合，如果不存在或者为空则跳过恢复
+- 根据容器决定将集合中的样式添加到 `shadowRoot` 还是 `iframe` 容器中
+
 #### 📝 `Wujie` 实例中关键属性
 
 这里只列举部分关键的属性：
@@ -2213,17 +2234,13 @@ shadowRoot.appendChild(processedHtml);
 1.  预加载应用或初次启动应用时通过 `processCssLoader` 替换应用中的静态样式 [[查看](#processcssloader处理-css-loader)]，这部分样式不会被收集
 2.  通过 `active` 激活应用，渲染 `template` 到容器
 3.  通过 `patchRenderEffect` 给容器打补丁收集来自应用中动态添加的 `style`，并将动态样式插入容器
-4.  `active` 激活最后 `shadowRoot` 下会遍历容器中所有 `style`，提取并记录 `:root` 和 `font` 样式
+4.  `active` 激活最后 `shadowRoot` 下会遍历容器中所有 `style`，提取并记录 `:root` 样式
 
 问题：
 
-- `styleSheetElements` 并不收集应用内的除 `:root` 和 `font` 以外的静态样式
+- `styleSheetElements` 并不收集应用内的除 `:root` 以外的静态样式
 - 而是每次激活应用时重复提取并加载样式，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
 - 当然可以通过 `alive` 模式和 `umd` 模式，在切换应用时避免重复加载
-
-不记录的样式，又不重新加载的情况怎么记录样式：
-
-- 通过 `template`，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
