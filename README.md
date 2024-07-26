@@ -2196,7 +2196,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 加载流程和 `execQueue` 是一样的，但有个问题不能理解：
 
 - `styleSheetElements` 并不收集应用内的除 `:root` 和 `font` 以外的静态样式
-- 而是每次激活应用时重复提取和加载，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
+- 而是每次激活应用时重复提取并加载样式，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
 
 #### `elementEventCacheMap` 记录降级容器事件
 
