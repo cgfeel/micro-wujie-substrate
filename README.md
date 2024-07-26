@@ -2168,14 +2168,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 | 所在位置                                                                                                                                                                       | 用途                                                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `rawDOMAppendOrInsertBefore` 共 2 处，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)] | 收集来自子应用中动态添加的内联和外联 `script`                                                                       |
+| `rewriteAppendOrInsertChild` 共 2 处，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)] | 收集来自子应用中动态添加的内联和外联 `script`                                                                       |
 | `start` 共 7 处，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L251)]                     | 收集配置文件手动插入和同步应用中静态 `script`，派发事件，通知 `start` 完成，见：启动应用 [[查看](#-start-启动应用)] |
 
-> 对于像 `React` 或 `Vue` 这样的 `SPA` 应用，`script` 是通过动态添加到应用中的，需要通过 `rawDOMAppendOrInsertBefore` 来收集
+> 对于像 `React` 或 `Vue` 这样的 `SPA` 应用，`script` 是通过动态添加到应用中的，需要通过 `rewriteAppendOrInsertChild` 来收集
 
 倒推流程：
 
-- `rawDOMAppendOrInsertBefore` 来自 `patchRenderEffect`
+- `rewriteAppendOrInsertChild` 来自 `patchRenderEffect`
 - `patchRenderEffect` 有 2 处：`renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]、`renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 - 渲染容器的 2 个方法都来自 `active` 激活应用 [[查看](#-active-激活应用)]
 
@@ -2185,9 +2185,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 2.  通过 `patchRenderEffect` 给容器打补丁收集来自应用中动态添加的 `script`
 3.  启动应用 `start`，收集配置文件手动插入和同步应用中静态 `script`、派发事件等
 
-#### 2. `styleSheetElements` 收集样式
+#### 2. `styleSheetElements` 收集样式表
 
-分 2 个部分：
+数组类型，分 2 个部分：
+
+- `patchCssRules`：实例方法，用于子应用样式打补丁
+- `rewriteAppendOrInsertChild`：收集来自应用中动态添加的内联和外联样式
+
+加载流程和 `execQueue` 是一样的，但有个问题不能理解：
+
+- `styleSheetElements` 并不收集应用内的除 `:root` 和 `font` 以外的静态样式
+- 而是每次激活应用时重复提取和加载，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
 
 #### `elementEventCacheMap` 记录降级容器事件
 
