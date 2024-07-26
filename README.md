@@ -682,19 +682,7 @@
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
-第三步：通过 `patchCssRules` 为子应用样式打补丁
-
-`degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
-
-1. 兼容 `:root` 选择器样式到 `:host` 选择器上
-2. 将 `@font-face` 定义到 `shadowRoot` 外部
-
-> 这里我有点没看明白沙箱中的 `iframe` 里的 `:root` 哪来的
->
-> - `iframe` 是在构造函数里通过 `iframeGenerator` 创建的
-> - 创建时可以通过 `startApp` 通过 `attrs` 设置 `style`，问题是 `:root` 不能直接写在元素 `style` 上
-> - 剩下就是 `template` 注入，而 `iframe` 在这个环节只做了一件事，创建一个 `html` 元素挂载到 `shadowRoot` 上
-> - 最后剩下主动降级 `degrade`，但创建使用的 `iframe` 和沙箱的 `iframe` 不是同一个
+第三步：通过 `patchCssRules` 为子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 第四步：更新 `this.provide.shadowRoot`
 
@@ -2230,7 +2218,7 @@ shadowRoot.appendChild(processedHtml);
 
 数组类型，分 2 个部分：
 
-- `patchCssRules`：实例方法，用于子应用样式打补丁
+- `patchCssRules`：实例方法，用于子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 - `rewriteAppendOrInsertChild`：收集来自应用中动态添加的内联和外联样式
 
 加载流程和 `execQueue` 稍微不一样：
