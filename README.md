@@ -2233,7 +2233,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通常 `appendChild` 移动元素时候，元素之前的父级将会被清空
 - 但是当我向容器添加 `html` 元素的时候，沙箱也会一模一样添加了一份
 
-先想到的的是 `patchElementEffect`：
+先想到的的是 `patchElementEffect`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L668)]
 
 - 通过劫持 `ownerDocument` 所有元素的 `ownerDocument` 指向 `iframeWindow.document`
 - 但这和容器 `appendChild` 有什么关系？
