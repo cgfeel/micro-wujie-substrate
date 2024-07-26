@@ -1188,7 +1188,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `execQueue`            | `start` 应用中的任务队列                                                                                                                      | `undefined`                                                                   | `null`                  |
 | `hrefFlag`             | 判断子应用的 `url`，注 n `hrefFlag`                                                                                                           | `undefined`                                                                   | `null`                  |
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                           | `undefined`                                                                   | `null`                  |
-| `styleSheetElements`   | 收集应用中动态添加的样式，静态 `:root` 和 `font` 样式                                                                                         | `[]`                                                                          | `null`                  |
+| `styleSheetElements`   | 收集应用中动态添加的样式，静态 `:root` 和 `font` 样式 [[查看](#2-stylesheetelements-收集样式表)]                                              | `[]`                                                                          | `null`                  |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                     | `unndefined`，只在 `active` 时通过配置文件设置                                | 不处理                  |
 
 > 注 n：`hrefFlag`：
