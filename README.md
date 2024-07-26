@@ -2216,3 +2216,41 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
 - 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+
+### 还没有解开的问题
+
+记录还没有找到答案的疑问，待后续深入。如果有人知道可以通过 `issue` 告诉我
+
+#### 同时添加元素
+
+来自：
+
+- `renderTemplateToShadowRoot` 中 `shadowRoot.appendChild`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L221)]
+- `renderTemplateToIframe` 中 `renderDocument.replaceChild`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L261)]
+
+现象：
+
+- 通常 `appendChild` 移动元素时候，元素之前的父级将会被清空
+- 但是当我向容器添加 `html` 元素的时候，沙箱也会一模一样添加了一份
+
+先想到的的是 `patchElementEffect`：
+
+- 通过劫持 `ownerDocument` 所有元素的 `ownerDocument` 指向 `iframeWindow.document`
+- 但这和容器 `appendChild` 有什么关系？
+
+然后我想可能是 `cloneNode` 拷贝了元素副本：
+
+- 查过所有源码，只有 `replaceHeadAndBody` 有，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L153)]
+- 但它的用途仅仅是用来引用 `template` 生成的 `html` 资源
+
+最后我想到的可能是 `proxy`：
+
+- 在 `proxyDocument` 会代理 `document` 中 `createElement`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L94)]
+- 而 `proxyDocument` 会在 `patchDocumentEffect` 遍历指定的属性集合进行劫持，共计 2 处，见：[[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L513)]
+- 但是这是添加元素，`patchDocumentEffect` 劫持的属性不存在 `appendChild`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+- 而劫持 `createElement` 目的也只是为动态创建的元素通过 `patchElementEffect` 打补丁
+
+目前能确定的是：
+
+- 向 `shadowRoot` 添加的每个元素，都会在沙箱 `iframe` 中也添加一份
+- 动态添加的每一个元素都会通过 `patchElementEffect` 打补丁
