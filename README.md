@@ -1869,6 +1869,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `iframeWindow.document`
 - 通过 `patchRenderEffect` 给容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
 
+注意向容器添加元素，会同时在沙箱 `iframe` 中也添加一份，如下所示。见：同时添加元素 [[查看](#同时添加元素)]
+
+```
+renderDocument.replaceChild(processedHtml, renderDocument.documentElement);
+```
+
 #### `renderTemplateToShadowRoot` 渲染资源到 `shadowRoot`
 
 目录：`shadow.ts` - `renderTemplateToShadowRoot` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L212)]
@@ -1895,6 +1901,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 遮罩层 `shade` | 不支持                   | 作为在容器 `html` 第一个子元素 |
 
 > 因此 `patchRenderEffect` 打补丁的容器对象也不一样 [[查看](#patchrendereffect-为容器打补丁)]
+
+注意向容器添加元素，会同时在沙箱 `iframe` 中也添加一份，如下所示。见：同时添加元素 [[查看](#同时添加元素)]
+
+```
+shadowRoot.appendChild(processedHtml);
+```
 
 关于 `head`、`body`：
 
