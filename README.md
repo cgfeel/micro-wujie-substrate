@@ -534,6 +534,13 @@
 - 通过 `EventBus` 进行通信，`EventBus` 依赖 `appEventObjMap` 确保父子通信对象唯一性，见：存储 `eventBus` 托管的事件 [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
 - 同时将 `bus` 赋值给 `provide` 对象，使子应用内部可以通过 `window.$wujie?.bus` 进行通信
 
+#### 3. 创建沙箱 `iframe`
+
+**提取链接**
+
+- 通过 `appRouteParse` 提取 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
+- 获取基座的 `host`：`mainHostPath`
+
 #### 📝 `active` 激活应用
 
 分 2 部分：
@@ -1989,30 +1996,6 @@ shadowRoot.appendChild(processedHtml);
 - 在容器中看不见，用途是为了撑开容器中的弹窗和浮层
 - 由于在 `iframe` 容器中无法撑开容器区域，所以仅限 `shadowRoot`
 
-#### `patchRenderEffect` 为容器打补丁
-
-目录：`effect.ts` - `patchRenderEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L427)]
-
-参数：
-
-- `render`：容器的 `shadowRoot` 或 `document`
-- `id`：应用名称
-- `degrade`：是否主动降级
-
-做的事情（部分）：
-
-- 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
-- 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
-- 在子应用动态添加内联或外联样式同时，会通过 `styleSheetElements.push` 收集添加的样式，以便 `umd` 切换应用时通过 `rebuildStyleSheets` 恢复样式
-- 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
-
-> 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
->
-> 关于 `_cacheListeners` 的用途就有点不明所以了：
->
-> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
-> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
-
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
 
 目录：`shadow.ts` - `renderTemplateToHtml` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L176)]
@@ -2057,41 +2040,6 @@ shadowRoot.appendChild(processedHtml);
 
 - 需要通过 `iframeWindow` 获取 `sandbox` 实例，将 `html` 元素的 `head` 和 `body` 分别指向实例
 - 渲染容器的 `document` 指向沙箱 `iframe`
-
-#### `patchElementEffect`：为元素打补丁
-
-目录：`iframe.ts` - `patchElementEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L668)]
-
-参数：
-
-- `element`：`html` 节点元素、`ShadowRoot`
-- `iframeWindow`：沙箱的 `iframeWindow`
-
-**内部补丁 1：`baseURI`**
-
-- 通过 `proxyLocation` 定位到当前应用的 `protocol` + `host` + `pathname`
-
-用途：
-
-- 通过获取元素的 `baseURI` 去纠正子应用中带有相对路径的资源，比如：`a`、`img` 等
-- 使其路径相对于子应用，而不是基座
-
-**内部补丁 2：`ownerDocument`**
-
-- 指向当前沙箱 `iframeWindow`
-
-用途：
-
-- 纠正子应用中动态创建 `style` 时 `document` 对象
-- 纠正子应用中动态创建 `iframe` 时 `querySelector` 上下文指向
-
-**内部补丁 3：`_hasPatch`**
-
-- 表明已给元素打过补丁，不用再打补丁
-
-**外部补丁：`patchElementHook`**
-
-通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
 #### `processCssLoaderForTemplate`：手动添加样式
 
@@ -2154,6 +2102,69 @@ shadowRoot.appendChild(processedHtml);
 
 - `WuJie` 实例初始化
 - `syncUrlToIframe` 同步主应用路由到子应用
+
+### 辅助方法 - 打补丁
+
+还是归纳辅助方法，但这个分类主要围绕 `patch*` 打补丁的方法
+
+#### `patchRenderEffect` 为容器打补丁
+
+目录：`effect.ts` - `patchRenderEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L427)]
+
+参数：
+
+- `render`：容器的 `shadowRoot` 或 `document`
+- `id`：应用名称
+- `degrade`：是否主动降级
+
+做的事情（部分）：
+
+- 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
+- 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
+- 在子应用动态添加内联或外联样式同时，会通过 `styleSheetElements.push` 收集添加的样式，以便 `umd` 切换应用时通过 `rebuildStyleSheets` 恢复样式
+- 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
+
+> 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
+>
+> 关于 `_cacheListeners` 的用途就有点不明所以了：
+>
+> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
+> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
+
+#### `patchElementEffect`：为元素打补丁
+
+目录：`iframe.ts` - `patchElementEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L668)]
+
+参数：
+
+- `element`：`html` 节点元素、`ShadowRoot`
+- `iframeWindow`：沙箱的 `iframeWindow`
+
+**内部补丁 1：`baseURI`**
+
+- 通过 `proxyLocation` 定位到当前应用的 `protocol` + `host` + `pathname`
+
+用途：
+
+- 通过获取元素的 `baseURI` 去纠正子应用中带有相对路径的资源，比如：`a`、`img` 等
+- 使其路径相对于子应用，而不是基座
+
+**内部补丁 2：`ownerDocument`**
+
+- 指向当前沙箱 `iframeWindow`
+
+用途：
+
+- 纠正子应用中动态创建 `style` 时 `document` 对象
+- 纠正子应用中动态创建 `iframe` 时 `querySelector` 上下文指向
+
+**内部补丁 3：`_hasPatch`**
+
+- 表明已给元素打过补丁，不用再打补丁
+
+**外部补丁：`patchElementHook`**
+
+通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
 ### 映射表和队列
 
