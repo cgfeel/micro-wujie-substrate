@@ -1712,6 +1712,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 ### 辅助方法 - 容器渲染
 
+围绕应用的渲染容器归纳相关的方法，包含：`shadowRoot` 容器、`iframe` 容器
+
 #### `renderElementToContainer`：将节点元素挂载到容器
 
 目录：`shadow.ts` - `renderElementToContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L70)]
@@ -1926,13 +1928,6 @@ shadowRoot.appendChild(processedHtml);
 
 - 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
 - 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
-
-#### `appRouteParse` 提取链接
-
-根据传入的链接提取 3 个对象：`Link Elements`、`URL host`、`url path`，调用场景有 2 个：
-
-- `WuJie` 实例初始化
-- `syncUrlToIframe` 同步主应用路由到子应用
 
 ### 辅助方法 - 打补丁
 
@@ -2206,6 +2201,8 @@ shadowRoot.appendChild(processedHtml);
 
 ### 辅助方法 - 父子应用路由同步
 
+围绕应用中的路由、链接归纳相关方法
+
 #### `clearInactiveAppUrl`：清理路由
 
 目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
@@ -2222,6 +2219,15 @@ shadowRoot.appendChild(processedHtml);
 将条件匹配的 `searchkey` 全部删除，组合新的链接：
 
 - 和当前链接进行比对，如果不一致 `replace` 替换链接
+
+#### `appRouteParse` 提取链接
+
+目录：`utils.ts` - `appRouteParse` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L122)]
+
+根据传入的链接提取 3 个对象：`Link Elements`、`URL host`、`url path`，调用场景有 2 个：
+
+- `WuJie` 实例初始化
+- `syncUrlToIframe` 同步主应用路由到子应用
 
 ### 映射表和队列
 
