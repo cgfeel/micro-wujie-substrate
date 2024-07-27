@@ -2224,10 +2224,28 @@ shadowRoot.appendChild(processedHtml);
 
 目录：`utils.ts` - `appRouteParse` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L122)]
 
+参数：
+
+- `url`：字符类型的链接
+
 根据传入的链接提取 3 个对象：`Link Elements`、`URL host`、`url path`，调用场景有 2 个：
 
 - `WuJie` 实例初始化
 - `syncUrlToIframe` 同步主应用路由到子应用
+
+#### `getAnchorElementQueryMap` 转化 `url.search` 为键值对象
+
+目录：`utils.ts` - `getAnchorElementQueryMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L145)]
+
+参数：
+
+- `anchorElement`：`HTMLAnchorElement` 类型的对象
+
+流程：
+
+- 将 `url.search` 按照 `&` 拆分成数组，遍历并根据 `=` 拆分成 `key` 和 `value`
+- 如果 `key` 和 `value` 都存在责作为键值对添加到对象
+- 最后将添加的对象返回，如果没有任何匹配的键值对，返回一个空对象
 
 ### 映射表和队列
 
