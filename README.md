@@ -2134,6 +2134,13 @@ shadowRoot.appendChild(processedHtml);
 - 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
 - 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
 
+#### `appRouteParse` 提取链接
+
+根据传入的链接提取 3 个对象：`Link Elements`、`URL host`、`url path`，调用场景有 2 个：
+
+- `WuJie` 实例初始化
+- `syncUrlToIframe` 同步主应用路由到子应用
+
 ### 映射表和队列
 
 #### 📝 全局映射表
