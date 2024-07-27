@@ -1651,7 +1651,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### `processCssLoader`：处理 `css-loader`
 
-目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56C23-L56C39)]
+目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
 触发场景有 3 个：
 
@@ -1681,6 +1681,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `processCssLoader` 存在的重复执行的问题，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
 
 #### `getEmbedHTML`：转换样式
+
+目录：`entry.ts` - `getEmbedHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L77)]
 
 无论外联的 `link` 还是内联的 `style`，统一转换成内联样式，用来提升效率，还记得在 `processTpl` [[查看](#processtpl-提取资源)] 中样式替换成特定的备注吗，在这里将替换回来。
 
