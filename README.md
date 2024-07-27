@@ -2210,7 +2210,7 @@ shadowRoot.appendChild(processedHtml);
 清理非激活态的子应用同步参数：
 
 - 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
-- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对
+- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 
 遍历 `search` 对象所有的 `key`，作为 `name` 提取并筛选应用：
 
