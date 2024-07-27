@@ -1751,23 +1751,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 只要不是通过 `startApp` 初始化添加 `loading` 元素，每次执行 `renderElementToContainer` 都会清空容器
 
-#### `clearInactiveAppUrl`：清理路由
-
-目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
-
-清理非激活态的子应用同步参数：
-
-- 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
-- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对
-
-遍历 `search` 对象所有的 `key`，作为 `name` 提取并筛选应用：
-
-- 应用必须存在，且已经 `start` 启动、存在 `sync` 同步路由、路由全部来自基座、且应用已激活
-
-将条件匹配的 `searchkey` 全部删除，组合新的链接：
-
-- 和当前链接进行比对，如果不一致 `replace` 替换链接
-
 #### `renderTemplateToIframe` 渲染资源到 `iframe`
 
 目录：`shadow.ts` - `renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
@@ -2171,7 +2154,17 @@ shadowRoot.appendChild(processedHtml);
 - 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
 - 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
-#### `initBase` 初始化 base 标签
+#### `base` 标签操作
+
+目的：
+
+- 在沙箱 `iframe` 中添加一个 `base` 元素
+- 由于渲染的容器中通过 `patchElementEffect` [[查看](#patchrendereffect-为容器打补丁)] 将 `ownerDocument` 指向 `iframeWindow.document`
+- 所以应用的渲染容器中所有资源的相对链接会通过沙箱 `iframe` 指向 `base` 元素
+
+操作分 2 部分，即：初始化和动态更新
+
+**`initBase` 初始化 `base` 标签**
 
 目录：`iframe.ts` - `initBase` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L600)]
 
@@ -2180,25 +2173,51 @@ shadowRoot.appendChild(processedHtml);
 - `iframeWindow`：沙箱的 `window` 对象
 - `url`：子应用的入口链接
 
-目的：
-
-- 在沙箱 `iframe` 中添加一个 `base` 元素
-- 由于渲染的容器中通过 `patchElementEffect` [[查看](#patchrendereffect-为容器打补丁)] 将 `ownerDocument` 指向 `iframeWindow.document`
-- 所以应用的渲染容器中所有资源的相对链接会通过沙箱 `iframe` 指向 `base` 元素
-
 流程：
 
-- 通过 `iframeWindow` 拿到沙箱的 `iframeDocument`
-- 通过 `iframeDocument` 创建一个 `base` 元素
+- 通过 `iframeWindow` 拿到沙箱的 `iframeDocument` 并创建一个 `base` 元素
 - 将 `iframe` 的 `href`（即基座的 `host`），和应用的入口链接通过 `anchorElementGenerator` 创建 2 个 `HTMLAnchorElement` 对象
 - 使用子应用的 `host` + 基座的 `pathname` 作为 `base` 元素的 `href`
 - 将 `base` 元素插入沙箱 `iframe` 中
 
 注意：
 
-- 沙箱 `iframe` 的 `src` 为基座应用的 `host`
-- 而 `initBase` 是在初始化 `iframe` 时创建，后续不会变更
-- 所以无论如 `pathname` 始终拿到的是 `/`
+- 沙箱 `iframe` 的 `src` 为基座应用的 `host`，而 `initBase` 是在初始化 `iframe` 时创建
+- 所以无论如何 `pathname` 始终拿到的是 `/`
+
+**`updateBase` 动态更新 `base` 标签**
+
+目录：`iframe.ts` - `updateBase` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L204)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+- `appHostPath`：子应用的 `host`
+- `mainHostPath`：基座的 `host`
+
+流程：
+
+- 将 `iframe` 的 `host` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
+- 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
+
+### 辅助方法 - 父子应用路由同步
+
+#### `clearInactiveAppUrl`：清理路由
+
+目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
+
+清理非激活态的子应用同步参数：
+
+- 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
+- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对
+
+遍历 `search` 对象所有的 `key`，作为 `name` 提取并筛选应用：
+
+- 应用必须存在，且已经 `start` 启动、存在 `sync` 同步路由、路由全部来自基座、且应用已激活
+
+将条件匹配的 `searchkey` 全部删除，组合新的链接：
+
+- 和当前链接进行比对，如果不一致 `replace` 替换链接
 
 ### 映射表和队列
 
