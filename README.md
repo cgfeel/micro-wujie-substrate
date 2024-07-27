@@ -1327,9 +1327,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
 
-### 辅助方法
+### 辅助方法 - 提取应用资源
 
-罗列阅读过程中一些重要的方法
+围绕提取应用资源归纳相关的方法
 
 #### `importHTML` 加载资源
 
@@ -1710,6 +1710,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 恰巧两个错误起到了“负负得正”的效果，永远不会因为找到错误的注释替换成了错误的样式链接
 - 最后对于内联 `style`，在替换时就没有考虑 `ignore`，即便 `ignore` 存在，也会在 `getExternalStyleSheets` 时候作为空值
 
+### 辅助方法 - 容器渲染
+
 #### `renderElementToContainer`：将节点元素挂载到容器
 
 目录：`shadow.ts` - `renderElementToContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L70)]
@@ -1934,7 +1936,7 @@ shadowRoot.appendChild(processedHtml);
 
 ### 辅助方法 - 打补丁
 
-还是归纳辅助方法，但这个分类主要围绕 `patch*` 打补丁的方法
+围绕 `patch*` 打补丁归纳方法
 
 #### `patchRenderEffect` 为容器打补丁
 
@@ -1998,7 +2000,7 @@ shadowRoot.appendChild(processedHtml);
 
 ### 辅助方法 - 沙箱 `iframe`
 
-还是归纳辅助方法，但这个分类主要围绕沙箱 `iframe` 相关的方法
+围绕沙箱 `iframe` 归纳相关的方法
 
 #### `insertScriptToIframe`：为沙箱插入 `script`
 
