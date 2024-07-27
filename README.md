@@ -2203,6 +2203,54 @@ shadowRoot.appendChild(processedHtml);
 
 围绕应用中的路由、链接归纳相关方法
 
+#### `syncUrlToWindow`：同步子应用路由到主应用
+
+目录：`sync.ts` - `syncUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L9)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+
+调用场景：
+
+- `active` 激活应用时同步路由，包含：预加载、初次启动应用、切换应用
+- `syncIframeUrlToWindow`：监听 `iframeWindow` 后退和前进
+- `patchIframeHistory`：劫持 `iframeWindow。history` 对象的 `pushState` 和 `replaceState`
+
+不做处理的情况：
+
+- 没有配置 `sync` 同步路由，并且基座 `url.search` 找不到当前应用名匹配的值
+
+**第一步：提取配置**
+
+- 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+- 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见 `getAnchorElementQueryMap` [[查看](#approuteparse-提取链接)]
+- 通过 `HTMLAnchorElement` 拿到 `queryMap`，见 `getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 拿到 `iframeWindow.location` 中的 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
+- 声明一个变量 `validShortPath` 用于记录匹配的短链接名
+
+**第二步：处理短路径**
+
+遍历 `prefix` 拿到短链名和对应的 `url`，匹配并更新 `validShortPath`，要求：
+
+- `curUrl` 必须是用遍历的 `url` 开头，且 `url` 尽可能匹配 `curUrl`
+
+**第三步：同步路由**
+
+`sync` 已配置：
+
+- 通过 `encodeURIComponent` 更新 `queryMap[id]` 的值为 `curUrl`
+- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链匹对应的 `url` 为短链
+
+`sync` 未配置：
+
+- 从 `queryMap` 中删除应用对应的值
+
+**第四步：更新路由**
+
+- 将同步后的 `queryMap` 还原成 `url.search`，并更新 `winUrlElement` 对象
+- 当 `winUrlElement` 链接发生改变，通过 `window.history.replaceState` 更新当前 `url`
+
 #### `clearInactiveAppUrl`：清理路由
 
 目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
