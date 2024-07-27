@@ -1708,162 +1708,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 恰巧两个错误起到了“负负得正”的效果，永远不会因为找到错误的注释替换成了错误的样式链接
 - 最后对于内联 `style`，在替换时就没有考虑 `ignore`，即便 `ignore` 存在，也会在 `getExternalStyleSheets` 时候作为空值
 
-#### `insertScriptToIframe`：为沙箱插入 `script`
-
-向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
-
-目录：`iframe.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
-
-参数：
-
-- `scriptResult`：需要插入的 `script` 对象，类型：`ScriptObject | ScriptObjectLoader`
-- `iframeWindow`：沙箱的 `window`
-- `rawElement`：子应用通过如：`insertBefore` 指定的第二个参考节点
-
-不需要返回，这个函数围绕 2 个对象展开：
-
-- `scriptResult`：插入沙箱 `iframe` 的 `script`
-- `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
-
-调用场景有 2 个：
-
-- `rewriteAppendOrInsertChild`：重写渲染容器对于 `script`节点的操作方法
-- `Wujie.start`：启动应用，详细见：`start` 启动应用 [[查看](#-start-启动应用)]
-
-> `rewriteAppendOrInsertChild` 有 2 种情况，且都来自 `active` 激活应用，见：`active` [[查看](#-active-激活应用)]：
->
-> - `degrade` 降级处理：优化 `iframe` 容器
-> - 非 `dagrade`：优化 `shadowDom` 容器
->
-> 它们的目的只有全都满足以下 2 个条件才可以：
->
-> - 通过 `patchRenderEffect` 重写子应用 `node` 操作 [[查看](#patchrendereffect-为容器打补丁)]
-> - 操作的节点元素为 `script`，让其添加到沙箱的 `iframe` 中
-
-**第一步：获取配置**
-
-将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`：
-
-- `src`：`script` 的 `url`，可选类型：`string`
-- `module`：是否为 `ES` 模块，可选类型：`boolean`
-- `content`：`script` 的内容，可选类型：`string`
-- `crossorigin`：是否为跨域类型的 `script`，可选类型：`boolean`
-- `crossoriginType`：跨域类型，可选类型：`"" | "anonymous" | "use-credentials"`
-- `async`：是否为异步加载的 `script`，可选类型：`boolean`
-- `attrs`：`script` 带有 `=` 属性的键值对象
-- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
-- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
-
-> 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
-
-创建两个 `script` 对象：
-
-- `scriptElement`、`nextScriptElement`
-
-从沙箱对象中提取 3 个配置：
-
-- `replace`：替换 `script` 内容的函数，见：1. 更新配置应用信息 [[查看](#1-更新配置应用信息)]
-- `plugins`：提桶的 `plugins`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
-- `proxyLocation`：根据引用入库链接提取的 `location` 对象
-
-通过 `getJsLoader` 提取要插入 `script` 最终的代码：
-
-- `getJsLoader` 是一个柯里化函数，接受两个参数：`plugins`、`replace`
-- 返回一个执行函数，函数接受 3 个参数：
-  - `code` 替换前的 `script` 内容
-  - `src` 脚本 `url`
-  - `base`：子应用入口链接，包括 `protocol`、`host`、`pathname`
-- 返回的函数内部通过 `compose`，遍历 `plugins` 提取 `jsLoader` 作为参数，并将上面收到的 3 个参数传过去作为参数
-
-`compose` 也是一个柯里化函数：
-
-- 返回一个函数，接受上面提供的 3 个参数
-- 在函数内部通过 `array.redus` 将 `plugins` 拍平
-- 存在 `js-loader` 函数交由函数处理，否则将处理过的 `code` 交给下一个 `js-loader`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
-
-最终返回：
-
-- `js-loader` 过滤后的代码，如果 `js-loader` 没有提供，则将传入的 `code` 原封不动返回
-- 如果提取的是带有 `src` 的 `script`，脚本的 `code` 内容是空，且没有提供 `js-loader`，那么返回的是一个空字符
-
-从上面知道：
-
-- 上面的处理过程围绕 `js-loader` 展开，`js-loader` 只能作为过滤替换，不是加载资源的函数
-- `js-loader` 是通过柯里化延迟处理，在函数内部通过 `map` 过滤，通过 `redus` 拍平
-- 都是在同一个宏任务中进行，即便 `script` 只提供了 `src` 链接，也不可以通过 `fetch` 这样的方式用微任务获取脚本
-- 加载脚本在此之前通过 `importHTML` [[查看](#importhtml-加载资源)] 加载
-
-为 `scriptElement` 添加属性：
-
-- 将 `attrs` 提取排除和上述 `scriptResult` 提取的配置同名的属性添加到 `scriptElement`
-
-**第二步：配置 `script`**
-
-内联 `script`：
-
-- 在非降级 `degrade` 状态下并且不是 `es` 模块的情况下，将整个 `script` 内容包裹在一个函数模块里
-- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`，使用 `proxyLocation` 作为模块的 `location`
-
-提取内联 `script` 的 `src` 属性：
-
-- 但凡是个正规浏览器，通过 `Object.getOwnPropertyDescriptor` 拿 `script` 的 `src` 都是 `undefined`
-- 因为 `src` 属性是从 `HTMLScriptElement` 接口继承的，而不是直接定义在特定的 `scriptElement` 对象上，见演示 [[查看](https://codepen.io/levi0001/pen/abgvWQj)]
-
-> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样，待指正
-
-外联 `script`：
-
-- 设置 `src`，如果存在的话
-- 设置 `crossorigin`，如果存在的话
-
-`script` 补充操作：
-
-- 如果 `module` 成立，设置 `scriptElement` 为 `es` 模块，
-- 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
-- 设置 `nextScriptElement` 的脚本内容，用于插入 `script` 完成后，调用下一个队列
-
-**第三步：声明监听方法并处理 `script`**
-
-声明 `script` 完成后要执行的函数：
-
-- 将沙箱的 `iframe` 的 `head` 作为容器 `container`
-- 声明一个函数 `execNextScript`，只要 `async` 不存在就会将 `nextScriptElement` 添加到容器并执行
-- 声明一个 `afterExecScript`，用于在 `scriptElement` 添加到容器后执行，函数做 2 件事：
-  - 触发 `onload`：通过 `jsBeforeLoaders` 或 `jsAfterLoaders` 添加
-  - 触发 `execNextScript`：以便执行下一个队列 `window.__WUJIE.execQueue.shift()()`
-
-> 这里的逻辑是有问题的，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
-
-检查错误：如果插入的 `script` 内容是 `html`
-
-- 通过 `error` 输出错误，调用 `execNextScript` 以便执行下个队列
-
-> 理论上说这里的逻辑在非 `fiber` 下是会有问题的，导致 `start` 启动应用中断，但由于捕获的情况本身就是错误的，那逻辑错误又如何呢？
-
-打标记：
-
-- 根据提供的 `script` 为插入的 `script` 打上标记 `WUJIE_SCRIPT_ID`，值是一个自增数字
-- 只有通过子应用 `rewriteAppendOrInsertChild` 动态添加的 `script` 才需要打标记，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-
-外联脚本执行后的处理：
-
-- 要求：`script` 带有 `src`，内容为空
-- 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
-
-**第四步：插入 `script`**
-
-- 在容器 `container` 中添加 `scriptElement`
-- 调用 `callback` 并将沙箱的 `iframeWindow` 作为参数
-- 提取并执行 `appendOrInsertElementHook`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
-- 对于内联 `script` 元素无法触发 `onload`，直接调用 `afterExecScript`
-
-**总结：**
-
-- `insertScriptToIframe`：用处是将 `script` 添加到沙箱 `iframe` 中
-- 包含：子应用的 `script`、启动应用是手动配置的、在应用中通过节点操作添加的
-- 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
-- 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
-
 #### `renderElementToContainer`：将节点元素挂载到容器
 
 目录：`shadow.ts` - `renderElementToContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L70)]
@@ -2165,6 +2009,166 @@ shadowRoot.appendChild(processedHtml);
 **外部补丁：`patchElementHook`**
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
+
+### 辅助方法 - 沙箱 `iframe`
+
+还是归纳辅助方法，但这个分类主要围绕沙箱 `iframe` 相关的方法
+
+#### `insertScriptToIframe`：为沙箱插入 `script`
+
+向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
+
+目录：`iframe.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
+
+参数：
+
+- `scriptResult`：需要插入的 `script` 对象，类型：`ScriptObject | ScriptObjectLoader`
+- `iframeWindow`：沙箱的 `window`
+- `rawElement`：子应用通过如：`insertBefore` 指定的第二个参考节点
+
+不需要返回，这个函数围绕 2 个对象展开：
+
+- `scriptResult`：插入沙箱 `iframe` 的 `script`
+- `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
+
+调用场景有 2 个：
+
+- `rewriteAppendOrInsertChild`：重写渲染容器对于 `script`节点的操作方法
+- `Wujie.start`：启动应用，详细见：`start` 启动应用 [[查看](#-start-启动应用)]
+
+> `rewriteAppendOrInsertChild` 有 2 种情况，且都来自 `active` 激活应用，见：`active` [[查看](#-active-激活应用)]：
+>
+> - `degrade` 降级处理：优化 `iframe` 容器
+> - 非 `dagrade`：优化 `shadowDom` 容器
+>
+> 它们的目的只有全都满足以下 2 个条件才可以：
+>
+> - 通过 `patchRenderEffect` 重写子应用 `node` 操作 [[查看](#patchrendereffect-为容器打补丁)]
+> - 操作的节点元素为 `script`，让其添加到沙箱的 `iframe` 中
+
+**第一步：获取配置**
+
+将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`：
+
+- `src`：`script` 的 `url`，可选类型：`string`
+- `module`：是否为 `ES` 模块，可选类型：`boolean`
+- `content`：`script` 的内容，可选类型：`string`
+- `crossorigin`：是否为跨域类型的 `script`，可选类型：`boolean`
+- `crossoriginType`：跨域类型，可选类型：`"" | "anonymous" | "use-credentials"`
+- `async`：是否为异步加载的 `script`，可选类型：`boolean`
+- `attrs`：`script` 带有 `=` 属性的键值对象
+- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
+
+> 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
+
+创建两个 `script` 对象：
+
+- `scriptElement`、`nextScriptElement`
+
+从沙箱对象中提取 3 个配置：
+
+- `replace`：替换 `script` 内容的函数，见：1. 更新配置应用信息 [[查看](#1-更新配置应用信息)]
+- `plugins`：提桶的 `plugins`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `proxyLocation`：根据引用入库链接提取的 `location` 对象
+
+通过 `getJsLoader` 提取要插入 `script` 最终的代码：
+
+- `getJsLoader` 是一个柯里化函数，接受两个参数：`plugins`、`replace`
+- 返回一个执行函数，函数接受 3 个参数：
+  - `code` 替换前的 `script` 内容
+  - `src` 脚本 `url`
+  - `base`：子应用入口链接，包括 `protocol`、`host`、`pathname`
+- 返回的函数内部通过 `compose`，遍历 `plugins` 提取 `jsLoader` 作为参数，并将上面收到的 3 个参数传过去作为参数
+
+`compose` 也是一个柯里化函数：
+
+- 返回一个函数，接受上面提供的 3 个参数
+- 在函数内部通过 `array.redus` 将 `plugins` 拍平
+- 存在 `js-loader` 函数交由函数处理，否则将处理过的 `code` 交给下一个 `js-loader`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
+
+最终返回：
+
+- `js-loader` 过滤后的代码，如果 `js-loader` 没有提供，则将传入的 `code` 原封不动返回
+- 如果提取的是带有 `src` 的 `script`，脚本的 `code` 内容是空，且没有提供 `js-loader`，那么返回的是一个空字符
+
+从上面知道：
+
+- 上面的处理过程围绕 `js-loader` 展开，`js-loader` 只能作为过滤替换，不是加载资源的函数
+- `js-loader` 是通过柯里化延迟处理，在函数内部通过 `map` 过滤，通过 `redus` 拍平
+- 都是在同一个宏任务中进行，即便 `script` 只提供了 `src` 链接，也不可以通过 `fetch` 这样的方式用微任务获取脚本
+- 加载脚本在此之前通过 `importHTML` [[查看](#importhtml-加载资源)] 加载
+
+为 `scriptElement` 添加属性：
+
+- 将 `attrs` 提取排除和上述 `scriptResult` 提取的配置同名的属性添加到 `scriptElement`
+
+**第二步：配置 `script`**
+
+内联 `script`：
+
+- 在非降级 `degrade` 状态下并且不是 `es` 模块的情况下，将整个 `script` 内容包裹在一个函数模块里
+- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`，使用 `proxyLocation` 作为模块的 `location`
+
+提取内联 `script` 的 `src` 属性：
+
+- 但凡是个正规浏览器，通过 `Object.getOwnPropertyDescriptor` 拿 `script` 的 `src` 都是 `undefined`
+- 因为 `src` 属性是从 `HTMLScriptElement` 接口继承的，而不是直接定义在特定的 `scriptElement` 对象上，见演示 [[查看](https://codepen.io/levi0001/pen/abgvWQj)]
+
+> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样，待指正
+
+外联 `script`：
+
+- 设置 `src`，如果存在的话
+- 设置 `crossorigin`，如果存在的话
+
+`script` 补充操作：
+
+- 如果 `module` 成立，设置 `scriptElement` 为 `es` 模块，
+- 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
+- 设置 `nextScriptElement` 的脚本内容，用于插入 `script` 完成后，调用下一个队列
+
+**第三步：声明监听方法并处理 `script`**
+
+声明 `script` 完成后要执行的函数：
+
+- 将沙箱的 `iframe` 的 `head` 作为容器 `container`
+- 声明一个函数 `execNextScript`，只要 `async` 不存在就会将 `nextScriptElement` 添加到容器并执行
+- 声明一个 `afterExecScript`，用于在 `scriptElement` 添加到容器后执行，函数做 2 件事：
+  - 触发 `onload`：通过 `jsBeforeLoaders` 或 `jsAfterLoaders` 添加
+  - 触发 `execNextScript`：以便执行下一个队列 `window.__WUJIE.execQueue.shift()()`
+
+> 这里的逻辑是有问题的，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+检查错误：如果插入的 `script` 内容是 `html`
+
+- 通过 `error` 输出错误，调用 `execNextScript` 以便执行下个队列
+
+> 理论上说这里的逻辑在非 `fiber` 下是会有问题的，导致 `start` 启动应用中断，但由于捕获的情况本身就是错误的，那逻辑错误又如何呢？
+
+打标记：
+
+- 根据提供的 `script` 为插入的 `script` 打上标记 `WUJIE_SCRIPT_ID`，值是一个自增数字
+- 只有通过子应用 `rewriteAppendOrInsertChild` 动态添加的 `script` 才需要打标记，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+
+外联脚本执行后的处理：
+
+- 要求：`script` 带有 `src`，内容为空
+- 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
+
+**第四步：插入 `script`**
+
+- 在容器 `container` 中添加 `scriptElement`
+- 调用 `callback` 并将沙箱的 `iframeWindow` 作为参数
+- 提取并执行 `appendOrInsertElementHook`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
+- 对于内联 `script` 元素无法触发 `onload`，直接调用 `afterExecScript`
+
+**总结：**
+
+- `insertScriptToIframe`：用处是将 `script` 添加到沙箱 `iframe` 中
+- 包含：子应用的 `script`、启动应用是手动配置的、在应用中通过节点操作添加的
+- 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
+- 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
 ### 映射表和队列
 
