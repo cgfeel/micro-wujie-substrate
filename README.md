@@ -2224,8 +2224,8 @@ shadowRoot.appendChild(processedHtml);
 **第一步：提取配置**
 
 - 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
-- 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见 `getAnchorElementQueryMap` [[查看](#approuteparse-提取链接)]
-- 通过 `HTMLAnchorElement` 拿到 `queryMap`，见 `getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见：`getAnchorElementQueryMap` [[查看](#approuteparse-提取链接)]
+- 通过 `HTMLAnchorElement` 拿到 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 拿到 `iframeWindow.location` 中的 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
 - 声明一个变量 `validShortPath` 用于记录匹配的短链接名
 
@@ -2240,7 +2240,7 @@ shadowRoot.appendChild(processedHtml);
 `sync` 已配置：
 
 - 通过 `encodeURIComponent` 更新 `queryMap[id]` 的值为 `curUrl`
-- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链匹对应的 `url` 为短链
+- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链对应的 `url` 为短链名
 
 `sync` 未配置：
 
