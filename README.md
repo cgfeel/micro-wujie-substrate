@@ -322,6 +322,40 @@
 
 - 卸载应用实例，见：`unmount` [[查看](#-unmount-卸载应用)]
 - 重新激活应用，见：`active` [[查看](#-active-激活应用)]
+- 恢复动态加载的样式，见 `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]
+
+`active` 激活应用：
+
+- 无论是 `preloadApp` 已加载过资源，还是 `unmount` 清空资源，激活应用时都会重新将资源注入容器
+
+`rebuildStyleSheets` 恢复样式：
+
+- `umd` 模式切换应用后，只促发 `mount` 函数挂载应用
+- 应用中动态添加的样式需要通过 `styleSheetElements` 收集并恢复 [[查看](#2-stylesheetelements-收集样式表)]
+- 应用中的静态样式通过 `processCssLoader` 提取并替换资源 [[查看](#processcssloader处理-css-loader)]
+
+**第二步：挂载应用**
+
+和 `mount` 挂载 `umd` 模式的应用是一样的，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]，主要做了 4 件事：
+
+1. 使用沙箱的 `iframeWindow` 挂载前调用 `beforeMount`，挂载后调用 `afterMount`
+2. 挂载应用，调用子应用 `__WUJIE_MOUNT`
+3. 激活 `mountFlag` 表明已挂载，避免重复挂载
+4. 将 `destroy` 注销方法返回
+
+#### 2.3 `destory` 注销应用
+
+注销应用的场景包含：
+
+- `umd` 首次 `startApp` 应用，包括预加载 `preloadApp` 没有 `exec` 预执行启动引用
+- 非 `alive` 和 `umd` 模式的应用，无论是首次启动还是切换应用，还是预加载后再启动
+
+所以：
+
+- 以上场景下应用都会注销先前的实例后再重新创建实例
+- 包括重新提取资源、替换资源、转变为 `html` 注入容器，挂载容器，等一系列操作
+- 因此可能会导致短暂白屏的现象，要避免这种情况建议使用 `alive` 或 `umd` 模式
+- 也因对于非 `alive` 模式的应用，预加载可能是一个多余的步骤，见：预加载中的 `bug` [[查看](#6预加载中的-bug)]
 
 ### `preloadApp` 预加载流程
 
