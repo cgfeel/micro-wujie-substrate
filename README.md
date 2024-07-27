@@ -1995,12 +1995,13 @@ shadowRoot.appendChild(processedHtml);
 
 **内部补丁 2：`ownerDocument`**
 
-- 指向当前沙箱 `iframeWindow`
+- 指向当前沙箱 `iframeWindow.document`
 
 用途：
 
 - 纠正子应用中动态创建 `style` 时 `document` 对象
 - 纠正子应用中动态创建 `iframe` 时 `querySelector` 上下文指向
+- 让渲染容器所有的元素 `document` 都指向沙箱 `iframeWindow.document`
 
 **内部补丁 3：`_hasPatch`**
 
@@ -2166,9 +2167,38 @@ shadowRoot.appendChild(processedHtml);
 **总结：**
 
 - `insertScriptToIframe`：用处是将 `script` 添加到沙箱 `iframe` 中
-- 包含：子应用的 `script`、启动应用是手动配置的、在应用中通过节点操作添加的
+- 包含：子应用的 `script`、启动应用时手动配置的、在应用中通过节点操作添加的
 - 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
 - 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+#### `initBase` 初始化 base 标签
+
+目录：`iframe.ts` - `initBase` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L600)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+- `url`：子应用的入口链接
+
+目的：
+
+- 在沙箱 `iframe` 中添加一个 `base` 元素
+- 由于渲染的容器中通过 `patchElementEffect` [[查看](#patchrendereffect-为容器打补丁)] 将 `ownerDocument` 指向 `iframeWindow.document`
+- 所以应用的渲染容器中所有资源的相对链接会通过沙箱 `iframe` 指向 `base` 元素
+
+流程：
+
+- 通过 `iframeWindow` 拿到沙箱的 `iframeDocument`
+- 通过 `iframeDocument` 创建一个 `base` 元素
+- 将 `iframe` 的 `href`（即基座的 `host`），和应用的入口链接通过 `anchorElementGenerator` 创建 2 个 `HTMLAnchorElement` 对象
+- 使用子应用的 `host` + 基座的 `pathname` 作为 `base` 元素的 `href`
+- 将 `base` 元素插入沙箱 `iframe` 中
+
+注意：
+
+- 沙箱 `iframe` 的 `src` 为基座应用的 `host`
+- 而 `initBase` 是在初始化 `iframe` 时创建，后续不会变更
+- 所以无论如 `pathname` 始终拿到的是 `/`
 
 ### 映射表和队列
 
