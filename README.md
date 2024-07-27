@@ -2240,7 +2240,7 @@ shadowRoot.appendChild(processedHtml);
 `sync` 已配置：
 
 - 通过 `encodeURIComponent` 更新 `queryMap[id]` 的值为 `curUrl`
-- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链对应的 `url` 为短链名
+- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链对应的 `url` 为 `{短链名}`
 
 `sync` 未配置：
 
