@@ -2067,9 +2067,10 @@ shadowRoot.appendChild(processedHtml);
 
 流程都一致：
 
-**1. 执行插件 `windowAddEventListenerHook`**
+**1. 通过 `execHooks` 提取并执行插件函数**
 
-- 通过 `execHooks` 提取插件，`windowAddEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowaddeventlistenerhook)]
+- `addEventListener`：`windowAddEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowaddeventlistenerhook)]
+- `removeEventListener`：`windowRemoveEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowremoveeventlistenerhook)]
 
 `windowAddEventListenerHook` 的意义在于：
 
@@ -2112,12 +2113,93 @@ shadowRoot.appendChild(processedHtml);
 内部定义的函数 `processWindowProperty` 用处：
 
 - 是将 `window` 上的属性绑定到 `iframeWindow`
-- 需要通过 `isConstructable` 来判断提供的属性是否可以通过 `new` 声明实例 [[查看]()]
+- 需要通过 `isConstructable` 来判断提供的属性是否可以通过 `new` 声明实例 [[查看](#isconstructable判断函数是否可以-new)]
 
 有 3 种情况：
 
 - 允许通过 `new` 声明实例的构造方法，直接绑定到 `iframeWindow`，`this` 默认指向 `window`
-- 不允许通过 `new` 声明实例的函数，直接
+- 不允许通过 `new` 声明实例的函数，通过 `bind` 将方法绑定到 `iframe`，并将 `this` 指向 `window`
+- 不是函数的 `window` 属性，直接绑定覆盖 `iframeWindow` 默认的属性
+
+方法：
+
+- 通过 ` Object.getOwnPropertyNames` 遍历 `iframeWindow` 获取属性名去绑定
+
+`getSelection` 属规则：
+
+- 劫持属性，`get` 时指向 `iframeWindow.document`
+- 因为应用是渲染在容器里的，而容器所有的元素通过 `patchElementEffect` 指向 `iframeWindow.document` [[查看](#patchelementeffect为元素打补丁)]
+
+单独属性属规则：
+
+- `windowProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L192)]
+- 这这部分属性通过 `processWindowProperty` 从 `window` 提取出来绑定到 `iframeWinndow`
+
+正则匹配属性规则：
+
+- `windowRegWhiteList`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L195)]
+- 规则方式和“单独属性”一样，通过 `processWindowProperty` 绑定
+- 但是在执行前需要先确保 `iframeWindow.parent` 存在这个属性
+
+这里存在一个 `bug`：
+
+- 通常来说 `iframeWindow.parent` 指的是基座的 `window`
+- 但是有一种情况是应用的基座也是子应用，那么 `iframeWindow.parent` 依然是 `iframeWindow`
+- 当我在作为子应用的基座 `widnow` 上定义了最顶层 `window` 不存在的属性，被正则匹配到了
+- 通过 `processWindowProperty` 去 `window` 拿对应的属性得到的可能是 `undefinde`
+
+**绑定 `window` 监听的方法**
+
+- 监听除了 `onload`、`onbeforeunload`、`onunload` 之外所有 `on` 开头的方法
+- 通过 `Object.getOwnPropertyNames` 遍历 `window` 筛选存在的事件
+
+流程：
+
+- 通过 `Object.getOwnPropertyDescriptor` 拿到 `window` 监听方法的描述信息
+- 通过 `Object.defineProperty` 劫持 `iframe` 上的属性
+
+劫持方式：
+
+- 获取监听事件时，从 `window` 上取
+- 监听方法可写或者存在 `set` 的情况重写方法，否则返回 `undefined`
+- 重写 `set` 方法：判断赋值的 `handle` 是一个函数，将其上下文指向 `iframeWindow`，否则直接返回 `handle`
+- 除此之外 `configurable` 设为可配置，`enumerable` 按照之前拿到的描述来
+
+**通过插件打补丁**
+
+- `windowPropertyOverride` 文档居然没提，好在当前总结已多次罗列插件系统
+- 会将 `iframeWindow` 作为参数直接传过去，直接进行覆盖
+
+#### `patchDocumentEffect` 修正沙箱 `document` 的 `effect`
+
+目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
+
+做了 6 件事：
+
+**1. 处理 `addEventListener` 和 `removeEventListener`**
+
+声明 2 个 `WeakMap` 映射表：
+
+- `handlerCallbackMap`：根据 `handle` 记录 `callback`
+- `handlerTypeMap`：根据 `handle` 将所有监听的类型集合成一个数组
+
+处理 `callbabck`：
+
+- 首次添加：如何 `handle` 是函数，`bind` 沙箱的 `document` 为 `this`，否则直接采用 `handle`
+- 再次添加：直接使用首次缓存的 `callback`
+- 删除：只删除以缓存的记录，将记录从 `handlerTypeMap` 中剔出指定类型
+- 如果剔出类型后 `handle` 为空，将 `handle` 从 `handlerCallbackMap` 和 `handlerTypeMap` 都删除
+
+执行插件函数：
+
+- `addEventListener`：执行 `documentAddEventListenerHook`
+- `removeEventListener`：执行 `documentRemoveEventListenerHook`
+
+2. 处理 `onEvent`
+3. 处理属性 `get` 时指向沙箱 `proxyDocument`
+4. 处理 `document` 专属事件
+5. 处理 `head` 和 `body`
+6. 运行插件钩子函数
 
 ### 辅助方法 - 沙箱 `iframe`
 
