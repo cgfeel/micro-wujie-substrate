@@ -2059,7 +2059,7 @@ shadowRoot.appendChild(processedHtml);
 - `addEventListener` 中添加，`removeEventListener` 中删除
 - 删除监听项需要 `type`、`listener`、`optionns` 全部都匹配
 
-对于 `__WUJIE_EVENTLISTENER__` 有点不太理解存在的意义：
+对于 `__WUJIE_EVENTLISTENER__` 不理解存在的意义：
 
 - 在源码中 `__WUJIE_EVENTLISTENER__` 只存在添加和删除，没有获取和调用
 - 那有个可能是留给子应用内部使用？但子应用内部用 `window` 事件监听集合做设么呢？
