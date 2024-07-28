@@ -2046,7 +2046,7 @@ shadowRoot.appendChild(processedHtml);
 关于 `rawHistoryPushState.call`：
 
 - 这里需要注意指定的上下文是 `iframeWindow.history`
-- 这样就为 `syncIframeUrlToWindow` 中监听 `iframeWindow` 的 `popstate` 和 `hashchange` 提供了支持
+- 这样就为 `syncIframeUrlToWindow` 中监听 `iframeWindow` 的 `popstate` 和 `hashchange` 提供了支持 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 
 #### `patchIframeEvents` 劫持沙箱 `iframe` 的 `EventListener`
 
