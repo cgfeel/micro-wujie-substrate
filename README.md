@@ -2281,6 +2281,20 @@ shadowRoot.appendChild(processedHtml);
 - `WuJie` 实例初始化
 - `syncUrlToIframe` 同步主应用路由到子应用
 
+#### `anchorElementGenerator`：转换 `url`
+
+将 `url` 转换为 `HTMLAnchorElement` 对象
+
+目录：`utils.ts` - `anchorElementGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L138)]
+
+参数：
+
+- `url`：链接 `string` 类型
+
+返回：
+
+- `HTMLAnchorElement` 对象
+
 #### `getAnchorElementQueryMap` 转化 `url.search` 为键值对象
 
 目录：`utils.ts` - `getAnchorElementQueryMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L145)]
@@ -2294,6 +2308,23 @@ shadowRoot.appendChild(processedHtml);
 - 将 `url.search` 按照 `&` 拆分成数组，遍历并根据 `=` 拆分成 `key` 和 `value`
 - 如果 `key` 和 `value` 都存在责作为键值对添加到对象
 - 最后将添加的对象返回，如果没有任何匹配的键值对，返回一个空对象
+
+#### `getSyncUrl`：获取需要同步的 `url`
+
+提取 `url` 中子路由的部分
+
+参数：
+
+- `id`：应用名
+- `prefix`：短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
+
+返回：
+
+- 子应用路由：`string`
+
+流程：
+
+- 拿到 `url.search` 简直对，见：`anchorElementGenerator` [[查看]()]
 
 ### 映射表和队列
 
