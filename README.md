@@ -1993,6 +1993,23 @@ shadowRoot.appendChild(processedHtml);
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
+#### `patchIframeVariable` 为子应用添加 `window` 属性
+
+目录：`iframe.ts` - `patchIframeVariable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L155)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+- `wujie`：应用实例
+- `appHostPath`：子应用的 `host`
+
+添加的属性：
+
+- `__WUJIE`：指向应用实例 `wujie`
+- `__WUJIE_PUBLIC_PATH__`：子应用的 `host`
+- `$wujie`：子应用的 `provide`，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- `__WUJIE_RAW_WINDOW__`：指向 `iframeWindow`
+
 #### `patchIframeHistory` 劫持沙箱 `iframe` 的 `history`
 
 目录：`iframe.ts` - `patchIframeHistory` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L170)]
@@ -2072,6 +2089,8 @@ shadowRoot.appendChild(processedHtml);
 - `appWindowAddEventListenerEvents` 包含的 `type`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)]，`this` 优先指向 `targetWindow`，不存在使用 `iframeWindow`
 - `options` 提供 `targetWindow`，`this` 指向 `targetWindow`
 - 以上情况都不是的情况优先使用 `iframeWindow` 否则使用基座 `window`
+
+> 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：
 
 ### 辅助方法 - 沙箱 `iframe`
 
