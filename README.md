@@ -1993,7 +1993,7 @@ shadowRoot.appendChild(processedHtml);
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
-#### `patchIframeVariable` 为子应用添加 `window` 属性
+#### `patchIframeVariable` 为子应用 `window` 添加属性
 
 目录：`iframe.ts` - `patchIframeVariable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L155)]
 
@@ -2096,6 +2096,28 @@ shadowRoot.appendChild(processedHtml);
 - 以上情况都不是的情况优先使用 `iframeWindow` 否则使用基座 `window`
 
 > 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用添加-window-属性)]
+
+#### `patchWindowEffect` 修正 `iframeWindow` 的 `effect`
+
+目录：`iframe.ts` - `patchWindowEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L215)]
+
+做了 3 件事：
+
+1. 将 `window` 上的属性绑定到 `iframe` 上
+2. 将 `window` 上的事件用 `iframe` 做劫持
+3. 通过插件 `windowPropertyOverride` 自定义给 `iframeWindow` 打补丁
+
+**绑定 `window` 上的属性**
+
+内部定义的函数 `processWindowProperty` 用处：
+
+- 是将 `window` 上的属性绑定到 `iframeWindow`
+- 需要通过 `isConstructable` 来判断提供的属性是否可以通过 `new` 声明实例 [[查看]()]
+
+有 3 种情况：
+
+- 允许通过 `new` 声明实例的构造方法，直接绑定到 `iframeWindow`，`this` 默认指向 `window`
+- 不允许通过 `new` 声明实例的函数，直接
 
 ### 辅助方法 - 沙箱 `iframe`
 
@@ -2315,11 +2337,38 @@ shadowRoot.appendChild(processedHtml);
 
 监听的事件：
 
-- `hashchange`、`popstate`
+- `hashchange`：监听 `hash` 变化
+- `popstate`：监听前进后退
 
 要做的事：
 
 - 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+#### `isConstructable`：判断函数是否可以 `new`
+
+目录：`utils.ts` - `isConstructable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L60)]
+
+参数：
+
+- `fn`：任意函数，包括构造函数
+
+**第一步：检查函数是否有原型方法**
+
+- 存在 `prototype` 且 `prototype.constructor` 指向自身，`prototype` 上的属性除了 `constructor` 还有其他属性
+- 如果以上条件都存在返回 `true`
+
+**第二步：从缓存中获取**
+
+- 之前计算过的会存在在映射表 `fnRegexCheckCacheMap` 中，存在直接返回
+
+**第三步：通过正则表达式检查函数字符串**
+
+- `constructableFunctionRegex`：检查大写开头的函数，`classRegex`：检查以 `class` 开头的类
+- 以上任意条件存在即可
+
+**第四步：缓存并返回结果**
+
+- 将获取的结果 `constructable` 存储在 `fnRegexCheckCacheMap`，并返回
 
 ### 辅助方法 - 路由同步和链接处理
 
