@@ -2251,6 +2251,33 @@ shadowRoot.appendChild(processedHtml);
 - 将同步后的 `queryMap` 还原成 `url.search`，并更新 `winUrlElement` 对象
 - 当 `winUrlElement` 链接发生改变，通过 `window.history.replaceState` 更新当前 `url`
 
+#### `syncUrlToIframe`：同步主应用路由到子应用
+
+目录：`sync.ts` - `syncUrlToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L51)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+
+调用场景：
+
+- 只有 `alive` 模式切换路由不会调用
+- 其他所有场景，无论是预加载、初次启动、切换应用都会显同步主应用路由，再从子应用同步路由到主应用
+
+**第一步：拿到配置**
+
+- 从沙箱 `iframe` 的 `location` 中提取： `pathname`、`search`、`hash`
+- 从应用实例中拿到必要的属性，见源码
+
+计算子应用的路由：
+
+- 如果 `sync` 同步路由，且初次启动或预加载 `active`，通过 `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)] 获取子应用路由
+- 否则没有配置同步路由，或者 `umd` 切换应用，都会使用子应用入口链接作为路由
+
+**第二步：比较路由**
+
+- 将拿到的路由通过 `appRouteParse` 拿到 `appRoutePath` [[查看](#approuteparse-提取链接)]
+
 #### `clearInactiveAppUrl`：清理路由
 
 目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
@@ -2276,7 +2303,13 @@ shadowRoot.appendChild(processedHtml);
 
 - `url`：字符类型的链接
 
-根据传入的链接提取 3 个对象：`Link Elements`、`URL host`、`url path`，调用场景有 2 个：
+根据传入的链接提取 3 个对象：
+
+- `urlElement`：通过 `anchorElementGenerator` 转换 `url` 为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
+- `appHostPath`：根据提供的 `url` 提取 `host`
+- `appRoutePath`：包含了 `pathname` + `search` + `hash`
+
+调用场景有 2 个：
 
 - `WuJie` 实例初始化
 - `syncUrlToIframe` 同步主应用路由到子应用
@@ -2311,7 +2344,7 @@ shadowRoot.appendChild(processedHtml);
 
 #### `getSyncUrl`：获取需要同步的 `url`
 
-提取 `url` 中子路由的部分
+从提取 `url.search` 中通过应用名，提取应用路由
 
 参数：
 
@@ -2324,7 +2357,16 @@ shadowRoot.appendChild(processedHtml);
 
 流程：
 
-- 拿到 `url.search` 键值对，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]、`getAnchorElementQueryMap` [[查看]()]
+- 拿到 `url.search` 键值对 `queryMap`，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]、`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 使用应用名提取 `queryMap` 使用 `decodeURIComponent` 解析路由，如果不存在则使用空值
+- 提取路由中的短链 `validShortPath`，见：`syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)]
+- 如果提供短链集合，并且提取出短链名，通过提取的值返回子路由
+- 否则将解析的路由 `syncUrl` 直接返回
+
+存在的 `bug`：
+
+- 即便提供了短链集合，也即便从路由中提取到了短链名，但是未必短链集合中就存在提取的短链名
+- 有可能因为在集合中找不到短链名 `replace` 为一个 `undefined` 字符
 
 ### 映射表和队列
 
