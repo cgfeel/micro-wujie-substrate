@@ -2303,6 +2303,24 @@ shadowRoot.appendChild(processedHtml);
 - 将 `iframe` 的 `host` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
 
+#### `syncIframeUrlToWindow` 监听沙箱前进后退
+
+子应用前进后退，同步路由到主应用
+
+目录：`iframe.ts` - `syncIframeUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L697)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+
+监听的事件：
+
+- `hashchange`、`popstate`
+
+要做的事：
+
+- 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
 ### 辅助方法 - 路由同步和链接处理
 
 围绕应用中的路由、链接归纳相关方法
