@@ -2003,6 +2003,10 @@ shadowRoot.appendChild(processedHtml);
 - `appHostPath`：子应用的 `host`
 - `mainHostPath`：基座的 `host`
 
+调用场景：
+
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构
+
 在此之前需要明白一个概念：
 
 - 在劫持 `history` 之前，会通过 `initBase` [[查看](#base-标签操作)] 为子应用中所有相对路径的资源链接，指定为子应用 `host` 的基础链接
@@ -2021,6 +2025,53 @@ shadowRoot.appendChild(processedHtml);
 - 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
 - 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base-标签操作)]
 - 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+#### `patchIframeEvents` 劫持沙箱 `iframe` 的 `EventListener`
+
+目录：`iframe.ts` - `patchIframeEvents` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L115)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+
+调用场景：
+
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构
+
+劫持的方法：
+
+- `addEventListener`：添加监听事件
+- `removeEventListener`：删除监听事件
+
+流程都一致：
+
+**1. 执行插件 `windowAddEventListenerHook`**
+
+- 通过 `execHooks` 提取插件，`windowAddEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowaddeventlistenerhook)]
+
+`windowAddEventListenerHook` 的意义在于：
+
+- 无界子应用的 `dom` 渲染在 `webcomponent` 中，`js` 在 `iframe` 中运行
+- 当子应用需要通过 `window.addEventListener` 监听滚动时需要通过插件从基座添加监听对象
+
+**2. 设置 `__WUJIE_EVENTLISTENER__`**
+
+- `addEventListener` 中添加，`removeEventListener` 中删除
+- 删除监听项需要 `type`、`listener`、`optionns` 全部都匹配
+
+对于 `__WUJIE_EVENTLISTENER__` 有点不太理解存在的意义：
+
+- 在源码中 `__WUJIE_EVENTLISTENER__` 只存在添加和删除，没有获取和调用
+- 那有个可能是留给子应用内部使用？但子应用内部用 `window` 事件监听集合做设么呢？
+- 那只剩下恢复事件监听，但是目前只有主动降级需要恢复事件，且通过 `recoverEventListeners` 执行 [[查看](https://github.com/cgfeel/micro-wujie-substrate?tab=readme-ov-file#%E8%AE%B0%E5%BD%95%E6%81%A2%E5%A4%8D-iframe-%E5%AE%B9%E5%99%A8%E4%BA%8B%E4%BB%B6)]
+
+**3. 执行添加或删除事件监听**
+
+使用劫持的方法执行添加或删除，调用方法时会将劫持的 `type`、`listener` 和 `options` 透传过去，不同的是上下文中 `this` 指向，分别如下：
+
+- `appWindowAddEventListenerEvents` 包含的 `type`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)]，`this` 优先指向 `targetWindow`，不存在使用 `iframeWindow`
+- `options` 提供 `targetWindow`，`this` 指向 `targetWindow`
+- 以上情况都不是的情况优先使用 `iframeWindow` 否则使用基座 `window`
 
 ### 辅助方法 - 沙箱 `iframe`
 
