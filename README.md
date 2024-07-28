@@ -2185,7 +2185,7 @@ shadowRoot.appendChild(processedHtml);
 
 处理 `callbabck`：
 
-- 首次添加：如何 `handle` 是函数，`bind` 沙箱的 `document` 为 `this`，否则直接采用 `handle`
+- 首次添加：如果 `handle` 是函数，`bind` 沙箱的 `document` 为 `this`，否则直接采用 `handle`
 - 再次添加：直接使用首次缓存的 `callback`
 - 删除：只删除以缓存的记录，将记录从 `handlerTypeMap` 中剔出指定类型
 - 如果剔出类型后 `handle` 为空，将 `handle` 从 `handlerCallbackMap` 和 `handlerTypeMap` 都删除
