@@ -2175,7 +2175,7 @@ shadowRoot.appendChild(processedHtml);
 流程：
 
 - 通过 `iframeWindow` 拿到沙箱的 `iframeDocument` 并创建一个 `base` 元素
-- 将 `iframe` 的 `href`（即基座的 `host`），和应用的入口链接通过 `anchorElementGenerator` 创建 2 个 `HTMLAnchorElement` 对象
+- 将 `iframe` 的 `href`（即基座的 `host`），和应用的入口链接通过 `anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)] 创建 2 个 `HTMLAnchorElement` 对象
 - 使用子应用的 `host` + 基座的 `pathname` 作为 `base` 元素的 `href`
 - 将 `base` 元素插入沙箱 `iframe` 中
 
@@ -2224,7 +2224,7 @@ shadowRoot.appendChild(processedHtml);
 **第一步：提取配置**
 
 - 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
-- 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见：`getAnchorElementQueryMap` [[查看](#approuteparse-提取链接)]
+- 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]
 - 通过 `HTMLAnchorElement` 拿到 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 拿到 `iframeWindow.location` 中的 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
 - 声明一个变量 `validShortPath` 用于记录匹配的短链接名
@@ -2324,7 +2324,7 @@ shadowRoot.appendChild(processedHtml);
 
 流程：
 
-- 拿到 `url.search` 简直对，见：`anchorElementGenerator` [[查看]()]
+- 拿到 `url.search` 键值对，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]、`getAnchorElementQueryMap` [[查看]()]
 
 ### 映射表和队列
 
