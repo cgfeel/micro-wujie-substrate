@@ -2202,9 +2202,9 @@ shadowRoot.appendChild(processedHtml);
 
 `this` 对象的不同场景：
 
-- 类型在 `appDocumentAddEventListenerEvents` 中：`iframeWindow`
+- 类型在 `appDocumentAddEventListenerEvents` 中：`iframeWindow`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]
 - `degrade` 主动降级：`sandbox.document` 沙箱 `iframe` 渲染容器
-- 类型在 `mainAndAppAddEventListenerEvents` 中，需要同时监听基座和子应用
+- 类型在 `mainAndAppAddEventListenerEvents` 中，需要同时监听基座和子应用，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)]
 - 其他情况：`sandbox.shadowRoot` 渲染容器
 
 **2. 处理 `onEvent`**
