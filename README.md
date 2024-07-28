@@ -2190,12 +2190,25 @@ shadowRoot.appendChild(processedHtml);
 - 删除：只删除以缓存的记录，将记录从 `handlerTypeMap` 中剔出指定类型
 - 如果剔出类型后 `handle` 为空，将 `handle` 从 `handlerCallbackMap` 和 `handlerTypeMap` 都删除
 
-执行插件函数：
+通过 `execHooks` 提取并执行插件函数：
 
-- `addEventListener`：执行 `documentAddEventListenerHook`
-- `removeEventListener`：执行 `documentRemoveEventListenerHook`
+- `addEventListener`：`documentAddEventListenerHook`
+- `removeEventListener`：`documentRemoveEventListenerHook`
+- 插件函数的意义和 `windowAddEventListenerHook` 一样，见：`patchIframeEvents` [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]
 
-2. 处理 `onEvent`
+执行添加或删除事件监听：
+
+- 无论添加还是删除，参数都一样：`type`、`callback`、`options`，不同的是上下文中 `this` 对象
+
+`this` 对象的不同场景：
+
+- 类型在 `appDocumentAddEventListenerEvents` 中：`iframeWindow`
+- `degrade` 主动降级：`sandbox.document` 沙箱 `iframe` 渲染容器
+- 类型在 `mainAndAppAddEventListenerEvents` 中，需要同时监听基座和子应用
+- 其他情况：`sandbox.shadowRoot` 渲染容器
+
+**2. 处理 `onEvent`**
+
 3. 处理属性 `get` 时指向沙箱 `proxyDocument`
 4. 处理 `document` 专属事件
 5. 处理 `head` 和 `body`
