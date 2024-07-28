@@ -2039,9 +2039,14 @@ shadowRoot.appendChild(processedHtml);
 
 - 将 `baseUrl` 指定为：基座 `host` + `iframe` 的 `pathname` + `search` + `hash`
 - 在更新的连接中，将子应用的 `host` 替换为空变成一个 `pathname`，通过 `new URL` 使其成为 `baseUrl` 的相对链接
-- 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
+- 通过 `rawHistoryPushState.call` 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
 - 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base-标签操作)]
 - 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+关于 `rawHistoryPushState.call`：
+
+- 这里需要注意指定的上下文是 `iframeWindow.history`
+- 这样就为 `syncIframeUrlToWindow` 中监听 `iframeWindow` 的 `popstate` 和 `hashchange` 提供了支持
 
 #### `patchIframeEvents` 劫持沙箱 `iframe` 的 `EventListener`
 
