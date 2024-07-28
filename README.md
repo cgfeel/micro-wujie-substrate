@@ -1993,6 +1993,35 @@ shadowRoot.appendChild(processedHtml);
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
+#### `patchIframeHistory` 劫持沙箱 `iframe` 的 `history`
+
+目录：`iframe.ts` - `patchIframeHistory` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L170)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+- `appHostPath`：子应用的 `host`
+- `mainHostPath`：基座的 `host`
+
+在此之前需要明白一个概念：
+
+- 在劫持 `history` 之前，会通过 `initBase` [[查看](#base-标签操作)] 为子应用中所有相对路径的资源链接，指定为子应用 `host` 的基础链接
+- 当点击链接时需要拦截这部分的链接，替换为基座 `host` 然后更新沙箱 `iframe` 的 `url`
+- 更新完之后再通过 `updateBase` [[查看](#base-标签操作)]，将 `iframe` 的 `url` 中基座的 `host` 替换回子应用的 `host`
+
+劫持 `history` 的方法：
+
+- `pushState`：插入链接
+- `replaceState`：替换链接
+
+流程都一致：
+
+- 将 `baseUrl` 指定为：基座 `host` + `iframe` 的 `pathname` + `search` + `hash`
+- 在更新的连接中，将子应用的 `host` 替换为空变成一个 `pathname`，通过 `new URL` 使其成为 `baseUrl` 的相对链接
+- 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
+- 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base-标签操作)]
+- 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
 ### 辅助方法 - 沙箱 `iframe`
 
 围绕沙箱 `iframe` 归纳相关的方法
@@ -2199,7 +2228,7 @@ shadowRoot.appendChild(processedHtml);
 - 将 `iframe` 的 `host` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
 
-### 辅助方法 - 父子应用路由同步
+### 辅助方法 - 路由同步和链接处理
 
 围绕应用中的路由、链接归纳相关方法
 
