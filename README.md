@@ -2090,7 +2090,7 @@ shadowRoot.appendChild(processedHtml);
 - `options` 提供 `targetWindow`，`this` 指向 `targetWindow`
 - 以上情况都不是的情况优先使用 `iframeWindow` 否则使用基座 `window`
 
-> 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：
+> 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用添加-window-属性)]
 
 ### 辅助方法 - 沙箱 `iframe`
 
