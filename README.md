@@ -2339,6 +2339,19 @@ window.onfocus = () => {
 - `elementCtr`：资源元素
 - `attr`：资源属性，例如：`src`
 
+做了 2 件事：
+
+- 重写 `setAttribute`、劫持 `elementCtr.prototype`
+
+目的：
+
+- 来自子应用动态设置资源链接，通过 `getAbsolutePath` 重新配置最终的链接 [[查看](#getabsolutepath获取绝对路径)]
+
+处理链接有 3 种情况：
+
+- 相对路径，按照 `baseURI` 取转换为绝对路径，`baseURI` 见：`base` 元素 [[查看](#base-标签操作)]
+- 绝对路径或是 `hash`，不处理直接返回
+
 ### 辅助方法 - 沙箱 `iframe`
 
 围绕沙箱 `iframe` 归纳相关的方法
