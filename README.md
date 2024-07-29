@@ -2316,11 +2316,15 @@ window.onfocus = () => {
 - 在渲染容器通过 `appendChild`、`insertBefore` 插入元素会被劫持重写
 - 重写的方法中为新增的元素通过 `patchElementEffect` 再次打补丁，使其具有和子应用中其他 `Dom` 元素拥有一样的操作方法
 
-`getRootNode` 这个就比较诡异的 `bug` 了：
+`getRootNode` 这里做了一个很“奇妙”的操作：
 
-- 重写方法内会正常捕获元素的 `document`
-- 但返回的时候如果 `document` 是 `shadowRoot`，返回的是沙箱降级容器 `iframe`
-- 这个时候 `iframeWindow.document` 应该是 `undefinned` 啊。。。
+- 首先我们知道渲染容器里每个元素都重写了 `ownerDocument` 指向 `iframeWindow.document`
+- 当通过 `getRootNode` 拿到的是渲染容器 `shadowRoot`，将沙箱降级容器 `iframe` 的 `document` 返回
+- 这个时候 `iframeWindow.document` 是 `undefinned`，也就什么也拿不到（直接返回 `undefined` 不好吗？）
+
+那降级容器 `ifram` 为什么不做处理：
+
+- 可能还是要考虑用户在容器里跳转到第三方页面的情况
 
 ### 辅助方法 - 沙箱 `iframe`
 
