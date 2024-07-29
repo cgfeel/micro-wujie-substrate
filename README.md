@@ -2290,6 +2290,7 @@ window.onfocus = () => {
 
 **5. 处理 `head` 和 `body`**
 
+- 遍历 `ownerProperties` 集合进行劫持
 - 从 `iframeWindow.document` 中劫持对象，`get` 时指向 `proxyDocument`
 
 **6. 运行插件钩子函数**
