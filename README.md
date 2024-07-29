@@ -2580,7 +2580,7 @@ window.onfocus = () => {
 - 通过 `initIframeDom` 初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 - 从当前网页的 `url` 查找出是否存在当前应用名的 `query`，如果查到先更新 `iframe` 的 `history`
 
-> 更新 `history` 采用：基座 `host` + 子应用 `pathname`
+> 通过 `iframeWindow.history.replaceState` 更新 `history`，采用：基座 `host` + 子应用 `pathname`
 
 #### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
 
