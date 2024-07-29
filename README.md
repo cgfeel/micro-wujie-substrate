@@ -2523,6 +2523,47 @@ window.onfocus = () => {
 - 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
 - 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
+#### `iframeGenerator`：创建沙箱 `iframe`
+
+目录：`iframe.ts` - `iframeGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L815)]
+
+`js` 沙箱，来自备注：
+
+- 创建和主应用同源的 `iframe`，路径携带了子路由的路由信息，`iframe` 必须禁止加载 `html`，防止进入主应用的路由逻辑
+
+参数：
+
+- `sandbox`：应用实例
+- `attrs`：配置 `iframe`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#attrs)]
+- `mainHostPath`：基座 `host`
+- `appHostPath`：子应用 `host`
+- `appRoutePath`：子应用的 `pathname`
+
+**第一步：创建 `iframe`**
+
+- 创建一个 `iframe` 元素，并设置属性
+- 属性包含：`src` 为基座 `host`，样式不可见，自定义属性，`id` 为应用名以及 `wujie` 特有的 `flag`
+- 将 `iframe` 添加到 `body` 末尾
+- 通过 `patchIframeVariable` 为 `iframeWindow` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
+
+关于 `patchIframeVariable`
+
+- 备注是这样的：变量需要提前注入，在入口函数通过变量防止死循环。
+- 但在入口函数倒是没有找到需要用到注入 `iframeWindow` 属性的地方
+- 倒是在 `localGenerator` 主动降级的代理方法中需要用到 `iframe.contentWindow.__WUJIE`
+- 而 `localGenerator` 对于 `iframeGenerator` 来说是上下文关系，优先于微任务先执行
+
+**第二步：发起微任务**
+
+- 发起微任务 `stopIframeLoading` 并挂在到实例属性 `iframeReady` 上
+- 返回创建的沙箱 `iframe`
+
+`iframeReady` 用于确保 `iframe` 完成初始化：
+
+- 在 `active` 激活任务前会先通过 `await this.iframeReady` 确保完成
+- 在 `active` 之前还会发起 2 轮微队列：`importHTML` [[查看](#importhtml-加载资源)]、`processCssLoader` [[查看](#processcssloader处理-css-loader)]
+- 如果加载顺利的话 `iframeReady` 会在 `importHTML` 之前完成 `stopIframeLoading` [[查看](#importhtml-加载资源)]
+
 #### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
 
 目录：`iframe.ts` - `initIframeDom` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L616)]
@@ -2608,6 +2649,42 @@ window.onfocus = () => {
 
 - 将 `iframe` 的 `host` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
+
+#### `stopIframeLoading`：实现一个纯净的沙箱 `iframe`
+
+防止运行主应用的 `js` 代码，给子应用带来很多副作用（来自备注）
+
+目录：`iframe.ts` - `stopIframeLoading` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L9)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+
+原因：
+
+- 子应用的 `script` 运行在一个和主应用同域的 `iframe` 沙箱中
+- 设置 `src` 为 `mainHostPath`（主域名 `host`），会主动加载主应用
+- 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时中断加载，防止污染子应用
+
+`iframe` 实例化之前 `stop` 可以吗？
+
+- 不行，此时 `iframe` 的 `location.origin` 还是 `about:blank`
+- 会导致后续获取 `iframeWindow.location` 无效
+
+那 `iframe` 实例化后通过 `document.write` 擦除可以吗？
+
+- 不行，路由器的同步功能将失败
+
+流程：
+
+- 记录一个还未完成加载的 `iframeWindow.document` 作为 `oldDoc`，此时的 `location.origin` 是 `about:blank`
+- 返回一个微任务，微任务中创建一个 `loop` 函数作为 `document` 检测
+- 在 `loop` 中再创建一个微任务，由于 `appendChild` 是同步操作，所以执行微任务前会优先挂载 `iframe` 避免死循环
+- 在 `loop` 微任务中获取当前 `iframe.document` 和 `oldDoc` 进行比较
+- 如果 `iframe` 没有完成实例化导致 `document` 不变，将重新发起一轮 `loop` 微任务
+- 直到 `iframe` 实例化完毕 `document` 发生改变，立即 `stop` 停止 `iframe` 加载后释放微任务
+
+> 由于沙箱 `iframe` 在初始化之前已经设置不可见，所以加载过程也全程不可见
 
 #### `syncIframeUrlToWindow` 监听沙箱前进后退
 
