@@ -2026,9 +2026,9 @@ shadowRoot.appendChild(processedHtml);
 
 在此之前需要明白一个概念：
 
-- 在劫持 `history` 之前，会通过 `initBase` [[查看](#base-标签操作)] 为子应用中所有相对路径的资源链接，指定为子应用 `host` 的基础链接
+- 在劫持 `history` 之前，会通过 `initBase` [[查看](#base标签操作)] 为子应用中所有相对路径的资源链接，指定为子应用 `host` 的基础链接
 - 当点击链接时需要拦截这部分的链接，替换为基座 `host` 然后更新沙箱 `iframe` 的 `url`
-- 更新完之后再通过 `updateBase` [[查看](#base-标签操作)]，将 `iframe` 的 `url` 中基座的 `host` 替换回子应用的 `host`
+- 更新完之后再通过 `updateBase` [[查看](#base标签操作)]，将 `iframe` 的 `url` 中基座的 `host` 替换回子应用的 `host`
 
 劫持 `history` 的方法：
 
@@ -2040,7 +2040,7 @@ shadowRoot.appendChild(processedHtml);
 - 将 `baseUrl` 指定为：基座 `host` + `iframe` 的 `pathname` + `search` + `hash`
 - 在更新的连接中，将子应用的 `host` 替换为空变成一个 `pathname`，通过 `new URL` 使其成为 `baseUrl` 的相对链接
 - 通过 `rawHistoryPushState.call` 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
-- 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base-标签操作)]
+- 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base标签操作)]
 - 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
 
 关于 `rawHistoryPushState.call`：
@@ -2360,7 +2360,7 @@ window.onfocus = () => {
 
 处理链接有 3 种情况：
 
-- 相对路径，按照 `baseURI` 取转换为绝对路径，`baseURI` 见：`base` 元素 [[查看](#base-标签操作)]
+- 相对路径，按照 `baseURI` 取转换为绝对路径，`baseURI` 见：`base` 元素 [[查看](#base标签操作)]
 - 绝对路径或是 `hash`，不处理直接返回
 
 ### 辅助方法 - 沙箱 `iframe`
@@ -2553,7 +2553,15 @@ window.onfocus = () => {
 
 **第三步：打补丁**
 
-- `initBase`：
+- `initBase`：初始化 `base` 标签 [[查看](#base标签操作)]
+- `patchIframeHistory`：劫持沙箱 `iframe` 的 `history` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- `patchIframeEvents`：劫持沙箱 `iframe` 的 `EventListener` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
+- `recordEventListeners`：如果 `degrade` 降级处理，记录 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+- `syncIframeUrlToWindow`：监听沙箱前进后退 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
+- `patchWindowEffect`：修正 `iframeWindow` 的 `effect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
+- `patchDocumentEffect`：修正沙箱 `document` 的 `effect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- `patchNodeEffect`：修正 `node` 的 `effect` [[查看](#patchnodeeffect修正-node-的-effect)]
+- `patchRelativeUrlEffect`：修复动态添加元素资源 [[查看](#patchrelativeurleffect修复动态添加元素资源)]
 
 #### `base`：标签操作
 
