@@ -2294,9 +2294,9 @@ window.onfocus = () => {
 
 **6. 运行插件钩子函数**
 
-- 同样文档没有提到 `documentPropertyOverride`
+文档没提 `documentPropertyOverride`，和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]
+
 - 将 `iframeWindow` 作为参数直接传过去，在基座中通过 `plugin` 的方式劫持特定属性或事件
--
 
 ### 辅助方法 - 沙箱 `iframe`
 
