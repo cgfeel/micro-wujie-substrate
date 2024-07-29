@@ -2562,7 +2562,25 @@ window.onfocus = () => {
 
 - 在 `active` 激活任务前会先通过 `await this.iframeReady` 确保完成
 - 在 `active` 之前还会发起 2 轮微队列：`importHTML` [[查看](#importhtml-加载资源)]、`processCssLoader` [[查看](#processcssloader处理-css-loader)]
-- 如果加载顺利的话 `iframeReady` 会在 `importHTML` 之前完成 `stopIframeLoading` [[查看](#importhtml-加载资源)]
+
+如果加载顺利的话 `iframeReady`：
+
+- 会在 `importHTML` 之前完成 `stopIframeLoading` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+- 会在 `processCssLoader` 之前完成 `stopIframeLoading().then()`
+
+**`iframeReady` 都做了什么：**
+
+微任务 1：检测并停止加载 `iframe`
+
+- 通过 `stopIframeLoading` 观察 `document` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+
+微任务 2：给 `iframe` 打补丁
+
+- 若因 `iframe` 加载导致注入的全局属性丢失，需要通过 `patchIframeVariable` 重新注入 [[查看](#patchiframevariable-为子应用-window-添加属性)]
+- 通过 `initIframeDom` 初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+- 从当前网页的 `url` 查找出是否存在当前应用名的 `query`，如果查到先更新 `iframe` 的 `history`
+
+> 更新 `history` 采用：基座 `host` + 子应用 `pathname`
 
 #### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
 
