@@ -2219,7 +2219,7 @@ window.onfocus = () => {
 
 - `addEventListener`：`documentAddEventListenerHook`
 - `removeEventListener`：`documentRemoveEventListenerHook`
-- 插件函数的意义和 `windowAddEventListenerHook` 一样，见：`patchIframeEvents` [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]
+- 插件函数的意义和 `windowAddEventListenerHook` 一样，见：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
 
 执行添加或删除事件监听：
 
@@ -2242,12 +2242,61 @@ window.onfocus = () => {
 取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]：
 
 - 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
-- 通过 `Object.defineProperty ` 劫持 `iframe` 上的属性
+- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
+- 在 `set` 将监听的事件绑定到渲染容器上，渲染容器由 `degrade` 决定是 `iframe` 还是 `shadowRoot`
+- 在 `get` 中直接返回返回绑定在渲染容器上的监听事件
 
-3. 处理属性 `get` 时指向沙箱 `proxyDocument`
-4. 处理 `document` 专属事件
-5. 处理 `head` 和 `body`
-6. 运行插件钩子函数
+获取描述信息的目的：
+
+- `enumerable`：判断是否可枚举
+- `set`：重写前判断属性是否可写或存在 `set`，不满足设为 `undefined`
+
+为什么要劫持：
+
+- 因为子应用是渲染在容器里，而 `script` 是存放在沙箱 `iframe` 里
+- 通过劫持事件，让沙箱 `document` 触发由于渲染容器添加的事件
+
+**3. 处理属性 `get` 时指向沙箱 `proxyDocument`**
+
+属性来自：
+
+- `documentProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+
+方法和处理 `onEvent` 一样：
+
+- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 属性的描述信息
+- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的属性
+
+不同在于：
+
+- 不可 `set`，`get` 操作指向 `proxyDocument`
+
+**4. 处理 `document` 专属事件**
+
+属性来自：
+
+- `documentEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L131)]
+
+方法和处理 `onEvent` 一样：
+
+- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
+- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
+- 对于类型为函数的 `handle` 将 `this` 指向 `iframeWindow`
+
+不同在于：
+
+- 方法根据 `degrade` 决定绑定对象是渲染容器 `iframe`，还是最顶层基座的 `window`
+- 在当定对象的 `document` 中绑定监听事件的方法，同理获取也是从指定对象的 `document` 中获取
+
+**5. 处理 `head` 和 `body`**
+
+- 从 `iframeWindow.document` 中劫持对象，`get` 时指向 `proxyDocument`
+
+**6. 运行插件钩子函数**
+
+- 同样文档没有提到 `documentPropertyOverride`
+- 将 `iframeWindow` 作为参数直接传过去，在基座中通过 `plugin` 的方式劫持特定属性或事件
+-
 
 ### 辅助方法 - 沙箱 `iframe`
 
