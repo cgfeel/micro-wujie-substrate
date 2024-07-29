@@ -2236,8 +2236,8 @@ window.onfocus = () => {
 
 提取 2 个集合：
 
-- `elementOnEvents`：提取 `iframeWindow.HTMLElement.prototype` 所有 `on` 开头的属性
-- `documentOnEvent`：提取 `iframeWindow.Document.prototype` 所有 `on` 开头的属性，但不包含 `onreadystatechange`
+- `elementOnEvents`：提取 `iframeWindow.HTMLElement.prototype` 所有 `on` 开头的事件
+- `documentOnEvent`：提取 `iframeWindow.Document.prototype` 所有 `on` 开头的事件，但不包含 `onreadystatechange`
 
 取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]：
 
@@ -2245,6 +2245,8 @@ window.onfocus = () => {
 - 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
 - 在 `set` 将监听的事件绑定到渲染容器上，渲染容器由 `degrade` 决定是 `iframe` 还是 `shadowRoot`
 - 在 `get` 中直接返回返回绑定在渲染容器上的监听事件
+
+> 注意：如果渲染容器是 `shadowDom`，那么劫持的事件会绑定到 `shadowDom` 的 `html` 元素上，而如果渲染容器是 `iframe` 则会绑定到容器的 `document` 上
 
 获取描述信息的目的：
 
@@ -2299,6 +2301,27 @@ window.onfocus = () => {
 
 - 将 `iframeWindow` 作为参数直接传过去，在基座中通过 `plugin` 的方式劫持特定属性或事件
 
+#### `patchNodeEffect`：修正 `node` 的 `effect`
+
+目录：`iframe.ts` - `patchNodeEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L563)]
+
+覆盖了 3 个方法：
+
+- `getRootNode`：获取 `document`、`appendChild`：追加元素、`insertBefore`：在内部元素之前插入元素
+
+`appendChild`、`insertBefore` 的目的：
+
+- 为每一个添加的 `node` 通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 由于子应用的 `Dom` 来自渲染容器，渲染时已通过 `patchElementEffect` 打补丁
+- 在渲染容器通过 `appendChild`、`insertBefore` 插入元素会被劫持重写
+- 重写的方法中为新增的元素通过 `patchElementEffect` 再次打补丁，使其具有和子应用中其他 `Dom` 元素拥有一样的操作方法
+
+`getRootNode` 这个就比较诡异的 `bug` 了：
+
+- 重写方法内会正常捕获元素的 `document`
+- 但返回的时候如果 `document` 是 `shadowRoot`，返回的是沙箱降级容器 `iframe`
+- 这个时候 `iframeWindow.document` 应该是 `undefinned` 啊。。。
+
 ### 辅助方法 - 沙箱 `iframe`
 
 围绕沙箱 `iframe` 归纳相关的方法
@@ -2307,7 +2330,7 @@ window.onfocus = () => {
 
 向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
 
-目录：`iframe.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
+目录：`iframe.ts` - `insertScriptToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
 
 参数：
 
