@@ -2566,7 +2566,7 @@ window.onfocus = () => {
 如果加载顺利的话 `iframeReady`：
 
 - 会在 `importHTML` 之前完成 `stopIframeLoading` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
-- 会在 `processCssLoader` 之前完成 `stopIframeLoading().then()`
+- 会在 `processCssLoader` 之前完成 `stopIframeLoading().then()` [[查看](#processcssloader处理-css-loader)]
 
 **`iframeReady` 都做了什么：**
 
