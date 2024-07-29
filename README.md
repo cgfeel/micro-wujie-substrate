@@ -2327,6 +2327,18 @@ window.onfocus = () => {
 
 - 可能还是要考虑用户在容器里跳转到第三方页面的情况
 
+#### `fixElementCtrSrcOrHref`：对元素资源打补丁
+
+劫持元素原型对相对地址的赋值转绝对地址
+
+目录：`utils.ts` - `fixElementCtrSrcOrHref` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L167)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window`
+- `elementCtr`：资源元素
+- `attr`：资源属性，例如：`src`
+
 ### 辅助方法 - 沙箱 `iframe`
 
 围绕沙箱 `iframe` 归纳相关的方法
@@ -2727,6 +2739,8 @@ window.onfocus = () => {
 
 从提取 `url.search` 中通过应用名，提取应用路由
 
+目录：`utils.ts` - `getSyncUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L221)]
+
 参数：
 
 - `id`：应用名
@@ -2748,6 +2762,24 @@ window.onfocus = () => {
 
 - 即便提供了短链集合，也即便从路由中提取到了短链名，但是未必短链集合中就存在提取的短链名
 - 有可能因为在集合中找不到短链名 `replace` 为一个 `undefined` 字符
+
+#### `getAbsolutePath`：获取绝对路径
+
+目录：`utils.ts` - `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)]
+
+参数：
+
+- `url`：可以是 `url`、`pathname`、`search`、`hash`、空字符
+- `base`：参考的 `url` 或 `host`
+- `hash`：提取 `hash`，可选 `boolean` 值
+
+返回有 3 个情况：
+
+- `url` 是 `pathname`、`search`、`hash`，通过 `new URL` 按照 `base` 返回绝对路径的链接
+- `url` 是一个绝对路径的链接，通过 `new URL` 会忽视 `base`，原样返回 `url`
+- 其他情况直接返回 `url`，包括 `hash` 模式
+
+> 参数 `hash` 存在的意义在于 `url` 是 `hash` 时直接返回而不用合并 `base`
 
 ### 映射表和队列
 
