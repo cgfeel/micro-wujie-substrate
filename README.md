@@ -2335,8 +2335,8 @@ window.onfocus = () => {
 
 流程：
 
-- 通过 `fixElementCtrSrcOrHref` 重写 `setAttribute`，通过 `Object.defineProperty` 劫持资源属性 `set` [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
-- 对动态设置相对路径的资源修复为绝对路径
+- 通过 `fixElementCtrSrcOrHref` 重写 `setAttribute`，`Object.defineProperty` 劫持资源属性 [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
+- 从而对动态设置相对路径的资源修复为绝对路径
 
 #### `fixElementCtrSrcOrHref`：对元素资源打补丁
 
