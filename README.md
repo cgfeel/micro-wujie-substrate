@@ -2098,7 +2098,7 @@ shadowRoot.appendChild(processedHtml);
 
 > 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用添加-window-属性)]
 
-#### `patchWindowEffect` 修正 `iframeWindow` 的 `effect`
+#### `patchWindowEffect`：修正 `iframeWindow` 的 `effect`
 
 目录：`iframe.ts` - `patchWindowEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L215)]
 
