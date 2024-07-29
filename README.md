@@ -2318,14 +2318,25 @@ window.onfocus = () => {
 
 `getRootNode` 这里做了一个很“奇妙”的操作：
 
-- 首先我们知道渲染容器里每个元素都重写了 `ownerDocument` 指向 `iframeWindow.document`
-- 当通过 `getRootNode` 拿到的是渲染容器 `shadowRoot`，将沙箱降级容器 `iframe` 的 `document` 返回
-- 这个时候 `iframeWindow.document` 是 `undefinned`，也就什么也拿不到（直接返回 `undefined` 不好吗？）
+- 渲染容器里每个元素都重写了 `ownerDocument` 指向 `iframeWindow.document`
+- 当通过 `getRootNode` 拿到的是渲染容器 `shadowRoot`，说明出现了异常情况
+- 于是将沙箱降级容器 `iframe` 的 `document` 返回，这个时候 `iframeWindow.document` 是 `undefinned`，也就什么也拿不到
 - 其他情况正常返回，也就是 `iframeWindow.document`
 
 那降级容器 `ifram` 为什么不做处理：
 
 - 可能还是要考虑用户在容器里跳转到第三方页面的情况
+
+#### `patchRelativeUrlEffect`：修复动态添加元素资源
+
+修复资源元素的相对路径问题（来自备注）
+
+目录：`iframe.ts` - `patchRelativeUrlEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L588)]
+
+流程：
+
+- 通过 `fixElementCtrSrcOrHref` 重写 `setAttribute`，通过 `Object.defineProperty` 劫持资源属性 `set` [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
+- 对动态设置相对路径的资源修复为绝对路径
 
 #### `fixElementCtrSrcOrHref`：对元素资源打补丁
 
