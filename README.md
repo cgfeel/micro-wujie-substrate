@@ -624,7 +624,7 @@
 
 第三步：动态修改 `fetch`
 
-- 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L206)] 将 `url` 结合 `baseurl`
+- 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)] 将 `url` 结合 `baseurl`
 - 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
 
 第四步：同步路由
