@@ -2195,7 +2195,7 @@ window.onfocus = () => {
 - `windowPropertyOverride` 文档居然没提，好在当前总结已多次罗列插件系统
 - 会将 `iframeWindow` 作为参数直接传过去，直接进行覆盖
 
-#### `patchDocumentEffect` 修正沙箱 `document` 的 `effect`
+#### `patchDocumentEffect`：修正沙箱 `document` 的 `effect`
 
 目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
 
