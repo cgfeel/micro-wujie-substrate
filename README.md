@@ -2155,11 +2155,16 @@ shadowRoot.appendChild(processedHtml);
 
 流程：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow` 监听方法的描述信息
-- 通过 `Object.defineProperty` 劫持 `iframe` 上的属性
+- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow` 监听事件的描述信息
+- 通过 `Object.defineProperty` 劫持 `iframeWindow` 上的监听事件
 - 通过 `set` 将 `iframeWindow` 监听的事件绑定到 `window`
 - 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向 `iframe`
 - 在 `get` 中直接返回返回绑定在 `window` 上的监听事件
+
+获取描述信息的目的：
+
+- `enumerable`：判断是否可枚举
+- `set`：重写前判断属性是否可写或存在 `set`，不满足设为 `undefined`
 
 举个例子：
 
@@ -2236,7 +2241,8 @@ window.onfocus = () => {
 
 取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听方法的描述信息
+- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
+- 通过 `Object.defineProperty ` 劫持 `iframe` 上的属性
 
 3. 处理属性 `get` 时指向沙箱 `proxyDocument`
 4. 处理 `document` 专属事件
