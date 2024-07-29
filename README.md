@@ -2600,6 +2600,12 @@ window.onfocus = () => {
 - 通过 `window.document.implementation.createHTMLDocument` 创建一个新的空白 `html` 元素
 - 如果沙箱的 `iframe` 的 `html` 元素存在就是用新的 `html` 替换，否则添加到 `iframeDocument`
 
+为什么要创建一个新的 `html`：
+
+- 因为 `initIframeDom` 之前通过 `stopIframeLoading` 检测了 `document` 改变 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+- `document` 因配置了 `src` 实例化后加载基座 `host` 完成变更
+- 因此执行 `initIframeDom` 时要使用一个空白的 ` html` 取替换原先加载的页面
+
 **第二步：注入 `iframeWindow` 全局属性**
 
 - `__WUJIE_RAW_DOCUMENT_HEAD__`：指向沙箱 `head` 元素
