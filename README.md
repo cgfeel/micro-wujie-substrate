@@ -2523,7 +2523,39 @@ window.onfocus = () => {
 - 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
 - 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
-#### `base` 标签操作
+#### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
+
+目录：`iframe.ts` - `initIframeDom` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L616)]
+
+参数：
+
+- `iframeWindow`：沙箱的 `window` 对象
+- `wujie`：应用实例
+- `mainHostPath`：基座 `host`
+- `appHostPath`：子应用 `host`
+
+**第一步：创建新的 `html`**
+
+- 通过 `iframeWindow` 拿到 `iframeDocument`
+- 通过 `window.document.implementation.createHTMLDocument` 创建一个新的空白 `html` 元素
+- 如果沙箱的 `iframe` 的 `html` 元素存在就是用新的 `html` 替换，否则添加到 `iframeDocument`
+
+**第二步：注入 `iframeWindow` 全局属性**
+
+- `__WUJIE_RAW_DOCUMENT_HEAD__`：指向沙箱 `head` 元素
+
+在通过打补丁方式覆盖原生方法前，先记录 `Document` 几个原生的方法，分别如下：
+
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`：`querySelector`
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：`querySelectorAll`
+- `__WUJIE_RAW_DOCUMENT_CREATE_ELEMENT__`：`createElement`
+- `__WUJIE_RAW_DOCUMENT_CREATE_TEXT_NODE__`：`createTextNode`
+
+**第三步：打补丁**
+
+- `initBase`：
+
+#### `base`：标签操作
 
 目的：
 
