@@ -2148,7 +2148,7 @@ shadowRoot.appendChild(processedHtml);
 - 当我在作为子应用的基座 `widnow` 上定义了最顶层 `window` 不存在的属性，被正则匹配到了
 - 通过 `processWindowProperty` 去 `window` 拿对应的属性得到的可能是 `undefinde`
 
-**绑定 `window` 监听的方法**
+**绑定 `window` 上所有的 `onEvent`**
 
 - 监听除了 `onload`、`onbeforeunload`、`onunload` 之外所有 `on` 开头的方法
 - 通过 `Object.getOwnPropertyNames` 遍历 `window` 筛选存在的事件
@@ -2157,13 +2157,33 @@ shadowRoot.appendChild(processedHtml);
 
 - 通过 `Object.getOwnPropertyDescriptor` 拿到 `window` 监听方法的描述信息
 - 通过 `Object.defineProperty` 劫持 `iframe` 上的属性
+- 通过 `set` 将 `iframeWindow` 监听的事件绑定到 `window`
+- 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向 `iframe`
+- 在 `get` 中直接返回返回绑定在 `window` 上的监听事件
 
-劫持方式：
+举个例子：
 
-- 获取监听事件时，从 `window` 上取
-- 监听方法可写或者存在 `set` 的情况重写方法，否则返回 `undefined`
-- 重写 `set` 方法：判断赋值的 `handle` 是一个函数，将其上下文指向 `iframeWindow`，否则直接返回 `handle`
-- 除此之外 `configurable` 设为可配置，`enumerable` 按照之前拿到的描述来
+```
+// 子应用内
+(function(window, self, global, location) {
+  window.onfocus = () => {
+    this;
+  }
+}).bind(window.__WUJIE.proxy)(
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxyLocation,
+);
+
+// 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
+window.onfocus = () => {
+  this; // 但是 this 指向 iframeWindow
+}
+
+// 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
+// 因为子应用那个中一开始监听事件的目的就是奔着 `window` 来的，而不是 `iframeWindow`
+```
 
 **通过插件打补丁**
 
@@ -2208,6 +2228,13 @@ shadowRoot.appendChild(processedHtml);
 - 其他情况：`sandbox.shadowRoot` 渲染容器
 
 **2. 处理 `onEvent`**
+
+提取 2 个集合：
+
+- `elementOnEvents`：提取 `iframeWindow.HTMLElement.prototype` 所有 `on` 开头的属性
+- `documentOnEvent`：提取 `iframeWindow.Document.prototype` 所有 `on` 开头的属性，但不包含 `onreadystatechange`
+
+取他们的交集进行处理：
 
 3. 处理属性 `get` 时指向沙箱 `proxyDocument`
 4. 处理 `document` 专属事件
