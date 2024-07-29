@@ -2239,7 +2239,7 @@ window.onfocus = () => {
 - `elementOnEvents`：提取 `iframeWindow.HTMLElement.prototype` 所有 `on` 开头的属性
 - `documentOnEvent`：提取 `iframeWindow.Document.prototype` 所有 `on` 开头的属性，但不包含 `onreadystatechange`
 
-取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]：
+取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]：
 
 - 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
 - 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
@@ -2295,7 +2295,7 @@ window.onfocus = () => {
 
 **6. 运行插件钩子函数**
 
-文档没提 `documentPropertyOverride`，和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect-修正-iframewindow-的-effect)]
+文档没提 `documentPropertyOverride`，和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 
 - 将 `iframeWindow` 作为参数直接传过去，在基座中通过 `plugin` 的方式劫持特定属性或事件
 
