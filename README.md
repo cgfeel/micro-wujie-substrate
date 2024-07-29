@@ -2321,6 +2321,7 @@ window.onfocus = () => {
 - 首先我们知道渲染容器里每个元素都重写了 `ownerDocument` 指向 `iframeWindow.document`
 - 当通过 `getRootNode` 拿到的是渲染容器 `shadowRoot`，将沙箱降级容器 `iframe` 的 `document` 返回
 - 这个时候 `iframeWindow.document` 是 `undefinned`，也就什么也拿不到（直接返回 `undefined` 不好吗？）
+- 其他情况正常返回，也就是 `iframeWindow.document`
 
 那降级容器 `ifram` 为什么不做处理：
 
