@@ -2730,32 +2730,6 @@ window.onfocus = () => {
 
 - 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
 
-#### `isConstructable`：判断函数是否可以 `new`
-
-目录：`utils.ts` - `isConstructable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L60)]
-
-参数：
-
-- `fn`：任意函数，包括构造函数
-
-**第一步：检查函数是否有原型方法**
-
-- 存在 `prototype` 且 `prototype.constructor` 指向自身，`prototype` 上的属性除了 `constructor` 还有其他属性
-- 如果以上条件都存在返回 `true`
-
-**第二步：从缓存中获取**
-
-- 之前计算过的会存在在映射表 `fnRegexCheckCacheMap` 中，存在直接返回
-
-**第三步：通过正则表达式检查函数字符串**
-
-- `constructableFunctionRegex`：检查大写开头的函数，`classRegex`：检查以 `class` 开头的类
-- 以上任意条件存在即可
-
-**第四步：缓存并返回结果**
-
-- 将获取的结果 `constructable` 存储在 `fnRegexCheckCacheMap`，并返回
-
 ### 辅助方法 - 路由同步和链接处理
 
 围绕应用中的路由、链接归纳相关方法
@@ -2946,6 +2920,62 @@ window.onfocus = () => {
 - 其他情况直接返回 `url`，包括 `hash` 模式
 
 > 参数 `hash` 存在的意义在于 `url` 是 `hash` 时直接返回而不用合并 `base`
+
+### 辅助方法 - 实用工具
+
+#### `isConstructable`：判断函数是否可以 `new`
+
+目录：`utils.ts` - `isConstructable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L60)]
+
+参数：
+
+- `fn`：任意函数，包括构造函数
+
+**第一步：检查函数是否有原型方法**
+
+- 存在 `prototype` 且 `prototype.constructor` 指向自身，`prototype` 上的属性除了 `constructor` 还有其他属性
+- 如果以上条件都存在返回 `true`
+
+**第二步：从缓存中获取**
+
+- 之前计算过的会存在在映射表 `fnRegexCheckCacheMap` 中，存在直接返回
+
+**第三步：通过正则表达式检查函数字符串**
+
+- `constructableFunctionRegex`：检查大写开头的函数，`classRegex`：检查以 `class` 开头的类
+- 以上任意条件存在即可
+
+**第四步：缓存并返回结果**
+
+- 将获取的结果 `constructable` 存储在 `fnRegexCheckCacheMap`，并返回
+
+#### `isCallable`：判断对象是一个函数
+
+目录：`utils.ts` - `isCallable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L37)]
+
+参数：
+
+- `fn`：任意对象
+
+流程：
+
+- 判断 `fn` 是一个函数，会优先从映射表 `callableFnCacheMap` 获取
+- 不存在则判断，是函数记录到映射表，最终返回判断结果
+
+#### `isBoundedFunction`：判断 `bound` 函数
+
+目录：`utils.ts` - `isBoundedFunction` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L50)]
+
+参数：
+
+- `fn`：`CallableFunction`
+
+流程：
+
+- 判断 `fn` 是一个以 `bound` 开头的剪头函数，，会优先从映射表 `boundedMap` 获取
+- 不存在则判断，匹配记录到映射表，最终返回判断结果
+
+#### `getTargetValue`
 
 ### 映射表和队列
 
