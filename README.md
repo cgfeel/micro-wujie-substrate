@@ -2992,7 +2992,62 @@ window.onfocus = () => {
 
 - `setFnCacheMap`：映射表中存在直接返回
 - 非函数的属性直接返回
-- 函数但是 `bind` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看]()]
+- 函数但是 `bind` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
+- 可以实例化的函数直接返回，见：`isConstructable` [[查看](e#isconstructable判断函数是否可以-new)]
+- 其他函数通过 `bind.call` 修正 `this` 指向并返回新函数
+
+> 关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
+>
+> - `call`：立即调用对象中的方法，第一个参数指向 `this`，后面参数传递给执行方法
+> - `apply`：和 `call` 一样，不同的是传递的参数是以数组形式
+> - `bind`：可以看做将 `call` 柯里化之后返回新的函数
+> - `bind.call`：和 `bind` 一样，不同的是会在第一个参数前面插入一个函数对象，用于修正调用的方法
+
+`bind.call` 修正 `this` 指向过程：
+
+- 通过 `Function.prototype.bind.call` 将函数上下文 `this` 指向 `target` 返回新函数
+- 将新的方法记录在映射表 `setFnCacheMap` 中
+- 遍历方法对象中的属性，绑定在新的方法中，如果方法存在原型，也绑定在新方法中
+
+绑定原型是让当前方法和绑定的方法原型链一致，遍历属性的目的见下方延时：
+
+```
+function exampleFunc() {
+  console.log("Hello");
+}
+
+exampleFunc.customProperty = "I am a custom property";
+exampleFunc.customMethod = function() {
+  console.log("I am a custom method");
+};
+
+const boundExampleFunc = Function.prototype.bind.call(exampleFunc, null);
+
+for (const key in exampleFunc) {
+  boundExampleFunc[key] = exampleFunc[key];
+}
+
+console.log(boundExampleFunc.customProperty); // "I am a custom property"
+boundExampleFunc.customMethod(); // "I am a custom method"
+```
+
+为什么要用 `getTargetValue`：
+
+- `getTargetValue` 用于 `Proxy` 劫持对象需要 `get` 属性时
+- 如果不提供 `get` 或 `get` 中直接返回对象方法会报错，见下方演示：
+- 正确的做法是从对象中找到对应的方法，并且绑定 `this` 为指定对象
+
+```
+// 代理不提供 `get` 方法，调用方法时报错
+const proxyWindow = new Proxy(window);
+proxyWindow.addEventListener;
+
+// 直接返回属性同样也会报错
+const proxyWindow = new Proxy(window, {
+  get: (target, key) => target[key],
+});
+proxyWindow.addEventListener;
+```
 
 ### 映射表和队列
 
