@@ -2992,7 +2992,7 @@ window.onfocus = () => {
 
 - `setFnCacheMap`：映射表中存在直接返回
 - 非函数的属性直接返回
-- 函数但是 `bind` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
+- 函数但是 `bound` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
 - 可以实例化的函数直接返回，见：`isConstructable` [[查看](e#isconstructable判断函数是否可以-new)]
 - 其他函数通过 `bind.call` 修正 `this` 指向并返回新函数
 
