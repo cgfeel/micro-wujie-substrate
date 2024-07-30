@@ -2975,7 +2975,24 @@ window.onfocus = () => {
 - 判断 `fn` 是一个以 `bound` 开头的剪头函数，，会优先从映射表 `boundedMap` 获取
 - 不存在则判断，匹配记录到映射表，最终返回判断结果
 
-#### `getTargetValue`
+#### `getTargetValue` 从对象中获取属性
+
+目录：`utils.ts` - `getTargetValue` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L91)]
+
+参数：
+
+- `target`：源码中是 `any`，实则应该是 `{ [key: PropertyKey]: any }` 对象，否则就报错了
+- `p`：源码中是 `any`，实则应该是 `PropertyKey`，否则就报错了
+
+返回：
+
+- 从 `target` 找找到 `p` 返回回来
+
+分别有以下几种情况：
+
+- `setFnCacheMap`：映射表中存在直接返回
+- 非函数的属性直接返回
+- 函数但是 `bind` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看]()]
 
 ### 映射表和队列
 
