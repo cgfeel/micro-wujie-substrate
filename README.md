@@ -1535,7 +1535,10 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **综上所述：**
 
-- 在 `wujie` 子应用中谨慎使用 `reload`、`replace`
+在 `wujie` 子应用中谨慎使用 `location`
+
+- 如果只是获取值那么一切 `ok`，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
+- 否则可能会有意想不到的效果哦～
 
 ### `packages` - `wujie-react`
 
