@@ -1594,7 +1594,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 标记 `hrefFlag` 以便点击后退时将渲染容器重新替换新建的 `iframe`
 - 替换渲染容器为新建的 `iframe`
-- `pushUrlToWindow` 推送指定 `url` 到主应用路由
+- `pushUrlToWindow` 推送指定 `url` 到主应用路由 [[查看](#pushurltowindow推送-url-到基座路由)]
 
 替换渲染容器有 2 种情况，先看 `degrade` 主动降级：
 
@@ -1611,6 +1611,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 目录：`sync.ts` - `pushUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L98)]
 
 参数：
+
+- `id`：应用名
+- `url`：跳转的链接，来自 `locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
+
+调用场景：
+
+- 只有 `locationHrefSet` 拦截子应用 `location.href`
+- 这也同时说明基座在监听 ``
 
 ### `packages` - `wujie-react`
 
@@ -3067,6 +3075,11 @@ window.onfocus = () => {
 - `src`：新疆 `iframe` 的 `src`
 - `element`：要替换的渲染容器的父级挂载点
 - `degradeAttrs`：新疆 `iframe` 的属性，由配置入口提供
+
+调用场景：
+
+- 子应用通过 `locationHrefSet` 拦截 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
+- 监听 `popstate`，前进的链接 `search` 是来自 `pushUrlToWindow` 推送的链接 [[查看](#pushurltowindow推送-url-到基座路由)]
 
 流程：
 
