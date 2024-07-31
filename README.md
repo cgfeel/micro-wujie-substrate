@@ -1284,6 +1284,259 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 > - 卸载应用时，`clearInactiveAppUrl` 不会清理 `queryMap`
 > - `popstate` 后退时判断后退路由的来路决定是否重绘应用
 
+### `wujie` 中的代理
+
+#### 📝 `proxyGenerator` 非降级情况下的代理
+
+非降级 `degrade` 情况下 `window`、`document`、`location`代理
+
+目录：`entry.ts` - `proxyGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L40)]
+
+参数：
+
+- `iframe`：沙箱 `iframe`
+- `urlElement`：将子应用入口链接通过 `appRouteParse` 转换成 `HTMLAnchorElement` 对象 [[查看](#approuteparse-提取链接)]
+- `mainHostPath`：基座 `host`
+- `appHostPath`：子应用 `host`
+
+#### 1. 代理 `iframeWindow` 作为 `proxyWindow`
+
+分别对 `get`、`set`、`has` 做了代理
+
+**`get` 操作按照获取的 `property` 返回相应对象**
+
+返回 `proxyLocation` 对象：
+
+- `location`
+
+返回自身 `proxyWindow` 对象：
+
+- `self`
+- `window`：获取全局 `window` 描述，如果存在 `get` 属性
+
+从 `iframeWindow` 通过 `property` 获取对象直接返回：
+
+- `window`：通过 `getOwnPropertyDescriptor` 获取全局 `window` 描述，不存在 `get` 属性
+- 通过 `getOwnPropertyDescriptor` 从 `iframeWindow` 获取描述信息，返回的对象不可配置且不可写
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`：这是初始 `iframe` 时绑定的原生方法不需要代理，见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：同 `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`
+- `getTargetValue` 中所有不能缓存在映射表 `setFnCacheMap` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]
+
+其他情况：
+
+- 这个情况 `property` 一定是函数，且不可 `isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]，也不可 `isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
+- 通过 `getTargetValue` 使用 `bind.call` 将方法 `this` 指向 `iframeWindow` 返回 [[查看](#gettargetvalue-从对象中获取属性)]
+- 如果 `iframeWindow` 中不存在 `property`，返回 `undefined`
+
+**`set` 操作**
+
+直接绑定在 `iframeWindow` 对象上：
+
+- 但会通过 `checkProxyFunction` 对符合条件的方法缓存在映射表 `setFnCacheMap` 中
+- 以便下次代理 `get` 操作时，直接从缓存表中获取
+
+要求：
+
+- 是函数 `isCallable` [[查看](#iscallable判断对象是一个函数)]，且不可 `isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]，也不可 `isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
+
+缓存 `setFnCacheMap`：
+
+- `WeakMap` 对象，键名 `property` 取出来的函数，键值一定是昂定了 `iframeWindow` 作为 `this` 的不可实例化的函数
+
+**`has` 操作**
+
+直接从 `iframeWindow` 判断是否存在对象，回顾一下 `get` 方法会发现：
+
+- 除了 `self`、`window`、`location`，全部都从 `iframeWindow` 中获取
+- 而 `self`、`window`、`location` 这 3 个属性在 `iframwWindow` 也依旧存在
+- 因此 `get` 和 `has` 的逻辑就一致了，虽然 `get` 取值的时候不一定是从 `iframeWindow` 中获取
+
+#### 2. 代理空对象作为 `proxyDocument`
+
+代理的是一个空对象 `{}`，且只有 `get` 取值：
+
+- 在 `get` 操作中，第一个对象也称为 `_fakeDocument`（假的 `document`），不会从这个对象上做任何操作
+
+取值前的准备工作：
+
+- 从全局 `window` 上获取：`document`
+- 从应用实例上获取：`shadowRoot` 容器、`proxyLocation`
+- 从 `iframeWindow` 上获取原生方法：`rawCreateElement` 创建元素、`rawCreateTextNode` 创建文本
+
+> 在获取对象前需要确保 `shadowRoot` 已实例化，否则通过 `stopMainAppRun` 输出警告并抛出错误中断执行
+
+**代理 `createElement` 和 `createTextNode`：**
+
+- 代理劫持 `document` 上对的方法，并将其返回作为子应用的对应的方法
+
+在 `Proxy` 中通过 `apply` 在调用时代理操作行为：
+
+- 根据 `property` 决定使用 `rawCreateElement` 还是 `rawCreateTextNode`
+- 执行方法时通过 `apply` 绑定 `iframe.contentDocument` 作为 `this`，透传参数 `arg`
+- 为每一个生成的 `Dom` 打补丁后并返回，见：`patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
+
+备注：
+
+- 在应用中所有的 `createElement`、`createTextNode` 都会通过沙箱 `iframe`
+- 而 `appendChild`、`insertBefore` 都会通过 `shadowRoot`
+- 这是因为创建元素时需要通过 `patchElementEffect` 打补丁，而最终是要在 `shadowRoot` 容器中挂载
+
+**代理 `documentURI` 和 `URL`：**
+
+- 返回 `proxyLocation` 的 `href`
+
+**代理：通过标签获取元素**
+
+- 包含：`getElementsByTagName`、`getElementsByClassName`、`getElementsByName`
+- 返回：劫持 `shadowRoot.querySelectorAll`
+- 在返回的方法中通过 `apply` 去处理子应用获取代理方法后，作为处理执行结果并返回
+
+如果上下文 `this` 不是 `iframe.contentDocument`：
+
+- 直接从上下文中获取元素
+
+如果 `getElementsByTagName` 获取所有的 `script`：
+
+- 返回 `iframe.contentDocument.scripts`，因为所有的 `script` 存放在沙箱 `iframe` 中
+
+其他情况全部在 `shadowRoot` 获取，但是获取前需要转换下参数：
+
+- `getElementsByTagName`：不需要处理
+- `getElementsByClassName`：转换成 `.{$arg}`
+- `getElementsByName`：转换成 `[name="${arg}"]`
+
+**代理：`getElementById`**
+
+- 返回：劫持 `shadowRoot.querySelector`
+- 在返回的方法中通过 `apply` 去处理子应用获取代理方法后，作为处理执行结果并返回
+
+如果上下文 `this` 不是 `iframe.contentDocument`：
+
+- 直接从上下文中获取元素
+
+否则：
+
+- 转换参数匹配 `querySelector` 去查询
+- 优先从 `shadowRoot` 去查询，找不到再去沙箱 `iframe` 中查询，因为获取的有可能是 `script`
+
+**代理：查询方法**
+
+- 包含：`querySelector`、`querySelectorAll`
+- 返回：通过 `shadowRoot` 劫持对应方法
+- 在返回的方法中通过 `apply` 去处理子应用获取代理方法后，作为处理执行结果并返回
+
+如果上下文 `this` 不是 `iframe.contentDocument`：
+
+- 直接从上下文中获取元素
+
+否则：
+
+- 优先从 `shadowRoot` 查询
+- 查询不到再去沙箱 `iframe` 中插叙
+- 但不会去查沙箱 `iframe` 中的 `base` 元素，因为他会影响路由
+
+> 从上面可以明确知道，存放 `script` 一定是沙箱 `iframe`，其他元素一定是 `shadowRoot`，否则就会匹配错乱
+
+**代理：查询 `html` 元素**
+
+- 返回的一定是 `shadowRoot` 容器中的 `shadowRoot.firstElementChild`
+
+**代理：查询元素集合**
+
+在 `shadowRoot` 容器中通过 `querySelectorAll` 去匹配相应的元素集合：
+
+- `forms`：`form`
+- `images`：`img`
+- `links`：`a`
+
+**代理：`documentProxyProperties`**
+
+包含的元素见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]，分别如下：
+
+`ownerProperties`、`shadowProperties`：
+
+- 如果 `property` 是 `activeElement`，且 `shadowRoot` 找不到的情况下返回 `shadowRoot.body`
+- 其他一律从 `shadowRoot` 中招对应的属性返回
+
+`shadowMethods`：
+
+- 通过 `getTargetValue` 优先从 `shadowRoot` 获取，否者从全局 `document` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+
+`documentProperties`：
+
+- 直接从全局 `document` 中获取
+
+`documentMethods`：
+
+- 通过 `getTargetValue` 从全局 `document` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+
+#### 3. 代理空对象作为 `proxyLocation`
+
+代理的是一个空对象 `{}`，在 `get` 和 `set` 中：
+
+- 第一个对象也称为 `_fakeDocument`（假的 `document`），不会从这个对象上做任何操作
+- 因此所有 `location` 从 `iframe.contentWindow.location` 来获取
+- 在沙箱 `iframe` 初始化之前已将 `location` 设为和基座同域
+
+拦截的方法：
+
+- `get`：取值
+- `set`：赋值
+- `ownKeys`：枚举所有属性
+- `getOwnPropertyDescriptor` 获取描述信息
+
+**从子应用入口链接获取信息，包含：**
+
+- `host`、`hostname`、`protocol`、`port`、`origin`
+
+**获取 `href`：**
+
+- 获取沙箱 `iframe` 的 `location.href`，返回之前要用主应用的 `host` 替换为子应用的 `host`
+- 因为 `iframe` 的 `host` 和基座同域，在子应用中的 `href` 要和子应用的 `host` 对齐
+
+**屏蔽 `reload` 的 `bug`：**
+
+- 毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
+- 一旦 `reload` 子应用会因为自身的 `src` 是基座的 `host` 重新加载基座造成错误
+- 但同时也阉割子应用 `reload` 功能，正确的做法应该是转发自全局 `window.reload`
+
+**处理 `replace` 的 `bug`**
+
+先解读如何处理：
+
+- 获取沙箱 `iframe` 的 `location.replace` 去操作，同时将 `this` 指向 `iframe` 的 `location`
+- 处理之前会将子应用的 `host` 替换为基座 `host`
+
+前提：
+
+- 只处理绝对路径，不处理相对路径，只处理 `location` 的 `replace`，不处理 `history.replace`
+- 也就是说子应用必须以 `http` 开头的链接做 `location.replace` 操作
+- 对于 `spa` 应用来说通常是由 `history` 来负责做这件事
+- 其次通常使用的是相对路径，很少人会将完整的 `url` 作为 `replace`，毕竟线上线下不一样
+
+问题：
+
+- 拦截后通过 `iframe` 的 `location` 进行 `replace`
+- 假定我 `replace` 到子应用首页，那么最终会导致子应用沙箱 `iframe` 中链接跳转到基座首页从而引发问题
+- 这个问题我在 `vue` 子应用中复现了，见路由页面 `about` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3)]
+
+怎么修复：
+
+- 开发人员可能需要用到的是 `history` 上的 `replace`，如下演示
+- 而子应用的 `history` 在沙箱 `iframe` 初始化时已经打补丁了，见：`patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+
+```
+iframeWindow.history.replaceState(null, "", args[0])
+```
+
+**其他情况**
+
+- 通过 `getTargetValue` 直接从 `iframe` 中的 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+
+**综上所述：**
+
+- 在 `wujie` 子应用中谨慎使用 `reload`、`replace`
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
@@ -2114,7 +2367,7 @@ shadowRoot.appendChild(processedHtml);
 内部定义的函数 `processWindowProperty` 用处：
 
 - 是将 `window` 上的属性绑定到 `iframeWindow`
-- 需要通过 `isConstructable` 来判断提供的属性是否可以通过 `new` 声明实例 [[查看](#isconstructable判断函数是否可以-new)]
+- 需要通过 `isConstructable` 来判断提供的属性是否可以实例化 [[查看](#isconstructable判断函数是否可以-new)]
 
 有 3 种情况：
 
