@@ -1299,6 +1299,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `mainHostPath`：基座 `host`
 - `appHostPath`：子应用 `host`
 
+返回 1 对象，包含 3 个属性：
+
+- `proxyWindow`：代理 `iframeWindow`，这个属性是降级代理 `localGenerator` 不能提供的
+- `proxyDocument`：代理空对象，但是会从渲染容器和全局 `document` 中获取属性
+- `proxyLocation`：代理空对象，但是会从沙箱 `location` 和子应用入口链接获取属性
+
 #### 1. 代理 `iframeWindow` 作为 `proxyWindow`
 
 分别对 `get`、`set`、`has` 做了代理
