@@ -1579,22 +1579,86 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 这里通过 `this` 取值，而 `this` 是 `fake` 空对象 `{}`，所以有可能是 `undefined`
 - 当然空对象也有原型链，例如：`toString` 是可以拿到的，但这就和 `location` 无关了
 
-**综上所述：**
+#### 📝 `localGenerator` 降级情况下的代理
+
+降级情况下`document`、`location`代理处理
+
+目录：`proxy.ts` - `localGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L261)]
+
+参数：
+
+- `iframe`：沙箱 `iframe`
+- `urlElement`：将子应用入口链接通过 `appRouteParse` 转换成 `HTMLAnchorElement` 对象 [[查看](#approuteparse-提取链接)]
+- `mainHostPath`：基座 `host`
+- `appHostPath`：子应用 `host`
+
+返回 1 对象，包含 2 个属性：
+
+- `proxyDocument`：代理空对象，但是会从渲染容器和全局 `document` 中获取属性
+- `proxyLocation`：代理空对象，但是会从沙箱 `location` 和子应用入口链接获取属性
+
+> 由于降级采用 `iframe` 作为容器，子应用的 `window` 指向 `iframe`，不需额外代理
+
+#### 劫持空对象作为 `proxyDocument`
+
+和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyDocument` [[查看](2-代理空对象作为-proxydocument)]
+
+- 创建元素和文本：`createElement`、`createTextNode`
+- 代理 `documentURI` 和 `URL`
+- `getElementsByTagName`：通过标签获取元素集合，包含获取 `script` 集合
+- `getElementById`：通过 `id` 获取元素，先容器再沙箱
+
+和 `proxyGenerator` 不同：
+
+- `proxyGenerator` 通过 `Proxy` 拦截对象做代理
+- `locationHrefSet` 通过 `Object.defineProperties` 劫持空对象做代理
+- `documentProxyProperties` 见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+
+`documentProxyProperties` 的处理：
+
+- 遍历集中罗列的属性，劫持并通过容器 `iframe` 查找对应的属性
+- 如果是可执行的方法，绑定 `this` 为容器 `iframe` 并返回，否则直接返回属性
+
+不需要考虑的属性：
+
+- 获取元素集合：`getElementsByClassName`、`getElementsByName`
+- 查询 `html` 元素：`documentElement`、`scrollingElement`
+- 获取集合：`forms`、`images`、`links`
+
+> 这些方法在 `iframe` 中可以和通过 `document` 获取，不需要代理
+
+欠缺考虑的地方：
+
+- 查询方法：`querySelector`、`querySelectorAll`，如果要查询的是 `script` 怎么办？
+
+#### 劫持空对象作为 `proxyLocation`
+
+和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
+
+- 从子应用入口链接获取信息：`host`、`hostname`、`protocol`、`port`、`origin`
+- 获取 `href`：用主应用的 `host` 替换为子应用的 `host`
+
+#### 📝 总结
+
+#### `proxyDocument` 在哪调用
+
+来自沙箱 `document` 打补丁有 2 处，见：`patchDocumentEffect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+
+- 遍历 `documentProxyProperties` 集合劫持 `document` 属性，见上方不同容器的表现
+- 获取 `body` 和 `head` 对象时，从渲染容器里返回 `Dom` 元素
+
+#### `proxyLocation` 的问题
 
 在 `wujie` 子应用中谨慎使用 `location`
 
 - 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
 - 否则可能会有意想不到的效果哦～
 
-#### 📝 `localGenerator` 降级情况下的代理
-
-降级情况下`document`、`location`代理处理
-
 #### 📝 代理中的辅助方法
 
 #### `locationHrefSet`：拦截子应用 `location.href`
 
-目录：`iframe.ts` - `locationHrefSet` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L19)]
+目录：`proxy.ts` - `locationHrefSet` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L19)]
 
 参数：
 
