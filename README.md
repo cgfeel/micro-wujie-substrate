@@ -1531,33 +1531,53 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 iframeWindow.history.replaceState(null, "", args[0])
 ```
 
+**其他情况**
+
+- 通过 `getTargetValue` 直接从 `iframe` 中的 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+
 **`set` 赋值**
 
 赋值会绑定新的值到沙箱 `location` 对应的 `property` 上，但 `href` 除外
 
-**`href` 的蜜汁操作**
+**`href` 赋值操作**
 
-先说结果：
+方法：
 
-- 子应用中通过 `location.href` 赋值更新当前页面链接的情况都会为其创建一个 `iframe`
-- 然后用 `iframe` 替换子应用容器，并更新基座 `url` 中对应的 `search`
-- 由于拦截的很直接粗暴，所以并没有考虑页面适配，这个问题留给使用者自行适配
+- 拦截操作并通过 `locationHrefSet` 创建一个新的 `iframe` 代替渲染容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 
-我猜想之所以这么做，可以是：
+结果：
 
-- 出于 `spa` 的考量，所有链接都是基座的子应用，哪怕跳到第三方页面了，也不能离开基座页面
-- 比如说后台管理，子应用中有个第三方查快递的跳转链接，通常情况可能就跳转走了
-- 但是在 `wujie` 中，抱歉，第三方查快递的网站也是我的子应用
+- 用 `iframe` 替换子应用容器，并更新当前 `url` 中对应的 `search`
+- 由于拦截的很直接粗暴，并没有考虑页面适配，切换会很突兀，需要使用者自行适配
 
-**其他情况**
+这么做的意图可能是：
 
-- 通过 `getTargetValue` 直接从 `iframe` 中的 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+- 出于 `spa` 的考量，所有链接都是基座的子应用，哪怕跳到第三方页面也不能离开基座
+- 比如说后台管理，子应用中有个第三方查快递的跳转链接，通常情况可能就跳转走了，但是在 `wujie` 中，第三方查快递的网站也是基座的子应用
+
+**`ownKeys` 枚举所有属性**
+
+- 从沙箱 `iframe` 的 `location` 中获取所有 `property`，但不包括 `reload`
+
+**`getOwnPropertyDescriptor` 获取描述信息**
+
+返回信息包含有：
+
+- `enumerable`：可枚举
+- `configurable`：可配置
+- `writable`：不可写，自动补全
+- `value`：很有可能拿到 `undefined`
+
+关于 `value` 的 `bug`：
+
+- 这里通过 `this` 取值，而 `this` 是 `fake` 空对象 `{}`，所以有可能是 `undefined`
+- 当然空对象也有原型链，例如：`toString` 是可以拿到的，但这就和 `location` 无关了
 
 **综上所述：**
 
 在 `wujie` 子应用中谨慎使用 `location`
 
-- 如果只是获取值那么一切 `ok`，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
+- 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
 - 否则可能会有意想不到的效果哦～
 
 #### 📝 代理中的辅助方法
@@ -1618,7 +1638,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 调用场景：
 
 - 只有 `locationHrefSet` 拦截子应用 `location.href`
-- 这也同时说明基座在监听 ``
+- 同时也说明监听 `popstate` 时检测前进的页面，正是来自 `locationHrefSet` 做的拦截后推送的更新
+
+流程：
+
+- 通过 `anchorElementGenerator` 拿到 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
+- 通过 `getAnchorElementQueryMap` 拿到 `searc` 的键值对
+- 根据当前应用名 `id` 将值更新为 `encode` 的 `url`
+- 将更新后的键值对更新为 `searh`，并通过 `window.history.pushState` 更新记录
 
 ### `packages` - `wujie-react`
 
