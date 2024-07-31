@@ -1600,7 +1600,17 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 通过 `rawDocumentQuerySelector` （原生方法），拿到沙箱 `iframe` 的 `body`
 - 通过 `renderElementToContainer` 将渲染容器中的 `html` 添加到沙箱 `iframeBody` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
-- 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 代替挂载渲染容器
+- 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
+
+非主动降级 `degrade` 只做一件事：
+
+- 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
+
+#### `pushUrlToWindow`：推送 `url` 到基座路由
+
+目录：`sync.ts` - `pushUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L98)]
+
+参数：
 
 ### `packages` - `wujie-react`
 
