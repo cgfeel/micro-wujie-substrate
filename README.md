@@ -1586,6 +1586,10 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
 - 否则可能会有意想不到的效果哦～
 
+#### 📝 `localGenerator` 降级情况下的代理
+
+降级情况下`document`、`location`代理处理
+
 #### 📝 代理中的辅助方法
 
 #### `locationHrefSet`：拦截子应用 `location.href`
