@@ -1690,6 +1690,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 不会，`Proxy` 中的 `get` 的规则是匹配即返回指定结果，特殊的属性会被优先匹配并返回
 
+#### `proxyLocation` 在哪里调用
+
+- 需要用到 `getCurUrl` 获取资源链接，将其提供给 `plugin` 中的 `loader`
+- 通过 `patchElementEffect` 给子应用每一个元素打补丁，让其 `baseURI` 指向 `proxyLocation` [[查看](#patchelementeffect为元素打补丁)]
+- 通过 `insertScriptToIframe` 在非降级模式下为所有 `script` 包裹的模块代理 `location` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
 #### `proxyLocation` 的问题
 
 问题 1：在 `wujie` 子应用中谨慎使用 `location`
