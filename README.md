@@ -1285,7 +1285,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `destroy` 销毁实例
 
-test
+#### 1. 卸载应用
+
+- 通过 `unmount` 卸载应用 [[查看](#-unmount-卸载应用)]
+- 通过 `bus` 对象清理监听的通信，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- 将实例中相关的属性设置为 `null`，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+
+#### 2. 清空容器，销毁实例
+
+- 如果容器挂载点 `el` 存在的话，通过 `clearChild` 讲其子集全部清空
+- 清除沙箱 `iframe`
+- 通过 `deleteWujieById` 从映射表中删除实例
 
 #### 📝 `Wujie` 实例中关键属性
 
@@ -3714,7 +3724,7 @@ proxyWindow.addEventListener;
 - `preloadApp`：预加载，见：文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
 - `startApp`：启动应用，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-使用 `addSandboxCacheWithOptions` 只有一处：
+使用 `addSandboxCacheWithOptions` 只有 1 处：
 
 - `setupApp` 缓存子应用配置，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L179)]
 
@@ -3725,6 +3735,14 @@ proxyWindow.addEventListener;
 - `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
 
 > `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
+
+删除映射表的方法只有 1 个：
+
+- `deleteWujieById`：会从银蛇表 `idToSandboxCacheMap` 中删除实例和缓存的配置信息
+
+调用 `deleteWujieById` 也只有 1 处：
+
+- `destroy`：销毁 `WuJie` 实例 [[查看](#-destroy-销毁实例)]
 
 实例映射表在应用中具有唯一性：
 
