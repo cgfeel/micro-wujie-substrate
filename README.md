@@ -1328,23 +1328,34 @@ test
 因此得出：
 
 - `hrefFlag` 标记时，表示当前应用的链接并非来自基座
-- 只有通过子应用在
+- 只有子应用内通过 `location.href` 修改当前页面链接才会拦截触法
+- 由于 `locationHrefSet` 存在 `bug` [[查看](#locationhrefset拦截子应用-locationhref)]，因此仅限来自非降级模式下的子应用
 
-属性的用途：
+用途：
 
 - `unmount` 注销应用：`umd` 模式决定是否要通知子应用销毁 [[查看](#-unmount-卸载应用)]
 - `clearInactiveAppUrl` 清理路由：也是 `unmount` 时触发 [[查看](#clearinactiveappurl清理路由)]
 - `popstate` 后退时：判断是否是从 `locationHrefSet` 拦截的页面离开
 
-  > - `locationHrefSet` 修改 `URL`：在应用中通过 `location` 设置 `href` 时候为 `true`
-  > - `popstate` 后退时，前一个页面的 `location.search` 是 `http` 开头为 `true`
-  > - `popstate` 后退时 `hrefFlag` 为 `true`，或 `active` 激活应用时为 `false`
-  >
-  > 由此可以得出 `hrefFlag` 表示当前应用的链接并非来自基座，因此 `hrefFlag` 为 `true` 时：
-  >
-  > - `umd` 模式 `unmount` 时，如果当前应用链接并非来自基座，不会触发子应用 `__WUJIE_UNMOUNT` 等操作
-  > - 卸载应用时，`clearInactiveAppUrl` 不会清理 `queryMap`
-  > - `popstate` 后退时判断后退路由的来路决定是否重绘应用
+**`el`：挂载容器**
+
+通常来自配置文件设定挂载节点，但是下面情况除外：
+
+- `preloadApp` 预加载：沙箱 `iframe` 的 `body`
+- `startApp` 加载应用不提供 `el`：沙箱 `iframe` 的 `body`
+- `startApp` 切换应用不提供 `el`：直接报错
+
+属性值的更新：
+
+- `constructor` 构建：`undefined`
+- `destroy` 销毁：`null`
+- `active` 激活应用：沙箱 `iframe` 的 `body`，或配置指定的 `el` 节点
+
+用途：
+
+- `startApp`：挂载容器 [[查看](#startapp-启动流程)]
+- `preloadApp`：预加载时候将子应用临时挂载 [[查看](#preloadapp-预加载流程)]
+- `locationHrefSet`：拦截跳转挂载临时 `iframe` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 ### `wujie` 中的代理
 
@@ -1863,7 +1874,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 这个问题来自代理 `localGenerator`，因为降级模式下不使用 `proxyLocation` [[查看](#proxylocation-的问题)]
 - 因此降级模式下也不会拦截 `location.href` 的 `set` 操作
-- 因此上述 `locationHrefSet` 流程中，清忽略降级处理部分
+- 因此上述 `locationHrefSet` 流程中，请忽略降级处理部分
 
 复现和修复：
 
