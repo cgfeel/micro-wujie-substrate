@@ -1640,12 +1640,51 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### 📝 总结
 
+#### `proxyWindow` 在哪调用
+
+仅在 `insertScriptToIframe` 注入 `script` 到沙箱 `iframe` 时，包裹模块用到 [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+- 仅限非降级 `degrade` 模式，降级的 `iframe` 容器也不提供 `proxyWindow`
+
+那 `degrade` 降级时真的不需要代理 `window` 吗？
+
+- 并不是，至少 `location` 就不是，降级后 `iframe` 容器的 `window` 如何指向 `proxyLocation` 呢？
+- 关于这点在 `proxyLocation`总结
+
+其他属性倒的确可以不用 `proxyWindow`：
+
+| 属性                   | 非降级模式                                                                       | `degrade` 降级             |
+| ---------------------- | -------------------------------------------------------------------------------- | -------------------------- |
+| `self`                 | `proxyWindow`                                                                    | 沙箱 `iframeWindow`        |
+| `window`               | 全局 `window` 描述信息存在 `get` 属性为 `proxyWindow`，否则是沙箱 `iframeWindow` | 沙箱 `iframeWindow`        |
+| 绑定的原生方法         | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
+| 不可配置不可重写的属性 | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
+| `getTargetValue`       | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
+
+为什么降级后渲染容器 `iframe` 的 `window` 是沙箱 `iframe` 中获取：
+
+- 因为 `script` 是注入在 `iframe`
+
 #### `proxyDocument` 在哪调用
 
 来自沙箱 `document` 打补丁有 2 处，见：`patchDocumentEffect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
-- 遍历 `documentProxyProperties` 集合劫持 `document` 属性，见上方不同容器的表现
+- 遍历 `documentProxyProperties` 集合劫持沙箱 `document` 属性
 - 获取 `body` 和 `head` 对象时，从渲染容器里返回 `Dom` 元素
+
+在 `proxyDocument` 执行顺序：
+
+- `patchDocumentEffect` 打补丁时候通过 `defineProperty` 劫持，然后调用 `proxyDocument` 的 `get` 拦截
+- 为了能够拦截的更全面，会迭代 `documentProxyProperties` 属性集合，依次拦截
+
+关于 `documentProxyProperties` 集合：
+
+- 集合中涵盖了 `document` 需要劫持的属性，包括 `createElement`、`createTextNode` 这些在劫持过程中特殊处理的属性
+- 在 `Proxy` 的 `get` 中会先处理特殊指定的属性，最后通过遍历 `documentProxyProperties` 批量定义
+
+特殊指定的属性会因为遍历 `documentProxyProperties` 被覆盖吗：
+
+- 不会，`Proxy` 中的 `get` 的规则是匹配即返回指定结果，特殊的属性会被优先匹配并返回
 
 #### `proxyLocation` 的问题
 
