@@ -1296,7 +1296,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 如果容器挂载点 `el` 存在的话，通过 `clearChild` 讲其子集全部清空
 - 从 `iframe` 中找到 `__WUJIE_EVENTLISTENER__` 将记录的事件清除，见：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
 - 删除沙箱 `iframe` 元素
-- 通过 `deleteWujieById` 从映射表中删除实例 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+- 通过 `deleteWujieById` 从映射表中删除实例，见：`idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 #### 📝 `Wujie` 实例中关键属性
 
