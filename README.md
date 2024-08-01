@@ -1651,7 +1651,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 并不是，至少 `location` 就不是
 - 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation`总结
 
-其他属性倒的确可以不用 `proxyWindow`：
+以下属性的确可以不用 `proxyWindow`：
 
 | 属性                   | 非降级模式                                                                       | `degrade` 降级             |
 | ---------------------- | -------------------------------------------------------------------------------- | -------------------------- |
