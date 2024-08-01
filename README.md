@@ -1727,7 +1727,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 要怎么修复：
 
-- 我的想法是在 `proxyWindow` 上做劫持指向 `proxyLocation`
+- 我的想法是在 `proxyWindow` 劫持 `location` 指向 `proxyLocation`
 - 但是降级后的 `iframe` 容器使用的是沙箱 `iframeWindow`，而不是 `proxyWindow`
 - 这样就需要从 `patchWindowEffect` 着手打补丁了
 
