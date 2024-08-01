@@ -536,11 +536,13 @@
 
 #### 3. 创建沙箱 `iframe`
 
-**提取链接**
-
 - 通过 `appRouteParse` 提取 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
 - 获取基座的 `host`：`mainHostPath`
 - 通过 `iframeGenerator` 获取沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
+
+#### 4. 创建代理
+
+根据 `degrade` 决定是创建 `localGenerator` 降级代理还是创建
 
 #### 📝 `active` 激活应用
 
@@ -1616,7 +1618,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 `documentProxyProperties` 的处理：
 
-- 遍历集中罗列的属性，劫持并通过容器 `iframe` 查找对应的属性
+- 遍历集合罗列的属性，劫持并通过容器 `iframe` 查找对应的属性
 - 如果是可执行的方法，绑定 `this` 为容器 `iframe` 并返回，否则直接返回属性
 
 不需要考虑的属性：
