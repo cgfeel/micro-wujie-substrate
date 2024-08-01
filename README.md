@@ -1649,7 +1649,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 那 `degrade` 降级时真的不需要代理 `window` 吗？
 
 - 并不是，至少 `location` 就不是
-- 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation`总结
+- 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation` 的问题
 
 以下属性在降级情况的确不用 `proxyWindow`：
 
@@ -1667,7 +1667,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 为什么降级后渲染容器 `iframe` 的 `window` 是沙箱 `iframe` 中获取：
 
-- 因为 `script` 是注入在 `iframe`
+- 因为 `script` 是注入在沙箱 `iframe` 中
 
 #### `proxyDocument` 在哪调用
 
@@ -1692,10 +1692,44 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### `proxyLocation` 的问题
 
-在 `wujie` 子应用中谨慎使用 `location`
+问题 1：在 `wujie` 子应用中谨慎使用 `location`
 
 - 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
 - 否则可能会有意想不到的效果哦～
+
+问题 2：在降级模式下的 `location` 和非降级模式下不一致
+
+也可换给说法：降级模式下子应用和基座的 `location` 不是同一个对象，对比如下：
+
+| 分类       | 非降级模式             | `degrade` 子应用            | `degrade` 基座         |
+| ---------- | ---------------------- | --------------------------- | ---------------------- |
+| `location` | `proxyLocation`        | 沙箱 `iframeLocation`       | `proxyLocation`        |
+| `url`      | 子应用入口链接         | 当前基座链接                | 子应用入口链接         |
+| `host`     | 子应用                 | 主应用                      | 子应用                 |
+| `reload`   | 屏蔽                   | 不屏蔽                      | 屏蔽                   |
+| `replace`  | 创建 `iframe` 代替容器 | `location.replace` 默认行为 | 创建 `iframe` 代替容器 |
+
+原因：
+
+- 非降级的 `location` 在`insertScriptToIframe` 注入 `script` 到沙箱 `iframe` 时，包裹到模块中 [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 降级的子应用 `location` 为沙箱 `iframe` 的 `location`，不做代理
+- 而降级的沙箱 `iframe` 和基座的 `host` 同域，也就造成了子应用的 `location` 和真实不符
+
+那为什么 `degrade` 下基座 🈶️ 不一样呢？
+
+- 基座中调用的 `location` 全都来自 `proxyLocation`，这个对象绑定在了 `Wujie` 这个实例对象上了
+
+要怎么修复：
+
+- 我的想法是在 `proxyWindow` 上做劫持指向 `proxyLocation`
+- 但是降级后的 `iframe` 容器使用的是沙箱 `iframeWindow`，而不是 `proxyWindow`
+- 这样就需要从 `patchWindowEffect` 着手打补丁了
+
+怎么打补丁：
+
+- 通过 `Object.getOwnPropertyNames` 遍历 `iframeWindow` 拿到属性 `location`
+- 从 `iframeWindow.__WUJIE` 中获取 `degrade`
+- 如果存在降级通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
 
 #### 📝 代理中的辅助方法
 
