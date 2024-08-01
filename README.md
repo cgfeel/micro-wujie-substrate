@@ -633,16 +633,16 @@
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
-> 关于 `iframeReady`：
->
-> 目录：`iframe.ts` - `iframeGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L815)]
->
-> - 目的用于确保 `iframe` 初始化
-> - 在 `Wujie` 实例构造函数时 `iframeGenerator` 已发起了 `stopIframeLoading` 微任务
-> - 在激活时通过 `this.iframeReady` 确保已完成了初始化
-> - 保活的情况下切回应用可能不需要考虑，除此之外在应用加载也需要通过 `active` 来激活应用，这个时候 `frameworkStartedDefer` 就很有用了
->
-> 在 `qiankun` 中有一个 `frameworkStartedDefer`，和 `iframeReady` 用途是一样的
+过程：
+
+- 见 `iframeGenerator` - `iframeReady` [[查看](#iframegenerator创建沙箱-iframe)]
+
+需要等待 `iframeReady` 的场景：
+
+- 除了 `alive` 模式和 `umd` 切换应用时 `iframeReady` 已加载完毕，其他情况都有可能需要等待
+- 如果加载顺利的话，`iframeReady` 会在 `active` 之前加载完毕，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
+
+> 在 `qiankun` 中有个 `frameworkStartedDefer` 和 `iframeReady` 用途是一样的，都是先发起一个微任务后继续执行后续流程，之后在启动应用前会等待微任务执行完毕才开始挂载应用
 
 第三步：动态修改 `fetch`
 
