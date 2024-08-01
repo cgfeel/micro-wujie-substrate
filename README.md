@@ -1715,7 +1715,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 降级的子应用 `location` 为沙箱 `iframe` 的 `location`，不做代理
 - 而降级的沙箱 `iframe` 和基座的 `host` 同域，也就造成了子应用的 `location` 和真实不符
 
-那为什么 `degrade` 下基座 🈶️ 不一样呢？
+那为什么 `degrade` 下基座不一样呢？
 
 - 基座中调用的 `location` 全都来自 `proxyLocation`，这个对象绑定在了 `Wujie` 这个实例对象上了
 
