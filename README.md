@@ -1294,8 +1294,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 2. 清空容器，销毁实例
 
 - 如果容器挂载点 `el` 存在的话，通过 `clearChild` 讲其子集全部清空
-- 清除沙箱 `iframe`
-- 通过 `deleteWujieById` 从映射表中删除实例
+- 从 `iframe` 中找到 `__WUJIE_EVENTLISTENER__` 将记录的事件清除，见：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
+- 删除沙箱 `iframe` 元素
+- 通过 `deleteWujieById` 从映射表中删除实例 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 #### 📝 `Wujie` 实例中关键属性
 
@@ -3738,7 +3739,7 @@ proxyWindow.addEventListener;
 
 删除映射表的方法只有 1 个：
 
-- `deleteWujieById`：会从银蛇表 `idToSandboxCacheMap` 中删除实例和缓存的配置信息
+- `deleteWujieById`：会从映射表 `idToSandboxCacheMap` 中删除实例和缓存实例的配置
 
 调用 `deleteWujieById` 也只有 1 处：
 
