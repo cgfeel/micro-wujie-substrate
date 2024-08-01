@@ -3782,7 +3782,7 @@ proxyWindow.addEventListener;
 
 除此之外：
 
-- `wujie` 还提供了 `props` 通信通信和 `window` 通信，来避免 `EventBut`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
+- `wujie` 还提供了 `props` 通信通信和 `window` 通信，来避免 `EventBus`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
