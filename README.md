@@ -1644,6 +1644,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 不拦截 `replace`，也不存在 `replace` 带来的问题，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
 - 不会通过 `getTargetValue` 缓存 `isCallable` 方法，这可能是因为 `location` 方法并没有 `window` 那么多
+- 降级后的 `proxyLocation` 不会捆绑在子应用中，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 #### 📝 总结
 
