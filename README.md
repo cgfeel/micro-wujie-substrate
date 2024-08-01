@@ -1636,6 +1636,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 从子应用入口链接获取信息：`host`、`hostname`、`protocol`、`port`、`origin`
 - 获取 `href`：用主应用的 `host` 替换为子应用的 `host`
+- 设置 `href`：会通过 `locationHrefSet` 创建一个新的 `iframe` 代替应用容器 [[查看](#locationhrefset拦截子应用-locationhref)]
+- 屏蔽 `reload`，当然屏蔽导致的问题也一样，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
+- 遍历 `location` 属性绑定在 `proxyLocation`，如果是 `isCallable` 方法 [[查看](#iscallable判断对象是一个函数)]，绑定 `this` 为沙箱的 `location`
+
+和 `proxyGenerator` 不同：
+
+- 不拦截 `replace`，也不存在 `replace` 带来的问题，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
+- 不会通过 `getTargetValue` 缓存 `isCallable` 方法，这可能是因为 `location` 方法并没有 `window` 那么多
 
 #### 📝 总结
 
