@@ -542,7 +542,22 @@
 
 #### 4. 创建代理
 
-根据 `degrade` 决定是创建 `localGenerator` 降级代理还是创建
+根据 `degrade` 决定创建：
+
+- `localGenerator` 降级代理 [[查看](#-localgenerator-降级情况下的代理)]
+- `proxyLocation` 代理 [[查看](#-proxygenerator-非降级情况下的代理)]
+
+区别：
+
+| 分类       | `degrade` 降级代理  | `proxyLocation` 代理 |
+| ---------- | ------------------- | -------------------- |
+| `window`   | 沙箱 `iframeWindow` | `proxyWindow`        |
+| `document` | `proxyDocument`     | `proxyDocument`      |
+| `location` | 沙箱 `location`     | `proxyLocation`      |
+
+- `proxyDocument` 的差别，见：`localGenerator` - `proxyDocumennt` [[查看](#劫持空对象作为-proxydocument)]
+- 代理对象使用场景，见：代理对象总结 [[查看](#proxywindow-在哪调用)]
+- 代理对象的问题，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 #### 📝 `active` 激活应用
 
