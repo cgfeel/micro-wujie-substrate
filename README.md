@@ -1626,12 +1626,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 获取元素集合：`getElementsByClassName`、`getElementsByName`
 - 查询 `html` 元素：`documentElement`、`scrollingElement`
 - 获取集合：`forms`、`images`、`links`
+- 查询方法：`querySelector`、`querySelectorAll`
 
 > 这些方法在 `iframe` 中可以和通过 `document` 获取，不需要代理，而容器中所有的元素都通过 `patchElementEffect` 将 `ownerDocument` 指向沙箱 `iframeWindow.document` [[查看](#patchelementeffect为元素打补丁)]
-
-欠缺考虑的地方：
-
-- 查询方法：`querySelector`、`querySelectorAll`，如果要查询的是 `script` 怎么办？
 
 #### 劫持空对象作为 `proxyLocation`
 
