@@ -1651,15 +1651,19 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 并不是，至少 `location` 就不是
 - 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation`总结
 
-以下属性的确可以不用 `proxyWindow`：
+以下属性在降级情况的确不用 `proxyWindow`：
 
-| 属性                   | 非降级模式                                                                       | `degrade` 降级             |
-| ---------------------- | -------------------------------------------------------------------------------- | -------------------------- |
-| `self`                 | `proxyWindow`                                                                    | 沙箱 `iframeWindow`        |
-| `window`               | 全局 `window` 描述信息存在 `get` 属性为 `proxyWindow`，否则是沙箱 `iframeWindow` | 沙箱 `iframeWindow`        |
-| 绑定的原生方法         | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
-| 不可配置不可重写的属性 | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
-| `getTargetValue`       | 从沙箱 `iframeWindow` 获取                                                       | 从沙箱 `iframeWindow` 获取 |
+| 属性     | 非降级模式                                            | `degrade` 降级      |
+| -------- | ----------------------------------------------------- | ------------------- |
+| `self`   | `proxyWindow`                                         | 沙箱 `iframeWindow` |
+| `window` | 全局 `window` 描述信息存在 `get` 属性为 `proxyWindow` | 沙箱 `iframeWindow` |
+
+以下属性无论降级不降级都从 `iframeWindow` 获取：
+
+- 全局 `window` 描述信息不存在 `get` 属性
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`、`__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`
+- 不可配置不可重写的属性
+- `getTargetValue`
 
 为什么降级后渲染容器 `iframe` 的 `window` 是沙箱 `iframe` 中获取：
 
