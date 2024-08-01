@@ -556,8 +556,21 @@
 | `location` | 沙箱 `location`     | `proxyLocation`      |
 
 - `proxyDocument` 的差别，见：`localGenerator` - `proxyDocumennt` [[查看](#劫持空对象作为-proxydocument)]
-- 代理对象使用场景，见：代理对象总结 [[查看](#proxywindow-在哪调用)]
 - 代理对象的问题，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+
+流程：
+
+- 通过代理对象拿到 `proxyWindow`、`proxyDocument`、`proxyLocation`，其中降级模式没有 `proxyWindow`
+- 将这些对象绑定在 `wujie` 实例中方便基座调用，见：代理在哪调用 [[查看](#proxywindow-在哪调用)]
+
+#### 5. 将实例添加到映射表
+
+在添加实例到映射表之前要将 `proxyLocation` 绑定在 `provide`，这样：
+
+- 子应用就可以通过 `window.$wujie.location` 去调用 `proxyLocation`
+- 在 `WuJie` 构造函数中 `provide` 绑定了 `bus` 和 `location`，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+
+最后通过 `addSandboxCacheWithWujie` 将当前实例添加到映射表缓存起来，见：`idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 #### 📝 `active` 激活应用
 
