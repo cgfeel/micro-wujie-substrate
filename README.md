@@ -1737,6 +1737,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 从 `iframeWindow.__WUJIE` 中获取 `degrade`
 - 如果存在降级通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
 
+复现问题：
+
+- 在基座中找到 `/src/pages/VuePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/VuePage.tsx)]
+- 在组建中添加 `degrade` 属性，运行切换到 `vue` 应用，点击 `about` 切换到页面
+- 这个时候看到拿到的 `url` 是 `http://localhost:3000/about`
+- 单独打开子应用拿到的 `url` 是 `http://localhost:8080/about`
+- 去掉 `degrade` 拿到的 `url` 是 `http://localhost:8080/about`
+
 #### 📝 代理中的辅助方法
 
 #### `locationHrefSet`：拦截子应用 `location.href`
