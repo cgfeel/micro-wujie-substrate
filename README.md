@@ -1283,7 +1283,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 遍历 `styleSheetElements` 集合，如果不存在或者为空则跳过恢复
 - 根据容器决定将集合中的样式添加到 `shadowRoot` 还是 `iframe` 容器中
 
+#### 📝 `destroy` 销毁实例
+
+test
+
 #### 📝 `Wujie` 实例中关键属性
+
+#### 1. 常规属性
 
 这里只列举部分关键的属性：
 
@@ -1295,24 +1301,50 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `elementEventCacheMap` | 子应用 `dom` 监听事件留存，当降级时用于保存元素事件                                                                                            | `WeakMap`，在构造函数中通过 `iframeGenerator` 发起记录                         | `null`                  |
 | `execFlag`             | `start` 应用则为 `true`                                                                                                                        | `undefined`                                                                    | `null`                  |
 | `execQueue`            | `start` 应用中的任务队列                                                                                                                       | `undefined`                                                                    | `null`                  |
-| `hrefFlag`             | 判断子应用的 `url`，注 n `hrefFlag`                                                                                                            | `undefined`                                                                    | `null`                  |
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                            | `undefined`                                                                    | `null`                  |
 | `provide`              | 为子应用提供通信、传递数据、获取 `shadowRoot` 和子应用的 `location`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)] | 在构造函数里提供 `bus`、`location`，在 `active` 中提供 `props` 和 `shadowRoot` | `null`                  |
 | `styleSheetElements`   | 收集应用中动态添加的样式，静态 `:root` 样式 [[查看](#2-stylesheetelements-收集样式表)]                                                         | `[]`                                                                           | `null`                  |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                      | `unndefined`，只在 `active` 时通过配置文件设置                                 | 不处理                  |
 | `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                  | `unndefined`，只在 `active` 时候记录                                           | 不处理                  |
 
-> 注 n：`hrefFlag`：
->
-> - `locationHrefSet` 修改 `URL`：在应用中通过 `location` 设置 `href` 时候为 `true`
-> - `popstate` 后退时，前一个页面的 `location.search` 是 `http` 开头为 `true`
-> - `popstate` 后退时 `hrefFlag` 为 `true`，或 `active` 激活应用时为 `false`
->
-> 由此可以得出 `hrefFlag` 表示当前应用的链接并非来自基座，因此 `hrefFlag` 为 `true` 时：
->
-> - `umd` 模式 `unmount` 时，如果当前应用链接并非来自基座，不会触发子应用 `__WUJIE_UNMOUNT` 等操作
-> - 卸载应用时，`clearInactiveAppUrl` 不会清理 `queryMap`
-> - `popstate` 后退时判断后退路由的来路决定是否重绘应用
+#### 2. 特殊属性
+
+**`hrefFlag`：通过 `iframe` 加载子应用 `url`**
+
+这里的 `iframe` 既不是沙箱 `iframe`，也不是容器 `iframe`，而是：
+
+- 专门用来加载通过 `location.href` 跳转链接时，临时建立一个 `iframe` 来替换容器
+- 比如子应用通过 `location.href` 转向第三方页面，这时就新建 `iframe` 充当临时容器
+
+属性值的更新：
+
+- `constructor` 构建：`undefined`
+- `destroy` 销毁：`null`
+- `active` 激活应用：`false`
+- `locationHrefSet` 拦截子应用：设置 `true` [[查看](#locationhrefset拦截子应用-locationhref)]
+- `popstate` 前进时，页面来自 `locationHrefSet` 拦截：`true`
+- `popstate` 后退时，从 `locationHrefSet` 拦截的页面离开：`false`
+
+因此得出：
+
+- `hrefFlag` 标记时，表示当前应用的链接并非来自基座
+- 只有通过子应用在
+
+属性的用途：
+
+- `unmount` 注销应用：`umd` 模式决定是否要通知子应用销毁 [[查看](#-unmount-卸载应用)]
+- `clearInactiveAppUrl` 清理路由：也是 `unmount` 时触发 [[查看](#clearinactiveappurl清理路由)]
+- `popstate` 后退时：判断是否是从 `locationHrefSet` 拦截的页面离开
+
+  > - `locationHrefSet` 修改 `URL`：在应用中通过 `location` 设置 `href` 时候为 `true`
+  > - `popstate` 后退时，前一个页面的 `location.search` 是 `http` 开头为 `true`
+  > - `popstate` 后退时 `hrefFlag` 为 `true`，或 `active` 激活应用时为 `false`
+  >
+  > 由此可以得出 `hrefFlag` 表示当前应用的链接并非来自基座，因此 `hrefFlag` 为 `true` 时：
+  >
+  > - `umd` 模式 `unmount` 时，如果当前应用链接并非来自基座，不会触发子应用 `__WUJIE_UNMOUNT` 等操作
+  > - 卸载应用时，`clearInactiveAppUrl` 不会清理 `queryMap`
+  > - `popstate` 后退时判断后退路由的来路决定是否重绘应用
 
 ### `wujie` 中的代理
 
@@ -1826,6 +1858,16 @@ iframeWindow.history.replaceState(null, "", args[0])
 非主动降级 `degrade` 只做一件事：
 
 - 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
+
+以上描述仅在正常情况，不巧 `locationHrefSet` 也有 `bug`：
+
+- 这个问题来自代理 `localGenerator`，因为降级模式下不使用 `proxyLocation` [[查看](#proxylocation-的问题)]
+- 因此降级模式下也不会拦截 `location.href` 的 `set` 操作
+- 因此上述 `locationHrefSet` 流程中，清忽略降级处理部分
+
+复现和修复：
+
+- 和 `proxyLocation` 解决方法一致，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 #### `pushUrlToWindow`：推送 `url` 到基座路由
 
