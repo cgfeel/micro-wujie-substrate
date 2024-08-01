@@ -1315,7 +1315,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 返回 `proxyLocation` 对象：
 
-- `location`
+- `location` [[查看](#3-代理空对象作为-proxylocation)]
 
 返回自身 `proxyWindow` 对象：
 
