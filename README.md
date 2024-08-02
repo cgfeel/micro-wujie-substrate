@@ -363,6 +363,8 @@
 
 #### 3. 创建新的沙箱实例
 
+这一过程和 `preloadApp` [[查看](#preloadapp-预加载流程)] 预加载应用流程是一样的：
+
 ### `preloadApp` 预加载流程
 
 目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
@@ -2538,7 +2540,7 @@ shadowRoot.appendChild(processedHtml);
 - 通过 `contentPromise` 将所有样式都变成内联样式
 - 将拿到的内联样式创建 `style` 元素，根据配置插入应用 `html` 的头部或尾部
 
-#### 启动子应用时添加、删除 `loading`
+#### 启动应用时添加、删除 `loading`
 
 目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts)]
 
