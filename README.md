@@ -1148,7 +1148,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
 - `scriptResultList` 提取要执行的 `script`，注 n (`scriptResultList`)
 - `iframeWindow` 提取沙箱的 `window`
-- 为子应用注入全局对象：`__POWERED_BY_WUJIE__`
+- 为子应用全局注入 `__POWERED_BY_WUJIE__` 用于子应用是基座时，通过 `inject` 向父级获取对象 [[查看](#1-inject-注入子应用-3-个对象)]
 
 > 注 n：`scriptResultList`，这是个不影响使用的问题
 >
@@ -1949,50 +1949,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 通过 `getAnchorElementQueryMap` 拿到 `searc` 的键值对
 - 根据当前应用名 `id` 将值更新为 `encode` 的 `url`
 - 将更新后的键值对更新为 `searh`，并通过 `window.history.pushState` 更新记录
-
-### `packages` - `wujie-react`
-
-只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
-
-先看官方提供的 `react` 组件，只有一个文件 `index.js` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-react/index.js)]
-
-静态属性：
-
-- `propTypes`：定义组件的属性类型，用于类型检查。
-- `bus`，`setupApp`，`preloadApp`，`destroyApp`：从 `wujie` 库引入的静态属性和方法，可能用于子应用的管理和控制。
-
-> 外部可以直接通过 `WujieReact` 这个类获取静态属性
-
-状态和引用：
-
-- `state`：定义了一个 `myRef`，用于存储对 `DOM` 元素的引用。
-- `destroy` 和 `startAppQueue` 是实例属性，用于存储销毁方法和启动应用的 `Promise` 队列，在组件中只做了定义没有使用。
-
-**方法：**
-
-`startApp`：
-
-- 异步方法，用于启动子应用。
-- 使用 `startApp` 方法传入组件的属性和引用的 `DOM` 元素。
-
-生命周期方法：
-
-- `componentDidMount`：在组件挂载后调用 `startApp` 方法启动子应用。
-- `componentDidUpdate`：当组件的 `name` 或 `url` 属性发生变化时重新启动子应用。
-
-`render` 方法：
-
-- 渲染一个 `div` 元素，并将组件的宽度和高度设置为属性中的值。
-- 通过 `ref` 属性将 `div` 的引用存储到 `myRef` 中。
-
-文档：
-
-- `React` 封装组件使用 [[查看](https://wujie-micro.github.io/doc/pack/react.html)]
-- 封装组件的 `props` 参考 `startApp` [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
-
-总结：
-
-`WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
 
 ### 辅助方法 - 提取应用资源
 
@@ -3966,6 +3922,63 @@ proxyWindow.addEventListener;
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
 - 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+
+### 引入 `wujie` 包时默认就执行
+
+#### `EventBus`
+
+提供给基座与子应用通信，导出对象为 `bus`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/bus.html)]
+
+#### `stopMainAppRun`
+
+终止代码运行，前提条件：
+
+- `window.__WUJIE`：说明为子应用，在沙箱 `iframe` 初始化时通过 `patchIframeVariable` 设置 [[查看](#patchiframevariable-为子应用-window-添加属性)]
+- `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start`
+
+### `packages` - `wujie-react`
+
+只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
+
+先看官方提供的 `react` 组件，只有一个文件 `index.js` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-react/index.js)]
+
+静态属性：
+
+- `propTypes`：定义组件的属性类型，用于类型检查。
+- `bus`，`setupApp`，`preloadApp`，`destroyApp`：从 `wujie` 库引入的静态属性和方法，可能用于子应用的管理和控制。
+
+> 外部可以直接通过 `WujieReact` 这个类获取静态属性
+
+状态和引用：
+
+- `state`：定义了一个 `myRef`，用于存储对 `DOM` 元素的引用。
+- `destroy` 和 `startAppQueue` 是实例属性，用于存储销毁方法和启动应用的 `Promise` 队列，在组件中只做了定义没有使用。
+
+**方法：**
+
+`startApp`：
+
+- 异步方法，用于启动子应用。
+- 使用 `startApp` 方法传入组件的属性和引用的 `DOM` 元素。
+
+生命周期方法：
+
+- `componentDidMount`：在组件挂载后调用 `startApp` 方法启动子应用。
+- `componentDidUpdate`：当组件的 `name` 或 `url` 属性发生变化时重新启动子应用。
+
+`render` 方法：
+
+- 渲染一个 `div` 元素，并将组件的宽度和高度设置为属性中的值。
+- 通过 `ref` 属性将 `div` 的引用存储到 `myRef` 中。
+
+文档：
+
+- `React` 封装组件使用 [[查看](https://wujie-micro.github.io/doc/pack/react.html)]
+- 封装组件的 `props` 参考 `startApp` [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
+总结：
+
+`WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
 
 ### 还没有解开的问题
 
