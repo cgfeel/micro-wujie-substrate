@@ -2538,6 +2538,63 @@ shadowRoot.appendChild(processedHtml);
 - 通过 `contentPromise` 将所有样式都变成内联样式
 - 将拿到的内联样式创建 `style` 元素，根据配置插入应用 `html` 的头部或尾部
 
+#### 启动子应用时添加、删除 `loading`
+
+目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts)]
+
+**`addLoading` 添加 `loading`**
+
+参数：
+
+- `el`：挂载容器
+- `loading`：加载状态的 `HTMLElement`
+
+两个参数只能来自配置文件：
+
+- 因为 `addLoading` 只能在 `startApp` 调用 [[查看](#3-创建新的沙箱实例)]
+
+用途：
+
+- 清空挂载节点
+- 给节点中添加 `loading` 元素
+
+流程：
+
+- 通过 `getContainer` 获取挂载节点，通过 `clearChild` 清空节点
+- 为挂载节点添加样式和标签
+- 创建一个 `loading` 元素添加到挂载元素里
+
+根据 `position` 为挂载节点创建便签、更新呢样式：
+
+| 行为            | `static`                            | `relative`、`sticky`                |
+| --------------- | ----------------------------------- | ----------------------------------- |
+| 记录 `position` | 标签 `CONTAINER_POSITION_DATA_FLAG` | 不记录                              |
+| 记录 `overflow` | 标签 `CONTAINER_OVERFLOW_DATA_FLAG` | 标签 `CONTAINER_OVERFLOW_DATA_FLAG` |
+| 更新 `position` | `relative`                          | 不更新                              |
+| 更新 `overflow` | `hidden`                            | `hidden`                            |
+
+> 其他 `position` 状态不做处理
+
+添加 `loading` 元素：
+
+- 创建一个 `div` 作为 `loading` 元素的父节点 `loadingContainer`，添加样式，其 `position` 为 `absolute`，居中展示
+- 添加 `LOADING_DATA_FLAG` 标签，避免在应用 `active` 时候通过 `renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)] 清空 `loading`
+- 将提供的 `loading` 添加到节点中，如果没有就使用默认的 `svg`，之后将 `loadingContainer` 添加到 `el` 挂载节点
+
+此时的 `loading` 是不可见的：
+
+- 因为父级的 `position` 不是 `static`，且 `overflow` 会隐藏子集，自身又没有高度
+- 子集只有一个 `absolute` 的 `loadingContainer` 无法撑开挂载节点的高度
+
+什么时候可见：
+
+- `active` 激活应用时，通过 `renderTemplateToShadowRoot` 或 `renderTemplateToIframe`
+- 将容器添加到挂载节点撑开节点高度时
+
+在哪清除：
+
+- `removeLoading`，继续往下看
+
 #### 记录、恢复 `iframe` 容器事件
 
 目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
