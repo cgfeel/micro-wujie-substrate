@@ -2588,8 +2588,7 @@ shadowRoot.appendChild(processedHtml);
 
 什么时候可见：
 
-- `active` 激活应用时，通过 `renderTemplateToShadowRoot` 或 `renderTemplateToIframe`
-- 将容器添加到挂载节点撑开节点高度时
+- `active` 激活应用时，通过 `renderTemplateToShadowRoot` 或 `renderTemplateToIframe`，将容器添加到挂载节点撑开节点高度时
 
 在哪清除：
 
