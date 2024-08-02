@@ -3954,9 +3954,9 @@ proxyWindow.addEventListener;
 - 通过当前的 `url` 获取 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 通过 `queryMap` 筛选获取应用实例集合，遍历集合根据前进或后退重新渲染容器
 
-浏览器前进，要求：
+4 个情况：
 
-- 使用应用名从 `queryMap` 中找到应用链接为 `http` 开头
+- 前进到 `locationHrefSet` 劫持的页面 使用应用名从 `queryMap` 中找到应用链接为 `http` 开头
 - 说明此时正在前进
 
 ### `packages` - `wujie-react`
