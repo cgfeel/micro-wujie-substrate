@@ -2600,15 +2600,11 @@ shadowRoot.appendChild(processedHtml);
 
 - `el`：挂载容器
 
-只做 2 件事：
-
-- 还原挂载节点初始状态
-- 删除 `loadingContainer` 元素
-
-还原挂载节点初始状态：
+做了 3 件事：
 
 - 根据添加的标签还原 `position` 和 `overflow`
 - 删除添加的标签：`CONTAINER_POSITION_DATA_FLAG`、`CONTAINER_OVERFLOW_DATA_FLAG`
+- 删除 `loadingContainer` 元素
 
 调用场景：
 
