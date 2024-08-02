@@ -2547,7 +2547,7 @@ shadowRoot.appendChild(processedHtml);
 参数：
 
 - `el`：挂载容器
-- `loading`：加载状态的 `HTMLElement`
+- `loading`：加载状态的 `HTMLElement`，应该是可选的，按照配置文件传入的类型决定
 
 两个参数只能来自配置文件：
 
@@ -2592,7 +2592,30 @@ shadowRoot.appendChild(processedHtml);
 
 在哪清除：
 
-- `removeLoading`，继续往下看
+- 只能通过 `removeLoading`，继续往下看
+
+**`removeLoading` 删除 `loading`**
+
+参数：
+
+- `el`：挂载容器
+
+只做 2 件事：
+
+- 还原挂载节点初始状态
+- 删除 `loadingContainer` 元素
+
+还原挂载节点初始状态：
+
+- 根据添加的标签还原 `position` 和 `overflow`
+- 删除添加的标签：`CONTAINER_POSITION_DATA_FLAG`、`CONTAINER_OVERFLOW_DATA_FLAG`
+
+调用场景：
+
+- `start` 启动应用时候，只要不是 `umd` 模式切换应用都会执行
+- `mount` 挂载应用时，仅限 `umd` 模式切换应用
+
+> `umd` 不存在首次加载应用，因为第一次启动应用 `mount` 方法还没有挂载到 `iframeWinndow`
 
 #### 记录、恢复 `iframe` 容器事件
 
