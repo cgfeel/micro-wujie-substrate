@@ -508,7 +508,7 @@
 | 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] |
 | 加载资源       | 自动：构造函数调用 `loadSourceCode`                                                                       | 手动：`active` 激活应用 [[查看](#-active-激活应用)]                           |
 | 启动沙箱       | 构造函数调用 `createSandbox`                                                                              | 构造函数调用 `iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]      |
-| 沙箱 `proxy`   | `proxy`、`iframe`                                                                                         | `proxy`、`iframe`                                                             |
+| 沙箱 `proxy`   | `proxy`、`iframe`                                                                                         | `proxy`、`iframe` [[查看](#wujie-中的代理)]                                   |
 | 手动 `start`   | 不支持手动启动，通过 `mount` 挂载                                                                         | `startApp` 或 `preloadApp` 时调用应用 `start` 方法                            |
 | `mount` 应用   | 自动：由组件或资源加载完毕决定，在 `mount` 中会 `start` 沙箱                                              | 不支持外部调用，由 `start` 方法通过队列执行                                   |
 | `unmount` 应用 | 由组件 `disconnectedCallback` 发起                                                                        | 组件 `disconnectedCallback`、手动销毁 `destroy`                               |
