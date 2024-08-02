@@ -3934,7 +3934,30 @@ proxyWindow.addEventListener;
 终止代码运行，前提条件：
 
 - `window.__WUJIE`：说明为子应用，在沙箱 `iframe` 初始化时通过 `patchIframeVariable` 设置 [[查看](#patchiframevariable-为子应用-window-添加属性)]
-- `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start`
+- `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#-start-启动应用)]
+- `stopMainAppRun`：能够执行这个函数必须是基座
+
+由此得出：
+
+- 子应用是基座的情况下，`__POWERED_BY_WUJIE__` 还未经过 `start` 启动应用添加
+- 通常情况下，要执行 `script` 就要先 `start` 启动子应用
+- 而在注入 `script` 之前一定会先定义 `__POWERED_BY_WUJIE__`
+
+假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，不阻止会发生什么：
+
+- 实例注入的对象链条会被中断，见：`inject` [[查看](#1-inject-注入子应用-3-个对象)]
+
+#### `processAppForHrefJump` 监听前进和后端
+
+前进或后退时做了什么：
+
+- 通过当前的 `url` 获取 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 通过 `queryMap` 筛选获取应用实例集合，遍历集合根据前进或后退重新渲染容器
+
+浏览器前进，要求：
+
+- 使用应用名从 `queryMap` 中找到应用链接为 `http` 开头
+- 说明此时正在前进
 
 ### `packages` - `wujie-react`
 
