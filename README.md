@@ -175,6 +175,23 @@
 
 > 不是 `vue` 技术栈，所以这里暂且略过，`wujie` 封装的组件包是作为可选使用
 
+由于总结会很长，所以我将整个流程总结精简放在前面：
+
+1. `preloadApp` 预加载（非 `alive` 模式和非预执行下的 `umd` 模式不推荐）[[查看](#preloadapp-预加载流程)]
+2. `startApp` 根据实例情况决定初始化还是切换应用 [[查看](#startapp-启动流程)]
+3. 首次启动和非 `alive`、`umd` 模式切换应用，要求 `destroy` 销毁后重新初始化 [[查看](#-destroy-销毁实例)]
+4. 声明实例，创建沙箱 `iframe`、代理 `proxy`、通信 `EventBus` 等 [[查看](#-constructor-构造函数)]
+5. `importHTML` 加载资源 [[查看](#importhtml-加载资源)]
+6. `processCssLoader` 处理 `css-loader` [[查看](#processcssloader处理-css-loader)]
+7. `active` 激活应用：将 `template` 根据 `degrade` 放入 `iframe` 容器或 `shadowRoot` 容器 [[查看](#-active-激活应用)]
+8. `start` 启动应用：将 `script` 放入沙箱 `iframe`，发起通知事件和 `mount` [[查看](#-start-启动应用)]
+9. 返回 `destroy` 以便手动销毁 [[查看](#-destroy-销毁实例)]
+
+> 阅读建议，如果你做好准备阅读以下内容，这样可以提高效率：
+>
+> - “查看”指向源码链接或详细说明，记录罗列了关键内容，可以通过复制查找定位
+> - 建议按照流程线去阅读，比如说：首次启动应用、切换应用、预加载应用，而不是全文阅读
+
 ### 定义 `web component`
 
 `wujie` 和 `micro-app` 组件定义不同处：
