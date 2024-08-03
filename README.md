@@ -276,7 +276,7 @@
 
 > 配置只能通过 `setupApp` 缓存，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
-`mergeOptions` 合并配置配置：
+`mergeOptions` 合并配置：
 
 - 将 `startApp` 拿到的 `options` 和已存在实例的 `options` 合并得到新的配置信息，并结构提取必要的信息，见源文件 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L190)]
 
