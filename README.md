@@ -123,13 +123,19 @@
 - `shadowRoot`：直接将 `css` 和 `html` 全部打包到一个 `div`，塞入 `shadowRoot`
 - `iframe`：创建一个 `script` 元素，将执行的 `js` 作为元素内容插入 `iframe` 的 `head`
 
-难点，劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`：
+在 `iframe` 添加 `script` 之前：
 
-- 在 `script` 插入到 `iframe` 之前，通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
+- 需要劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`
+
+流程：
+
+- 通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
 - 返回一个 `Proxy` 对象，代理 `sandbox.shadowRoot.querySelector`
-- 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM` 进行通信
+- 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM`
 
-`Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]，第一次：
+`Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]
+
+第一次：
 
 - 由 `iframe` 中的子应用发起 `document.querySelector`
 - 通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 并返回 `Promise` 对象
