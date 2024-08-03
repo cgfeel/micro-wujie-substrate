@@ -109,9 +109,9 @@
 - `index.html`：基座 `html` 文件
 - `template`：子应用要运行的 `css` 和 `html`，要放入 `shadowDOM` 中
 - `strScript`：子应用要执行的脚本字符，要放入 `iframe` 中
-- `web component`：主应用自定义组件
+- `createCustomElement`：主应用自定义组件
 
-流程分 4 部分：
+`createCustomElement` 流程分 4 部分：
 
 1. `createSandbox`：创建沙箱
 2. `attachShadow`：创建 `shadowRoot`
