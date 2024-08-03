@@ -239,10 +239,8 @@
 
 #### `disconnectedCallback` 卸载组件
 
-- `connectedCallback`：完成挂载将自身设置为 `shadowDOM`，通过应用名获取实例 `sandbox`，将自身作为实例的 `shadowRoot`
-- `disconnectedCallback`：卸载组件通过应用名获取实例 `sandbox`，并调用实例 `unmount`
-
-在挂载组件时，将自身作为实例 `shadowRoot` 之前需要通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 通过 `getWujieById` 使用属性 `WUJIE_APP_ID` 拿到应用实例，见：`idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+- 发起卸载操作，见：`unmount` [[查看](#-unmount-卸载应用)]
 
 ### `startApp` 启动流程
 
