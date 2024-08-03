@@ -252,19 +252,18 @@
 2. 存在沙箱实例就切换或销毁应用
 3. 不存在沙箱实例或被销毁的应用，创建新的沙箱实例
 
-切换应用分为 3 个情况：
+切换应用分为 3 个模式：
 
 1. `alive` 保活模式，启动和切换应用
-2. `umd` 模式，子应用通过 `window.__WUJIE_MOUNT` 重新渲染
-3. 其他方式都注销当前实例，等待重新创建
+2. `umd` 单例模式，子应用通过 `window.__WUJIE_MOUNT` 重新渲染
+3. 重建模式，其他方式都注销当前实例，等待重新创建
 
 有关 `wujie` 的运行模式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/mode.html)]
 
-> `umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
-
 ![`wujie` 的运行模式](https://github.com/cgfeel/micro-wujie-substrate/assets/578141/c4473f5d-9845-4df4-bac6-4506f8202a3d)
 
-> `alive` 模式和子应用 `mount` 切换应用后会直接返回，其他情况销毁应用后会重新创建实例，如果你的应用在切换时看到白屏建议使用 `alive` 或 `mount`
+> - 备注 1：`umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
+> - 备注 2：如果你的应用在切换时看到白屏建议使用 `alive` 模式或 `umd` 模式
 
 #### 1.1 `getWujieById`：获取已存在的沙箱的实例
 
