@@ -21,7 +21,9 @@
 缺点：
 
 - 对 `React v18` 并不友好，严格模式下会产生协议错误，见：issue [[查看](https://github.com/Tencent/wujie/issues/672)]
-- 路由同步并不友好，子应用路由只能通过 `hash` 反应到主应用中，目前还没看到解决方案
+- 路由同步并不友好，子应用路由只能通过 `search` 反应到主应用中，不能使用 `pathname`
+
+> 路由同步看过源码，目前设计只能通过 `search` 来实现，就是这么简单粗暴
 
 疑惑：`wujie` 频繁操作 `Dom` 直接影响 `js` 性能
 
@@ -83,17 +85,14 @@
 
 - 需要允许 `cors`：`vue.config.js` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3/blob/main/vue.config.js)]
 
-### 总结
+可选：对于 `umd` 应用
 
-`wujie` 配置相对来说更简单，但是它存在两个致命的缺点：
-
-- 对 `React v18` 并不友好、路由同步只能使用 `hash`
-
-> 路由同步这块我翻了官方文档，还没有找到解决方法，这点我自己都有点不太相信
+- `global.d.ts`：添加全局类型声明 [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/src/global.d.ts)]
+- 入口文件暴露 `__WUJIE_MOUNT` 和 `__WUJIE_UNMOUNT` [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/src/index.tsx)]
 
 通过以上了解对 `wujie` 初步印象：
 
-- `Tencent` 真的对通信非常偏爱，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
+- `Tencent` 对通信非常偏爱，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
 
 ---- 分割线 ----
 
