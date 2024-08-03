@@ -319,17 +319,6 @@
 - 通过 `importHTML` 提取需要加载的 `script` [[查看](#importhtml-加载资源)]
 - 将提取的方法 `getExternalScripts` 传入 `sandbox.start` 启动应用 [[查看](#-start-启动应用)]
 
-应用中的 `css` 在哪里处理？
-
-- `preloadApp` 预加载已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理应用内的静态样式
-
-`alive` 模式或 `umd` 模式下加载样式的场景：
-
-- 预加载时替换应用资源通过 `active` 将 `template` 挂载到容器，待启动应用时将容器移动到指定 `el` 节点，`template` 不需要变更
-- 初次启动应用通过 `active` 将 `template` 挂载到容器，下次切换应用时容器资源不变
-
-其他模式往下看初始化应用实例
-
 **第三步：`alive` 加载完成**
 
 - 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
@@ -414,6 +403,15 @@
 
 - 在 `defineElement` 的 `attributeChangedCallback` 中观察 `name` 和 `url` 两个属性
 - 只有都符合要求才开始挂载组件
+
+#### 5. 应用中的 `css` 在哪里加载
+
+| 分类                  | 加载方式                                                                         | 场景                                        |
+| --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------- |
+| 应用内的静态样式      | `processCssLoader` [[查看](#processcssloader处理-css-loader)]                    | `preloadApp`，首次 `startApp` 初始化实例    |
+| 来自基座 `css-loader` | `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)] | `alive` 首次激活、其他模式每次激活          |
+| 应用内的动态样式      | `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]                    | `alive` 和 `umd` 首次激活，重建模式每次激活 |
+| `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                 | 切换 `umd` 应用，或 `umd` 预执行后启动      |
 
 ### `preloadApp` 预加载流程
 
