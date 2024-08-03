@@ -123,7 +123,7 @@
 - `shadowRoot`：直接将 `css` 和 `html` 全部打包到一个 `div`，塞入 `shadowRoot`
 - `iframe`：创建一个 `script` 元素，将执行的 `js` 作为元素内容插入 `iframe` 的 `head`
 
-在 `iframe` 添加 `script` 之前：
+在 `script` 添加到 `iframe` 之前：
 
 - 需要劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`
 
