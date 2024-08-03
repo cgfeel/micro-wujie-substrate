@@ -40,13 +40,7 @@
 
 ---
 
-本次总结分成 3 个部分
-
-- `wujie` 使用
-- `wujie` 复现，简单实现 `iframe` 和 `shadowRoot` 通信
-- `wujie` 原理
-
-关于 `wujie` 所有的项目全部整合在：
+总结分成 3 个部分：`wujie` 使用、复现和原理，项目全部整合在：
 
 - `/wujie` [[查看](https://github.com/cgfeel/zf-micro-app/tree/main/wujie)]
 
