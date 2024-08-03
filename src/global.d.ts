@@ -20,3 +20,9 @@ declare interface Window {
     __WUJIE_UNMOUNT: () => void | undefined;
     $wujie: Wujie | undefined;
 }
+
+declare namespace JSX {
+    interface IntrinsicElements {
+      'wujie-app': any
+    }
+  }

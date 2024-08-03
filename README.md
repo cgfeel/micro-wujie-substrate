@@ -4031,6 +4031,19 @@ proxyWindow.addEventListener;
 
 - 因为 `locationHrefSet` 存在 `bug`，`degrade` 模式下不能劫持 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
 
+#### `defineWujieWebComponent` 定义自定义组件
+
+- 当引入 `wujie` 的时候通过 `defineWujieWebComponent` 确保已定义了 `web component` 了
+- 而在 `active` 中通过 `createWujieWebComponent` 会自动创建组件，无需开发者关心
+
+> 在 `wujie` 中只能通过 `active` 自动创建 `web component`，不支持手动添加 `wujie-app` 到 `Dom tree`
+
+#### 其他
+
+- `wujieSupport`：浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
+- `setupApp`：缓存配置，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
+- `destroyApp`：删除应用，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
