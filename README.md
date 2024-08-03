@@ -114,8 +114,8 @@
 流程分 4 部分：
 
 1. `createSandbox`：创建沙箱
-2. `attachShadow`：创建 `shadowDom`
-3. `injectTemplate`：将 `css` 和 `html` 注入 `shadowDom`
+2. `attachShadow`：创建 `shadowRoot`
+3. `injectTemplate`：将 `css` 和 `html` 注入 `shadowRoot`
 4. `runScriptInSandbox`：将 `js` 注入 `iframe`
 
 沙箱分 2 个：
