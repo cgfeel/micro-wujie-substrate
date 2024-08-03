@@ -254,11 +254,13 @@
 
 切换应用分为 3 个情况：
 
-1. `alive` 保活模式启动
-2. 子应用通过 `window.__WUJIE_MOUNT` 发起渲染
-3. 其他方式都注销当前实例
+1. `alive` 保活模式，启动和切换应用
+2. `umd` 模式，子应用通过 `window.__WUJIE_MOUNT` 重新渲染
+3. 其他方式都注销当前实例，等待重新创建
 
-详细见文档：运行模式 [[查看](https://wujie-micro.github.io/doc/guide/mode.html)]
+有关 `wujie` 的运行模式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/mode.html)]
+
+> `umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
 
 ![企业微信截图_69bf2b27-521a-451b-9413-fa370efe73bd](https://github.com/cgfeel/micro-wujie-substrate/assets/578141/c4473f5d-9845-4df4-bac6-4506f8202a3d)
 
