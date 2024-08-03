@@ -4017,7 +4017,7 @@ proxyWindow.addEventListener;
 
 为什么后退时忽略 `degrade`：
 
-- 先看 `degrade` 下 `locationHrefSet` 拦截时的操作
+- 先看 `degrade` 下 `locationHrefSet` 拦截时的操作 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 会通过 `renderElementToContainer` 清空沙箱 `iframe` 然后再把 `iframe` 容器的 `html` 添加进来
 - `popstate` 恢复时会通过 `initRenderIframeAndContainer` 重建 `iframe` 替换挂载到节点
 - 然后将沙箱 `iframeBody` 下的第一个元素添加到 `iframe` 容器的 `document` 下
