@@ -262,8 +262,10 @@
 
 ![`wujie` 的运行模式](https://github.com/cgfeel/micro-wujie-substrate/assets/578141/c4473f5d-9845-4df4-bac6-4506f8202a3d)
 
-> - 备注 1：`umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
-> - 备注 2：如果你的应用在切换时看到白屏建议使用 `alive` 模式或 `umd` 模式
+备注：
+
+- `umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
+- 如果你的应用在切换时看到白屏建议使用 `alive` 模式或 `umd` 模式
 
 #### 1.1 `getWujieById`：获取已存在的沙箱的实例
 
