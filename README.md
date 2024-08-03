@@ -2385,27 +2385,19 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 什么时候会提供 `LOADING_DATA_FLAG`：
 
-- `addLoading` 时设置一个 `div` 用于挂载 `loading` 元素
-- 而使用 `addLoading` 只有 `startApp` 初始化应用前执行
-
-> 需要注意的是：
->
-> - `startApp` 时可以通过配置 `loading` 来定义加载元素，见：文档[[查看](https://wujie-micro.github.io/doc/api/startApp.html#loading)]
-> - 不提供 `loading` 也会执行 `addLoading` 添加一个空的 `loading` 到容器
+- `startApp` 加载应用时通过 `addLoading` 设置，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 
 为什么 `addLoading` 后就不需要清空容器：
 
-- 因为 `addLoading` 开头两行和 `renderElementToContainer` 一样，现定位容器再清空容器
-- 清空容器之后再添加样式、挂载 `loading`
+- 因为容器在 `addLoading` 时已清空
 
-如果执行 `addLoading` 后，`loading` 在哪清除：
+调用场景：
 
-- `start` 启动应用时，队列之前会 `removeLoading`，见：5. 队列前的准备 [[查看](#5-队列前的准备)]
-- `mount` 挂载 `umd` 模式应用时，这里可能会重复清除
-
-总结：
-
-- 只要不是通过 `startApp` 初始化添加 `loading` 元素，每次执行 `renderElementToContainer` 都会清空容器
+- `renderIframeReplaceApp`：劫持 `url` 创建 `iframe` 替换容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
+- `locationHrefSet`：降级处理时将 `iframe` 容器的 `html` 添加到挂载节点 [[查看](#locationhrefset拦截子应用-locationhref)]
+- `active` 激活应用时，将 `shadowRoot` 添加到挂载节点 [[查看](#-active-激活应用)]
+- `initRenderIframeAndContainer`：创建 `iframe` 容器添加到挂载点 [[查看](#2-degrade-主动降级渲染)]
+- `popstate` 时将 `iframe` 容器的 `html` 添加到沙箱 `iframe`，或将 `shadowRoot` 添加到挂载点 [[查看](#processappforhrefjump-监听前进和后端)]
 
 #### `renderTemplateToIframe` 渲染资源到 `iframe`
 
