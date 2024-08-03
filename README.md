@@ -313,7 +313,7 @@
 
 **第二步：`start` 应用**
 
-预加载但是没有 `exec` 启动的情况下需要 `start` 应用：
+预加载但是没有 `exec` 预执行的情况下需要 `start` 应用：
 
 - 调用生命周期中的 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#beforeload)]
 - 通过 `importHTML` 提取需要加载的 `script` [[查看](#importhtml-加载资源)]
