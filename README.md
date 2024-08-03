@@ -142,7 +142,7 @@
 - 并返回 `thisArgs.querySelector`，相当于 `iframeWindow.Document.prototype.querySelector`
 - 通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 
-第二次：由于 `Proxy` 对象再次调用了 `iframe` 的 `querySelector`，于是再次进入 `Object.defineProperty`
+第二次：由于 `Proxy` 对象再次调用了 `iframe` 的 `querySelector`，于是再次 `Object.defineProperty`
 
 - 这个时候返回的 `Proxy` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
 - 相当于执行：`sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
