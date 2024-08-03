@@ -4005,11 +4005,11 @@ proxyWindow.addEventListener;
 
 前进时匹配到链接为劫持的 `http` 怎么做：
 
-| 分类                                                                                                                            | `iframe` 容器 | `shadowRoot` 容器 |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------------- |
-| `renderElementToContainer` 将现有的 `iframe` 添加到沙箱 `iframeBody` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)] | 执行          | 不执行            |
-| `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]                     | 执行          | 执行              |
-| 标记 `hrefFlag` 以便后退时能够返回应用                                                                                          | 执行          | 执行              |
+| 分类                                                                                                                          | `iframe` 容器 | `shadowRoot` 容器 |
+| ----------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------------- |
+| `renderElementToContainer` 将 `iframe` 容器添加到沙箱 `iframeBody` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)] | 执行          | 不执行            |
+| `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]                   | 执行          | 执行              |
+| 标记 `hrefFlag` 以便后退时能够返回应用                                                                                        | 执行          | 执行              |
 
 ### `packages` - `wujie-react`
 
