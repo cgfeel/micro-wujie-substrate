@@ -393,6 +393,21 @@
 | `start`            | 启动应用 [[查看](#-start-启动应用)]                                              | 仅在提供 `exec` 预加载时才执行 | 需要                                                                     |
 | `destroy`          | 返回注销方法 [[查看](#-destroy-销毁实例)]                                        | 不返回                         | 仅在 `start` 正常情况下返回，见：`bug` [[查看](#4-start-启动应用的-bug)] |
 
+#### 4. `startApp` 的 `bug`
+
+同样适用于 `preloadApp`，问题出现在：
+
+- 启动或预加载应用时不提供 `name` 和 `url` 怎么处理
+
+虽然在 `ts` 中已却明要求这两个参数必须提供：
+
+- 但如果 `ignore` 或使用 `js` 的情况没有提供参数怎么处理
+
+`micro-app` 中的处理方式：
+
+- 在 `defineElement` 的 `attributeChangedCallback` 中观察 `name` 和 `url` 两个属性
+- 只有都符合要求才开始挂载组件
+
 ### `preloadApp` 预加载流程
 
 目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
@@ -3961,28 +3976,28 @@ proxyWindow.addEventListener;
 | 前进 | `queryMap` | 找到开头为 `http` 的链接 | 找到的是非链接的路由 |
 | 后退 | `herfFlag` | `true`                   | `false`              |
 
-前进不可能的情况：
+前进不处理的情况：
 
 | 条件                 | 原因                                                                                         |
 | -------------------- | -------------------------------------------------------------------------------------------- |
 | `queryMap` 为路由    | 路由时 `hrefFlag` 不可能为 `true`，判断分支都不匹配                                          |
 | `herfFlag` 为 `true` | ① 前进优先匹配 `queryMap`，② 被 `locationHrefSet` 劫持后，不会继续劫持网页的 `location.href` |
 
-后退不可能的情况：
+后退不处理的情况：
 
 | 条件                         | 原因                                                                                                 |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `queryMap` 匹配开头为 `http` | `locationHrefSet` 劫持后在 `iframe` 打开的应用所有操作都视为 `iframe` 内部操作，不会记录在 `history` |
+| `herfFlag` 为 `false`        | 说明来自应用路由的变更，不需要额外处理                                                               |
 
 所以：
 
 - `locationHrefSet` 劫持后，后退时只能是路由对应的应用
 - 而路由前进，打开的应用可能会是 `locationHrefSet` 劫持的 `iframe`
 
-`popstate` 监听函数中都不处理的情况：
+不处理情况 `history` 变更做了什么：
 
-- 前进，但 `queryMap` 是路由，或没有匹配到应用
-- 后退，但 `herfFlag` 不成立，说明后退的页面来自路由上的应用
+- 交由基座决定，重新渲染应用或切换应用
 
 ### `packages` - `wujie-react`
 
