@@ -2394,7 +2394,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 调用场景：
 
 - `renderIframeReplaceApp`：劫持 `url` 创建 `iframe` 替换容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
-- `locationHrefSet`：降级处理时将 `iframe` 容器的 `html` 添加到挂载节点 [[查看](#locationhrefset拦截子应用-locationhref)]
+- `locationHrefSet`：降级处理时将 `iframe` 容器的 `html` 添加到沙箱 `iframe` [[查看](#locationhrefset拦截子应用-locationhref)]
 - `active` 激活应用时，将 `shadowRoot` 添加到挂载节点 [[查看](#-active-激活应用)]
 - `initRenderIframeAndContainer`：创建 `iframe` 容器添加到挂载点 [[查看](#2-degrade-主动降级渲染)]
 - `popstate` 时将 `iframe` 容器的 `html` 添加到沙箱 `iframe`，或将 `shadowRoot` 添加到挂载点 [[查看](#processappforhrefjump-监听前进和后端)]
