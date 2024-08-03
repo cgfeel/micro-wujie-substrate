@@ -155,6 +155,8 @@
 - 浮窗，劫持到全局的 `window` 去执行：`document.body.appendChild(document.createElement())`
 - `iframe` 中的路由管理 `history.pushState`，将这些方法同步到主应用
 
+> 这部分将通过 `wujie` 源码解读在下方总结
+
 ---- 分割线 ----
 
 ## `wujie` 原理
