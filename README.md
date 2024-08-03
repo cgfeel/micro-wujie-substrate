@@ -201,22 +201,43 @@
 | 自定义组件名               | 支持                                                                                                                                                                                              | 不支持                                                                                                                 |
 | 接受的属性                 | `name`、`url`、`iframe` 等配置，见：文档 [[查看](https://micro-zoe.github.io/micro-app/docs.html#/zh-cn/configure?id=%e9%85%8d%e7%bd%ae%e9%a1%b9)]                                                | 仅支持 `WUJIE_APP_ID` [[查看](#激活应用的补充)]                                                                        |
 | `attributeChangedCallback` | 检查子应用 `name` 和 `url` 属性变更 [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#11-attributechangedcallback-%E8%A7%82%E5%AF%9F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9)] | 不支持，但是子应用的 `name` 和 `url` 可以作为 `React` 组件的 `props`，更新后重新渲染并挂载到容器                       |
-| `connectedCallback`        | 声明组件自增编号添加到组件映射表、发起应用挂载                                                                                                                                                    | 根据 `name` 属性拿到实例：为沙箱 `iframeWinow` 打补丁、将当前组建指向实例的 `shadowRoot`                               |
+| `connectedCallback`        | 声明组件自增编号添加到组件映射表、发起应用挂载                                                                                                                                                    | 根据应用名拿到实例：打补丁后将 `shadowRoot` 绑定到实例中 [[查看](test)]                                                |
 | `disconnectedCallback`     | 用组件编号从组件映射表中下线、发起应用卸载                                                                                                                                                        | 根据 `name` 属性拿到实例并发起卸载                                                                                     |
 | 自定义更新规则             | 不接受，更新规则组件内部定义好了则                                                                                                                                                                | 由开发人员自己决定，一旦更新应用就一定是重新渲染                                                                       |
 | 其他用途                   | 应用通信、资源容器、派发事件、决定启动和注销方式                                                                                                                                                  | 资源容器                                                                                                               |
 | 优缺点                     | 强大，但功能上分工不清晰，`MicroAppElement` 处理完之后 `CreateApp` 还要做一遍对应操作，如：组件和应用分别 `mount`                                                                                 | 简单，开发者几乎不用关心 `web component` 的存在                                                                        |
 
-加载 `WujieApp` 自定义组件方式：
+加载 `WujieApp` 自定义组件：
 
-- 在入口文件中直接调用 `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
-- 当引入 `startApp` 的时候，就已经定义好了 `web component`
+- 在入口文件中默认执行 `defineWujieWebComponent`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
 
-关于 `defineWujieWebComponent`：
+> 因此，引入 `wujie` 包的时候就已经定义了 `web component`
+
+#### 关于 `defineWujieWebComponent`
 
 目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
 
-只提供了两个方法：
+提供了挂载和卸载 2 个方法
+
+#### `connectedCallback`：挂载组件
+
+- 设置 `shadowRoot` 模式为 `open`
+- 通过 `getWujieById` 使用属性 `WUJIE_APP_ID` 拿到应用实例 []
+- 通过 `patchElementEffect` 为 `shadowRoot` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 将 `shadowRoot` 绑定到实例上
+
+几个概念名词：
+
+- `web component`：通过 `WujieApp` 定义的组件，这里定义的组件名是 `wujie-app`
+- `shadowRoot`：`shadowDom` 的根节点，与之相似有 `document` 是 `Dom` 的根节点
+- `shadowRoot.host`：`shadowRoot` 返回 `shadowRoot` 附加到 `Dom` 元素的引用，即：`web component`
+- `shadowRoot.host.parentElement`：`web component` 的父节点，用于获取 `shadowRoot` 挂载节点
+- `shadowRoot.firstChild`：`shadowRoot` 下第一个元素，在 `wujie` 中是 `html` 元素
+- `documet.documentElement`：`document` 下的跟元素，如：`html` 元素
+
+> 以上几个对象将会在 `wujie` 中高频出现
+
+#### `disconnectedCallback` 卸载组件
 
 - `connectedCallback`：完成挂载将自身设置为 `shadowDOM`，通过应用名获取实例 `sandbox`，将自身作为实例的 `shadowRoot`
 - `disconnectedCallback`：卸载组件通过应用名获取实例 `sandbox`，并调用实例 `unmount`
@@ -3825,6 +3846,11 @@ proxyWindow.addEventListener;
 - `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
 
 > `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
+
+获取映射表的方法有 2 个：
+
+- `getWujieById`：通过应用名获取引用实例，如果没有拿到返回 `null`
+- `getOptionsById`：通过应用名获取缓存的实例配置，如果没有拿到返回 `null`
 
 删除映射表的方法只有 1 个：
 
