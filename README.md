@@ -413,6 +413,14 @@
 | 应用内的动态样式      | `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]                    | `alive` 和 `umd` 首次激活、重建模式每次激活 |
 | `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                 | 切换 `umd` 应用、`umd` 预执行后启动         |
 
+> 加载的顺序也按照表格从上至下
+
+应用内动态样式补充说明：
+
+- `spa` 应用基本都是动态加载样式
+- `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载样式
+- `umd` 模式：切换应用时只执行 `mount` 方法，之前加载的样式需要通过 `rebuildStyleSheets` 恢复
+
 ### `preloadApp` 预加载流程
 
 目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
