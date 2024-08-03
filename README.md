@@ -322,7 +322,6 @@
 应用中的 `css` 在哪里处理？
 
 - `preloadApp` 预加载已经通过 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理应用内的静态样式
-- `startApp` 时无论预加载
 
 `alive` 模式或 `umd` 模式下加载样式的场景：
 
