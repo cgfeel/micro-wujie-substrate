@@ -207,15 +207,15 @@
 | 其他用途                   | 应用通信、资源容器、派发事件、决定启动和注销方式                                                                                                                                                  | 资源容器                                                                                                               |
 | 优缺点                     | 强大，但功能上分工不清晰，`MicroAppElement` 处理完之后 `CreateApp` 还要做一遍对应操作，如：组件和应用分别 `mount`                                                                                 | 简单，开发者几乎不用关心 `web component` 的存在                                                                        |
 
+#### 关于 `defineWujieWebComponent`
+
+目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
+
 加载 `WujieApp` 自定义组件：
 
 - 在入口文件中默认执行 `defineWujieWebComponent`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
 
 > 因此，引入 `wujie` 包的时候就已经定义了 `web component`
-
-#### 关于 `defineWujieWebComponent`
-
-目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
 
 提供了挂载和卸载 2 个方法
 
