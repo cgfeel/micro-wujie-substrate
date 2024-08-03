@@ -825,7 +825,19 @@
 
 解决办法：
 
-- 和 `micro-app` 一样做条件判断，条件不满足的情况直接返回不做任何渲染
+- 和 `micro-app` 组件挂载一样做条件判断，条件不满足的情况直接返回不做任何渲染
+
+#### `active` 激活应用的补充
+
+无论容器是 `iframe` 还是 `shadowRoot`，都要给容器添加属性 `WUJIE_APP_ID` 值为应用名，用途：
+
+- 通过 `querySelector` 查找 `iframe[${WUJIE_APP_ID}="${id}"]` 找到 `iframe` 容器
+- 通过自身属性 `WUJIE_APP_ID` 获取应用实例
+
+`WUJIE_APP_ID` 定义都来自 `active` 激活应用时创建容器：
+
+- `createIframeContainer`：创建 `iframe` 容器
+- `createWujieWebComponent`：创建 `shadowRoot` 容器
 
 #### 📝 `start` 启动应用
 
