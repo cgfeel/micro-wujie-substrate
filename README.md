@@ -4011,6 +4011,26 @@ proxyWindow.addEventListener;
 | `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]                   | 执行          | 执行              |
 | 标记 `hrefFlag` 以便后退时能够返回应用                                                                                        | 执行          | 执行              |
 
+后退时 `hrefFlag` 存在怎么做：
+
+- 只看 `shadowRoot` 模式，通过 `renderElementToContainer` 将 `shadowRoot` 重新替换挂载到节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+
+为什么后退时忽略 `degrade`：
+
+- 先看 `degrade` 下 `locationHrefSet` 拦截时的操作
+- 会通过 `renderElementToContainer` 清空沙箱 `iframe` 然后再把 `iframe` 容器的 `html` 添加进来
+- `popstate` 恢复时会通过 `initRenderIframeAndContainer` 重建 `iframe` 替换挂载到节点
+- 然后将沙箱 `iframeBody` 下的第一个元素添加到 `iframe` 容器的 `document` 下
+
+问题：
+
+- 难道不是把 `iframeBody` 的 `parentElement`，添加到容器 `document` 下吗？
+- 渲染容器是恢复了，沙箱 `iframe` 的 `script` 叻？在 `locationHrefSet` 时已被清空了啊。。。
+
+幸运的时目前不会碰到上述问题：
+
+- 因为 `locationHrefSet` 存在 `bug`，`degrade` 模式下不能劫持 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
+
 ### `packages` - `wujie-react`
 
 只看 `wujie-core` 和 `wujie-react`，其中 `WujieReact` 这个组件和基座演示的自定义组件是如出一辙，见自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
