@@ -139,7 +139,7 @@
 
 - 通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 并返回 `Proxy` 对象
 - 在 `Proxy` 对象首次 `apply` 时，参数 `thisArgs` 指向劫持的对象 `iframeWindow.Document.prototype`
-- 返回 `thisArgs.querySelector` 相当于 `iframeWindow.Document.prototype.querySelector`
+- 返回 `thisArgs.querySelector` 相当于 `iframeWindow.Document.prototype.querySelector.apply(sandbox.shadowRoot, args)`
 - 通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 
 第二次：由于 `Proxy` 对象再次调用了 `iframe` 的 `querySelector`，于是再次 `Object.defineProperty`
