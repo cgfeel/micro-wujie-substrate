@@ -58,7 +58,7 @@
 - 入口文件 `start` 配置启动项
 - 指定页面插入自定义组件 `<micro-app />`
 
-> `micro-app` 会将加载的资源传入 `web component`
+> `micro-app` 会将加载的资源注入 `web component`
 
 `wujie` 可以不使用 `start` 启动配置：
 
