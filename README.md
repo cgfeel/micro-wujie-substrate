@@ -152,8 +152,8 @@
 
 劫持对象场景发散：
 
-- 浮窗，劫持到全局的 `window` 去执行：`document.body.appendChild(document.createElement())`
-- `iframe` 中的路由管理 `history.pushState`，将这些方法同步到主应用
+- 浮窗：劫持 `document`，捕获 `Dom` 对象指向 `shadowRoot`
+- `iframe` 中 `history` 对象：实现同步同步
 
 > 这部分将通过 `wujie` 源码解读在下方总结
 
