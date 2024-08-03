@@ -222,7 +222,7 @@
 #### `connectedCallback`：挂载组件
 
 - 设置 `shadowRoot` 模式为 `open`
-- 通过 `getWujieById` 使用属性 `WUJIE_APP_ID` 拿到应用实例 []
+- 通过 `getWujieById` 使用属性 `WUJIE_APP_ID` 拿到应用实例，见：`idToSandboxCacheMap` [[查看](#connectedcallback挂载组件)]
 - 通过 `patchElementEffect` 为 `shadowRoot` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 将 `shadowRoot` 绑定到实例上
 
