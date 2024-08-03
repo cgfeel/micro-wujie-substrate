@@ -3992,7 +3992,7 @@ proxyWindow.addEventListener;
 
 | 条件                 | 原因                                                                                         |
 | -------------------- | -------------------------------------------------------------------------------------------- |
-| `queryMap` 为路由    | 路由时 `hrefFlag` 不可能为 `true`，判断分支都不匹配                                          |
+| `queryMap` 为路由    | 路由时 `hrefFlag` 不可能为 `true`，2 个判断分支都不匹配                                      |
 | `herfFlag` 为 `true` | ① 前进优先匹配 `queryMap`，② 被 `locationHrefSet` 劫持后，不会继续劫持网页的 `location.href` |
 
 后退不处理的情况：
@@ -4010,6 +4010,14 @@ proxyWindow.addEventListener;
 不处理情况 `history` 变更做了什么：
 
 - 交由基座决定，重新渲染应用或切换应用
+
+前进时匹配到链接为劫持的 `http` 怎么做：
+
+| 分类                                                                                                                            | `iframe` 容器 | `shadowRoot` 容器 |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------------- |
+| `renderElementToContainer` 将现有的 `iframe` 添加到沙箱 `iframeBody` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)] | 执行          | 不执行            |
+| `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]                     | 执行          | 执行              |
+| 标记 `hrefFlag` 以便后退时能够返回应用                                                                                          | 执行          | 执行              |
 
 ### `packages` - `wujie-react`
 
