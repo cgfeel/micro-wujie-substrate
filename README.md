@@ -139,13 +139,13 @@
 
 - 通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 并返回 `Proxy` 对象
 - 在 `Proxy` 对象首次 `apply` 时，参数 `thisArgs` 指向劫持的对象 `iframeWindow.Document.prototype`
-- 并返回 `thisArgs.querySelector`，相当于 `iframeWindow.Document.prototype.querySelector`
+- 返回 `thisArgs.querySelector` 相当于 `iframeWindow.Document.prototype.querySelector`
 - 通过 `apply` 将上下文指向 `sandbox.shadowRoot`
 
 第二次：由于 `Proxy` 对象再次调用了 `iframe` 的 `querySelector`，于是再次 `Object.defineProperty`
 
 - 这个时候返回的 `Proxy` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
-- 相当于执行：`sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
+- 返回 `thisArgs.querySelector` 相当于：`sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
 - 由于这次是通过 `sandox` 发起 `querySelector`，将不再被 `iframe` 劫持
 
 > 可以打开调试窗口 `sources` 在 `Proxy` 对象的 `apply` 方法中打上断点，刷新查看每次执行的上下文 `thisArgs` 的变化
