@@ -267,16 +267,14 @@
 - `umd` 在文档中称为单例模式，为了和 `qiankun`、`micro-app` 对齐，以下统称 `umd` 模式。
 - 如果你的应用在切换时看到白屏建议使用 `alive` 模式或 `umd` 模式
 
-#### 1.1 `getWujieById`：获取已存在的沙箱的实例
+#### 1. 获取应用实例和配置
 
-- 通过 `getWujieById` 从映射表 `idToSandboxCacheMap` 获取沙箱中的实例 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
-- 如果沙箱不存在返回 `null`
+从映射表 `idToSandboxCacheMap` 获取已记录的实例和配置 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]：
 
-#### 1.2 获取应用配置
+- `getWujieById`：使用应用名获取应用实例，不存在返回 `null`
+- `getOptionsById`：使用应用名获取已缓存的配置，不存在返回 `null`
 
-`getOptionsById` 获取配置信息：
-
-- 拿应用名，从映射表 `idToSandboxCacheMap` 获取实例配置 `options`，不存在返回 `null`
+> 配置只能通过 `setupApp` 缓存，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
 `mergeOptions` 合并配置配置：
 
