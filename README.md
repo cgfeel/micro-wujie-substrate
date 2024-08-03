@@ -101,7 +101,7 @@
 简单实现 `iframe` 和 `shadowRoot` 通信，详细见项目中的源码：
 
 - 项目：`static-project` [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
-- 文件：`index.html` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/index.html)]
+- 文件：`index.html` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/ifram2shadow-dom.html)]
 - 运行方式：直接点开浏览器预览、或 `http-server`
 
 整体分 4 部分：
