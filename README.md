@@ -3954,10 +3954,35 @@ proxyWindow.addEventListener;
 - 通过当前的 `url` 获取 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 通过 `queryMap` 筛选获取应用实例集合，遍历集合根据前进或后退重新渲染容器
 
-4 个情况：
+2 个情况：
 
-- 前进到 `locationHrefSet` 劫持的页面 使用应用名从 `queryMap` 中找到应用链接为 `http` 开头
-- 说明此时正在前进
+| 监听 | 判断依据   | `locationHrefSet` 劫持   | 应用内路由           |
+| ---- | ---------- | ------------------------ | -------------------- |
+| 前进 | `queryMap` | 找到开头为 `http` 的链接 | 找到的是非链接的路由 |
+| 后退 | `herfFlag` | `true`                   | `false`              |
+
+前进不可能的情况：
+
+| 条件                 | 原因                                                                                         |
+| -------------------- | -------------------------------------------------------------------------------------------- |
+| `queryMap` 为路由    | 路由时 `hrefFlag` 不可能为 `true`，判断分支都不匹配                                          |
+| `herfFlag` 为 `true` | ① 前进优先匹配 `queryMap`，② 被 `locationHrefSet` 劫持后，不会继续劫持网页的 `location.href` |
+
+后退不可能的情况：
+
+| 条件                         | 原因                                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `queryMap` 匹配开头为 `http` | `locationHrefSet` 劫持后在 `iframe` 打开的应用所有操作都视为 `iframe` 内部操作，不会记录在 `history` |
+
+所以：
+
+- `locationHrefSet` 劫持后，后退时只能是路由对应的应用
+- 而路由前进，打开的应用可能会是 `locationHrefSet` 劫持的 `iframe`
+
+`popstate` 监听函数中都不处理的情况：
+
+- 前进，但 `queryMap` 是路由，或没有匹配到应用
+- 后退，但 `herfFlag` 不成立，说明后退的页面来自路由上的应用
 
 ### `packages` - `wujie-react`
 
