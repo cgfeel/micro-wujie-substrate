@@ -11,8 +11,7 @@
 
 优点，天然隔离：
 
-- 不需要自定义沙箱，直接使用 `iframe`
-- 不需要遍历 `css` 计算 `scoped`
+- 不需要自定义沙箱，直接使用 `iframe`，不需要遍历 `css` 计算 `scoped`
 
 亮点：
 
@@ -21,14 +20,13 @@
 
 缺点：
 
-- 对 `React v18` 并不友好，严格模式下会产生协议错误 [[查看](https://github.com/Tencent/wujie/issues/672)]
+- 对 `React v18` 并不友好，严格模式下会产生协议错误，见：issue [[查看](https://github.com/Tencent/wujie/issues/672)]
 - 路由同步并不友好，子应用路由只能通过 `hash` 反应到主应用中，目前还没看到解决方案
 
-疑惑：
+疑惑：`wujie` 频繁操作 `Dom` 直接影响 `js` 性能
 
-- 频繁的草哟 `Dom` 是 H 直接影响 `js` 性能的原因
-- 目前微前端框架都会有设置到，但 `wujie` 需要频繁劫持 `iframe` 和 `shadowDom` 进行通信
-- 比如说默认情况下 `wuijie` 的每次应用切换，就是一次 `iframe` 的注销和重建
+- 比如说非 `alive`模式或 `umd`模式下，`wuijie` 的每次应用切换，就是一次注销和重建
+- `wujie` 不需要修正 `css` 的 `scope`，但要为子应用每一个元素打补丁，见 `patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
 
 渲染原理：
 
