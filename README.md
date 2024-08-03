@@ -230,7 +230,7 @@
 
 - `web component`：通过 `WujieApp` 定义的组件，这里定义的组件名是 `wujie-app`
 - `shadowRoot`：`shadowDom` 的根节点，与之相似有 `document` 是 `Dom` 的根节点
-- `shadowRoot.host`：`shadowRoot` 返回 `shadowRoot` 附加到 `Dom` 元素的引用，即：`web component`
+- `shadowRoot.host`：返回 `shadowRoot` 附加到 `Dom` 元素的引用，即：`web component`
 - `shadowRoot.host.parentElement`：`web component` 的父节点，用于获取 `shadowRoot` 挂载节点
 - `shadowRoot.firstChild`：`shadowRoot` 下第一个元素，在 `wujie` 中是 `html` 元素
 - `documet.documentElement`：`document` 下的跟元素，如：`html` 元素
