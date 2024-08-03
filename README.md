@@ -254,7 +254,7 @@
 
 运行应用分为 3 个模式：
 
-1. `alive` 保活模式，启动和切换应用
+1. `alive` 保活模式，启动和切换应用不会销毁实例 [[查看]()]
 2. `umd` 单例模式，子应用通过 `window.__WUJIE_MOUNT` 重新渲染
 3. 重建模式，其他方式都注销当前实例，等待重新创建
 
@@ -280,7 +280,7 @@
 
 - 将 `startApp` 拿到的 `options` 和已存在实例的 `options` 合并得到新的配置信息，并结构提取必要的信息，见源文件 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L190)]
 
-#### 2. 存在沙箱实例，切换或销毁应用
+#### 2. 存在沙箱实例，运行或销毁应用
 
 应用场景：
 
@@ -297,7 +297,7 @@
 - 获取实例的 `iframeWindow` 对象，用于查看子应用挂载方法 `__WUJIE_MOUNT`
 - 如果实例预加载应用，需要等待预加载执行完毕，见：`runPreload` [[查看](#3-预加载微任务-runpreload)]
 
-#### 2.1 `alive` 保活模式切换应用
+#### 2.1 `alive` 保活模式运行应用
 
 和 `micro-app` 的 `keep-alive` 模式一样：
 
