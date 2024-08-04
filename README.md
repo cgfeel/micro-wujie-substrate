@@ -1356,14 +1356,27 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **容器 `iframe` - `document`**
 
-和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除：
+和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除，但是每次激活应用就是对容器一次重建：
 
-- 但只要非 `alive` 模式，每次 `active` 就是对 `document` 一次重建
+- `alive` 模式，将 `document` 的 `html` 元素添加到新容器
+- 其他模式，重新注入 `template` 到新容器
 
 那实例中的 `document` 存在的意义是什么呢：
 
-- `alive` 模式用来区别切换应用和首次加载
-- 其他模式记录容器 `document` 上的事件，下次激活应用还原到新容器，见：事件记录 [[查看](#记录恢复-iframe-容器事件)]
+- `alive` 模式，区别切换和首次加载，且换应用不需要注入资源
+- 其他模式记录容器 `document` 上的事件，下次激活应用还原到新容器，见：事件恢复 [[查看](#记录恢复-iframe-容器事件)]
+
+> 降级模式下，切换和首次加载应用的区别在于 `iframe` 容器是否恢复事件
+
+预加载，容器怎么处理：
+
+- 降级预加载 `iframe` 容器会添加到沙箱 `iframeBody` 中
+- 注入资源前会根据提供的挂载点 `el`，将 `iframeBody` 清空
+- 这样确保启动的子应用资源只会存放在新的 `iframe` 渲染容器里
+
+预执行，容器怎么处理：
+
+- 方式也和预加载是一样的
 
 **容器 `shadowRoot`**
 
@@ -1372,6 +1385,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `alive` 模式，不会自动清除容器，重新激活应用时也不需要再次注入资源
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源
 - 重建模式，每次切换应用 `alive` 前都会 `destory` 后重建
+
+预加载，容器怎么处理：
+
+- `alive` 模式：将 `shadowRoot.host` 挂载到指定节点返回，不销毁不清空也不注入资源
+- 其他模式：全部 `destroy` 注销后重新 `active`
+
+预执行，容器怎么处理：
+
+- `alive` 模式：和预加载一样，不销毁不清空也不注入资源
+- `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空容器
+- 重建模式：全部 `destroy` 注销后重新 `active`
 
 **劫持容器 `iframe`**
 
@@ -1384,6 +1408,19 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 因为基座路由变更，可以通过 `popstate` 前进恢复劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
 - 通过劫持子应用 `location.href` 重建劫持容器
+
+**极端情况：**
+
+- `degrade` 预加载，正常启动；或者正常预加载，`degrade` 启动
+
+`degrade` 由实例构造时决定：
+
+- `alive` 预加载时决定 `degrade`
+- `umd` 预加载不预执行，首次 `startApp` 销毁实例
+- `umd` 预执行将保留预加载时的实例
+- 重建模式每次都会 `destroy` 实例
+
+这样实例以上面的规则决定最终会采用什么容器，从而保证了从 `preloadApp` 到 `startApp` 渲染容器一致性。因此这些容器该怎么注销、怎么清空请参考上述总结。
 
 #### 📝 `patchCssRules` 子应用样式打补丁
 

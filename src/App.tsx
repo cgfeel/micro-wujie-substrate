@@ -16,6 +16,8 @@ function App() {
     preloadApp({
       name: "react-project",
       url: "http://localhost:10000",
+      // degrade: true,
+      // exec: true,
     });
   }, []);
   return (
