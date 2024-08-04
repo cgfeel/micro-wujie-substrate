@@ -475,7 +475,7 @@
 - 将拿到的配置信息通过 `Wujie` 声明实例 `sandbox`
 - 通过 `runPreload` 为实例挂起一个微任务 `preload`
 
-> 微任务挂载在实例上 `sandbox.preload`，在应用切换时候会作为 `await`，这种方式和 `qiankun` 中的 `frameworkStartedDefer` 原理是一样的
+> 微任务挂载在实例上 `sandbox.preload`，在 `startApp` 时会通过 `await` 确保预加载已完成才能继续加载应用，这种方式和 `qiankun` 中的 `frameworkStartedDefer` 原理是一样的
 
 #### 3. 预加载微任务 `runPreload`
 
