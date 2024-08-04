@@ -552,6 +552,8 @@
 - `umd` 模式：预加载但没有预执行
 - 重建模式：无论预加载还是预执行
 
+> `umd` 模式预加载后没有通过 `start` 将 `__WUJIE_MOUNT` 方法挂载到沙箱 `iframe`，所以初次 `startApp` 时也会 `destroy` 销毁应用
+
 预加载流程：
 
 1. 预加载非 `alive` 模式的应用，通过 `WuJie` 创建实例并添加到映射表 [[查看](#5-将实例添加到映射表)]
@@ -561,11 +563,6 @@
 问题：`preloadApp` 的意义在哪里呢？
 
 - 反正都会在 `startApp` 时注销实例，反而不通过预加载 `startApp` 还能减少 `destory` 这一步骤
-
-这也包括了预加载没有预执行的 `umd` 模式应用：
-
-- 因为没有 `start` 启动应用 [[查看](#-start-启动应用)]，队列执行 `script`
-- 初次 `startApp` 没有 `__WUJIE_MOUNT` 方法，同样也会 `destory` 后重新创建实例
 
 ### `Wujie` 应用类
 
