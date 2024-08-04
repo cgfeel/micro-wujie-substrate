@@ -340,6 +340,8 @@
 - 重新激活应用，见：`active` [[查看](#-active-激活应用)]
 - 恢复动态加载的样式，见 `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]
 
+> 加载 `umd` 模式的应用前 `unmount` 是为了要清空容器、清理路由和事件，否则 `active` 时可能会重复添加资源到容器，见：容器在哪清除 [[查看](#4-容器在哪清除)]
+
 `active` 激活应用：
 
 - 无论是 `preloadApp` 已加载过资源，还是 `unmount` 清空资源，激活应用时都会重新将资源注入容器
