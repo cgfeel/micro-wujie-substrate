@@ -1352,7 +1352,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 清空后的 `iframe` 只能通过创建 `WuJie` 实例才能重建
 
-**容器 `iframe` - `document`：**
+**容器 `iframe` - `document`**
 
 和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除：
 
