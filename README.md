@@ -1341,6 +1341,48 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
 - 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
 
+#### 4. 容器在哪清除
+
+**沙箱 `iframe`**
+
+所有模式下都在 `destroy` 注销实例时设置为 `null`：
+
+- 而重建模式，除了初次 `startApp` 之外每次一次启动就是一次 `destory`
+- 除了 `alive` 模式，预加载没有预执行的情况下，首次 `startApp` 都会 `destory`
+
+> 清空后的 `iframe` 只能通过创建 `WuJie` 实例才能重建
+
+**容器 `iframe` - `document`：**
+
+和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除：
+
+- 但只要非 `alive` 模式，每次 `active` 就会是对 `document` 一次重建
+
+那实例中的 `document` 存在的意义是什么呢：
+
+- `alive` 模式用来区别切换应用和首次加载
+- 其他模式记录容器 `document` 上的事件，下次激活应用还原到新容器，见：事件记录 [[查看](#记录恢复-iframe-容器事件)]
+
+**容器 `shadowRoot`**
+
+和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除：
+
+- `alive` 模式，不会自动清除容器，重新激活应用时也不需要再次注入资源
+- `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源
+- 重建模式，每次切换应用 `alive` 前都会 `destory` 后重建
+
+**劫持容器 `iframe`**
+
+由 `locationHrefSet` 劫持子应用 `location.href` 创建的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
+
+- 由基座路由变更导致基座重新渲染，随之从 `Dom tree` 中移除
+- `degrade` 模式下因为存在 `bug` 不会劫持，因此不存在劫持容器
+
+劫持容器的恢复有 2 个办法：
+
+- 因为基座路由变更，可以通过 `popstate` 前进恢复劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
+- 通过劫持子应用 `location.href` 重建 `iframe` 容器
+
 #### 📝 `patchCssRules` 子应用样式打补丁
 
 在子应用渲染完毕之后，提取子应用所有的样式，筛选挂载到外部：
