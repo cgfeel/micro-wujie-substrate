@@ -513,7 +513,7 @@
 引发了一个思考：
 
 - 把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
-- 答案是不会，对此做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
+- 答案是不会，对此做了一个测试：10w 表单在不同容器下的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
 
 #### 5. 通过 `exec` 预执行
 
