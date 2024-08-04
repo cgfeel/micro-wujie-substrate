@@ -510,7 +510,7 @@
 - 而沙箱 `iframe` 在页面中是不可见的，因此也看不到预加载的应用
 - `startApp` 时会通过 `active` 从沙箱 `iframe` 中销毁，或取出挂载到指定节点，见：容器在哪清除 [[查看](#4-容器在哪清除)]
 
-在这里引发了一个思考：
+引发了一个思考：
 
 - 把所有的子应用全部预加载到 `iframe` 中，会不会对基座的 `document` 产生影响
 - 答案是不会，对此做了一个测试：10w 表单在 `document` 和 `iframe` 以及 `shadowDom` 下不同的表现 [[查看](https://codepen.io/levi0001/pen/xxoVLXx)]
