@@ -291,6 +291,8 @@
 | `umd`   | 销毁         | 运行         | 运行     |
 | 重建    | 销毁         | 销毁         | 销毁     |
 
+> 没有预加载初次 `startApp` 不存在应用实例，所有模式都必须创建实例 [[查看](#3-创建新的沙箱实例)]
+
 渲染前的准备：
 
 - 通过 `getPlugins` 更新实例的 `plugins`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
