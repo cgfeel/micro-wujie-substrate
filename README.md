@@ -1356,7 +1356,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除：
 
-- 但只要非 `alive` 模式，每次 `active` 就会是对 `document` 一次重建
+- 但只要非 `alive` 模式，每次 `active` 就是对 `document` 一次重建
 
 那实例中的 `document` 存在的意义是什么呢：
 
