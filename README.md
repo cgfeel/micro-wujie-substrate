@@ -1394,7 +1394,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 预执行，容器怎么处理：
 
 - `alive` 模式：和预加载一样，不销毁不清空也不注入资源
-- `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空容器
+- `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空 `shadowRoot`
 - 重建模式：全部 `destroy` 注销后重新 `active`
 
 **劫持容器 `iframe`**
