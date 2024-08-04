@@ -468,10 +468,7 @@
 - 通过 `mergeOptions` 合并参数 `preOptions` 和 `cacheOptions`，优先采用 `preOptions`
 - 从合并的 `options` 中提取配置用于预加载
 
-> `cacheOptions` 存在于：
->
-> - 通过 `startApp` 提前配置 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]，如果没有配置则不存在。
-> - 配置信息只能通过 `startApp` 缓存
+> 配置信息只能通过 `setupApp` 缓存，如果没有缓存则返回 `null`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
 #### 2. 声明一个实例
 
