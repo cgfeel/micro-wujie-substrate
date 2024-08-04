@@ -432,6 +432,8 @@
 - `umd` 模式：卸载应用 `unmount` 时，只清空 `shadowRoot` 不清空沙箱，切换应用不需要重复加载 `script`
 - 重建模式：每次启动都会重新注入 `script`
 
+> 在降级模式下 `umd` 模式不清空容器，原因我想可以是因为 `hrefFlag`，要做分支判断
+
 ### `preloadApp` 预加载流程
 
 目录：`index.ts` - `preloadApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L282)]
