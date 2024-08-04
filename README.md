@@ -493,7 +493,11 @@
 
 #### 4. 对比 `startApp` 的配置
 
-只说几个关键性的配置
+对比文档会发现 `preloadApp` 的配置和 `startApp` 差别不少：
+
+- 但是通过 `setupApp` 提前缓存配置，所以单纯从文档对比就失去意义了
+- 从声明实例比较，`preloadApp` 和 `startApp` 提供的参数是一样的
+- 只有 `active` 激活应用时参数各有不同
 
 预加载缺少 `loading`：
 
