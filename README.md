@@ -483,7 +483,7 @@
 - 通过 `importHTML` 获取应用资源，此时资源中的样式和 `script` 都替换成注释 [[查看](#importhtml-加载资源)]
 - 通过 `processCssLoader` 处理 `css-loader` 并加载资源中的静态样式替换对应注释 [[查看](#processcssloader处理-css-loader)]
 - 激活应用 `active` [[查看](#-active-激活应用)]
-- 根据配置 `exec` 决定是否启动应用 `start`
+- 根据配置 `exec` 决定是否启动应用 `start` [[查看](#-start-启动应用)]
 
 > 这里有个问题，当 `exec` 不成立时 `await getExternalScripts()` 没有任何效果，见：注 n `scriptResultList` [[查看](#5-队列前的准备)]
 
