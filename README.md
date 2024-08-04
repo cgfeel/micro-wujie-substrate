@@ -540,9 +540,9 @@
 
 - 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在 `startApp` 启动应用的时候生命周期 `activated` 会调用 2 次
 
-为什么 2 次：
+哪 2 次：
 
-- `start` 应用时 `mount` 调用 1 次
+- `start` 应用时队列执行 `mount` 调用 1 次
 - `start` 之后返回 `destory` 前调用 1 次
 
 问题 2：预加载逻辑问题
