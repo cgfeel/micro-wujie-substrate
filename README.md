@@ -1381,7 +1381,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 劫持容器的恢复有 2 个办法：
 
 - 因为基座路由变更，可以通过 `popstate` 前进恢复劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
-- 通过劫持子应用 `location.href` 重建 `iframe` 容器
+- 通过劫持子应用 `location.href` 重建劫持容器
 
 #### 📝 `patchCssRules` 子应用样式打补丁
 
