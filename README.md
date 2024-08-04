@@ -479,7 +479,7 @@
 
 #### 3. 预加载微任务 `runPreload`
 
-- 使用 `iframeWindow` 调用生命周期 `beforeLoad`
+- 使用 `iframeWindow` 调用生命周期 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#beforeload)]
 - 通过 `importHTML` 获取：`template`、`getExternalScripts`、`getExternalStyleSheets`，见 `importHTML` [[查看](#importhtml-加载资源)]
 - 通过 `processCssLoader` 将执行 `importHTML` 时，替换成注释的样式更新为对应的内联样式
 - 激活应用 `active` [[查看](#-active-激活应用)]
