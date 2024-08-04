@@ -495,15 +495,14 @@
 
 对比文档会发现 `preloadApp` 的配置和 `startApp` 差别挺大：
 
-- 但是通过 `setupApp` 提前缓存配置，所以单纯从文档对比就失去意义了
+- 但是可以通过 `setupApp` 提前缓存配置，所以单纯从文档对比就失去意义了
 - 从声明实例比较，`preloadApp` 和 `startApp` 提供的参数是一样的
 - 只有 `active` 激活应用时参数各有不同
 
 预加载缺少 `loading`：
 
-- 预加载的应用不需要 `loading`，而 `startApp` 即便不传入 `loadinng` 的情况下也会插入一个空的 `loading`
-- 无论插入 `loading` 与否，都会在资源注入容器前遍历并清空容器
-- 不同的是：提供 `loading` 的 `startApp` 是在 `addLoading` 清空容器，预加载是通过 `active` 在 `renderElementToContainer` 清空容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 预加载的应用不需要 `loading`，而 `startApp` 会通过 `addLoading` 创建 `loading` [[查看](#启动应用时添加删除-loading)]
+- 有没有 `loading` 将会决定 `renderElementToContainer` 注入资源时是否清空挂载节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 预加载不需要提供挂载容器 `el`：
 
