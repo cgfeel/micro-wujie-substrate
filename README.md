@@ -415,11 +415,22 @@
 
 > 加载的顺序也按照表格从上至下
 
-应用内动态样式补充说明：
+`spa` 应用基本都是动态加载样式：
 
-- `spa` 应用基本都是动态加载样式
 - `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载样式
 - `umd` 模式：切换应用时只执行 `mount` 方法，之前加载的样式需要通过 `rebuildStyleSheets` 恢复
+- 重建模式：每次启动都会重新注入 `css`
+
+#### 6. 应用中的 `script` 在哪里加载
+
+- `start`：通过 `execQueue` 队列加载：`js-loader`、子应用静态 `script` [[查看](#-start-启动应用)]
+- `patchRenderEffect`：激活应用时 `active`，注入 `script` 动态添加 `script` [[查看](#patchrendereffect-为容器打补丁)]
+
+`spa` 应用基本都是动态加载 `script`：
+
+- `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载 `script`
+- `umd` 模式：卸载应用 `unmount` 时，只清空 `shadowRoot` 不清空沙箱，切换应用不需要重复加载 `script`
+- 重建模式：每次启动都会重新注入 `script`
 
 ### `preloadApp` 预加载流程
 
