@@ -406,7 +406,7 @@
 
 #### 4. `startApp` 的 `bug`
 
-同样适用于 `preloadApp`，问题出现在：
+同样适用于 `preloadApp`：
 
 - 启动或预加载应用时不提供 `name` 和 `url` 怎么处理
 
