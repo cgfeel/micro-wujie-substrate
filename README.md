@@ -358,12 +358,14 @@
 
 **第二步：挂载应用**
 
-和 `mount` 挂载 `umd` 模式的应用是一样的，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]，主要做了 4 件事：
+和 `mount` 挂载 `umd` 模式的应用是一样的，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]
 
-1. 使用沙箱的 `iframeWindow` 挂载前调用 `beforeMount`，挂载后调用 `afterMount`
+做了 4 件事：
+
+1. 挂载前使用沙箱的 `iframeWindow` 调用 `beforeMount`
 2. 挂载应用，调用子应用 `__WUJIE_MOUNT`
-3. 激活 `mountFlag` 表明已挂载，避免重复挂载
-4. 将 `destroy` 注销方法返回
+3. 挂载后使用沙箱的 `iframeWindow` 调用 `afterMount`
+4. 激活 `mountFlag` 表明已挂载，避免重复挂载，将 `destroy` 注销方法返回
 
 #### 2.3 `destroy` 注销应用
 
