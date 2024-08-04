@@ -564,6 +564,12 @@
 
 - 反正都会在 `startApp` 时注销实例，反而不通过预加载 `startApp` 还能减少 `destory` 这一步骤
 
+补充说明：注销并重新创建实例后，`active` 应用前
+
+- 会再次通过 `importHTML` 等方法加载资源，见：创建新的沙箱实例 [[查看](#3-创建新的沙箱实例)]
+- 也就是说资源加载这块也是一点都没省下，全都做了一遍
+- 如果要硬凑一点优化，可能在于：`http 缓存` 的资源提前 `prefetch` 了，下次请求会快点
+
 ### `Wujie` 应用类
 
 目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
