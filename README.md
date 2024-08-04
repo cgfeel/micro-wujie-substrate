@@ -552,13 +552,13 @@
 - `umd` 模式：预加载但没有预执行
 - 重建模式：无论预加载还是预执行
 
-试想下预加载流程：
+预加载流程：
 
-1. 预加载一个非 `alive` 模式的应用，通过 `WuJie` 创建一个实例 [[查看](#wujie-应用类)]，并添加到映射表 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
-2. `startApp` 启动应用，通过 `getWujieById` 拿到应用实例，由于不是 `alive` 模式，随即销毁实例 `destroy`
+1. 预加载非 `alive` 模式的应用，通过 `WuJie` 创建实例，并添加到映射表 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+2. `startApp` 启动应用拿到应用实例，由于不是 `alive` 模式，随即销毁实例 `destroy`
 3. 最后重新通过 `WuJie` 创建实例，再次激活、启动并挂载应用
 
-问题来了：
+问题：
 
 - 上述过程中的第一步 `preloadApp` 的意义在哪里呢
 - 反正都会在 `startApp` 启动应用时注销，反而是不通过 `preloadApp` 还能减少 `destory` 这一步骤
