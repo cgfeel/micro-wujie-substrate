@@ -328,7 +328,7 @@
 
 通过 `umd` 切换应用的条件：
 
-- 子应用存在 `__WUJIE_MOUNT` 方法挂载到 `window`
+- 子应用存在 `__WUJIE_MOUNT` 方法挂载到 `iframeWindow`
 - 预加载时通过 `exec` 预执行后 `startApp`，或完成首次 `startApp` 后每次切换回应用
 
 **第一步：重新加载资源**
