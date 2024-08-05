@@ -722,8 +722,26 @@
 
 #### 2. 动态修改 `fetch`
 
-- 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)] 将 `url` 结合 `baseurl`
-- 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
+仅限提供 `fetch` 配置，原因：
+
+- 基础提供 `fetch` 函数时：`location` 指向基座
+- 子应用 `fetch` 时：`location` 通过 `proxyWindow` 指向 `proxyLocation`
+
+于是：
+
+- 重写 `fetch` 函数将 `input` 通过 `getAbsolutePath` 指向子应用的 `location` [[查看](#getabsolutepath获取绝对路径)]
+- 将重写的 `fetch` 绑定到 `iframeWindow` 和应用实例中
+
+但是基座基本用不到，调用场景如下：
+
+- `importHTML`：提取应用资源，用的 `fetch` 来自未重写的配置文件
+- `processCssLoaderForTemplate`：手动加载样式，这里是针对所有应用的，通常会指定一个公共资源路径
+
+> 当配置没有提供 `fetch` 时，会默认通过 `window.fetch`
+
+`shadowRoot` 下的子应用不需要变更路径：
+
+- 子应用的 `base` 元素，`href` 由子应入口链接决定
 
 #### 3. 同步路由
 
