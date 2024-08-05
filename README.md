@@ -683,12 +683,10 @@
 2. 切换应用：只有 `alive` 模式更换 `shadowRoot.host` 挂载节点，其他模式重新注入资源
 3. 应用初始化：创建 `shadowRoot` 容器
 
-有 4 种情况会 `active` 激活应用：
+有 2 种情况会 `active` 激活应用：
 
-- `startApp` 切换 `alive` 保活模式的应用
-- `startApp` 切换 `umd` 模式的应用
-- `startApp` 创建新的应用实例
-- `preloadApp` 预加载应用
+- `startApp` 无论是切换应用还是初始化实力 [[查看](#startapp-启动流程)]
+- `preloadApp` 预加载应用 [[查看](#preloadapp-预加载流程)]
 
 在 `active` 激活应用时容器节点变更有 4 种情况：
 
