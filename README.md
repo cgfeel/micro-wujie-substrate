@@ -570,7 +570,7 @@
 - 也就是说资源加载这块也是一点都没省下，全都做了一遍
 - 如果要硬凑一点优化，可能在于：`http` 缓存的资源提前 `prefetch` 了，下次请求会快点
 
-### `Wujie` 应用类
+### `WuJie` 应用类
 
 目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
 
