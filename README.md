@@ -703,26 +703,8 @@
 
 第一步：将 `props` 拿到的信息更新当前实例
 
-其中 `this.replace` 需要说明下：
-
-- 来自配置配件 `replace`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#replace)]
-
-用途：
-
-- `processCssLoader`：替换应用的 `template` [[查看](#processcssloader处理-css-loader)]
-- `insertScriptToIframe`：通过 `getJsLoader` 替换每一个 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
-- `getCssLoader`：用于加载样式后，通过 `css-loader` 进行替换
-
-`getCssLoader` 调用场景：
-
-- `rewriteAppendOrInsertChild`：子应用动态添加内联外联样式 [[查看](#processcssloaderfortemplate手动添加样式)]
-- `processCssLoaderForTemplate`：手动在应用头部和尾部添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
-
-> `getCssLoader` 不能处理子应用内置静态样式
-
-`this.replace` 并非必要参数，不需要替换就不用提供：
-
-- `replace` 的回调的参数只有 `code`，拿不到具体的类型，只能根据具体代码进行替换
+- 部分实例属性，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- 其中 `replace` 用于替换资源，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
