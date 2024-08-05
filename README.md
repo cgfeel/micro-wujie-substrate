@@ -708,9 +708,7 @@
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
-过程：
-
-- 见 `iframeGenerator` - `iframeReady` [[查看](#iframegenerator创建沙箱-iframe)]
+见 `iframeGenerator` - `iframeReady` [[查看](#iframegenerator创建沙箱-iframe)]
 
 需要等待 `iframeReady` 的场景：
 
