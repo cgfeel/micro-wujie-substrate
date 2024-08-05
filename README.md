@@ -711,9 +711,14 @@
 
 - `processCssLoader`：替换应用的 `template` [[查看](#processcssloader处理-css-loader)]
 - `insertScriptToIframe`：通过 `getJsLoader` 替换每一个 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
-- `getCssLoader`：替换样式，包含 `rewriteAppendOrInsertChild` 和 `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]
+- `getCssLoader`：用于加载样式后，通过 `css-loader` 进行替换
 
-> `getCssLoader` 不能处理子应用内置样式
+`getCssLoader` 调用场景：
+
+- `rewriteAppendOrInsertChild`：子应用动态添加内联外联样式 [[查看](#processcssloaderfortemplate手动添加样式)]
+- `processCssLoaderForTemplate`：手动在应用头部和尾部添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
+
+> `getCssLoader` 不能处理子应用内置静态样式
 
 `this.replace` 并非必要参数，不需要替换就不用提供：
 
@@ -2488,6 +2493,13 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 其次对于包含 `ignore` 的外联 `style`，注释通过 `genIgnoreAssetReplaceSymbol` 替换，而不是 `genLinkReplaceSymbol`
 - 恰巧两个错误起到了“负负得正”的效果，永远不会因为找到错误的注释替换成了错误的样式链接
 - 最后对于内联 `style`，在替换时就没有考虑 `ignore`，即便 `ignore` 存在，也会在 `getExternalStyleSheets` 时候作为空值
+
+#### 通过配置替换资源
+
+包含 2 个插件和一个启动配置，分别是
+
+- `css-loader`：用于对子应用的样式进行替换
+- `js-loader`：用于对
 
 ### 辅助方法 - 容器渲染
 
