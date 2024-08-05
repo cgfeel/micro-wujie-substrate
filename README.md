@@ -572,13 +572,13 @@
 
 ### `WuJie` 应用类
 
-目录：`sandbox.ts` - `Wujie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
+目录：`sandbox.ts` - `WuJie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
 
 用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 是一样的：
 
 | 分类           | `micro-app`                                                                                               | `wujie`                                                                                                                     |
 | -------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| 创建实例       | `CreateApp`：应用实例                                                                                     | `Wujie`：应用实例，也是沙箱实例                                                                                             |
+| 创建实例       | `CreateApp`：应用实例类                                                                                   | `Wujie`：应用实例类，也是沙箱实例类                                                                                         |
 | 映射表         | `appInstanceMap` 存应用实例，和组件映射表不同                                                             | `idToSandboxCacheMap` 唯一映射表，组件挂载时通过 `name` 从映射表获取实例 [[查看](#1-idtosandboxcachemap存储无界实例和配置)] |
 | 映射表添加方式 | `appInstanceMap.set`                                                                                      | `addSandboxCacheWithWujie` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]                                               |
 | 加载资源       | 自动：构造函数调用 `loadSourceCode`                                                                       | 手动：`active` 激活应用 [[查看](#-active-激活应用)]                                                                         |
