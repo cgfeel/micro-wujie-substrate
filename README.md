@@ -649,6 +649,7 @@
 | `document` | `proxyDocument`     | `proxyDocument`      |
 | `location` | 沙箱 `location`     | `proxyLocation`      |
 
+- 通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]
 - `proxyDocument` 的差别，见：`localGenerator` - `proxyDocumennt` [[查看](#劫持空对象作为-proxydocument)]
 - 代理对象的问题，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
