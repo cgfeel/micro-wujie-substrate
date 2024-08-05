@@ -2547,6 +2547,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 执行方式和 `getCssLoader` 是一样的
 - 都是柯里化后 `replace`，然后 `compose` 通过 `reduce` 依次调用 `js-loader`
 
+> 在这里 `replace` 会优先于 `js-loader` 执行替换
+
 `getJsLoader` 只能通过 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]，包含：
 
 - `start` 启动应用：手动添加 `script`、应用内静态 `script`（含入口文件）[[查看](#-start-启动应用)]
