@@ -1498,6 +1498,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                                             | `unndefined`，只在 `active` 时通过配置文件设置                                 | 不处理                  |
 | `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                                         | `unndefined`，只在 `active` 时候记录                                           | 不处理                  |
 
+> 像 `degrade` 和 `plugin` 这样在实例化就定义好值，除了销毁后设置 `null`，不能中途更新值。也就是说对于像 `alive` 模式的应用，预加载配置的信息，不会因为 `startApp` 配置不同，而加载应用发生改变
+
 #### 2. 特殊属性
 
 **`hrefFlag`：通过 `iframe` 加载子应用 `url`**
