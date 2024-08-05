@@ -574,7 +574,7 @@
 
 目录：`sandbox.ts` - `WuJie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
 
-用于创建一个应用实例，和 `micro-app` 的 `CreateApp` 的作用是一样的：
+用于创建应用实例，和 `micro-app` 的 `CreateApp` 的作用是一样的 [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#createapp-%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E7%B1%BB)]：
 
 | 分类           | `micro-app`                                                                                               | `wuJie`                                                                                                                     |
 | -------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
