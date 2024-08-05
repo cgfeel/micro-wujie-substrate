@@ -632,7 +632,7 @@
 
 - 通过 `appRouteParse` 提取 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
 - 获取基座的 `host`：`mainHostPath`
-- 通过 `iframeGenerator` 获取沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
+- 通过 `iframeGenerator` 初始化沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
 
 #### 4. 创建代理
 
