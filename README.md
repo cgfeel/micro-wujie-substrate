@@ -675,7 +675,7 @@
 2. 处理子应用 `fetch`
 3. 处理子应用路由同步
 4. 将 `template` 注入容器，如果容器不存在则需要创建新容器
-5. 子应用样式打补丁
+5. 完成激活应用：子应用样式打补丁
 
 注入容器分为 3 种情况：
 
@@ -736,12 +736,12 @@
 >
 > - 都是先发起一个微任务后继续执行后续流程，之后在启动应用前会等待微任务执行完毕才开始挂载应用
 
-第三步：动态修改 `fetch`
+#### 2. 动态修改 `fetch`
 
 - 替换 `fetch` 为自定义函数，在函数内部使用 `getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)] 将 `url` 结合 `baseurl`
 - 将替换的 `fetch` 作为 `iframe` 的 `fetch`，并更新实例缓存下来，以便下次获取
 
-第四步：同步路由
+#### 3. 同步路由
 
 - `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
 - 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
@@ -750,7 +750,7 @@
 
 第五步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
-#### 2. `degrade` 主动降级渲染
+#### 4.1. `degrade` 主动降级渲染
 
 概述：
 
@@ -811,7 +811,7 @@
 - 无论哪种方式渲染，都将“新容器”的 `document` 作为当前实例的 `document`，方便下次切换应用 `active` 时直接使用。
 - 至此整个降级过程完成，直接返回不再执行下面流程
 
-#### 3. 挂载子应用：切换、初始化、预加载
+#### 4.2. 挂载子应用：切换、初始化、预加载
 
 第一步：挂载子应用到容器
 
@@ -850,6 +850,8 @@
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
+#### 5. 完成激活应用
+
 第三步：通过 `patchCssRules` 为子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 第四步：更新 `this.provide.shadowRoot`
@@ -857,7 +859,7 @@
 - `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
 - 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
 
-#### 激活应用的 `bug`
+#### 6. 激活应用的 `bug`
 
 启动应用不提供 `el` 容器
 
@@ -872,7 +874,7 @@
 
 - 和 `micro-app` 组件挂载一样做条件判断，条件不满足的情况直接返回不做任何渲染
 
-#### 激活应用的补充
+#### 7. 激活应用的补充
 
 无论容器是 `iframe` 还是 `shadowRoot`，都要给容器添加属性 `WUJIE_APP_ID` 值为应用名，用途：
 
