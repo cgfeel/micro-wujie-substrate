@@ -655,7 +655,7 @@
 
 流程：
 
-- 通过代理对象拿到 `proxyWindow`、`proxyDocument`、`proxyLocation`，其中降级模式没有 `proxyWindow`
+- 通过代理方法拿到 `proxyWindow`、`proxyDocument`、`proxyLocation`（降级模式没有 `proxyWindow`）
 - 将这些对象绑定在 `wujie` 实例中方便调用，见：代理在哪调用 [[查看](#proxywindow-在哪调用)]
 
 #### 5. 将实例添加到映射表
