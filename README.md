@@ -701,13 +701,11 @@
 
 #### 1. 更新配置应用信息
 
-第一步：更新配置信息
-
-- 将 `props` 拿到的信息更新当前实例
+第一步：将 `props` 拿到的信息更新当前实例
 
 其中 `this.replace` 需要说明下：
 
-- 来自：`startApp`、`setupApp`、`preloadApp` 配置 `replace`，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#replace)]
+- 来自配置配件 `replace`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#replace)]
 
 用途：
 
