@@ -2507,7 +2507,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 `processCssLoader` 替换应用中的静态样式和 `template` [[查看](#processcssloader处理-css-loader)]：
 
 - 为每个样式资源 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
-- 通过 `getEmbedHTML` 加载样式后，替换 `template` 提取时候已注释的样式
+- 通过 `getEmbedHTML` 加载样式后，替换 `template` 中提取时已注释的样式
 - 最后通过 `replace` 替换已更新资源后的 `template`
 
 `processCssLoader` 调用场景：
