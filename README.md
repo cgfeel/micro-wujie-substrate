@@ -680,8 +680,8 @@
 注入容器分为 3 种情况：
 
 1. `degrade` 主动降级：无论切换应用还是初始化都会创建新的 `iframe` 容器
-2. 切换应用：只有 `alive` 模式更换 `shadowRoot.host` 挂载节点，其他模式重新注入资源
-3. 应用初始化：创建 `shadowRoot` 容器
+2. `shadowRoot` 切换应用：只有 `alive` 模式更换挂载节点，其他模式重新注入资源
+3. `shadowRoot` 应用初始化：创建容器
 
 有 2 种情况会 `active` 激活应用：
 
