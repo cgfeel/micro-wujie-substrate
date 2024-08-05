@@ -715,9 +715,10 @@
 - 除了 `alive` 和 `umd` 模式切换应用时 `iframeReady` 已加载完毕，其他情况都有可能需要等待
 - 如果加载顺利的话，`iframeReady` 会在 `active` 之前加载完毕，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
 
-> 在 `qiankun` 中有个 `frameworkStartedDefer` 和 `iframeReady` 用途是一样的，见：`startSingleSpa` [[查看](#23-startsinglespa-启动应用)]
+> 在 `qiankun` 中有个 `frameworkStartedDefer`，用途是一样的，见：`startSingleSpa` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#23-startsinglespa-%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8)]
 >
-> - 都是先发起一个微任务后继续执行后续流程，之后在启动应用前会等待微任务执行完毕才开始挂载应用
+> - 都是先发起一个微任务后，继续执行后续流程；
+> - 在启动应用时会等待微任务执行完毕，才开始挂载应用
 
 #### 2. 动态修改 `fetch`
 
