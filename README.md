@@ -712,7 +712,7 @@
 
 需要等待 `iframeReady` 的场景：
 
-- 除了 `alive` 模式和 `umd` 切换应用时 `iframeReady` 已加载完毕，其他情况都有可能需要等待
+- 除了 `alive` 和 `umd` 模式切换应用时 `iframeReady` 已加载完毕，其他情况都有可能需要等待
 - 如果加载顺利的话，`iframeReady` 会在 `active` 之前加载完毕，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
 
 > 在 `qiankun` 中有个 `frameworkStartedDefer` 和 `iframeReady` 用途是一样的，见：`startSingleSpa` [[查看](#23-startsinglespa-启动应用)]
