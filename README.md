@@ -2498,8 +2498,61 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 包含 2 个插件和一个启动配置，分别是
 
-- `css-loader`：用于对子应用的样式进行替换
-- `js-loader`：用于对
+- `css-loader`：插件，在运行时对子应用的 `css` 文本进行修改，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+- `js-loader`：插件，在运行时对子应用的 `script` 脚本进行替换，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
+- `replace`：启动配置，在运行时处理子应用的 `html`、`js`、`css` 进行替换，见：文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html#replace)]
+
+这些方法将通过以下方式调用并替换资源
+
+`processCssLoader` 替换应用中的静态样式和 `template` [[查看](#processcssloader处理-css-loader)]：
+
+- 为每个样式资源 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
+- 通过 `getEmbedHTML` 加载样式后，替换 `template` 提取时候已注释的样式
+- 最后通过 `replace` 替换已更新资源后的 `template`
+
+`processCssLoader` 调用场景：
+
+- `startApp` 创建应用实例 [[查看](#startapp-启动流程)]，以及 `preloadApp` 预加载 [[查看](#preloadapp-预加载流程)]
+- 要调用 `processCssLoader`，在此之前就一定会提取资源，见：`importHTML` [[查看](#importhtml-加载资源)]
+
+> 从这里可以看出 `replace` 不能替换应用中的静态样式
+
+`getCssLoader` 柯里化处理运行时的样式：
+
+- 返回一个函数，参数有：`code` 样式内容、`src` 样式链接、`base` 基座链接
+- 先通过 `replace` 替换 `code` 样式，然后将参数透传给 `compose` 返回的函数
+- `compose` 也是柯里化函数，通过 `reduce` 依次调用 `css-loader` 替换样式
+
+> 在这里 `replace` 会优先于 `css-loader` 执行替换
+
+`getCssLoader` 调用场景：
+
+- `processCssLoaderForTemplate`：处理手动添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
+- `rewriteAppendOrInsertChild`：处理应用中动态添加的内联和外联样式
+
+`processCssLoaderForTemplate` 来自激活应用时渲染容器，见：`active` [[查看](#-active-激活应用)]
+
+- `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
+
+`rewriteAppendOrInsertChild` 会通过 `patchRenderEffect` 重写方法 [[查看](#patchrendereffect-为容器打补丁)]：
+
+- `patchRenderEffect` 同样来自激活应用时渲染容器，见：`active` [[查看](#-active-激活应用)]
+- 但是拦截动态样式是在启动应用时注入 `script` 到沙箱之后
+
+> `replace` 的参数只有 `code`，拿不到资源类型，只能根据具体代码进行替换，如果需要更多的信息，建议通过 `css-loader` 或 `js-loader`
+
+`getJsLoader` 柯里化处理运行时的 `script`：
+
+- 执行方式和 `getCssLoader` 是一样的
+- 都是柯里化后 `replace`，然后 `compose` 通过 `reduce` 依次调用 `js-loader`
+
+`getJsLoader` 只能通过 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]，包含：
+
+- `start` 启动应用：手动添加 `script`、应用内静态 `script`（含入口文件）[[查看](#-start-启动应用)]
+- `rewriteAppendOrInsertChild`：应用中动态添加的 `script`，包括 `chunk`
+
+> 上面提到的应用内动态添加的样式，也就是这一步骤执行的；也就是说应用内动态添加的 `script` 和样式，会先处理 `script` 注入沙箱执行后，再处理动态添加的样式
 
 ### 辅助方法 - 容器渲染
 
