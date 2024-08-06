@@ -875,7 +875,7 @@
 
 #### 4.2. 挂载子应用：切换、初始化、预加载
 
-第一步：挂载子应用到容器
+第一步：挂载容器用到指定节点
 
 `degrade` 降级状态通过 `this.document` 来区分初次加载还是切换应用，而默认状态通过 `this.shadowRoot` 来区分。
 
@@ -890,11 +890,11 @@
 
 > `shadowRoot` 在创建 `web component` 时候绑定到实例，见：`connectedCallback` [[查看](#connectedcallback挂载组件)]
 
-`分支 2`：应用初始化
+`分支 2`：初次加载
 
-- 先获取 `iframeBody`，如果容器不存在时作为备用容器
-- 通过 `createWujieWebComponent` 创建自定义组件
-- 通过 `renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)] 将创建的组件挂载到指定容器
+- 先获取 `iframeBody` 如果容器不存在时作为备用容器
+- 通过 `createWujieWebComponent` 创建自定义组件：`wujie-app`
+- 通过 `renderElementToContainer` 将创建的组件挂载到指定容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 > 从这里可以知道：
 >
