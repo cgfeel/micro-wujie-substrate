@@ -782,7 +782,9 @@
 
 > `alive` 模式不需要执行 `syncUrlToIframe` 的情况，是因为初始化时已执行，之后只需监听子应用的路由变更同步到主应用
 
-第五步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
+#### 4. 创建容器渲染资源
+
+通过 `template` 更新 `this.template`，作为需要注入容器的资源。需要说明的是 `alive` 和 `umd` 模式，实例已存在的情况下 `startApp` 是不需要提供资源的。因为这种模式下资源已经通过 `preloadApp` 或首次 `startApp` 完成了加载。
 
 #### 4.1. `degrade` 主动降级渲染
 
