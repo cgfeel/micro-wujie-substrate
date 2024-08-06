@@ -460,7 +460,7 @@
 - 应用实例已存在
 - 当前的 `url.search` 能够找到预加载的应用名，此时需要直接加载
 
-> 同一个应用不能重复预加载，否则会造成误判，例如：`active` 时因为 `shadowRoot` 存在而又找不到 `el` 挂载点
+> 同一个应用不能重复预加载，否则会造成误判，如：`active` 时因为 `shadowRoot` 存在而又找不到 `el` 挂载点
 
 预加载分 3 步：
 
@@ -763,10 +763,24 @@
 
 #### 3. 同步路由
 
-- `syncUrlToIframe` 先将路由同步到 `iframe`，然后通过 `syncUrlToWindow` 同步路由到浏览器 `url`
-- 同理当 `wujie` 套 `wujie` 的时候也会优先同步 `iframe` 中的子应用
+执行过程，从左到右：
 
-> 如果子应用已启动，又是 `alive` 模式，切换应用重新激活不需要 `syncUrlToIframe`
+| 执行方式                    | `syncUrlToIframe` | `syncUrlToWindow` |
+| --------------------------- | ----------------- | ----------------- |
+| `alive` 预执行              | 执行              | 执行              |
+| `alive` 预执行后 `startApp` | 不执行            | 执行              |
+| `alive` 切换应用            | 不执行            | 执行              |
+| 其他模式                    | 执行              | 执行              |
+
+- `syncUrlToIframe`：同步主应用路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+- `syncUrlToWindow`：同步子应用路由到主应用 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+嵌套顺序：
+
+- 先从基座至上而下，然后应用从下往上
+- 包裹基座嵌套基座，也是这样层层传递
+
+> `alive` 模式不需要执行 `syncUrlToIframe` 的情况，是因为初始化时已执行，之后只需监听子应用的路由变更同步到主应用
 
 第五步：通过 `template` 更新 `this.template`，为后面渲染应用做准备
 
