@@ -732,7 +732,7 @@
 - 重写 `fetch` 函数将 `input` 通过 `getAbsolutePath` 指向子应用的 `location` [[查看](#getabsolutepath获取绝对路径)]
 - 将重写的 `fetch` 绑定到 `iframeWindow` 和应用实例中
 
-但是基座基本用不到，调用场景如下：
+但是基座本身用不到，调用场景如下：
 
 - `importHTML`：提取应用资源，用的 `fetch` 来自未重写的配置文件
 - `processCssLoaderForTemplate`：手动加载样式，这里是针对所有应用的，通常会指定一个公共资源路径
@@ -741,7 +741,17 @@
 
 子应用不需要变更路径：
 
-- 子应用的 `base` 元素，`href` 由子应入口链接决定
+- 子应用 `fetch` 是相对路径时，通过 `base` 元素自动转换成绝对链接
+
+只适合通过基座修改 `fetch` 这一场景：
+
+- 因为 `fetch` 是在基座的作用域下，拿不到应用的 `base` 元素
+- 如果子应用发出来的 `fetch` 请求是相对路径，需要通过 `getAbsolutePath` 转换一下路径
+
+比如说：
+
+- 通过基座获取 `authorization` 为重写所有子应用的 `fetch` 鉴权
+- 而对于子应用中通过相对路径获取本地资源的请求，会转换成和应用对应的路径
 
 #### 3. 同步路由
 
