@@ -892,7 +892,7 @@
 
 `分支 2`：初次加载
 
-- 先获取 `iframeBody` 如果容器不存在时作为备用容器
+- 获取 `iframeBody` 如果没有提供挂载节点，作为备用
 - 通过 `createWujieWebComponent` 创建自定义组件：`wujie-app`
 - 通过 `renderElementToContainer` 将创建的组件挂载到指定容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
