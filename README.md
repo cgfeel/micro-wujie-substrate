@@ -811,10 +811,10 @@
 
 为了便于理解，整个总结中将容器及相关对象划分如下：
 
-- 沙箱 `iframe`：用于存放应用 `script` 的沙箱
-- `iframe` 容器：降级时用于存放应用资源的容器，其中 `script` 会被注释代替
-- 劫持容器：通过 `locationHrefSet` 劫持子应用中通过 `location.href` 跳转的页面
-- `shadowRoot`（容器）：默认情况下用于存放应用资源的容器，其中 `script` 会被注释代替
+- 沙箱 `iframe`：用于存放应用 `script` 的沙箱，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
+- `iframe` 容器：降级时存放应用资源的容器，其中 `script` 会被注释
+- 劫持容器：通过 `locationHrefSet` 劫持子应用中通过 `location.href` 跳转的页面 [[查看](#locationhrefset拦截子应用-locationhref)]
+- `shadowRoot`（容器）：默认情况下存放应用资源的容器，其中 `script` 会被注释 [[查看](#42-挂载子应用切换初始化预加载)]
 
 > 相应的 `iframeWindow`、`iframeBody`、`iframeHead` 全部都代表沙箱 `iframe` 中的对象
 
