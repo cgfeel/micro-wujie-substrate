@@ -843,7 +843,9 @@
 - 实例 `destroy` 时通过 `clearChild` 清空挂载节点 [[查看](#-destroy-销毁实例)]
 - `popstate` 后退时将渲染容器替换劫持容器挂载到节点，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
-> `onunload` 是一个废弃的方法，随时可能被浏览器弃用。这个监听方法只在 `iframe` 降级处理时存在与容器中，目的应该用于点击应用中第三方链接离开页面时注销应用。
+`onunload` 是一个废弃的方法，随时可能被浏览器弃用
+
+- 目的应该用于点击 `iframe` 容器中第三方链接离开子应用时注销应用实例
 
 第三步：注入 `template` 到 `iframe` 容器中
 
