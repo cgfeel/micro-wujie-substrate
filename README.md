@@ -805,11 +805,18 @@
 
 主动降级分 3 个部分：
 
-1. 创建 `iframe` 并挂载到容器
+1. 创建 `iframe` 容器并挂载到指定节点
 2. 销毁沙箱记录，为创建的 `iframe` 新容器打补丁
-3. 注入 `template` 渲染
+3. 注入 `template` 到 `iframe` 容器中
 
-> 为了便于理解在“1.2. 主动降级渲染”描述中 `iframeBody` 指沙箱 `iframe` 的 `body`，新创建的 `iframe` 称作“新容器”，用于代替 `web component`。
+为了便于理解，整个总结中将容器及相关对象划分如下：
+
+- 沙箱 `iframe`：用于存放应用 `script` 的沙箱
+- `iframe` 容器：降级时用于存放应用资源的容器，其中 `script` 会被注释代替
+- 劫持容器：通过 `locationHrefSet` 劫持子应用中通过 `location.href` 跳转的页面
+- `shadowRoot`（容器）：默认情况下用于存放应用资源的容器，其中 `script` 会被注释代替
+
+> 相应的 `iframeWindow`、`iframeBody`、`iframeHead` 全部都代表沙箱 `iframe` 中的对象
 
 渲染分 3 种情况：
 
