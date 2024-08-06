@@ -833,7 +833,7 @@
 第二步：更新容器，销毁 `iframeBody`
 
 - 将挂载的节点绑定到 `this.el`
-- `clearChild`：清空 `iframeBody`，如果提供了 `el` 容器的话
+- 若提供了 `el` 容器，清空 `iframeBody`，确保渲染容器只有 1 个，见：容器在哪清除 [[查看](#4-容器在哪清除)]
 - `patchEventTimeStamp`：修复 `vue` 的 `event.timeStamp` 问题
 - `onunload`：当销毁子应用时主动 `unmount` 子应用
 
