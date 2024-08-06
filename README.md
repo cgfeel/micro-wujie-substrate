@@ -828,14 +828,20 @@
 - `el`：`startApp` 时通过配置指定
 - `iframeBody`：`preloadApp` 临时存放在沙箱中
 
-> 如果 `startApp` 没有提供 `el` 挂载节点，也会存放在沙箱 `iframeBoody` 中。此时应用不会报错，但不可见。
+> 如果 `startApp` 没有提供 `el` 挂载节点，也会存放在沙箱 `iframeBoody` 中。此时应用不会报错但不可见。
 
 第二步：更新容器，销毁 `iframeBody`
 
-- 将挂载的容器更新为 `this.el`
+- 将挂载的节点绑定到 `this.el`
 - `clearChild`：清空 `iframeBody`，如果提供了 `el` 容器的话
 - `patchEventTimeStamp`：修复 `vue` 的 `event.timeStamp` 问题
 - `onunload`：当销毁子应用时主动 `unmount` 子应用
+
+`this.el` 挂载节点有啥用：
+
+- `removeLoading` 消除 `loading` [[查看](#启动应用时添加删除-loading)]
+- 实例 `destroy` 时通过 `clearChild` 清空挂载节点
+- `popstate` 后退时将渲染容器替换劫持容器挂载到节点，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
 > `onunload` 是一个废弃的方法，随时可能被浏览器弃用。这个监听方法只在 `iframe` 降级处理时存在与容器中，目的应该用于点击应用中第三方链接离开页面时注销应用。
 
