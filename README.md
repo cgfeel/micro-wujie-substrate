@@ -888,19 +888,13 @@
 - `umd` 模式：虽然实例存在 `shadowRoot`，但 `active` 前会通过 `unmount` 清空容器 [[查看](#4-容器在哪清除)]
 - 重建模式：`active` 前会随应用一同销毁，不存在 `shadowRoot`，也不走这个分支
 
-> `shadowRoot` 在创建 `web component` 时候绑定到实例，见：`connectedCallback` [[查看](#connectedcallback挂载组件)]
-
 `分支 2`：初次加载
 
-- 获取 `iframeBody` 如果没有提供挂载节点，作为备用
+- 获取 `iframeBody`，如果没有提供挂载节点，作为备用
 - 通过 `createWujieWebComponent` 创建自定义组件：`wujie-app`
 - 通过 `renderElementToContainer` 将创建的组件挂载到指定容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
-> 从这里可以知道：
->
-> - 初始化应用是创建一个 `web component`，挂载到指定容器
-> - 创建组件时，通过 `defineWujieWebComponent` 会配置 `this.shadowRoot`
-> - 这样下次切换再激活应用时会通过：`分支 1` 的流程
+> `shadowRoot` 在创建 `web component` 时候绑定到实例，见：`connectedCallback` [[查看](#connectedcallback挂载组件)]
 
 `分支 3`： 预加载应用
 
