@@ -898,10 +898,9 @@
 
 `分支 3`： 预加载应用
 
-- 预加载应用是不需要指定容器用来挂载应用，所以会挂载到沙箱的 `iframeBody` 中
-- 等到切换应用的时候，`this.shadowRoot` 已经存在，会直接将组件重新 `appendChild` 到 `shadowRoot`
-
-> 拓展阅读：`renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)]，通过这个函数来了解加载应用时 `loading` 处理
+- 预加载也是初次加载和 `分支 2` 流程一模一样
+- 不同的是预加载不提供挂载节点 `el`，而是用 `iframeBody` 作为临时挂载节点
+- 预加载之后 `startApp` 如果没有销毁实例的情况下，会按照 `分支 1` 执行流程
 
 第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
