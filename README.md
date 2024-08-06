@@ -3866,6 +3866,42 @@ window.onfocus = () => {
 
 > 参数 `hash` 存在的意义在于 `url` 是 `hash` 时直接返回而不用合并 `base`
 
+#### 子应用中的链接指向
+
+| 位置          | 分类                        | 描述                                                             | 说明                                                |
+| ------------- | --------------------------- | ---------------------------------------------------------------- | --------------------------------------------------- |
+| 基座          | `window`                    | 基座所在作用域                                                   | 在 `window` 下运行                                  |
+| 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `host`                                                      | 沙箱能直接和基座通信                                |
+| 沙箱 `iframe` | `url`                       | 初始化：基座 `host`，随路由变更：基座 `host` + 子应用 `pathname` | 沙箱能直接和基座通信                                |
+| 沙箱 `iframe` | `base` 元素                 | 子应用 `host` + `iframe pathname`                                | 修正子应用内中所有相对路径，例如：资源链接、`fetch` |
+
+`iframe pathname` 的变化：
+
+- 初始化：基座 `host`，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
+- 通过 `patchIframeHistory` 劫持 `history` 将 `host` 替换成基座 `host` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- 然后通过 `updateBase` 修正子应用的 `base` 元素 [[查看](#base标签操作)]
+
+`location` 的指向按照沙箱 `iframe` 的 `url` 来，但这就有问题了：
+
+- 假定 `localhost:8080` 的子应用通过 `location` 获取 `href`
+- 因为 `iframe` 的 `url` 同基座 `host`，如：`localhost:3000`
+- 那么就得到了错误的结果：`localhost:3000/pathname`
+
+于是在 `proxyLocation` 中做了一次拦截，修正取值：
+
+- 不巧的是 `degrade` 下沙箱的 `location` 是 `iframeWindow` 的属性，而不是 `proxyLocation`
+
+`degrade` 下的 `location` 和 `proxyLocation` 的区别：
+
+| 属性                                             | `proxyLocation`                                                                    | 沙箱 `iframe`                         |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- | ------------------------------------- |
+| `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                                             | 按照基座来                            |
+| `href`                                           | 通过 `relace` 将基座 `host` 替换成子应用                                           | 按照基座来                            |
+| `replace`                                        | 通过 `relace` 将子应用 `host` 替换成基座，因为这个操作会修改沙箱 `iframe` 的 `url` | 按照基座来                            |
+| 默认 `fetch`                                     | 相对路径按照 `base` 元素来补全                                                     | 相对路径按照 `base` 元素来补全        |
+| 配置重写 `fetch`                                 | 相对路径将通过 `proxyLocation` 来补全                                              | 相对路径将通过 `proxyLocation` 来补全 |
+| 其他属性                                         | 从沙箱 `location` 中取                                                             | 从沙箱 `location` 中取                |
+
 ### 辅助方法 - 实用工具
 
 #### `isConstructable`：判断函数是否可以 `new`
