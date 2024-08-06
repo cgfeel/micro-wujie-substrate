@@ -2605,7 +2605,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 ### 辅助方法 - 容器渲染
 
-围绕应用的渲染容器归纳相关的方法，包含：`shadowRoot` 容器、`iframe` 容器
+围绕应用的渲染容器归纳相关的方法，包含：`shadowRoot` 容器、`iframe` 容器以及劫持容器
 
 #### 创建 `iframe` 容器
 
