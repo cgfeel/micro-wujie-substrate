@@ -788,12 +788,13 @@
 
 #### 4.1. `degrade` 主动降级渲染
 
-概述：
+用 `iframe` 作为容器，应用中的弹窗由于在 `iframe` 内部将无法覆盖整个页面，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-- 采用 `iframe` 替换 `webcomponent`，`Object.defineProperty` 替换 `proxy`
-- 对于不支持的环境会自动降级，除此之外还可以通过 `degrade` 主动降级
-- 一旦采用降级方案，弹窗由于在 `iframe` 内部将无法覆盖整个应用
-- 关联属性 `degradeAttrs`，配置详细见 `start` 文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+关联属性 `degradeAttrs`，文档没有说明，在这里补充：
+
+- 在 `wujie` 中所有的 `iframe` 容器只设置了宽高 `100%`，这并不能够适应实际情况
+- 使用这个配置可以通过 `style` 适配容器节点的样式
+- 同样适用于劫持应用的 `location.href` 的 `iframe` 临时容器，见：`locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 主动降级分 3 个部分：
 
