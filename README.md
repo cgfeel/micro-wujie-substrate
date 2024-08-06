@@ -2613,8 +2613,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **创建 `iframe` 容器：**
 
-同时包含了：降级的 `iframe` 容器和劫持容器
-
 | 分类     | `iframe` 容器                                                                                                                                           | 劫持容器                                                                                                                                                 |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 创建方法 | `createIframeContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L238)] | `renderIframeReplaceApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L799)] |
