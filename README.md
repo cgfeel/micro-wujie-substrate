@@ -851,7 +851,7 @@
 
 在降级处理过程中，通过 `this.document` 来区分是初次加载还是切换应用
 
-- `this.document` 是降级状态下每次 `active` 应用时，用于记录 `iframe` 容器
+- `this.document` 在降级状态下每次 `active` 应用时，用于记录 `iframe` 容器
 - `this.document` 主要用于区分是否是初次加载，以及记录、恢复事件 [[查看](#记录恢复-iframe-容器事件)]
 - 无论是初次加载还是切换应用，降级状态都会新建 `iframe` 容器，即便 `alive` 模式也不例外
 
