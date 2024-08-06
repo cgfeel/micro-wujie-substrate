@@ -2624,7 +2624,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 为什么要放到一起总结？
 
-- 因为作为容器它们只是调用场景不一样，但创建的方式是一样的。
+- 因为作为容器它们只是调用场景不一样，但创建的方式是一样的
 - 从这点也能看出来 `wujie` 的源码相对会 `micro-app` 零散很多
 
 **`initRenderIframeAndContainer` 挂载容器到指定节点**
@@ -2633,7 +2633,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 参数：
 
-- `id`：容器编号
+- `id`：应用名
 - `parent`：挂载节点
 - `degradeAttrs`：`iframe` 属性
 
