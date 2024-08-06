@@ -820,7 +820,7 @@
 
 第一步：创建 `iframe`
 
-- `rawDocumentQuerySelector` 获取 `window` 或子应用内的 `iframeBody`
+- `rawDocumentQuerySelector` 获取沙箱 `iframeBody`
 - `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
 - 优先挂载 `iframe` 到指定容器，不存则在挂载到 `iframeBody`
 
@@ -2606,6 +2606,52 @@ iframeWindow.history.replaceState(null, "", args[0])
 ### 辅助方法 - 容器渲染
 
 围绕应用的渲染容器归纳相关的方法，包含：`shadowRoot` 容器、`iframe` 容器
+
+#### 创建 `iframe` 容器
+
+分 2 部分：创建 `iframe` 容器和渲染容器
+
+**创建 `iframe` 容器：**
+
+同时包含了：降级的 `iframe` 容器和劫持容器
+
+| 分类     | `iframe` 容器                                                                                                                                           | 劫持容器                                                                                                                                                 |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 创建方法 | `createIframeContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L238)] | `renderIframeReplaceApp` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L799)] |
+| 创建方式 | `document.createElement("iframe");`                                                                                                                     | `window.document.createElement("iframe")`                                                                                                                |
+| 默认样式 | `height:100%;width:100%`                                                                                                                                | `height:100%;width:100%`                                                                                                                                 |
+| 设置属性 | 自定义属性、样式、`flag_id`                                                                                                                             | 自定义属性、样式、`src`                                                                                                                                  |
+| 执行结果 | 返回 `iframe` 容器                                                                                                                                      | 将劫持容器渲染到 `el` 挂载节点                                                                                                                           |
+| 调用场景 | `initRenderIframeAndContainer`，继续往下看                                                                                                              | `locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]、`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]             |
+
+为什么要放到一起总结？
+
+- 因为作为容器它们只是调用场景不一样，但创建的方式是一样的。
+- 从这点也能看出来 `wujie` 的源码相对会 `micro-app` 零散很多
+
+**`initRenderIframeAndContainer` 挂载容器到指定节点**
+
+目录：`shadow.ts` - `initRenderIframeAndContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L92)]
+
+参数：
+
+- `id`：容器编号
+- `parent`：挂载节点
+- `degradeAttrs`：`iframe` 属性
+
+流程：
+
+- 通过 `createIframeContainer` 创建 `iframe` 容器
+- 通过 `renderElementToContainer` 挂载容器到指定节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 拿到 `iframe` 容器的 `document`，并写入空白 `html`
+- 将 `iframe` 容器和挂载节点都返回
+
+> `renderIframeReplaceApp` 也是通过 `renderElementToContainer` 将劫持容器挂载到指定节点，挂载前 `renderElementToContainer` 会清空挂载节点，这样就完成了劫持容器替换渲染容器的过程
+
+调用场景：
+
+- `active` 激活应用：`degrade` 降级时创建容器
+- `popstate` 监听后退操作，用降级的 `iframe` 容器替换劫持容器
 
 #### `renderElementToContainer`：将节点元素挂载到容器
 
