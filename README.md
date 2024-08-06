@@ -734,7 +734,7 @@
 
 但是基座本身用不到，调用场景如下：
 
-- `importHTML`：提取应用资源，用的 `fetch` 来自未重写的配置文件
+- `importHTML`：提取应用资源，用的 `fetch` 来自未指向 `proxyLocation` 的 `fetch` 配置
 - `processCssLoaderForTemplate`：手动加载样式，这里是针对所有应用的，通常会指定一个公共资源路径
 
 > 当配置没有提供 `fetch` 时，会默认通过 `window.fetch`
@@ -1580,7 +1580,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 ### `wujie` 中的代理
 
 ![wujie-proxy](https://github.com/user-attachments/assets/c3110718-d22c-434b-8d96-4cd09b466196)
-
 
 #### 📝 `proxyGenerator` 非降级情况下的代理
 
