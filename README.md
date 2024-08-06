@@ -784,7 +784,7 @@
 
 #### 4. 创建容器渲染资源
 
-通过 `template` 更新 `this.template`，作为需要注入容器的资源。需要说明的是 `alive` 和 `umd` 模式，实例已存在的情况下 `startApp` 是不需要提供资源的。因为这种模式下资源已经通过 `preloadApp` 或首次 `startApp` 完成了加载。
+通过 `template` 更新 `this.template`，作为需要注入容器的资源。需要说明的是 `alive` 和 `umd` 模式，实例已存在的情况下 `startApp` 不需要提供资源。因为在 `preloadApp` 或首次 `startApp` 时 `template` 已绑定在应用实例中。
 
 #### 4.1. `degrade` 主动降级渲染
 
