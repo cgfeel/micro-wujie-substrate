@@ -729,7 +729,7 @@
 
 于是：
 
-- 重写 `fetch` 函数将 `input` 通过 `getAbsolutePath` 指向 `proxyLocation` [[查看](#getabsolutepath获取绝对路径)]
+- 重写 `fetch` 函数通过 `getAbsolutePath` 指向 `proxyLocation` [[查看](#getabsolutepath获取绝对路径)]
 - 将重写的 `fetch` 绑定到 `iframeWindow` 和应用实例中
 
 但是基座本身用不到，调用场景如下：
