@@ -724,8 +724,8 @@
 
 仅限提供 `fetch` 配置，原因：
 
-- 基础提供 `fetch` 函数时：`location` 指向基座
-- 子应用 `fetch` 时：`location` 通过 `proxyWindow` 指向 `proxyLocation`
+- 配置重写 `fetch` 函数时：`location` 指向基座 `window`
+- 子应用 `fetch` 时：相对路径通过沙箱中的 `base` 元素进行补全
 
 于是：
 
