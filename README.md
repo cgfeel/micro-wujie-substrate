@@ -877,9 +877,11 @@
 
 第一步：挂载子应用到容器
 
-`degrade` 主动降级通过 `this.document` 来区分切换应用和初次加载，而挂载应用通过 `this.shadowRoot` 来区分，如下有 3 个分支。
+`degrade` 降级状态通过 `this.document` 来区分初次加载还是切换应用，而默认状态通过 `this.shadowRoot` 来区分。
 
-分支 1：切换应用
+注入 `template` 有 3 种情况：
+
+`分支 1`：切换应用
 
 - 通过 `renderElementToContainer` [[查看](#renderelementtocontainer将节点元素挂载到容器)] 将 `this.shadowRoot.host` 挂载到指定容器
 - 如果是 `alive` 模式跳出来，以下流程不再继续
@@ -891,7 +893,7 @@
 > - 在 `active` 模式下切换应用，`shadowRoot` 的 `template` 已在初始化时注入，所以激活后可以直接返回
 > - 而非 `active` 模式下切换应用，会再次更新 `template`
 
-分支 2：应用初始化
+`分支 2`：应用初始化
 
 - 先获取 `iframeBody`，如果容器不存在时作为备用容器
 - 通过 `createWujieWebComponent` 创建自定义组件
@@ -903,7 +905,7 @@
 > - 创建组件时，通过 `defineWujieWebComponent` 会配置 `this.shadowRoot`
 > - 这样下次切换再激活应用时会通过：`分支 1` 的流程
 
-分支 3： 预加载应用
+`分支 3`： 预加载应用
 
 - 预加载应用是不需要指定容器用来挂载应用，所以会挂载到沙箱的 `iframeBody` 中
 - 等到切换应用的时候，`this.shadowRoot` 已经存在，会直接将组件重新 `appendChild` 到 `shadowRoot`
