@@ -847,7 +847,7 @@
 
 - 目的应该用于点击 `iframe` 容器中第三方链接离开子应用时注销应用实例
 
-第三步：注入 `template` 到 `iframe` 容器中
+第三步：注入 `template` 到容器中
 
 在降级处理过程中，通过 `this.document` 来区分是初次加载还是切换应用
 
@@ -902,7 +902,16 @@
 - 不同的是预加载不提供挂载节点 `el`，而是用 `iframeBody` 作为临时挂载节点
 - 预加载之后 `startApp` 如果没有销毁实例的情况下，会按照 `分支 1` 执行流程
 
-第二步：通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+第二步：注入 `template` 到容器中
+
+- 通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+- 包括 `umd` 模式和重建模式，注入 `template` 之前 `shadowRoot` 仅仅是个空壳
+
+注入资源后会发生什么：
+
+- 之前添加的 `loading` 也因为资源注入而撑开容器 [[查看](#启动应用时添加删除-loading)]
+- 由于当前只注入了静态资源，应用中动态添加的 `script` 和样式都不存在，所以应用此时仍旧不可见
+- 需要等到 `start` 启动应用时，将入口 `script` 添加到沙箱 `iframe` 后才会渲染应用
 
 #### 5. 完成激活应用
 
