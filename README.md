@@ -788,7 +788,7 @@
 
 #### 4.1. `degrade` 主动降级渲染
 
-用 `iframe` 作为容器，应用中的弹窗由于在 `iframe` 内部将无法覆盖整个页面，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+用 `iframe` 作为容器，应用中的弹窗由于在 `iframe` 内部将无法覆盖整个页面，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#degrade)]
 
 关联属性 `degradeAttrs`，文档没有说明，在这里补充：
 
