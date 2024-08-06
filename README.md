@@ -821,10 +821,14 @@
 第一步：创建 `iframe`
 
 - `rawDocumentQuerySelector` 获取沙箱 `iframeBody`
-- `initRenderIframeAndContainer` 创建一个新的 `iframe` 用于代替 `shadowDom`
-- 优先挂载 `iframe` 到指定容器，不存则在挂载到 `iframeBody`
+- `initRenderIframeAndContainer` 创建 `iframe` 容器挂载到指定节点 [[查看](#创建-iframe-容器)]
 
-> `initRenderIframeAndContainer` 内部做了两件事：i. 创建 `iframe` 并写入 `attrs`，ii. 渲染到容器后重写 `iframe` 的 `document`
+`iframe` 容器的挂载点：
+
+- `el`：`startApp` 时通过配置指定
+- `iframeBody`：`preloadApp` 临时存放在沙箱中
+
+> 如果 `startApp` 没有提供 `el` 挂载节点，也会存放在沙箱 `iframeBoody` 中。此时应用不会报错，但不可见。
 
 第二步：更新容器，销毁 `iframeBody`
 
