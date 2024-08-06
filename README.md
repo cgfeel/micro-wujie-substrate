@@ -871,10 +871,7 @@
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 
-最后：
-
-- 无论哪种方式渲染，都将“新容器”的 `document` 作为当前实例的 `document`，方便下次切换应用 `active` 时直接使用。
-- 至此整个降级过程完成，直接返回不再执行下面流程
+至此整个降级过程完成，直接返回不再执行下面流程
 
 #### 4.2. 挂载子应用：切换、初始化、预加载
 
