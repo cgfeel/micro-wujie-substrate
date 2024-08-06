@@ -884,13 +884,11 @@
 `分支 1`：切换应用
 
 - 通过 `renderElementToContainer` 将 `this.shadowRoot.host` 挂载到指定节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
-- 如果是 `alive` 模式跳出来，以下流程不再继续
+- `alive` 模式：完成切换后直接返回，不再继续执行资源注入容器的流程
+- `umd` 模式：虽然实例存在 `shadowRoot`，但 `active` 前会通过 `unmount` 清空容器 [[查看](#4-容器在哪清除)]
+- 重建模式：`active` 前会随应用一同销毁，不存在 `shadowRoot`，也不走这个分支
 
-关于 `shadowRoot`：
-
-- `shadowRoot` 在创建 `web component` 时候绑定到实例，见：`connectedCallback` [[查看](#connectedcallback挂载组件)]
-- 只存在 2 种模式：`alive`、`umd` 切换应用，重建模式 `active` 前会随应用一同销毁 [[查看](#23-destroy-注销应用)]
-- 只有 `alive` 模式 `shadowRoot` 不受挂载和卸载影响，`umd` 模式 `active` 前会通过 `unmount` 清空容器 [[查看](#4-容器在哪清除)]
+> `shadowRoot` 在创建 `web component` 时候绑定到实例，见：`connectedCallback` [[查看](#connectedcallback挂载组件)]
 
 `分支 2`：应用初始化
 
