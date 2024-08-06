@@ -816,7 +816,7 @@
 - 劫持容器：通过 `locationHrefSet` 劫持子应用中通过 `location.href` 跳转的页面 [[查看](#locationhrefset拦截子应用-locationhref)]
 - `shadowRoot`（容器）：默认情况下存放应用资源的容器，其中 `script` 会被注释 [[查看](#42-挂载子应用切换初始化预加载)]
 
-> 相应的 `iframeWindow`、`iframeBody`、`iframeHead` 全部都代表沙箱 `iframe` 中的对象
+> 相应的 `iframeWindow`、`iframeBody`、`iframeHead` 全部为沙箱 `iframe` 中的对象
 
 渲染分 3 种情况：
 
