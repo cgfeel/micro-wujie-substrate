@@ -818,14 +818,6 @@
 
 > 相应的 `iframeWindow`、`iframeBody`、`iframeHead` 全部为沙箱 `iframe` 中的对象
 
-渲染分 3 种情况：
-
-1. `alive` 模式切换应用
-2. 非 `alive` 模式切换应用
-3. 初次渲染
-
-> 在这里通过 `this.document` 来区分是切换应用还是初次加载
-
 第一步：创建 `iframe`
 
 - `rawDocumentQuerySelector` 获取 `window` 或子应用内的 `iframeBody`
@@ -843,17 +835,21 @@
 
 > `onunload` 是一个废弃的方法，随时可能被浏览器弃用。这个监听方法只在 `iframe` 降级处理时存在与容器中，目的应该用于点击应用中第三方链接离开页面时注销应用。
 
-第三步：`分支 1` - `alive` 模式下切换应用
+第三步：注入 `template` 到 `iframe` 容器中
+
+在降级处理过程中，通过 `this.document` 来区分是初次加载还是切换应用
+
+`分支 1` - `alive` 模式下切换应用
 
 - 恢复 `html`：将之前记录子应用的 `<html>` 替换“新容器”的 `<html>`
 - 在保活场景恢复所有元素事件，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
-第三步：`分支 2` - 非 `alive` 模式下切换应用
+`分支 2` - 非 `alive` 模式下切换应用
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
-第三步：`分支 3` - 初次渲染
+`分支 3` - 初次渲染
 
 - 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
 
