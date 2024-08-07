@@ -1092,7 +1092,7 @@
 - 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`afterScriptResultList`
 - 每个队列通过 `insertScriptToIframe` 注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 注入 `script` 之后再将 `window.__WUJIE.execQueue.shift()()` 注入沙箱 `iframe`
-- 这样每个 `push` 添加的队列，会在沙箱 `iframe` 加载完 `script` 后通过 `shift` 提取下一个任务并执行
+- 这样每个 `push` 的队列，会在沙箱 `iframe` 加载完 `script` 后通过 `shift` 提取下一个任务并执行
 
 主动插入队列有 4 处：
 
@@ -1106,7 +1106,7 @@
 
 无论队列中执行的是上下文，还是微任务，亦或者是宏任务，最终都需要按照队列顺序来
 
-> 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁沙箱 `iframe`
+> 在 `WuJie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁沙箱 `iframe`
 
 只有 1 种情况可以无视队列顺序：
 
@@ -1114,7 +1114,7 @@
 
 而最后返回的 `promise` 也只做 1 件事：
 
-- 执行 `resolve` 通知外部 `start` 完成
+- 插入最终执行的队列，在队列的方法中将执行 `resolve` 通知外部 `start` 完成
 
 #### 3. 队列执行顺序
 
@@ -1125,8 +1125,6 @@
 - 返回的 `promise` 对象
 
 > 只有异步代码是立即添加微任务，其他按照 `execQueue` 队列顺序等待提取并执行
-
-> 返回的 `promise` 对象用于 `start` 外部通知执行完毕，而 `promise` 的函数是同步的，用于将 `resolve` 插入 `execQueue` 队列中，等待最后提取并执行
 
 `fiber` 没有关闭的情况下有 7 处宏任务：
 
