@@ -1080,12 +1080,12 @@
 开始执行：
 
 - 执行队列从 334 行开始，按照上下文主动提取并发起执行，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]
-- `asyncScriptResultList` 不加入队列，会以 `promise` 微任务的形式在当前上下文执行完毕后依次执行
+- `asyncScriptResultList` 不加入队列，会以 `Promise` 微任务的形式在当前上下文执行完毕后依次执行
 
 需要说明的是：
 
-- 开始提取 `execQueue` 是在 `start` 返回 `promise` 之前执行，队列方法和 `promise` 内部方法是上下文关系
-- 所以队列开始时，最后返回的 `Promise` 还没有将最后要执行的队列插入 `execQueue`
+- 开始提取 `execQueue` 是在 `start` 返回 `Promise` 之前执行，队列方法和 `promise` 内部方法是上下文关系
+- 所以队列开始时，返回的 `Promise` 还没有将最后要执行的队列插入 `execQueue`
 
 循环插入队列共有 3 处：
 
@@ -1101,7 +1101,7 @@
 
 如果没有主动配置 `fiber` 为 `false` 的情况下：
 
-- 除最后返回的 `promise` 之外，所有的队列将包裹在宏任务 `requestIdleCallback` 中空闲执行
+- 除最后返回的 `Promise` 之外，所有的队列将包裹在宏任务 `requestIdleCallback` 中空闲执行
 - 但是每个队列的执行，必须是在上一个队列结束后通过 `shift` 提取并执行
 
 无论队列中执行的是上下文，还是微任务，亦或者是宏任务，最终都需要按照队列顺序来
