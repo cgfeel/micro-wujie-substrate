@@ -998,7 +998,7 @@
 
 返回：
 
-- `start` 是一个返回 `Promise<void>` 的微任务
+- `start` 是一个返回 `Promise<void>` 的微任务，通过 `await` 确保应用成启动
 
 如果 `this.iframe` 被销毁的情况会直接返回不再处理：
 
