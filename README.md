@@ -1114,7 +1114,7 @@
 - `asyncScriptResultList`：异步代码
 - 返回的 `promise` 对象
 
-> 返回的 `promise` 对象用于 `start` 外部通知执行完毕，在 `start` 内部 `promise` 的函数是同步的，队列的执行需要通过上下文调用 `this.execQueue.shift`
+> 返回的 `promise` 对象用于 `start` 外部通知执行完毕，而 `promise` 的函数是同步的，用于将 `resolve` 插入 `execQueue` 队列中，等待最后提取并执行
 
 `fiber` 开启的情况下有 7 处宏任务：
 
