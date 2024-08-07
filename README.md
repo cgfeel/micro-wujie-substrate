@@ -1153,30 +1153,36 @@
 
 非 `fiber` 模式下 `asyncScriptResultList` 执行顺序：
 
+- 如果 `execQueue` 中存在微任务或宏任务
+- `asyncScriptResultList` 会在第一个微任务或宏任务前执行
+
+非 `fiber` 模式下，哪里存在微任务：
+
+- 同步子应用 `script`：`syncScriptResultList` + `deferScriptResultList`
+
+非 `fiber` 模式下，哪里存在宏任务：
+
 - 看注入沙箱 `iframe` 中的 `script` 是否有外联 `script`
 - 因为非 `fiber` 下无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
 - 只有通过 `src` 加载的 `script` 会通过 `onload` 回调执行 `execQueue.shift()()`
-- 而 `onload` 是宏任务，执行前会优先执行当前任务中所有的微任务，包括 `asyncScriptResultList`
+- 而 `onload` 是宏任务，执行前会优先执行当前任务中的微任务 `asyncScriptResultList`
 
-> 非 `fiber` 模式下，通过 `beforeScriptResultList` 循环插入队列集合，带有 `src` 的外联 `script`：
->
-> - 虽然宏任务 `requestIdleCallback` 不存在
-> - 但带有 `src` 的 `script` 会通过 `onload` 去调用 `window.__WUJIE.execQueue.shift()()`
-> - `onload` 也是宏任务，会在当前宏任务下微任务结束后开始执行
->
-> 非 `fiber` 模式下，存在同步代码：
->
-> - 会在 `syncScriptResultList` + `deferScriptResultList` 集合的微任务之前执行
->
-> 非 `fiber` 模式下，通过 `afterScriptResultList` 循环插入队列集合，带有 `src` 的外联 `script`：
->
-> - 同 `beforeScriptResultList`
->
-> 非 `fiber` 模式下，如果以上都不存在：
->
-> - 会在 `start` 之后执行，但是这里存在一个 `bug`，见：4. `start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+非 `fiber` 模式下，以上执行顺序是怎样的：
 
-除了 `asyncScriptResultList` 之外以上微任务宏任务都会按照队列执行顺序执行，因为要执行队列就必须在上一个队列任务中调用 `this.execQueue.shift()()`
+1. `asyncScriptResultList` 子应用中异步 `script`
+2. `beforeScriptResultList`，如果存在外联 `script`
+3. `syncScriptResultList` + `deferScriptResultList`，如果存在同步 `script`
+4. `afterScriptResultList`，如果存在外联 `script`
+
+非 `fiber` 模式下，既没有同步 `script`，也没有外联 `script`：
+
+- `asyncScriptResultList` 会在返回的 `Promise` 对象 `resolve` 之前全部执行
+- 这里存在一个 `bug`，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+为什么一直都在说 `asyncScriptResultList` 执行顺序：
+
+- 因为 `execQueue` 队列中所有同步的方法、微任务、宏任务，都按照队列先后顺序 `one by one`
+- 通过 `asyncScriptResultList` 可以作为参考对象，很好的了解整个队列的执行顺序
 
 > 一道思考题：在子应用中所有带有 `src` 的链接将被分类为“同步代码”和“异步代码”，这类 `script` 会怎样插入 `iframe`？这个问题会在下面解答：5. 队列前的准备 [[查看](#5-队列前的准备)]
 
