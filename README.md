@@ -1065,13 +1065,13 @@
 **遍历的集合下标是 `promise` 有 2 处：**
 
 - 同步和异步代码执行：`syncScriptResultList`、`asyncScriptResultList`
-- 共同点：集合中的每一个方法都返回 `promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 共同点：集合中的每一个方法都返回 `Promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
 **插入队列 `execQueue` 的动作全部都是上下文：**
 
 - 在阅读执行队列前需要说明的是，所有队列都是在上下文中 `push`
-- 即便是最后返回的 `promise`，也是在 `promise` 方法中同步插入执行的队列
+- 即便是最后返回的 `Promise`，也是在 `Promise` 方法中同步插入执行的队列
 
 #### 2. 执行队列
 
@@ -1141,7 +1141,7 @@
 5. 依次执行 `mount`、`domContentLoadedTrigger`
 6. 执行 `afterScriptResultList`，如果存在的话
 7. 执行 `domLoadedTrigger`
-8. 执行返回的 `promise` 对象中添加的末尾的队列
+8. 通过返回的 `Promise` 方法中执行最后添加到 `execQueue` 的方法
 
 `fiber` 模式下 `asyncScriptResultList` 执行顺序：
 
