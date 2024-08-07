@@ -1186,7 +1186,7 @@
 | 集合对象 | `execQueue`                                                  | `fiberLinkTasks`                                            |
 | 添加方式 | `push`                                                       | `push`                                                      |
 | 执行方式 | `this.execQueue.shift()?.()`，在当前队列提取下一个队列并执行 | `serialExecFiberTasks`，通过 `array.redus` 拍平队列依次执行 |
-| 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行          | `injectFiberTask`，提供的 `fiberTasks` 为 `null`            |
+| 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行          | 调用 `injectFiberTask` 时提供 `fiberTasks` 为 `null`        |
 
 > 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
 
