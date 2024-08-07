@@ -942,7 +942,7 @@
 
 > 而 `proxyDocument` 只有获取 `script` 指向沙箱 `iframe.contentDocumennt`，其余全部指向容器，比如 `iframe` 容器的 `document`，或是 `shadowRoot`
 
-为此，沙箱 `iframe` 初始化时保留了沙箱 `document` 4 个原始方法：
+为此沙箱 `iframe` 初始化时保留了沙箱 `document` 4 个原始方法：
 
 - 通过 `initIframeDom` 绑定在 `iframe.contentWindow` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
