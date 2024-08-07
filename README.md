@@ -1116,20 +1116,6 @@
 
 > 返回的 `promise` 对象用于 `start` 外部通知执行完毕，而 `promise` 的函数是同步的，用于将 `resolve` 插入 `execQueue` 队列中，等待最后提取并执行
 
-`fiber` 开启的情况下有 7 处宏任务：
-
-- 除了通过返回的 `promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
-- 其中 `syncScriptResultList` + `deferScriptResultList` 和 `asyncScriptResultList` 会在微任务中添加宏任务
-
-无论 `this.fiber` 的值与否都是按照队列的顺序执行：
-
-- 即便开启 `fiber` 状态下，每次都将调用的函数通过 `requestIdleCallback` 将其放入一个宏任务中执行
-- 但是要执行下一个队列，就一定要在上一个宏任务中提取 `this.execQueue.shift` 并执行
-
-不同的是：
-
-- 开启 `fiber` 会将执行方法包裹在 `requestIdleCallback`，在浏览器空闲时交给下一个宏任务执行
-
 执行顺序：
 
 1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 n (`asyncScriptResultList`)
