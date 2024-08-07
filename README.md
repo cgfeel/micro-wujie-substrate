@@ -996,7 +996,9 @@
 
 - `getExternalScripts`：返回一个要加载的 `script` 集合的函数，见：`importHTML` [[查看](#importhtml-加载资源)]
 
-> `start` 本身是一个返回 `Promise<void>` 的微任务
+返回：
+
+- `start` 是一个返回 `Promise<void>` 的微任务
 
 如果 `this.iframe` 被销毁的情况会直接返回不再处理：
 
