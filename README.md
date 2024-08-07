@@ -239,7 +239,7 @@
 - `shadowRoot.host`：返回 `shadowRoot` 附加到 `Dom` 元素的引用，即：`web component`
 - `shadowRoot.host.parentElement`：`web component` 的父节点，用于获取 `shadowRoot` 挂载节点
 - `shadowRoot.firstChild`：`shadowRoot` 下第一个元素，在 `wujie` 中是 `html` 元素
-- `documet.documentElement`：`document` 下的跟元素，如：`html` 元素
+- `documet.documentElement`：`document` 下的根元素，如：`html` 元素
 
 > 以上几个对象将会在 `wujie` 中高频出现
 
@@ -859,7 +859,7 @@
 
 `分支 1` - `alive` 模式下切换应用
 
-- 将 `this.document` 中的 `html` 跟元素替换 `iframe` 容器中的 `html` 根元素
+- 将 `this.document` 中的 `html` 根元素替换 `iframe` 容器中的 `html` 根元素
 - 在保活场景恢复所有元素事件，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
 `分支 2` - 非 `alive` 模式下切换应用
@@ -915,12 +915,13 @@
 
 #### 5. 完成激活应用
 
-第三步：通过 `patchCssRules` 为子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
+- 通过 `patchCssRules` 为子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
+- 更新 `this.provide.shadowRoot`
 
-第四步：更新 `this.provide.shadowRoot`
+`this.provide` 是子应用中 `window` 全局对象中的 `$wujie`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)]：
 
-- `this.provide` 就是子应用中全局对象的 `$wujie`，详细见文档：全局变量 [[查看](https://wujie-micro.github.io/doc/guide/variable.html)]
-- 在实例构造时通过 `iframeGenerator` 创建 `iframe` 的同时使用 `patchIframeVariable` 将其注入 `iframeWindow`
+- 在实例构造时通过 `patchIframeVariable` 将其注入 `iframeWindow` [[查看](#patchiframevariable-为子应用-window-添加属性)]
+- `shadowRoot` 仅限默认状态下激活时才提供，降级状态下不存在
 
 #### 6. 激活应用的 `bug`
 
