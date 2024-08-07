@@ -994,13 +994,15 @@
 
 参数：
 
-- `getExternalScripts`：返回一个要加载的 `script` 集合的函数
+- `getExternalScripts`：返回一个要加载的 `script` 集合的函数，见：`importHTML` [[查看](#importhtml-加载资源)]
 
-`start` 本身是一个返回 `Promise<void>` 异步函数：
+> `start` 本身是一个返回 `Promise<void>` 的微任务
 
-- 但如果 `this.iframe` 被销毁的情况会直接返回不再处理，`this.iframe` 只有在销毁应用 `destroy` 设为 `null`，见 `destroy`
+如果 `this.iframe` 被销毁的情况会直接返回不再处理：
 
-`start` 有 3 个地方调用：
+- `this.iframe` 只有在销毁应用 `destroy` 设为 `null` [[查看](#-destroy-销毁实例)]
+
+`start` 调用场景有 3 个：
 
 - `startApp` 切换一个 `alive` 模式的子应用时，子应用未启动
 - `startApp` 创建一个应用实例后
