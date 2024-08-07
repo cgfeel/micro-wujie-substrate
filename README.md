@@ -1116,9 +1116,13 @@
 
 > 返回的 `promise` 对象用于 `start` 外部通知执行完毕，而 `promise` 的函数是同步的，用于将 `resolve` 插入 `execQueue` 队列中，等待最后提取并执行
 
-执行顺序：
+`fiber` 没有关闭的情况下有 7 处宏任务
 
-1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 n (`asyncScriptResultList`)
+- 除了通过返回的 `promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
+
+执行顺序如下：
+
+1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 ①
 2. 334 行开始执行第一个队列 `this.execQueue.shift()()`
 3. 执行 `beforeScriptResultList`，如果存在的话
 4. 执行 `syncScriptResultList` + `deferScriptResultList`，如果存在的话
@@ -1127,7 +1131,7 @@
 7. 执行 `domLoadedTrigger`
 8. 执行返回的 `promise` 对象中添加的末尾的队列
 
-> 注 n：`fiber` 模式下 `asyncScriptResultList` 执行顺序如下
+> 注 ①：`fiber` 模式下 `asyncScriptResultList` 执行顺序如下
 >
 > - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
 > - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
