@@ -1004,11 +1004,11 @@
 
 `start` 调用场景有 3 个：
 
-- `startApp` 切换一个 `alive` 模式的子应用时，子应用未启动
-- `startApp` 创建一个应用实例后
-- `preloadApp` 预加载应用配置 `exec` 预执行
+- `startApp` 预加载 `alive` 模式的应用后 `startApp` [[查看](#21-alive-保活模式运行应用)]
+- `startApp` 创建一个新的应用实例后 [[查看](#3-创建新的沙箱实例)]
+- `preloadApp` 配置 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
 
-> 执行 `start` 启动应用前必须先 `active` 激活应用
+> 执行 `start` 启动应用前必须先 `active` 激活应用 [[查看](#-active-激活应用)]
 
 #### 1. 收集队列
 
