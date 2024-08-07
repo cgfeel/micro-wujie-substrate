@@ -1022,19 +1022,17 @@
 
 **`this.execQueue.push` 共计 7 处：**
 
-- `beforeScriptResultList`：插入代码前
-- `syncScriptResultList` + `deferScriptResultList`：同步代码
-- `this.mount`：框架主动调用 `mount` 方法
+- `beforeScriptResultList`：插入代码前通过插件添加的 `script`
+- `syncScriptResultList` + `deferScriptResultList`：子应用中同步 `script`，包含 `defer`
+- `this.mount`：基座主动调用 `mount` 方法
 - `domContentLoadedTrigger`：触发 `DOMContentLoaded` 事件
-- `afterScriptResultList`：插入代码后
+- `afterScriptResultList`：插入代码后插件添加的 `script`
 - `domLoadedTrigger`：触发 `loaded` 事件
-- 返回 `promise`：所有的 `execQueue` 队列执行完毕，`start` 才算结束，保证串行的执行子应用
+- 返回 `promise`：所有的 `execQueue` 队列执行完毕，`start` 才会在最后 `resolve`
 
 **有 1 处存在即执行：**
 
-- `asyncScriptResultList`：异步代码
-
-> 以上说明来自源码注释，可以直接复制关键词搜索；如果以上总结还没看明白没关系，请继续往下看
+- `asyncScriptResultList`：子应用中带有 `async` 的 `script`
 
 总共 8 处，然后根据用途还可以细分如下
 
