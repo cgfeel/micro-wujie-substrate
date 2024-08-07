@@ -1056,7 +1056,7 @@
 
 - `syncScriptResultList`：同步代码
 - `asyncScriptResultList`：`async` 代码无需保证顺序，所以不用放入执行队列
-- `deferScriptResultList`：`defer` 代码需要保证顺序并且 `DOMContentLoaded` 前完成，这里统一放置同步脚本后执行
+- `deferScriptResultList`：`defer` 代码需要保证顺序并且在触发 `loaded` 前完成
 
 遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
