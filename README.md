@@ -1143,41 +1143,33 @@
 7. 执行 `domLoadedTrigger`
 8. 通过返回的 `Promise` 方法中执行最后添加到 `execQueue` 的方法
 
-`fiber` 模式下 `asyncScriptResultList` 执行顺序：
+`asyncScriptResultList` 执行顺序：
 
-- 会在第一个队列被提取并执行之后，返回并插入的微任务或宏任务之前执行
-- 因为 `shift` 出来的队列方法本身是同步的，而返回的是一个微任务或宏任务
-- 无论是添加的是哪种任务，都会先将 `asyncScriptResultList` 执行完毕后再继续
+- 会在 `execQueue` 队列中第 1 个微任务或宏任务之前完成所有异步代码注入
 
-非 `fiber` 模式下 `asyncScriptResultList` 执行顺序：
+`fiber` 模式，第 1 任务：
 
-- 如果 `execQueue` 中存在微任务或宏任务
-- `asyncScriptResultList` 会在第一个微任务或宏任务前执行
+- `beforeScriptResultList` 存在的话，第 1 个队列是宏任务，否则继续往下看
+- 同步代码存在的话，第 1 个队列是微任务，否则就一定会是宏任务
 
-非 `fiber` 模式下，哪里存在微任务：
+非 `fiber` 模式，第 1 个任务：
 
-- 同步子应用 `script`：`syncScriptResultList` + `deferScriptResultList`
+- `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
+- 同步代码存在的话，第 1 个队列是微任务
+- `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
+- 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
-非 `fiber` 模式下，哪里存在宏任务：
+> 执行顺序从上至下，有 1 条满足后面的就不用再看；以上无论是不是 `fiber` 模式都不包含同步任务，因为对于微任务来说，同步任务必然会优先执行
 
-- 看注入沙箱 `iframe` 中的 `script` 是否有外联 `script`
-- 因为非 `fiber` 下无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
+为什么外联 `script` 存在宏任务：
+
+- 队列中无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
 - 只有通过 `src` 加载的 `script` 会通过 `onload` 回调执行 `execQueue.shift()()`
-- 而 `onload` 是宏任务，执行前会优先执行当前任务中的微任务 `asyncScriptResultList`
+- 而 `onload` 是宏任务，执行前，会优先完成上一个宏任务中的微任务
 
-非 `fiber` 模式下，以上执行顺序是怎样的：
+如果 `execQueue` 在返回 `Promise` 之前，队列中只有同步执行的方法，会存在一个 `bug`，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
-1. `asyncScriptResultList` 子应用中异步 `script`
-2. `beforeScriptResultList`，如果存在外联 `script`
-3. `syncScriptResultList` + `deferScriptResultList`，如果存在同步 `script`
-4. `afterScriptResultList`，如果存在外联 `script`
-
-非 `fiber` 模式下，既没有同步 `script`，也没有外联 `script`：
-
-- `asyncScriptResultList` 会在返回的 `Promise` 对象 `resolve` 之前全部执行
-- 这里存在一个 `bug`，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
-
-为什么一直都在说 `asyncScriptResultList` 执行顺序：
+为什么关注 `asyncScriptResultList` 执行顺序：
 
 - 因为 `execQueue` 队列中所有同步的方法、微任务、宏任务，都按照队列先后顺序 `one by one`
 - 通过 `asyncScriptResultList` 可以作为参考对象，很好的了解整个队列的执行顺序
