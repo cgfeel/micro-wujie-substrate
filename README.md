@@ -1080,8 +1080,8 @@
 循环插入队列共有 3 处：
 
 - 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`afterScriptResultList`
-- 执行的通过 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] 将 `window.__WUJIE.execQueue.shift()()` 注入容器
-- 这样每个 `push` 添加的队列，会在容器中 `shift` 提取下一个任务并执行
+- 执行的通过 `insertScriptToIframe` 将 `window.__WUJIE.execQueue.shift()()` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 这样每个 `push` 添加的队列，会在沙箱 `iframe` 中通过 `shift` 提取下一个任务并执行
 
 同步代码 `syncScriptResultList` + `deferScriptResultList`：
 
