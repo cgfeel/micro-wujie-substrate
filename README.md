@@ -1080,31 +1080,31 @@
 循环插入队列共有 3 处：
 
 - 分别是：`beforeScriptResultList`、`syncScriptResultList` + `deferScriptResultList`、`afterScriptResultList`
-- 执行过程通过 `insertScriptToIframe` 将 `window.__WUJIE.execQueue.shift()()` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 这样每个 `push` 添加的队列，会在沙箱 `iframe` 中通过 `shift` 提取下一个任务并执行
-
-同步代码 `syncScriptResultList` + `deferScriptResultList`：
-
-- 每个队列都是一个 `promise` 微任务，在微任务中根据 `fiber` 决定立即执行还是通过 `requestIdleCallback` 空闲执行
-
-> 在 `fiber` 情况下每个微任务执行过程中都会添加一个宏任务 `requestIdleCallback`，其顺序依旧是按照队列顺序来，在沙箱 `iframe` 中提取下一个队列继续执行
+- 每个队列通过 `insertScriptToIframe` 注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 注入 `script` 之后再将 `window.__WUJIE.execQueue.shift()()` 注入沙箱 `iframe`
+- 这样每个 `push` 添加的队列，会在沙箱 `iframe` 加载完 `script` 后通过 `shift` 提取下一个任务并执行
 
 主动插入队列有 4 处：
 
-- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回的 `Promise` 实例函数中
+- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回的 `Promise`
 - 会在执函数末尾添加 `this.execQueue.shift()?.();` 提取并执行接下来的队列
 
-如果 `fiber` 为 `true`（默认）：
+如果没有主动配置 `fiber` 为 `false` 的情况下：
 
-- 循环插入队列：会在空闲时间 `requestIdleCallback` 执行 `insertScriptToIframe`
-- 主动插入队列：会在空闲时间 `requestIdleCallback` 执行指定的函数
-- 由于执行队列需要先提取队列，所以无论是宏任务还是微任务，都会是在任务方法执行过程中提取下一个队列再执行
+- 除最后返回的 `promise` 之外，所有的队列将包裹在宏任务 `requestIdleCallback` 中执行
+- 但是每个队列的执行，必须是在上一个队列结束后通过 `shift` 提取并执行
+
+无论队列中执行的是上下文，还是微任务，亦或者是宏任务，最终都需要按照队列顺序来
 
 > 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
 
-通过返回的 `Promise` 添加到末尾的队列：
+只有 1 种情况可以无视队列顺序：
 
-- 只做一件事：执行 `resolve`，以便通知外部 `start` 完成
+- `asyncScriptResultList`：子应用中异步加载的 `script`
+
+而最后返回的 `promise` 也只做 1 件事：
+
+- 执行 `resolve` 通知外部 `start` 完成
 
 #### 3. 队列执行顺序
 
