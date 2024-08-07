@@ -1028,7 +1028,7 @@
 - `domContentLoadedTrigger`：触发 `DOMContentLoaded` 事件
 - `afterScriptResultList`：插入代码后插件添加的 `script`
 - `domLoadedTrigger`：触发 `loaded` 事件
-- 返回 `promise`：所有的 `execQueue` 队列执行完毕，`start` 才会在最后 `resolve`
+- 返回 `Promise`：所有的 `execQueue` 队列执行完毕，`start` 才会在最后 `resolve`
 
 **有 1 处存在即执行：**
 
@@ -1038,7 +1038,7 @@
 
 **必须会添加到队列有 4 处：**
 
-- `this.mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回 `promise`
+- `this.mount`、`domContentLoadedTrigger`、`domLoadedTrigger`、返回的 `Promise` 对象
 
 **根据集合添加到队列有 3 处：**
 
