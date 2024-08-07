@@ -923,6 +923,44 @@
 - 在实例构造时通过 `patchIframeVariable` 将其注入 `iframeWindow` [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - `shadowRoot` 仅限默认状态下激活时才提供，降级状态下不存在
 
+在子应用中获取跟节点：
+
+| 分类            | `iframe` 容器                  | `shadowRoot` 容器              |
+| --------------- | ------------------------------ | ------------------------------ |
+| `shadowRoot`    | 不存在                         | `window.$wujie.shadowRoot`     |
+| 容器根节点      | `window.__WUJIE.document`      | `window.__WUJIE.shadowRoot`    |
+| 沙箱 `document` | `Node.prototype.ownerDocument` | `Node.prototype.ownerDocument` |
+
+在子应用中 `document` 一定是沙箱 `iframe.contentDocument`，因为：
+
+- 子应用所有的 `script` 都运行在沙箱 `iframe`
+
+而在子应用中 `document` 的指定的 `property` 则会指向 `proxyDocument`，因为：
+
+- 沙箱 `iframe` 初始化时通过 `patchDocumentEffect` 劫持了 `iframeWindow.Document.prototype` 属性 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- 劫持的属性会在 `get` 时指向 `proxyDocument` [[查看](#wujie-中的代理)]
+
+> 而 `proxyDocument` 只有获取 `script` 指向沙箱 `iframe.contentWindow`，其余全部指向容器，比如 `iframe` 容器的 `document`，或是 `shadowRoot`
+
+为此，沙箱 `iframe` 初始化时保留了沙箱 `document` 4 个原始方法：
+
+- 通过 `initIframeDom` 绑定在 `iframe.contentWindow` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+
+此外 `document` 下的 `head`、`body` 也会通过 `patchDocumentEffect` 劫持 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+
+- `head` 指向容器的 `head`，`body` 指向容器的 `body`
+
+而容器的 `head` 和 `body` 又通过 `patchRenderEffect` 重写了指定的操作 [[查看](#patchrendereffect-为容器打补丁)]
+
+- 通过 `head` 或 `body` 插入 `Dom` 时，会根据元素类型自动分配插入沙箱 `iframe` 还是容器
+
+为了方便拿到 `head` 和 `body`
+
+- `shadowRoot` 容器：通过实例 `shadowRoot['head'|'body']` 获取
+- `iframe` 容器：通过实例 `sandbox['head'|'body']` 获取
+
+> 子应用中也可以直接从 `document['head'|'body']` 获取
+
 #### 6. 激活应用的 `bug`
 
 启动应用不提供 `el` 容器
