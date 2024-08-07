@@ -1068,14 +1068,24 @@
 - 共同点：集合中的每一个方法都返回 `promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
+**插入队列 `execQueue` 的动作全部都是上下文：**
+
+- 在阅读执行队列前需要说明的是，所有队列都是在上下文中 `push`
+- 即便是最后返回的 `promise`，也是在 `promise` 方法中同步插入执行的队列
+
 #### 2. 执行队列
 
 无论怎么添加队列，最终都是通过 `this.execQueue.shift()()` 从头部弹出插入队列的方法并执行
 
 开始执行：
 
-- 执行队列从 334 行开始，按照上下文主动提取并发起执行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]
-- `asyncScriptResultList`：异步代码不加入队列，会以 `promise` 微任务的形式在当前上下文执行完毕后依次执行
+- 执行队列从 334 行开始，按照上下文主动提取并发起执行，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]
+- `asyncScriptResultList` 不加入队列，会以 `promise` 微任务的形式在当前上下文执行完毕后依次执行
+
+需要说明的是：
+
+- 开始提取并执行 `execQueue` 是在返回的 `promise` 之前，而它们又是上下文关系
+- 所以队列开始时，最后返回的 `Promise` 还没有将最后要执行的队列插入 `execQueue`
 
 循环插入队列共有 3 处：
 
@@ -1110,19 +1120,23 @@
 
 队列有 3 处微任务：
 
-- `syncScriptResultList` + `deferScriptResultList`：同步代码
 - `asyncScriptResultList`：异步代码
+- `syncScriptResultList` + `deferScriptResultList`：同步代码
 - 返回的 `promise` 对象
+
+> 只有异步代码是立即添加微任务，其他按照 `execQueue` 队列顺序等待提取并执行
 
 > 返回的 `promise` 对象用于 `start` 外部通知执行完毕，而 `promise` 的函数是同步的，用于将 `resolve` 插入 `execQueue` 队列中，等待最后提取并执行
 
-`fiber` 没有关闭的情况下有 7 处宏任务
+`fiber` 没有关闭的情况下有 7 处宏任务：
 
 - 除了通过返回的 `promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
 
+> 执行的顺序按照 `execQueue` 队列先后顺序执行
+
 执行顺序如下：
 
-1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行，注 ①
+1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行
 2. 334 行开始执行第一个队列 `this.execQueue.shift()()`
 3. 执行 `beforeScriptResultList`，如果存在的话
 4. 执行 `syncScriptResultList` + `deferScriptResultList`，如果存在的话
@@ -1131,15 +1145,19 @@
 7. 执行 `domLoadedTrigger`
 8. 执行返回的 `promise` 对象中添加的末尾的队列
 
-> 注 ①：`fiber` 模式下 `asyncScriptResultList` 执行顺序如下
->
-> - 如果 `beforeScriptResultList` 存在，会在集合的宏任务之前执行，如果不存在继续往下
-> - 如果 `syncScriptResultList` + `deferScriptResultList` 存在，会在集合的微任务之前执行，如果不存在继续往下
-> - 如果以上都不存在，会在 `mount` 之前执行
->   - 因为 `fiber` 模式下 `mount` 是放在 `requestIdleCallback` 中作为下一个宏任务中
->   - 而 `mount` 是必须插入队列的方法，所以要执行 `mount` 方法以及后续队列，一定要执行下一个宏任务
->   - 要执行下一个宏任务一定要先执行当前宏任务中的 `asyncScriptResultList` 微任务集合
->
+`fiber` 模式下 `asyncScriptResultList` 执行顺序：
+
+- 会在第一个队列被提取并执行之后，返回并插入的微任务或宏任务之前执行
+- 因为 `shift` 出来的队列方法本身是同步的，而返回的是一个微任务或宏任务
+- 无论是添加的是哪种任务，都会先将 `asyncScriptResultList` 执行完毕后再继续
+
+非 `fiber` 模式下 `asyncScriptResultList` 执行顺序：
+
+- 看注入沙箱 `iframe` 中的 `script` 是否有外联 `script`
+- 因为非 `fiber` 下无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
+- 只有通过 `src` 加载的 `script` 会通过 `onload` 回调执行 `execQueue.shift()()`
+- 而 `onload` 是宏任务，执行前会优先执行当前任务中所有的微任务，包括 `asyncScriptResultList`
+
 > 非 `fiber` 模式下，通过 `beforeScriptResultList` 循环插入队列集合，带有 `src` 的外联 `script`：
 >
 > - 虽然宏任务 `requestIdleCallback` 不存在
