@@ -987,7 +987,7 @@
 
 `WUJIE_APP_ID` 定义都来自 `active` 激活应用时创建容器：
 
-- `createIframeContainer`：创建 `iframe` 容器
+- `createIframeContainer`：创建 `iframe` 容器 [[查看](#创建-iframe-容器)]
 - `createWujieWebComponent`：创建 `shadowRoot` 容器
 
 #### 📝 `start` 启动应用
