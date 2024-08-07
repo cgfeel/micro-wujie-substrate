@@ -1044,13 +1044,13 @@
 
 - `beforeScriptResultList`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
 - `afterScriptResultList`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-after-loader)]
-- `syncScriptResultList` + `deferScriptResultList`：根据参数 `getExternalScripts` 提取子应用的 `script`
+- `syncScriptResultList` + `deferScriptResultList`：提取子应用的 `script`
 
 > `beforeScriptResultList` 和 `afterScriptResultList` 下标类型文档介绍有限，建议查看源码类型 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)]
 
 **提取子应用的 `script`：**
 
-通过 `getExternalScripts` 得到 `scriptResultList`，详细见：`importHTML` [[查看](#importhtml)]
+通过 `getExternalScripts` 得到 `scriptResultList`，详细见：`importHTML` [[查看](#importhtml-加载资源)]
 
 声明 3 个集合：
 
