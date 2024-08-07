@@ -1091,12 +1091,12 @@
 
 如果没有主动配置 `fiber` 为 `false` 的情况下：
 
-- 除最后返回的 `promise` 之外，所有的队列将包裹在宏任务 `requestIdleCallback` 中执行
+- 除最后返回的 `promise` 之外，所有的队列将包裹在宏任务 `requestIdleCallback` 中空闲执行
 - 但是每个队列的执行，必须是在上一个队列结束后通过 `shift` 提取并执行
 
 无论队列中执行的是上下文，还是微任务，亦或者是宏任务，最终都需要按照队列顺序来
 
-> 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁 `this.iframe`
+> 在 `Wujie` 实例中通过 `this.requestIdleCallback` 执行空闲加载，它和 `requestIdleCallback` 的区别在于，每次执行前先判断实例是否已销毁沙箱 `iframe`
 
 只有 1 种情况可以无视队列顺序：
 
