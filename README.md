@@ -1122,20 +1122,20 @@
 
 - `asyncScriptResultList`：异步代码
 - `syncScriptResultList` + `deferScriptResultList`：同步代码
-- 返回的 `promise` 对象
+- 返回的 `Promise` 对象
 
 > 只有异步代码是立即添加微任务，其他按照 `execQueue` 队列顺序等待提取并执行
 
 `fiber` 没有关闭的情况下有 7 处宏任务：
 
-- 除了通过返回的 `promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
+- 除了通过返回的 `Promise` 插入末尾的队列，都会通过 `requestIdleCallback` 插入宏任务
 
 > 执行的顺序按照 `execQueue` 队列先后顺序执行
 
 执行顺序如下：
 
-1. `asyncScriptResultList` 遍历异步代码，添加微任务等待执行
-2. 334 行开始执行第一个队列 `this.execQueue.shift()()`
+1. `asyncScriptResultList` 遍历异步代码，将微任务放入微队列等待执行
+2. 334 行开始提取第 1 个队列并执行 `this.execQueue.shift()()`
 3. 执行 `beforeScriptResultList`，如果存在的话
 4. 执行 `syncScriptResultList` + `deferScriptResultList`，如果存在的话
 5. 依次执行 `mount`、`domContentLoadedTrigger`
