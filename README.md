@@ -1551,13 +1551,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 手动 `destroy` 注销应用 [[查看](#-destroy-销毁实例)]
 - 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
 
-> 这 2 个场景执行方式参考容器注销 `unmount` 执行流程
+> 这 2 个场景执行方式参考：容器注销 `unmount` 执行流程
 
 关于 `onunload`：
 
 - 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
 - 不巧的是这个事件随时可能会被浏览器删除
-- 监听 `popstate` 后退，根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
+- 监听 `popstate` 后退，会根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
 劫持容器不触发 `unmount`：
 
