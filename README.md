@@ -1491,7 +1491,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 1. 卸载应用 - 所有模式
 
 - `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- 清理路由，见 `clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
+- 清理路由，见：`clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
 
 #### 2. 卸载 `alive` 模式的应用
 
@@ -1522,6 +1522,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
 - 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
+
+不同模式卸载应用场景：
+
+| 模式                      | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
+| ------------------------- | --------------------- | ------ | ------ | ------ |
+| `alive`                   | 仅限手动 `destory`    | 执行   | 执行   | 不执行 |
+| `umd` 切换应用            | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
+| `umd` 预执行后 `startApp` | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
+| `umd` 预加载后 `startApp` | 自动 `destroy`        | 执行   | 不执行 | 执行   |
+| 重建模式                  | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
+
+> 流程 1、2、3 分别对应上述归纳 3 类流程
 
 #### 4. 容器在哪清除
 
