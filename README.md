@@ -1604,7 +1604,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `alive` 模式，不会自动清除容器，重新激活应用时也不需要再次注入资源
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源 [[查看](#3-卸载-umd-模式的应用)]
-- 重建模式，每次切换应用 `alive` 前都会 `destory` 后重建
+- 重建模式，每次切换应用 `active` 前都会 `destory` 后重建
 
 预加载，容器怎么处理：
 
