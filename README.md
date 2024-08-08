@@ -1481,6 +1481,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 不巧的是这个事件随时可能会被浏览器删除
 - 监听 `popstate` 后退，根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
+劫持容器：
+
+- 通过 `locationHrefSet` 发起的劫持容器是唯一不需要处理卸载的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
+- 劫持容器会随 `Dom` 渲染来决定是否从 `Dom tree` 中删除
+
 卸载流程分为 3 部分：
 
 #### 1. 卸载应用 - 所有模式
