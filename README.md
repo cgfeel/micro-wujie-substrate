@@ -1506,7 +1506,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
 - 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
 
-#### 触发场景
+#### 4. 触发场景
 
 容器注销会触发应用 `umount`：
 
@@ -1562,7 +1562,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `locationHrefSet` 发起的劫持容器是唯一不需要处理卸载的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 劫持容器会随 `Dom` 渲染来决定是否从 `Dom tree` 中删除
 
-#### 4. 容器在哪清除
+#### 5. 容器在哪清除
 
 **沙箱 `iframe`**
 
