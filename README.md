@@ -1636,9 +1636,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `degrade` 由实例构造时决定：
 
 - `alive` 预加载时决定 `degrade`
-- `umd` 预加载不预执行，首次 `startApp` 销毁实例
-- `umd` 预执行将保留预加载时的实例
-- 重建模式每次都会 `destroy` 实例
+- `umd` 预加载不预执行，`startApp` 后销毁实例，然后使用新的配置重建
+- `umd` 预执行将保留预加载时的实例，包括 `degrade`
+- 重建模式每次都会 `destroy` 实例，然后使用新的配置重建
 
 这样实例以上面的规则决定最终会采用什么容器，从而保证了从 `preloadApp` 到 `startApp` 渲染容器一致性。因此这些容器该怎么注销、怎么清空请参考上述总结。
 
