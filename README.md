@@ -1194,7 +1194,8 @@
 
 问题 1：
 
-- 如果 `execQueue` 除了最后返回的 `Promise` 对象之外，没有微任务也没有宏任务，那么返回的 `Promise` 内部方法中插入 `execQueue` 末尾的队列永远无法执行
+- 如果 `execQueue` 除了最后返回的 `Promise` 对象之外，没有微任务也没有宏任务，
+- 那么返回的 `Promise` 内部方法中插入 `execQueue` 末尾的队列永远无法执行
 
 原因：
 
@@ -1204,7 +1205,8 @@
 
 问题 2：
 
-- 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`，将导致无法提取执行下一个队列，造成流程中断后面的 `script` 将不能插入沙箱 `iframe`
+- 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`
+- 将导致无法提取执行下一个队列，造成流程中断后面的 `script` 将不能插入沙箱 `iframe`
 
 原因：
 
@@ -1275,7 +1277,7 @@
 - 点开 `static` 应用，打开调试面板，刷新页面什么都没返回
 - 点开 `react` 应用，返回 `destroy` 方法
 
-复现问题 2：存在 `async` 的 `script`
+复现问题 1：存在 `async` 的 `script`
 
 - 原理和问题 1 一样，子应用中添加路由 `/async`，在页面中添加一段 `async` 属性的 `script` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/async/index.html)]
 - 在基座中添加相应的组件 `AsyncPage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/AsyncPage.tsx)]
@@ -1285,7 +1287,7 @@
 - 和问题 1 一样，子应用中 `script` 的 `async` 会通过异步集合 `asyncScriptResultList` 添加到沙箱 `iframe` 中
 - `asyncScriptResultList` 不会影响 `execQueue`
 
-复现问题 3：`jsBeforeLoaders` 打断应用加载
+复现问题 2：`jsBeforeLoaders` 打断应用加载
 
 - 复现前确保 `react` 应用正常，复制一份 `ReactPage.tsx` 作为 `BeforePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/BeforePage.tsx)]
 - 添加 `jsBeforeLoaders`：要求带有 `src` 和 `async`
@@ -1294,7 +1296,7 @@
 
 - `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
 
-修复问题 1、问题 2：
+修复问题 1：
 
 - 源码 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第 1 个执行队列 `this.execQueue.shift()();` 前主动添加一个微任务
 - 这样确保最后一个队列提取一定是在微任务下执行，而返回的 `Promise` 函数内部属于上下文
@@ -1308,13 +1310,13 @@ this.execQueue.push(() => Promise.resolve().then(
 this.execQueue.shift()();
 ```
 
-问题 3 的设计初衷：
+问题 2 的设计初衷：
 
 - 因为异步代码 `asyncScriptResultList` 它本身和 `execQueue` 队列集合是没有关系的
 - 但异步代码也是执行 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe` 中
 - 如果异步代码也去调用 `execQueue.shift()()`，那么就会造成队列执行顺序错乱了
 
-修复问题 3：
+修复问题 2：
 
 - 遍历 `beforeScriptResultList` 和 `afterScriptResultList` 时去掉 `script` 的 `async`，如下：
 
