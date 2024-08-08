@@ -1531,7 +1531,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `umd` 切换应用            | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
 | `umd` 预执行后 `startApp` | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
 | `umd` 预加载后 `startApp` | 自动 `destroy`        | 执行   | 不执行 | 执行   |
-| 重建模式                  | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
+| 重建模式存在实例          | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
+| 重建模式初始实例          | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 
 > 流程 1、2、3 分别对应上述归纳 3 类流程
 
