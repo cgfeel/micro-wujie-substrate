@@ -1355,10 +1355,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 >
 > 一道思考题：子应用中所有带有 `src` 的外联 `script` 在 `wujie` 中会怎么处理
 >
-> 1. 通过 `importHTML` 将将子应用整个资源分类：`template`、`assetPublicPath`、`script`、`css` [[查看](#importhtml-加载资源)]
-> 2. 通过 `processTpl` 将 `script` 分类配置：`scr`、`async`、`defer`、`content` 等 [[查看](#processtpl-提取资源)]
-> 3. 通过 `getExternalScripts` 遍历 `script` 集合
-> 4. 为每项 `script` 增加一个类型为 `promise` 的属性 `contentPromise`，详细见：`importHTML` 加载资源 - 4.1. `getExternalScripts` [[查看](#importhtml-加载资源)]
+> 1. 通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
+> 2. 通过 `processTpl` 将替换资源拿到：`template`，和两个集合 `scripts`、`styles` [[查看](#processtpl-提取资源)]
+>    - 集合的类型为 `ScriptObject`、`StyleObject`，包含的属性见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L29)]
+> 3. 结合提取的资源，返回：`template`、`assetPublicPath`、`getExternalScripts`、`getExternalStyleSheets`
+> 4. 通过 `getExternalScripts` 遍历 `script` 集合，为集合中每一项增加一个类型为 `Promise` 的属性 `contentPromise`，见：`importHTML` 加载资源 - `getExternalScripts` [[查看](#importhtml-加载资源)]
+> 5. `start` 应用时调用 `getExternalScripts`，根据集合每项 `script` 信息分配到同步代码或异步代码
+> 6. 同步代码或异步代码通过微任务加载 `script`，并通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 >
 > 因此：
 >
