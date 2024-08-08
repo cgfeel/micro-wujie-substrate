@@ -1372,14 +1372,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 关闭加载状态：
 
 - 在第一次提取队列 `this.execQueue.shift()?.()` 之前，会通过 `removeLoading` 关闭 `loading` 状态
+- 关于加载状态的添加和删除，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 
-> 在 `wujie` 中可以通过 `loading` 自定义一个加载元素，见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+删除条件：
 
-执行条件：
+- 没有提供 `__WUJIE_UNMOUNT` 的所有模式
+- 因为 `start` 不能像 `active` 那样判断当前应用是初次加载还是切换应用
+- 而 `umd` 模式会在 `mount` 时删除 `loading` 所以这里只排除了 `umd` 切换应用
 
-- 没有提供 `__WUJIE_UNMOUNT` 的 `umd` 模式，或非 `umd` 模式
-
-> 这里虽然提供了 `this.alive` 模式作为检测，但是同时也增加了 `!isFunction(this.iframe.contentWindow.__WUJIE_UNMOUNT)` 判断，只要不是 `umd` 方式卸载应用，都会执行关闭 `loading` 状态
+> `umd` 首次加载是没有挂载 `mount` 方法的，所以流程和重建模式初次加载是一样的
 
 #### 6. 必须添加队列的 4 个方法
 
