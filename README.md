@@ -1296,7 +1296,7 @@
 
 修复问题 1、问题 2：
 
-- 在 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第一个执行队列入口 `this.execQueue.shift()();` 之前主动添加一个微任务
+- 源码 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第 1 个执行队列 `this.execQueue.shift()();` 前主动添加一个微任务
 - 这样确保最后一个队列提取一定是在微任务下执行，而当前上下文一定会在最后一个微任务之前插入队列
 - 这样确保了队列最后能够顺利 `resolve`
 
