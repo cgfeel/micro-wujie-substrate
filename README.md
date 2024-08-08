@@ -1432,7 +1432,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载
 
-> 删除 `loading` 存在重复执行的情况，见：队列前的准备 - 关闭加载状态 [[查看](##5-队列前的准备)]
+> 删除 `loading` 存在重复执行的情况，见：队列前的准备 - 关闭加载状态 [[查看](#5-队列前的准备)]
 
 `fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
 
