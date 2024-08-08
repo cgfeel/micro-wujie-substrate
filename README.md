@@ -1390,12 +1390,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **2. 触发 `DOMContentLoaded` 事件**
 
-- 创建一个 `DOMContentLoaded` 自定义事件，分别由 `iframeWindow.document` 和 `iframeWindow` 触发
+- 创建 `DOMContentLoaded` 自定义事件，分别由沙箱 `iframeWindow.document` 和 `iframeWindow` 触发
 
 **3. 触发 `loaded` 事件**
 
-- 自定义事件 `readystatechange`，由 `iframeWindow.document` 触发
-- 自定义事件 `load`，由 `iframeWindow` 触发
+- 自定义事件 `readystatechange`，由沙箱 `iframeWindow.document` 触发
+- 自定义事件 `load`，由沙箱 `iframeWindow` 触发
 
 **4. 返回 `Promise`**
 
