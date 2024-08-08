@@ -1467,31 +1467,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `unmount` 卸载应用
 
-触发场景：
-
-- `umd` 模式切换应用前先执行 `unmount`
-- `iframe` 容器中子应用 `onunload`，例如：切换应用
-- `web component` 组件卸载时 `disconnectedCallback`
-- `destroy` 注销应用
-- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
-
-关于 `onunload`：
-
-- 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
-- 不巧的是这个事件随时可能会被浏览器删除
-- 监听 `popstate` 后退，根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
-
-劫持容器：
-
-- 通过 `locationHrefSet` 发起的劫持容器是唯一不需要处理卸载的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
-- 劫持容器会随 `Dom` 渲染来决定是否从 `Dom tree` 中删除
-
 卸载流程分为 3 部分：
 
 #### 1. 卸载应用 - 所有模式
 
 - `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 清理路由，见：`clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
+
+> 重建模式在卸载应用时，虽然只做了这一个步骤，但是每次 `startApp` 时会将整个实例都销毁 `destroy` [[查看](#-destroy-销毁实例)]
 
 #### 2. 卸载 `alive` 模式的应用
 
@@ -1523,18 +1506,61 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
 - 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
 
-不同模式卸载应用场景：
+#### 触发场景
 
-| 模式                      | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
-| ------------------------- | --------------------- | ------ | ------ | ------ |
-| `alive`                   | 仅限手动 `destory`    | 执行   | 执行   | 不执行 |
-| `umd` 切换应用            | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
-| `umd` 预执行后 `startApp` | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
-| `umd` 预加载后 `startApp` | 自动 `destroy`        | 执行   | 不执行 | 执行   |
-| 重建模式存在实例          | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
-| 重建模式初始实例          | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
+容器注销会触发应用 `umount`：
+
+| 模式     | 卸载场景 | 流程 1 | 流程 2 | 流程 3 |
+| -------- | -------- | ------ | ------ | ------ |
+| `alive`  | 容器注销 | 执行   | 执行   | 不执行 |
+| `umd`    | 容器注销 | 执行   | 不执行 | 执行   |
+| 重建模式 | 容器注销 | 执行   | 不执行 | 不执行 |
 
 > 流程 1、2、3 分别对应上述归纳 3 类流程
+
+容器注销触发的方式：
+
+- `iframe` 容器：`onunload`
+- `shadowRoot` 容器：`disconnectedCallback`
+
+`alive` 模式 `unmount` 时只做了 3 件事：
+
+- 标记 `activeFlag`、清理路由、触发声明周期事件
+- 不清理容器，也不注销应用，下次切换回应用时也不需要重复加载资源
+
+`startApp` 触发应用 `umount`：
+
+| 模式               | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
+| ------------------ | --------------------- | ------ | ------ | ------ |
+| `umd` 切换应用     | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
+| `umd` 预执行后启动 | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
+| `umd` 预加载后启动 | 自动 `destroy`        | 执行   | 不执行 | 执行   |
+| 重建模式存在实例   | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
+| 重建模式初始实例   | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
+| `alive`            | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
+
+以下模式会执行 2 次 `umount`：
+
+- `umd` 模式：容器注销 1 次，`startApp` 启动 1 次
+- 重建模式：容器注销 1 次，`startApp` 启动通过 `destory` 彻底销毁 1 次
+
+其他触发应用 `umount` 的场景：
+
+- 手动 `destroy` 注销应用 [[查看](#-destroy-销毁实例)]
+- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
+
+> 这 2 个场景执行方式参考容器注销 `unmount` 执行流程
+
+关于 `onunload`：
+
+- 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
+- 不巧的是这个事件随时可能会被浏览器删除
+- 监听 `popstate` 后退，根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
+
+劫持容器不触发 `unmount`：
+
+- 通过 `locationHrefSet` 发起的劫持容器是唯一不需要处理卸载的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
+- 劫持容器会随 `Dom` 渲染来决定是否从 `Dom tree` 中删除
 
 #### 4. 容器在哪清除
 
