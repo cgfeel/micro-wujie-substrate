@@ -1434,8 +1434,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
 
-- 从入口 `script` 同步代码后，无论是同步还是异步绑定 `__WUJIE_MOUNT`
-- 都会在 `mount` 挂载应用前优先绑定到沙箱 `window`
+- 注入 `script` 后，无论是同步还是异步绑定 `__WUJIE_MOUNT`，都会在 `mount` 前优先绑定到沙箱 `window`
 - 因为 `fiber` 模式下 `mount` 包裹在宏任务 `requestIdleCallback` 中
 
 非 `fiber` 模式下，同步上下文绑定 `__WUJIE_MOUNT`：
