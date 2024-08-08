@@ -4134,6 +4134,45 @@ window.onfocus = () => {
 | 配置重写 `fetch`                                 | 相对路径将通过 `proxyLocation` 来补全                                              | 相对路径将通过 `proxyLocation` 来补全 |
 | 其他属性                                         | 从沙箱 `location` 中取                                                             | 从沙箱 `location` 中取                |
 
+### 辅助方法 - 重写子应用动态注入 `Dom`
+
+#### `handleStylesheetElementPatch`：为应用中动态样式打补丁
+
+目录：`effect.ts` - `handleStylesheetElementPatch` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L64)]
+
+参数：
+
+- `stylesheetElement`：样式 `html` 元素，带有属性 `_patcher` 用于存放宏任务
+- `sandbox`：应用实例
+
+不处理的情况：
+
+- `style` 元素不存在属性 `innerHTML`
+- 应用实例采用主动降级渲染，不存在 `shadowRoot`
+
+用途：
+
+- 和 `WuJie` 类中的 `patchCssRules` 是一样的 [[查看](#-patchcssrules-子应用样式打补丁)]
+
+> 包括为什么要这么做，都请参考 `patchCssRules`
+
+不同之处：
+
+- `patchCssRules`：根据收集样式集合 `styleSheetElements` 来为样式打补丁 [[查看](#2-stylesheetelements-收集样式表)]
+- `handleStylesheetElementPatch`：通过 `patchRenderEffect` 重写注入方法，只提供对应用中动态添加的样式打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+
+流程：
+
+- 定义打补丁函数 `patcher`，计划作为宏任务中执行的方法
+- 若元素存在 `_patcher` 属性，通过 `clearTimeout` 取消绑定的宏任务避免重复执行
+- 通过 `setTimeout` 将宏任务绑定在元素的 `_patcher` 属性上
+
+`patcher` 做了什么：
+
+- 通过 `getPatchStyleElements` 从提供的样式元素中提取指定的样式
+- 若返回 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
+- 若返回 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
+
 ### 辅助方法 - 实用工具
 
 #### `isConstructable`：判断函数是否可以 `new`
