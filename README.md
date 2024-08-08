@@ -1240,7 +1240,7 @@
 | 模式                                                              | 原因                                                                                                          |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | 模式 ③：`beforeScriptResultList` 集合带有 `async` 属性的 `script` | 不会执行 `nextScriptElement` 从而导致后续队列无法执行                                                         |
-| 模式 ④：`afterScriptResultList` 集合带有 `async` 属性的 `script`  | 和模式 ③ 一样，区别在于只中指了 `domLoadedTrigger`、返回的 `Promise` 对象，以及 `async` 中等待 `start` 的方法 |
+| 模式 ④：`afterScriptResultList` 集合带有 `async` 属性的 `script`  | 和模式 ③ 一样，区别在于只终止了 `domLoadedTrigger`、返回的 `Promise` 对象，以及 `async` 中等待 `start` 的方法 |
 
 `fiber` 模式下在模式 ①、模式 ② 情况下都是正常的：
 
