@@ -1244,8 +1244,8 @@
 
 `fiber` 模式下在模式 ①、模式 ② 情况下都是正常的：
 
-- 没有特殊声明默认为 `fiber`，要执行下一个队列就要通过宏任务 `requestIdleCallback`
-- 返回的 `Promise` 函数内部在当前任务属于上下文，优先于下一个宏任务添加到队列
+- 没有特殊声明默认为 `fiber`，除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
+- 而返回的 `Promise` 函数内部在当前任务属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
 
 所有模式下同步代码会正常执行：
 
