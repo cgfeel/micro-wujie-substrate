@@ -4134,7 +4134,7 @@ window.onfocus = () => {
 | 配置重写 `fetch`                                 | 相对路径将通过 `proxyLocation` 来补全                                              | 相对路径将通过 `proxyLocation` 来补全 |
 | 其他属性                                         | 从沙箱 `location` 中取                                                             | 从沙箱 `location` 中取                |
 
-### 辅助方法 - 重写子应用动态注入 `Dom`
+### 辅助方法 - 重写应用动态注入 `DOM`
 
 #### `handleStylesheetElementPatch`：为应用中动态样式打补丁
 
