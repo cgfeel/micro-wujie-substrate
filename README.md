@@ -4176,7 +4176,7 @@ window.onfocus = () => {
 
 从 `Dom` 中动态添加样式有 2 处，都来自 `rewriteAppendOrInsertChild`：
 
-- 添加外联的样式，下载后作为内联放入容器后打补丁
+- 添加外联的样式，下载后作为内联样式放入容器后打补丁
 - 添加内联的样式，打补丁之前还需通过 `patchStylesheetElement` 拦截样式元素相关操作
 
 通过 `patchStylesheetElement` 拦截样式操作有 4 处：
