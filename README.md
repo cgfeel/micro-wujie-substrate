@@ -4172,6 +4172,7 @@ window.onfocus = () => {
 - 通过 `getPatchStyleElements` 从提供的样式元素中提取指定的样式
 - 若返回 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
 - 若返回 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
+- 将属性 `_patcher` 设为 `undefined`，允许后续继续操作
 
 从 `Dom` 中动态添加样式有 2 处，都来自 `rewriteAppendOrInsertChild`：
 
