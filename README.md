@@ -1484,7 +1484,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 准备卸载 `umd` 模式子应用，要求：
 
-- `mountFlag` 可执行，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- `mountFlag` 状态已挂载，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 子应用中存在 `__WUJIE_UNMOUNT`
 - 不是 `alive` 模式并且不是 `hrefFlag` 劫持容器，见：特殊属性 [[查看](#2-特殊属性)]
 
@@ -1493,7 +1493,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用沙箱 `iframeWindow` 触发生命周期 `beforeUnmount`
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
 - 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
-- `mountFlag` 失活
+- `mountFlag` 标记为未挂载
 - `this.bus.$clear`：清空子应用所有监听的事件，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
 非 `degrade` 主动降级 `umd` 模式补充操作：
