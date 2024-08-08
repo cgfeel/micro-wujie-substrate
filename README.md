@@ -1640,7 +1640,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `umd` 预执行将保留预加载时的实例，包括 `degrade`
 - 重建模式每次都会 `destroy` 实例，然后使用新的配置重建
 
-这样实例按照上面的规则决定最终会采用什么容器，从而保证了从 `preloadApp` 到 `startApp` 渲染容器一致性。因此这些容器该怎么注销、怎么清空请参考上述总结。
+这样实例按照上面的规则决定最终会采用什么容器，从而保证能够正常加载渲染容器。这些容器该怎么注销、怎么清空请参考上述总结。
 
 #### 📝 `patchCssRules` 子应用样式打补丁
 
