@@ -1242,12 +1242,12 @@
 | 模式 ③：`beforeScriptResultList` 集合带有 `async` 属性的 `script` | 不会执行 `nextScriptElement` 从而导致后续队列无法执行                                                         |
 | 模式 ④：`afterScriptResultList` 集合带有 `async` 属性的 `script`  | 和模式 ③ 一样，区别在于只终止了 `domLoadedTrigger`、返回的 `Promise` 对象，以及 `async` 中等待 `start` 的方法 |
 
-`fiber` 模式下在模式 ①、模式 ② 情况下都是正常的：
+`fiber` 下在模式 ①、② 都是正常执行：
 
 - 没有特殊声明默认为 `fiber`，除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
 - 而返回的 `Promise` 函数内部在当前任务属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
 
-所有模式下存在子应用同步代码会正常执行：
+存在子应用同步代码会正常执行模式 ①、②：
 
 - 同步代码和异步代码指的是子应用的静态 `script`，例如：入口文件
 - 同步代码是一个微任务集合，执行微任务前，返回的 `Promise` 内部函数已 `push` 最后队列
@@ -1256,6 +1256,7 @@
 所有模式下异步代码会正常执行：
 
 - 异步代码通过遍历执行 `Promise` 队列，不受 `execQueue` 影响
+- 但异步代码执行完毕并不能说明应用启动成功了
 
 非 `fiber` 模式手动插入带有 `src` 属性且 `content` 为空的 `script`，不存在属性 `async` 可正常执行：
 
