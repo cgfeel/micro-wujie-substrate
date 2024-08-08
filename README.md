@@ -1384,7 +1384,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 这里会重复执行：
 
 - 第 1 遍：`umd` 模式 `start` 时，在执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
-- 第 2 遍：将应用入口 `script` 注入沙箱后，沙箱 `window` 则绑定了 `__WUJIE_MOUNT`
+- 第 2 遍：将应用入口 `script` 注入沙箱后，`mount` 时沙箱 `window` 已绑定 `__WUJIE_MOUNT`
 
 > 这样只能导致重复执行，不会出现使用上的问题
 
