@@ -1469,19 +1469,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 触发场景：
 
-- `startApp` 切换 `umd` 模式的应用前先卸载
-- `iframe` 降级处理子应用 `onunload`，例如：子应用跳转第三方页面
+- `umd` 模式切换应用前先执行 `unmount`
+- `iframe` 容器中子应用 `onunload`，例如：切换应用
+- `web component` 组件卸载时 `disconnectedCallback`
 - `destroy` 注销应用
-- `web component` 组件从 `Dom` 中卸载
-- 浏览器前进后退触发子应用 `iframe` 降级容器 `onunload`
+- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
 
-`unmount` 是存在重复触发的可能的，例如：
+关于 `onunload`
 
-- 路由切换导致 `web component` 从 `Dom` 中卸载，而应用容器是 `iframe`
-
-重写 `onunload` 事件
-
-- 监听 `popstate` 后退，根据 `hrefFlag` [[查看](#-wujie-实例中关键属性)] 决定是否要重绘 `iframe` 触发 `onunload`
+- 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
+- 不巧的是这个事件随时可能会被浏览器删除
+- 监听 `popstate` 后退，根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
 卸载流程分为 3 部分：
 
