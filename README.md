@@ -1432,6 +1432,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载
 
+> 删除 `loading` 存在重复执行的情况，见：队列前的准备 - 关闭加载状态 [[查看](##5-队列前的准备)]
+
 `fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
 
 - 注入 `script` 后，无论是同步还是异步绑定 `__WUJIE_MOUNT`，都会在 `mount` 前优先绑定到沙箱 `window`
@@ -1454,6 +1456,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 2. `alive` 模式
 
 - 使用 `iframeWindow` 调用生命周期 `activated`
+- 这里存在 `activated` 调用 2 次的情况，见：预加载中的 `bug` [[查看](#6预加载中的-bug)]
 
 #### 3. 执行下一个队列
 
