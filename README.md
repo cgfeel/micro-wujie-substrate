@@ -489,7 +489,7 @@
 
 这里有个问题：
 
-- `getExternalScripts` 是同步函数，不需要 `await`，见：注 ② [[查看](#5-队列前的准备)]
+- `getExternalScripts` 是同步函数，不需要 `await`，见：注 ① [[查看](#5-队列前的准备)]
 - 当没有提供 `exec` 预执行时，会执行这个方法
 - 在预加载中通过 `await` 执行虽然不会报错，但之后 `start` 启动应用时，会重复执行一遍
 
@@ -1334,18 +1334,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 5. 队列前的准备
 
-包含：
-
 - `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示是否启动应用
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
-- `scriptResultList` 提取要执行的 `script`，注 ②
+- `scriptResultList` 提取要执行的 `script`，注 ①
 - `iframeWindow` 提取沙箱的 `window`
-- 为子应用全局注入 `__POWERED_BY_WUJIE__` 用于子应用是基座时，通过 `inject` 向父级获取对象 [[查看](#1-inject-注入子应用-3-个对象)]
+- 为子应用注入 `__POWERED_BY_WUJIE__` 用于子应用是基座时，通过 `inject` 向父级获取对象 [[查看](#1-inject-注入子应用-3-个对象)]
 
-> 注 ②：`scriptResultList`，这是个不影响使用的问题
+> 注 ①：`scriptResultList`，这是个不影响使用的问题
 >
-> - 类型声明 `getExternalScripts` 是 `() => ScriptResultList`，没有 `promise` 是不需要 `await` 的
-> - `getExternalScripts` 返回一个数组集合，集合中包含带有类型为 `promise` 的属性 `contentPromise`，函数本身不是微任务
+> - 类型声明 `getExternalScripts` 是 `() => ScriptResultList`，没有 `Promise` 是不需要 `await` 的
+> - `getExternalScripts` 返回一个数组集合，集合中包含带有类型为 `Promise` 的属性 `contentPromise`，函数本身不是微任务
 > - 返回的集合会根据 `script` 类型分别做同步代码和异步代码处理
 >
 > 由此可以知道：
