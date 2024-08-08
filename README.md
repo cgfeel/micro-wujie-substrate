@@ -1380,9 +1380,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 没有提供 `__WUJIE_UNMOUNT` 的所有模式
 - 因为 `start` 不能像 `active` 那样判断当前应用是初次加载还是切换应用
-- 而 `umd` 模式会在 `mount` 时删除 `loading` 所以这里只排除了 `umd` 切换应用
 
-> `umd` 首次加载是没有挂载 `mount` 方法的，所以流程和重建模式初次加载是一样的
+这里会重复执行：
+
+- 第 1 遍：`umd` 模式 `start` 时，在执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
+- 第 2 遍：将应用入口 `script` 注入沙箱后，沙箱 `window` 则绑定了 `__WUJIE_MOUNT`
+
+> 这样只能导致重复执行，不会出现使用上的问题
 
 #### 6. 必须添加队列的 4 个方法
 
@@ -1421,12 +1425,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 1. `umd` 方式启动
 
-- 如果应用是 `umd` 方式挂载应用时触发
-- 再次关闭挂载容器 `loading` 状态，见：5. 队列前的准备 [[查看](#5-队列前的准备)]
+- 从沙箱 `window` 中检测到 `__WUJIE_MOUNT` 才能执行当前流程
+- 再次关闭挂载节点 `loading` 状态，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 - 使用 `iframeWindow` 调用生命周期 `beforeMount`
-- 调用子应用的 `__WUJIE_MOUNT` 去挂载应用
+- 调用子应用的 `__WUJIE_MOUNT` 去渲染应用
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
-- 设置 `mountFlag` 避免重复挂载，`mountFlag` 会在 `unmount` 和 `destroy` 时更新
+- 设置 `mountFlag` 避免重复挂载
 
 `fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
 
@@ -1442,6 +1446,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `__WUJIE_MOUNT` 无法执行，不展示应用
 - 因为 `mount` 应用时，异步的微任务还没有绑定 `__WUJIE_MOUNT` 到沙箱 `windnow` 上
+- 再次切换应用会恢复正常
 
 解决办法见：`start` 启动应用的 `bug` - 问题 1 [[查看](#4-start-启动应用的-bug)]
 
