@@ -1604,18 +1604,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `alive` 模式，不会自动清除容器，重新激活应用时也不需要再次注入资源
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源 [[查看](#3-卸载-umd-模式的应用)]
-- 重建模式，每次切换应用 `active` 前都会 `destory` 后重建
+- 重建模式，每次切换应用 `active` 前都会 `destory` 后重建实例
 
 预加载，容器怎么处理：
 
 - `alive` 模式：将 `shadowRoot.host` 挂载到指定节点返回，不销毁不清空也不注入资源
-- 其他模式：全部 `destroy` 注销后重新 `active`
+- 其他模式：全部 `destroy` 注销后重新创建实例
 
 预执行，容器怎么处理：
 
 - `alive` 模式：和预加载一样，不销毁不清空也不注入资源
 - `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空 `shadowRoot`
-- 重建模式：全部 `destroy` 注销后重新 `active`
+- 重建模式：全部 `destroy` 注销后重新创建实例
 
 **劫持容器 `iframe`**
 
