@@ -1421,6 +1421,29 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载，`mountFlag` 会在 `unmount` 和 `destroy` 时更新
 
+需要说明的是：
+
+- 除了重建模式外，切换应用永远不会触发 `mount`，挂载应用只能用于 `start` [[查看](#-start-启动应用)]
+
+`fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
+
+- 从入口 `script` 同步代码后，无论是同步还是异步绑定 `__WUJIE_MOUNT`
+- 都会在 `mount` 挂载应用前优先绑定到沙箱 `window`
+- 因为 `fiber` 模式下 `mount` 包裹在宏任务 `requestIdleCallback` 中
+
+非 `fiber` 模式下，同步上下文绑定 `__WUJIE_MOUNT`：
+
+- 执行方式和 `fiber` 模式是一样的，因为他们是上下文关系
+
+非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 导致的 `bug`：
+
+- `__WUJIE_MOUNT` 无法执行，不展示应用
+- 因为 `mount` 应用时，异步的微任务还没有绑定 `__WUJIE_MOUNT` 到沙箱 `windnow` 上
+
+解决办法见：`start` 启动应用的 `bug` - 问题 1 [[查看](#4-start-启动应用的-bug)]
+
+> 从这点再次说明：请谨慎关闭 `fiber`
+
 #### 2. `alive` 模式
 
 - 使用 `iframeWindow` 调用生命周期 `activated`
