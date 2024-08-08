@@ -1419,9 +1419,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `alive` 模式：只有 `execFlag` 还未激活时才会通过 `start` 执行 `mount`
 - `umd` 模式：`mountFlag` 已经挂载的情况
 
-> 除了重建模式外，切换应用永远不会触发 `mount`，挂载应用只能用于 `start` [[查看](#-start-启动应用)]
+切换应用永远不会触发 `mount`：
 
-挂载应用会做 3 件事
+- 除了重建模式外，挂载应用只能通过 `start` [[查看](#-start-启动应用)]
+- 但是 `mount` 时重建模式除了发起下一个队列，不会做任何操作
 
 #### 1. `umd` 方式启动
 
@@ -1461,6 +1462,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 #### 3. 执行下一个队列
 
 - `this.execQueue.shift()?.()`
+- 这是所有模式必须做的流程，也是重建模式在 `mount` 时唯一做的事
 
 #### 📝 `unmount` 卸载应用
 
