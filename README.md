@@ -4173,6 +4173,30 @@ window.onfocus = () => {
 - 若返回 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
 - 若返回 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 
+从 `Dom` 中动态添加样式有 2 处，都来自 `rewriteAppendOrInsertChild`：
+
+- 添加外联的样式，下载后作为内联放入容器后打补丁
+- 添加内联的样式，打补丁之前还需要对通过 `patchStylesheetElement` 对样式打补丁
+
+通过 `patchStylesheetElement` 拦截样式属性，打补丁有 4 处：
+
+- 写入操作：`innerHTML`、`innerText`、`textContent`
+- 重写方法：`appendChild`
+
+`SPA` 应用调用场景：
+
+1. 通过 `active` 将 `template` 注入容器后通过 `patchRenderEffect` 重写注入方法
+2. 通过 `start` 将入口文件添加到沙箱 `iframe`，执行动态渲染
+3. 通过 `rewriteAppendOrInsertChild` 拦截写入操作，根据情况打补丁
+
+> 静态样式的提取通过 `patchCssRules` 打补丁，不会按照动态样式操作
+
+从上面可以知道动态添加样式来源 `start`，因此：
+
+- `alive` 模式：只有首次 `start` 会动态加载样式
+- `umd` 模式：理论上和 `alive` 一样，但是存在 `bug`，见：`patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]
+- 重建模式：每一次加载就是一次动态获取样式
+
 ### 辅助方法 - 实用工具
 
 #### `isConstructable`：判断函数是否可以 `new`
