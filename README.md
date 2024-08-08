@@ -1463,7 +1463,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `this.execQueue.shift()?.()`
 - 这是所有模式必须做的流程，也是重建模式在 `mount` 时唯一做的事
-- 综上所述，`mount` 挂载应用似乎只能用于 `umd` 初次渲染应用，设计的过于鸡肋
+- 综上所述，`mount` 挂载应用似乎只关心 `umd` 初次渲染应用，设计的过于鸡肋
 
 #### 📝 `unmount` 卸载应用
 
@@ -1475,7 +1475,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `destroy` 注销应用
 - 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
 
-关于 `onunload`
+关于 `onunload`：
 
 - 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
 - 不巧的是这个事件随时可能会被浏览器删除
