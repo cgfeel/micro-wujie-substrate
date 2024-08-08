@@ -1494,12 +1494,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
 - 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
 - `mountFlag` 标记为未挂载
-- `this.bus.$clear`：清空子应用所有监听的事件，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- `this.bus.$clear`：清空子应用所有监听的事件，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-非 `degrade` 主动降级 `umd` 模式补充操作：
+非 `degrade` 降级需要对 `shadowRoot` 补充操作：
 
-- 这里判断 `degrade` 是因为主动降级模式下没有 `shadowRoot`
-- 这里会清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
+- 清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
 
 最后将实例的 `head`、`body` 下的元素全部删除
 
