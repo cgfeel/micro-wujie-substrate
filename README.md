@@ -1408,7 +1408,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 触发场景：
 
-- 只能在应用 `start` 时通过 `execQueue` 队列执行 `mount`
+- 只能在应用 `start` 时通过 `execQueue` 队列执行 `mount` [[查看](#-start-启动应用)]
+
+不执行挂载的情况：
+
+- `alive` 模式：只有 `execFlag` 还未激活时才会通过 `start` 执行 `mount`
+- `umd` 模式：`mountFlag` 已经挂载的情况
+
+> 除了重建模式外，切换应用永远不会触发 `mount`，挂载应用只能用于 `start` [[查看](#-start-启动应用)]
 
 挂载应用会做 3 件事
 
@@ -1420,10 +1427,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 调用子应用的 `__WUJIE_MOUNT` 去挂载应用
 - 使用 `iframeWindow` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载，`mountFlag` 会在 `unmount` 和 `destroy` 时更新
-
-需要说明的是：
-
-- 除了重建模式外，切换应用永远不会触发 `mount`，挂载应用只能用于 `start` [[查看](#-start-启动应用)]
 
 `fiber` 模式下，`__WUJIE_MOUNT` 执行顺序：
 
