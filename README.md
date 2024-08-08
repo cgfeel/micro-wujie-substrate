@@ -1502,8 +1502,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 最后将实例的 `head`、`body` 下的元素全部删除
 
-- 所有删除的元素会在下次 `active` 激活应用时，会重新注入应用资源
-- 所有清空的监听记录，也会在下次 `active` 激活应用时，重新收集
+- 所有删除的元素会在下次 `active` 激活应用时，重新注入应用资源
+- 清空的监听事件，也会在下次 `active` 激活应用时重新监听
 
 #### 4. 触发场景
 
