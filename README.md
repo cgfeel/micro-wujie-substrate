@@ -4190,7 +4190,7 @@ window.onfocus = () => {
 2. 通过 `start` 将入口文件添加到沙箱 `iframe`，执行动态渲染
 3. 通过 `rewriteAppendOrInsertChild` 拦截写入操作，根据情况打补丁
 
-> 静态样式的提取通过 `patchCssRules` 打补丁，不会按照动态样式操作
+> 静态样式的提取通过 `patchCssRules` 打补丁，不会按照动态样式操作 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 从上面可以知道动态添加样式来源 `start`，因此：
 
