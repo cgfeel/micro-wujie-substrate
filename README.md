@@ -1266,7 +1266,7 @@
 复现问题 1：没有 `script`
 
 - `static-app`：创建一个没有 `script`，没有 `style` 的静态子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
-- 添加一个 `StaticPage.tsx` 页面组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/StaticPage.tsx)]，关闭 `fiber`，不添加 `js-before-loaders`、`js-after-loader`
+- 添加一个 `StaticPage.tsx` 页面组件，关闭 `fiber`，不添加 `js-loaders` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/StaticPage.tsx)]
 - 应用组件 `Wujie.tsx`：添加 `startApp` 返回的函数 `destroy` 并打印 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]
 
 复现结果：
