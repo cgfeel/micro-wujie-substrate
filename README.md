@@ -1386,7 +1386,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 第 1 遍：`umd` 模式 `start` 时，在执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
 - 第 2 遍：将应用入口 `script` 注入沙箱后，`mount` 时沙箱 `window` 已绑定 `__WUJIE_MOUNT`
 
-> 这样只能导致重复执行，不会出现使用上的问题
+> 重复删除 `loading` 只能导致重复执行，不会出现使用上的问题
 
 #### 6. 必须添加队列的 4 个方法
 
