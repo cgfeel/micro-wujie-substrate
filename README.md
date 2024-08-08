@@ -1542,7 +1542,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 以下模式会执行 2 次 `umount`：
 
 - `umd` 模式：容器注销 1 次，`startApp` 启动 1 次
-- 重建模式：容器注销 1 次，`startApp` 启动通过 `destory` 彻底销毁 1 次
+- 重建模式：容器注销 1 次，`startApp` 启动通过 `destory` 销毁实例 1 次
+
+> 前提条件：应用实例已存在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 其他触发应用 `umount` 的场景：
 
