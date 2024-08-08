@@ -1194,7 +1194,7 @@
 
 问题 1：
 
-- 如果 `execQueue` 除了最后返回的 `Promise` 对象之外，没有微任务也没有宏任务，
+- 如果 `execQueue` 除了最后返回的 `Promise` 对象之外，没有微任务也没有宏任务
 - 那么返回的 `Promise` 内部方法中插入 `execQueue` 末尾的队列永远无法执行
 
 原因：
@@ -1287,15 +1287,6 @@
 - 和问题 1 一样，子应用中 `script` 的 `async` 会通过异步集合 `asyncScriptResultList` 添加到沙箱 `iframe` 中
 - `asyncScriptResultList` 不会影响 `execQueue`
 
-复现问题 2：`jsBeforeLoaders` 打断应用加载
-
-- 复现前确保 `react` 应用正常，复制一份 `ReactPage.tsx` 作为 `BeforePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/BeforePage.tsx)]
-- 添加 `jsBeforeLoaders`：要求带有 `src` 和 `async`
-
-复现结果：
-
-- `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
-
 修复问题 1：
 
 - 源码 334 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]，第 1 个执行队列 `this.execQueue.shift()();` 前主动添加一个微任务
@@ -1309,6 +1300,15 @@ this.execQueue.push(() => Promise.resolve().then(
 ));
 this.execQueue.shift()();
 ```
+
+复现问题 2：`jsBeforeLoaders` 打断应用加载
+
+- 复现前确保 `react` 应用正常，复制一份 `ReactPage.tsx` 作为 `BeforePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/BeforePage.tsx)]
+- 添加 `jsBeforeLoaders`：要求带有 `src` 和 `async`
+
+复现结果：
+
+- `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
 
 问题 2 的设计初衷：
 
