@@ -4159,7 +4159,7 @@ window.onfocus = () => {
 不同之处：
 
 - `patchCssRules`：根据收集样式集合 `styleSheetElements` 来为样式打补丁 [[查看](#2-stylesheetelements-收集样式表)]
-- `handleStylesheetElementPatch`：通过 `patchRenderEffect` 重写注入方法，只提供对应用中动态添加的样式打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+- `handleStylesheetElementPatch`：通过 `patchRenderEffect` 只提供对应用中动态添加的样式打补丁 [[查看](#patchrendereffect-为容器打补丁)]
 
 流程：
 
