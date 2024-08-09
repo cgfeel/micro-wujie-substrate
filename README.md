@@ -4286,7 +4286,7 @@ window.onfocus = () => {
 
 **第三步：重写方法 `appendChild`**
 
-和劫持属性的方法是一样的：
+和劫持属性的方法相同：
 
 - 通过 `nextTick` 发起一个微任务，在微任务中通过 `handleStylesheetElementPatch` 提取当前元素打补丁
 - 使用原生的方法去 `appendChild` 新增元素
