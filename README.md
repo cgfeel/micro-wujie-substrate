@@ -1646,14 +1646,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 在子应用渲染完毕之后，提取子应用所有的样式，筛选挂载到外部：
 
-1. 兼容 `:root` 选择器样式到 `:host` 选择器上
-2. 将 `@font-face` 定义到 `shadowRoot` 外部
+1. 兼容 `:root` 选择器样式到 `:host` 选择器上，即获取样式改名后新增到容器 `head` 下
+2. 将 `@font-face` 定义到 `shadowRoot` 外部，即当前应用 `shadowRoot.host` 末尾
 
 为社么打补丁？
 
 - `shadowRoot` 作为跟元素匹配的是伪类是 `:host`，见：MDN [[查看](https://developer.mozilla.org/en-US/docs/Web/CSS/:host)]
 - 在 `shadowDom` 中不能解析 `@font-face`，需要将其转移到 `document` 下
-  - 两篇外网资料: [[查看](https://robdodson.me/posts/at-font-face-doesnt-work-in-shadow-dom/)]、[[查看](https://issues.chromium.org/issues/41085401)]
+
+> 关于 `@font-face` 两篇外网资料: robdodson [[查看](https://robdodson.me/posts/at-font-face-doesnt-work-in-shadow-dom/)]、chromium [[查看](https://issues.chromium.org/issues/41085401)]
 
 调用场景：
 
