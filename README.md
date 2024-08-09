@@ -1675,22 +1675,31 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 注意：
 
-- `patchCssRules` 只能根据容器 `document` 提取所有样式元素打补丁
+- `patchCssRules` 只能根据容器 `shadowRoot` 提取所有样式元素打补丁
 - 而对于初次加载容器中动态添加的样式，需要通过 `handleStylesheetElementPatch` 来处理 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
 > 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
 
-流程和 `handleStylesheetElementPatch` 中宏任务的回调函数是一样的：
+流程和 `handleStylesheetElementPatch` 中宏任务的回调函数是一样的 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]：
 
 - 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
 - 若存在 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 如果通过上述任意样式打过补丁，标记 `WUJIE_DATA_ATTACH_CSS_FLAG` 避免下次重复执行
 
-`patchCssRules` 存在合理的重复调用：
+`umd` 模式下 `patchCssRules` 存在重复添加样式的情况，初次加载是正常情况：
 
-- 切换 `umd` 模式应用时，`active` 渲染模板之后，子应用不会再次动态添加样式，而是直接通过 `mount` 挂载应用
-- 这个时候需要再次通过 `rebuildStyleSheets` 将初始化时记录的样式添加到容器中
+- 启动应用通过 `active` 注入 `shadowRoot` 后通过 `patchRenderEffect` 重写 `Dom` 写入操作 [[查看](#patchrendereffect-为容器打补丁)]
+- 由于应用的样式是动态添加的，此时 `patchCssRules` 不会做任何处理
+- `start` 启动应用，将 `script` 注入沙箱 `iframe`，执行入口文件渲染应用 [[查看](#-start-启动应用)]
+- 渲染应用时通过 `rewriteAppendOrInsertChild` 劫持样式元素写入容器
+
+在 `rewriteAppendOrInsertChild` 中的处理：
+
+- 外联样式下载下来作为内联，内联元素直接处理
+- 将样式元素添加到 `styleSheetElements` 以便切换应用时使用 [[查看](#2-stylesheetelements-收集样式表)]
+- 通过 `handleStylesheetElementPatch` 为样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- 通过
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
@@ -4203,10 +4212,7 @@ window.onfocus = () => {
 - 添加外联的样式，下载后作为内联样式放入容器后打补丁
 - 添加内联的样式，打补丁之前还需通过 `patchStylesheetElement` 拦截样式元素相关操作
 
-通过 `patchStylesheetElement` 拦截样式操作有 4 处：
-
-- 写入操作：`innerHTML`、`innerText`、`textContent`
-- 重写方法：`appendChild`
+> 通过 `patchStylesheetElement` 拦截样式操作有 4 处 [[查看](test)]
 
 `SPA` 应用调用场景：
 
@@ -4221,6 +4227,73 @@ window.onfocus = () => {
 - `alive` 模式：只有首次 `start` 会动态加载样式
 - `umd` 模式：理论上和 `alive` 一样，但是存在 `bug`，见：`patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]
 - 重建模式：每一次加载就是一次动态获取样式
+
+#### `patchStylesheetElement`：劫持处理样式元素的属性
+
+目录：`effect.ts` - `patchStylesheetElement` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L85)]
+
+参数：
+
+- `stylesheetElement`：`style` 元素，带有属性 `_hasPatchStyle` 用于标记是否已劫持
+- `cssLoader`：插件 `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+- `sandbox`：应用实例，用于透传给 `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- `curUrl`：子应用的 `host` + 沙箱 `iframe` 的 `pathname`
+
+由于 `cssLoader` 是通过 `getCssLoader` 柯里化拿到的函数 [[查看](#通过配置替换资源)]：
+
+- 所以会因没有提供插件而没有任何执行，但 `cssLoader` 一定会是一个可执行的函数
+
+不处理的情况：
+
+- `_hasPatchStyle` 已标记 `style` 元素已劫持过了
+- `patchStylesheetElement` 只处理来自应用内动态添加的内联样式，除此之外的样式都不处理
+
+劫持的属性：
+
+- 写入操作：`innerHTML`、`innerText`、`textContent`
+- 重写方法：`appendChild`
+- 额外属性：`_hasPatchStyle` 用于避免重复劫持
+
+**第一步：提取原生属性**
+
+- 提取属性：`innerHTML`、`innerText`、`textContent`
+- 通过 `patchSheetInsertRule` 重写 `insertRule`
+
+为什么重写 `insertRule`：
+
+- 添加 `CSSRule` 同时，将样式通过 `innerHTML` 或 `innerText` 写入 `style` 元素
+- 因为 `alive` 模式还有 `umd` 模式切换应用后不会重复动态添加样式
+
+兼容性：
+
+- 现代浏览器都支持、`IE` 支持到 9，而这正是 `wujie` 理论上最低兼容版本
+
+**第二步：劫持属性读取和写入**
+
+包含：`innerHTML`、`innerText`、`textContent`，劫持属性的方式一致：
+
+- `get` 操作：用原生方法获取对应的属性
+- `set` 操作：
+  - 用原生方法获取对应的属性执行更新
+  - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
+  - 通过 `nextTick` 发起一个微任务，在微任务中通过 `handleStylesheetElementPatch` 提取当前元素打补丁
+
+为什么 `cssLoader` 不提供 `url`：
+
+- 因为 `patchStylesheetElement` 处理的是应用内动态添加的内联样式
+
+**第三步：重写方法 `appendChild`**
+
+和劫持属性的方法是一样的：
+
+- 通过 `nextTick` 发起一个微任务，在微任务中通过 `handleStylesheetElementPatch` 提取当前元素打补丁
+- 使用原生的方法去 `appendChild` 新增元素
+
+不同在于如果插入的样式是文本，还需要特殊处理：
+
+- 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
+- 将更新后的样式插入 `style` 元素后，再次通过 `patchSheetInsertRule` 重写 `insertRule`
+- 无论插入的元素是什么类型，最终都要将新增的元素返回
 
 ### 辅助方法 - 实用工具
 
