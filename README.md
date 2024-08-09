@@ -4207,12 +4207,12 @@ window.onfocus = () => {
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 将属性 `_patcher` 设为 `undefined`，允许后续继续操作
 
-从 `Dom` 中动态添加样式有 2 处，都来自 `rewriteAppendOrInsertChild`：
+调用场景有 6 处：
 
-- 添加外联的样式，下载后作为内联样式放入容器后打补丁
-- 添加内联的样式，打补丁之前还需通过 `patchStylesheetElement` 拦截样式元素相关操作
+- `rewriteAppendOrInsertChild`：动态添加内联和外联样式 2 处
+- `patchStylesheetElement`：拦截样式操作有 4 处 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-> 通过 `patchStylesheetElement` 拦截样式操作有 4 处 [[查看](test)]
+> 在 `rewriteAppendOrInsertChild` 中动态添加的外联样式会先下载，然后作为内联样式进行处理
 
 `SPA` 应用调用场景：
 
