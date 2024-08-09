@@ -1651,14 +1651,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 为社么打补丁？
 
-- `shadowRoot` 作为跟元素匹配的是 `:host`，见：MDN [[查看](https://developer.mozilla.org/en-US/docs/Web/CSS/:host)]
+- `shadowRoot` 作为跟元素匹配的是伪类是 `:host`，见：MDN [[查看](https://developer.mozilla.org/en-US/docs/Web/CSS/:host)]
 - 在 `shadowDom` 中不能解析 `@font-face`，需要将其转移到 `document` 下
   - 两篇外网资料: [[查看](https://robdodson.me/posts/at-font-face-doesnt-work-in-shadow-dom/)]、[[查看](https://issues.chromium.org/issues/41085401)]
 
 调用场景：
 
-- `active` 中渲染到 `shadowRoot` 之后
-- `rebuildStyleSheets` 在 `umd` 模式切换应用重建样式之后
+- `active` 激活应用：将资源注入 `shadowRoot` 之后
+- `rebuildStyleSheets`：`umd` 模式切换应用，重建样式之后
 
 不会执行操作的情况：
 
@@ -1667,7 +1667,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 注意：
 
 - `patchCssRules` 一定是渲染完成后调用，否则拿不到最终样式
-- 在沙箱 `iframe` 提取最终样式，因为容器添加元素同时也会在沙箱 `iframe` 中添加，见：同时添加元素 [[查看](#同时添加元素)]
+- `patchCssRules` 根据
 
 `patchCssRules` 存在合理的重复调用：
 
@@ -4158,14 +4158,16 @@ window.onfocus = () => {
 
 用途：
 
-- 和 `WuJie` 类中的 `patchCssRules` 是一样的 [[查看](#-patchcssrules-子应用样式打补丁)]
+- 和 `WuJie` 类中的 `patchCssRules` 是一样的为应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 > 包括为什么要打补丁，以及存在的问题都参考 `patchCssRules`
 
 不同之处：
 
-- `patchCssRules`：只处理已收集的样式集合 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
+- `patchCssRules`：获取整个容器 `shadowRoot` 下所有的 `style` 元素进行匹配 [[查看](#-patchcssrules-子应用样式打补丁)]
 - `handleStylesheetElementPatch`：只处理通过 `patchRenderEffect` 添加的动态样式 [[查看](#patchrendereffect-为容器打补丁)]
+
+> 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
 
 流程：
 
