@@ -4278,7 +4278,7 @@ window.onfocus = () => {
 - `set` 操作：
   - 用原生方法获取对应的属性执行更新
   - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
-  - 通过 `nextTick` 发起一个微任务，在微任务中通过 `handleStylesheetElementPatch` 提取当前元素打补丁
+  - 通过 `nextTick` 发起一个微任务：通过 `handleStylesheetElementPatch` 提取当前元素打补丁
 
 为什么 `cssLoader` 不提供 `url`：
 
