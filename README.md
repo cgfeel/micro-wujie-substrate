@@ -4235,7 +4235,7 @@ window.onfocus = () => {
 参数：
 
 - `stylesheetElement`：`style` 元素，带有属性 `_hasPatchStyle` 用于标记是否已劫持
-- `cssLoader`：插件 `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+- `cssLoader`：插件 `cssLoader` 用于替换样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 - `sandbox`：应用实例，用于透传给 `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - `curUrl`：子应用的 `host` + 沙箱 `iframe` 的 `pathname`
 
