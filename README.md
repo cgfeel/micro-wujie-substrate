@@ -4176,7 +4176,7 @@ window.onfocus = () => {
 
 用途：
 
-- 和 `WuJie` 类中的 `patchCssRules` 是一样的为应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
+- 和 `WuJie` 类中的 `patchCssRules` 一样，为应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 > 包括为什么要打补丁，以及存在的问题都参考 `patchCssRules`
 
