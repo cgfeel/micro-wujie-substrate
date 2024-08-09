@@ -4280,7 +4280,7 @@ window.onfocus = () => {
   - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
   - 通过 `nextTick` 发起一个微任务：通过 `handleStylesheetElementPatch` 提取当前元素打补丁
 
-为什么 `cssLoader` 不提供 `url`：
+为什么 `cssLoader` 不提供样式的 `url`：
 
 - 因为 `patchStylesheetElement` 处理的是应用内动态添加的内联样式
 
