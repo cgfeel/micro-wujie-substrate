@@ -1712,10 +1712,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `rebuildStyleSheets` 从 `styleSheetElements` 中恢复之前已记录的样式元素 [[查看](#-rebuildstylesheets-重新恢复样式)]
 - 恢复样式后再次通过 `patchCssRules` 打补丁，此时容器中已恢复所有的样式，包括已打补丁的样式
 - `patchCssRules` 再次提取容器中所有的样式，匹配到 `:root` 和 `@font-face`
-- 再次打补丁将样式分别添加到 `head` 和 `shadowRoot.host`，再次添加 `:host` 样式到 `styleSheetElements`
-- 由于首次加载时通过 `patchRenderEffect` 重写了 `appendChild`
+- 再次打补丁将样式分别添加到 `head` 和 `shadowRoot.host`
+- 由于首次加载时通过 `patchRenderEffect` 重写了 `appendChild`，劫持了本次操作
 - 因此 `shadowRoot.appendChild` 再次被劫持计划通过 `handleStylesheetElementPatch` 打补丁
 - 但由于插入的样式是 `:host`，不符合要求，所以这次操作仅仅是再次增加了一条 `styleSheetElements`
+- 元素添加完毕跳出劫持操作，在 `patchCssRules` 中再次添加 `:host` 样式到 `styleSheetElements`
+- 执行后续挂载操作
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
