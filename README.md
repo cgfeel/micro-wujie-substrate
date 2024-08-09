@@ -1687,9 +1687,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 如果通过上述任意样式打过补丁，标记 `WUJIE_DATA_ATTACH_CSS_FLAG` 避免下次重复执行
 
-`umd` 模式下 `patchCssRules` 存在重复添加样式的情况，初次加载是正常情况：
+`umd` 模式下 `patchCssRules` 存在重复添加样式的情况，初次加载是正常的：
 
-- 启动应用通过 `active` 注入 `shadowRoot` 后通过 `patchRenderEffect` 重写 `Dom` 写入操作 [[查看](#patchrendereffect-为容器打补丁)]
+- 通过 `active` 注入静态资到 `shadowRoot` 后，通过 `patchRenderEffect` 重写 `Dom` 写入操作 [[查看](#patchrendereffect-为容器打补丁)]
 - 由于应用的样式是动态添加的，此时 `patchCssRules` 不会做任何处理
 - `start` 启动应用，将 `script` 注入沙箱 `iframe`，执行入口文件渲染应用 [[查看](#-start-启动应用)]
 - 渲染应用时通过 `rewriteAppendOrInsertChild` 劫持样式元素写入容器
