@@ -1663,17 +1663,29 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 不会执行操作的情况：
 
-- `degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
+- `degrade` 降级不处理，没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
+- `WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
 为什么处理过不再处理：
 
 - 提取 `:host` 样式之后，会将其存入集合 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
-- 如果是 `umd` 模式，下次切换应用会通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
+- `umd` 模式，下次切换应用会通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
+- `alive` 模式，资源没有变化不需要任何处理
+- 重建模式，每一次启动都是一次新的实例，所有流程重新来一遍
 
 注意：
 
-- `patchCssRules` 一定是渲染完成后调用，否则拿不到最终样式
-- `patchCssRules` 根据
+- `patchCssRules` 只能根据容器 `document` 提取所有样式元素打补丁
+- 而对于初次加载容器中动态添加的样式，需要通过 `handleStylesheetElementPatch` 来处理 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+
+> 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
+
+流程和 `handleStylesheetElementPatch` 中宏任务的回调函数是一样的：
+
+- 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
+- 若存在 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
+- 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
+- 如果通过上述任意样式打过补丁，标记 `WUJIE_DATA_ATTACH_CSS_FLAG` 避免下次重复执行
 
 `patchCssRules` 存在合理的重复调用：
 
@@ -4173,8 +4185,6 @@ window.onfocus = () => {
 - `patchCssRules`：获取整个容器 `shadowRoot` 下所有的 `style` 元素进行匹配 [[查看](#-patchcssrules-子应用样式打补丁)]
 - `handleStylesheetElementPatch`：只处理通过 `patchRenderEffect` 添加的动态样式 [[查看](#patchrendereffect-为容器打补丁)]
 
-> 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
-
 流程：
 
 - 定义打补丁函数 `patcher`，计划作为宏任务中执行的方法
@@ -4183,9 +4193,9 @@ window.onfocus = () => {
 
 `patcher` 做了什么：
 
-- 通过 `getPatchStyleElements` 从提供的样式元素中提取指定的样式
-- 若返回 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
-- 若返回 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
+- 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
+- 若存在 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
+- 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 将属性 `_patcher` 设为 `undefined`，允许后续继续操作
 
 从 `Dom` 中动态添加样式有 2 处，都来自 `rewriteAppendOrInsertChild`：
