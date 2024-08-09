@@ -4154,12 +4154,12 @@ window.onfocus = () => {
 
 - 和 `WuJie` 类中的 `patchCssRules` 是一样的 [[查看](#-patchcssrules-子应用样式打补丁)]
 
-> 包括为什么要打补丁
+> 包括为什么要打补丁，以及存在的问题都参考 `patchCssRules`
 
 不同之处：
 
-- `patchCssRules`：根据收集样式集合 `styleSheetElements` 来为样式打补丁 [[查看](#2-stylesheetelements-收集样式表)]
-- `handleStylesheetElementPatch`：通过 `patchRenderEffect` 只提供对应用中动态添加的样式打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+- `patchCssRules`：只处理已收集的样式集合 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
+- `handleStylesheetElementPatch`：只处理通过 `patchRenderEffect` 添加的动态样式 [[查看](#patchrendereffect-为容器打补丁)]
 
 流程：
 
