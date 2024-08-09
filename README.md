@@ -1714,9 +1714,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `patchCssRules` 再次提取容器中所有的样式，匹配到 `:root` 和 `@font-face`
 - 再次打补丁将样式分别添加到 `head` 和 `shadowRoot.host`
 - 由于首次加载时通过 `patchRenderEffect` 重写了 `appendChild`，劫持了本次操作
-- 因此 `shadowRoot.appendChild` 再次被劫持计划通过 `handleStylesheetElementPatch` 打补丁
+- 劫持方法中通过 `handleStylesheetElementPatch` 再次打补丁
 - 但由于插入的样式是 `:host`，不符合要求，所以这次操作仅仅是再次增加了一条 `styleSheetElements`
-- 元素添加完毕跳出劫持操作，在 `patchCssRules` 中再次添加 `:host` 样式到 `styleSheetElements`
+- 元素添加完毕跳出劫持操作，在 `patchCssRules` 中第 3 次添加 `:host` 样式到 `styleSheetElements`
 - 继续执行后续挂载操作
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
