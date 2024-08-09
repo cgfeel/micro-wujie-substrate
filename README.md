@@ -1719,6 +1719,27 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 元素添加完毕跳出劫持操作，在 `patchCssRules` 中第 3 次添加 `:host` 样式到 `styleSheetElements`
 - 继续执行后续挂载操作
 
+以当前项目中的子应用 `react-project` 举例 [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]：
+
+- 只有 `/src/index.css` 这一处包含：`:root`、`@font-face`
+
+首次加载：
+
+- 将 `:root` 变为 `:host` 在 `head` 新增一条样式
+- 将 `@font-face` 提取出来加载到 `shadowRoot.host`
+- `styleSheetElements` 有 3 条，分别是：
+  - 子应用中 2 条样式：`index.css`、`App.css`
+  - `renderTemplateToShadowRoot` 注入资源时，插入 1 条样式用于撑开容器 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+
+结果：
+
+- `shadowRoot` 中有 4 条样式：`styleSheetElements` + 提取的 `:host`
+- `shadowRoot.host` 中有 1 条样式
+
+再次加载：
+
+- `rebuildStyleSheets` 时将
+
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
 当子应用再次激活后，只运行 `mount` 函数，样式需要重新恢复。`styleSheetElements` 的样式来自 2 处，见：`styleSheetElements` [[查看](#同时添加元素)]
