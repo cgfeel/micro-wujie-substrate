@@ -1694,12 +1694,28 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `start` 启动应用，将 `script` 注入沙箱 `iframe`，执行入口文件渲染应用 [[查看](#-start-启动应用)]
 - 渲染应用时通过 `rewriteAppendOrInsertChild` 劫持样式元素写入容器
 
-在 `rewriteAppendOrInsertChild` 中的处理：
+在 `rewriteAppendOrInsertChild` 中如何处理动态添加的样式：
 
-- 外联样式下载下来作为内联，内联元素直接处理
+- 外联样式下载下来作为内联样式，内联样式直接处理
 - 将样式元素添加到 `styleSheetElements` 以便切换应用时使用 [[查看](#2-stylesheetelements-收集样式表)]
-- 通过 `handleStylesheetElementPatch` 为样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
-- 通过
+- 通过 `handleStylesheetElementPatch` 为动态添加的样式元素打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- 通过 `patchStylesheetElement` 劫持样式元素的属性，在样式更新时打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
+
+以上初次加载的流程是正确的，这也是重建模式每次加载应用中的样式流程
+
+`umd` 模式切换应用会重复添加样式：
+
+- `active` 前先通过 `unmount` 清空容器 [[查看](#-unmount-卸载应用)]
+- 需要说明的是 `unmount` 只清空了容器，容器外面 `shadowRoot.host` 中存放字体的样式并没有删除
+- 执行 `active` 将静态资源注入 `shadowRoot` 后通过 `patchCssRules` 打补丁
+- 由于应用的样式是动态添加的，此时不会做任何处理
+- 通过 `rebuildStyleSheets` 从 `styleSheetElements` 中恢复之前已记录的样式元素 [[查看](#-rebuildstylesheets-重新恢复样式)]
+- 恢复样式后再次通过 `patchCssRules` 打补丁，此时容器中已恢复所有的样式，包括已打补丁的样式
+- `patchCssRules` 再次提取容器中所有的样式，匹配到 `:root` 和 `@font-face`
+- 再次打补丁将样式分别添加到 `head` 和 `shadowRoot.host`，再次添加 `:host` 样式到 `styleSheetElements`
+- 由于首次加载时通过 `patchRenderEffect` 重写了 `appendChild`
+- 因此 `shadowRoot.appendChild` 再次被劫持计划通过 `handleStylesheetElementPatch` 打补丁
+- 但由于插入的样式是 `:host`，不符合要求，所以这次操作仅仅是再次增加了一条 `styleSheetElements`
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
