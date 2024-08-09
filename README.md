@@ -1644,6 +1644,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `patchCssRules` 子应用样式打补丁
 
+#### 1. 原理阐述
+
 在子应用渲染完毕之后，提取子应用所有的样式，筛选挂载到外部：
 
 1. 兼容 `:root` 选择器样式到 `:host` 选择器上，即获取样式改名后新增到容器 `head` 下
@@ -1676,7 +1678,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 注意：
 
 - `patchCssRules` 只能根据容器 `shadowRoot` 提取所有样式元素打补丁
-- 而对于初次加载容器中动态添加的样式，需要通过 `handleStylesheetElementPatch` 来处理 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- 而对于容器中动态添加的样式，需要通过 `handleStylesheetElementPatch` 来处理 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
 > 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
 
@@ -1687,7 +1689,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 如果通过上述任意样式打过补丁，标记 `WUJIE_DATA_ATTACH_CSS_FLAG` 避免下次重复执行
 
-`umd` 模式下 `patchCssRules` 存在重复添加样式的情况，初次加载是正常的：
+#### 2. 重复提取样式的 `bug`
+
+`umd` 模式下 `patchCssRules` 存在重复添加样式的情况：
+
+- 以子应用 `react-project` 举例 [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]
+- 在 `/src/index.css` 中添加 `:root` 和 `@font-face` [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]
+
+初次加载是正常的：
 
 - 通过 `active` 注入静态资到 `shadowRoot` 后，通过 `patchRenderEffect` 重写 `Dom` 写入操作 [[查看](#patchrendereffect-为容器打补丁)]
 - 由于应用的样式是动态添加的，此时 `patchCssRules` 不会做任何处理
