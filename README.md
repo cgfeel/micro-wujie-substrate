@@ -1717,7 +1717,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 因此 `shadowRoot.appendChild` 再次被劫持计划通过 `handleStylesheetElementPatch` 打补丁
 - 但由于插入的样式是 `:host`，不符合要求，所以这次操作仅仅是再次增加了一条 `styleSheetElements`
 - 元素添加完毕跳出劫持操作，在 `patchCssRules` 中再次添加 `:host` 样式到 `styleSheetElements`
-- 执行后续挂载操作
+- 继续执行后续挂载操作
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
