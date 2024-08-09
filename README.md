@@ -1701,7 +1701,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过 `handleStylesheetElementPatch` 为动态添加的样式元素打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - 通过 `patchStylesheetElement` 劫持样式元素的属性，在样式更新时打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-以上初次加载的流程是正确的，这也是重建模式每次加载应用中的样式流程
+> 以上初次加载的流程是正确的，这也是重建模式每次加载应用中的样式流程
 
 `umd` 模式切换应用会重复添加样式：
 
@@ -4314,6 +4314,11 @@ window.onfocus = () => {
 - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
 - 将更新后的样式插入 `style` 元素后，再次通过 `patchSheetInsertRule` 重写 `insertRule`
 - 无论插入的元素是什么类型，最终都要将新增的元素返回
+
+需要说明的是：
+
+- 劫持样式元素的属性打补丁，每次 `handleStylesheetElementPatch` 都会提取完整的样式进行匹配
+- 这样会造成重复执行的情况，但重复添加样式不产生问题，不会影响使用
 
 ### 辅助方法 - 实用工具
 
