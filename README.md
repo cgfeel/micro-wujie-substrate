@@ -4142,7 +4142,7 @@ window.onfocus = () => {
 
 参数：
 
-- `stylesheetElement`：样式 `html` 元素，带有属性 `_patcher` 用于存放宏任务
+- `stylesheetElement`：`style` 元素，带有属性 `_patcher` 用于存放宏任务
 - `sandbox`：应用实例
 
 不处理的情况：
