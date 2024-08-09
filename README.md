@@ -1658,12 +1658,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 调用场景：
 
-- `active` 激活应用：将资源注入 `shadowRoot` 之后
-- `rebuildStyleSheets`：`umd` 模式切换应用，重建样式之后
+- `active` 激活应用：将资源注入 `shadowRoot` 之后 [[查看](#-active-激活应用)]
+- `rebuildStyleSheets`：`umd` 模式切换应用，重建样式之后 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
 不会执行操作的情况：
 
 - `degrade` 主动降级不处理、`WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
+
+为什么处理过不再处理：
+
+- 提取 `:host` 样式之后，会将其存入集合 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
+- 如果是 `umd` 模式，下次切换应用会通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
 注意：
 
