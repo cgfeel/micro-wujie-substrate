@@ -1691,64 +1691,23 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 2. 重复提取样式的 `bug`
 
-`umd` 模式下 `patchCssRules` 存在重复添加样式的情况：
+篇幅太长单独整理了一篇，见：`wujie` 中 `patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
 
-- 以子应用 `react-project` 举例 [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]
-- 总共包含 2 个样式：`index.css`、`App.css` [[查看](https://github.com/cgfeel/micro-wujie-app-cra/tree/main/src)]
-- 在 `index.css` 中添加 `:root` 和 `@font-face` 共计 2 个 [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/src/index.css)]
+除此之外在这里不得不吐槽一下，`wujie` 处理样式真的很零乱：
 
-初次加载应用是正常的，样式加载顺序：
+| 方法                                                                                                                                                                      | 样式类型 | 用途                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------ |
+| 1. `processTpl` [[查看](#processtpl-提取资源)]                                                                                                                            | 静态样式 | 将资源中的静态样式替换成注释                     |
+| 2. `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                                                                                          | 静态样式 | 加载从资源中提取的静态样式并替换资源中对应的注释 |
+| 3. `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                                                                                       | 静态样式 | 手动添加样式到应用头部和尾部                     |
+| 4. `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                                                                                       | 手动配置 | 手动添加样式到应用头部和尾部                     |
+| 5. `patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]                                                                                                             | 所有类型 | 为容器中已存在的样式打补丁                       |
+| 6. `rewriteAppendOrInsertChild`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)] | 动态样式 | 拦截应用动态添加样式                             |
+| 7. `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)]                                                                                       | 动态样式 | 劫持处理样式元素的操作                           |
+| 8. `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]                                                                           | 动态样式 | 为动态样式打补丁                                 |
 
-- `active` 后通过 `patchCssRules` 
-- 由于应用的样式是动态添加的，此时 `patchCssRules` 不会做任何处理
-- `start` 启动应用，将 `script` 注入沙箱 `iframe`，执行入口文件渲染应用 [[查看](#-start-启动应用)]
-- 渲染应用时通过 `rewriteAppendOrInsertChild` 劫持样式元素写入容器
-
-在 `rewriteAppendOrInsertChild` 中如何处理动态添加的样式：
-
-- 外联样式下载下来作为内联样式，内联样式直接处理
-- 将样式元素添加到 `styleSheetElements` 以便切换应用时使用 [[查看](#2-stylesheetelements-收集样式表)]
-- 通过 `handleStylesheetElementPatch` 为动态添加的样式元素打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
-- 通过 `patchStylesheetElement` 劫持样式元素的属性，在样式更新时打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
-
-> 以上初次加载的流程是正确的，这也是重建模式每次加载应用中的样式流程
-
-`umd` 模式切换应用会重复添加样式：
-
-- `active` 前先通过 `unmount` 清空容器 [[查看](#-unmount-卸载应用)]
-- 需要说明的是 `unmount` 只清空了容器，容器外面 `shadowRoot.host` 中存放字体的样式并没有删除
-- 执行 `active` 将静态资源注入 `shadowRoot` 后通过 `patchCssRules` 打补丁
-- 由于应用的样式是动态添加的，此时不会做任何处理
-- 通过 `rebuildStyleSheets` 从 `styleSheetElements` 中恢复之前已记录的样式元素 [[查看](#-rebuildstylesheets-重新恢复样式)]
-- 恢复样式后再次通过 `patchCssRules` 打补丁，此时容器中已恢复所有的样式，包括已打补丁的样式
-- `patchCssRules` 再次提取容器中所有的样式，匹配到 `:root` 和 `@font-face`
-- 再次打补丁将样式分别添加到 `head` 和 `shadowRoot.host`
-- 由于首次加载时通过 `patchRenderEffect` 重写了 `appendChild`，劫持了本次操作
-- 劫持方法中通过 `handleStylesheetElementPatch` 再次打补丁
-- 但由于插入的样式是 `:host`，不符合要求，所以这次操作仅仅是再次增加了一条 `styleSheetElements`
-- 元素添加完毕跳出劫持操作，在 `patchCssRules` 中第 3 次添加 `:host` 样式到 `styleSheetElements`
-- 继续执行后续挂载操作
-
-以当前项目中的子应用 `react-project` 举例 [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]：
-
-- 只有 `/src/index.css` 这一处包含：`:root`、`@font-face`
-
-首次加载：
-
-- 将 `:root` 变为 `:host` 在 `head` 新增一条样式
-- 将 `@font-face` 提取出来加载到 `shadowRoot.host`
-- `styleSheetElements` 有 3 条，分别是：
-  - 子应用中 2 条样式：`index.css`、`App.css`
-  - `renderTemplateToShadowRoot` 注入资源时，插入 1 条样式用于撑开容器 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
-
-结果：
-
-- `shadowRoot` 中有 4 条样式：`styleSheetElements` + 提取的 `:host`
-- `shadowRoot.host` 中有 1 条样式
-
-再次加载：
-
-- `rebuildStyleSheets` 时将
+- 对于方法：2、3、4，对比加载 `script`，方法全部归纳在 `start` [[查看](#-start-启动应用)]
+- 对于打补丁的方法：5、8，执行的过程是一样的
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
