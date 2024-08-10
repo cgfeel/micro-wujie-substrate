@@ -4449,8 +4449,8 @@ window.onfocus = () => {
 
 参数：
 
-- `target`：源码中是 `any`，实则应该是 `{ [key: PropertyKey]: any }` 对象，否则就报错了
-- `p`：源码中是 `any`，实则应该是 `PropertyKey`，否则就报错了
+- `target`：源码中是 `any`，实则应该是 `{ [key: PropertyKey]: any }` 对象
+- `p`：源码中是 `any`，实则应该是 `PropertyKey`
 
 返回：
 
