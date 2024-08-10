@@ -1736,7 +1736,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 恢复方式：
 
-- 遍历 `styleSheetElements` 集合将集合中的样式元素注入应用的容器中
+- 遍历 `styleSheetElements` 集合中的样式元素，注入到应用的容器的 `head` 元素下
 - 通过 `patchCssRules` 为恢复的样式打补丁
 
 > 为样式打补丁存在重复加载的 `Bug`，见：单独总结 [[查看](https://github.com/cgfeel/micro-wujie-substrate?tab=readme-ov-file#handlestylesheetelementpatch%E4%B8%BA%E5%BA%94%E7%94%A8%E4%B8%AD%E5%8A%A8%E6%80%81%E6%A0%B7%E5%BC%8F%E6%89%93%E8%A1%A5%E4%B8%81)]
