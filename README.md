@@ -1921,18 +1921,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 - 通过 `getOwnPropertyDescriptor` 获取 `property` 描述信息为不可配置且不可写
 
-需要将 `this` 指向沙箱 `window` 的 `property`：
+通过 `getTargetValue` 获取的属性 [[查看](#gettargetvalue-从对象中获取属性)]：
 
-- 沙箱 `window` 中通过
-
-- `window`：如果全局 `window` 描述中不存在 `get` 属性
-- `getTargetValue` 中所有不能缓存在映射表 `setFnCacheMap` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]
-
-其他情况：
-
-- 这个情况 `property` 一定是函数，且不可 `isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]，也不可 `isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
-- 通过 `getTargetValue` 使用 `bind.call` 将方法 `this` 指向 `iframeWindow` 返回 [[查看](#gettargetvalue-从对象中获取属性)]
-- 如果 `iframeWindow` 中不存在 `property`，返回 `undefined`
+- 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window`
+- 不符合 `setFnCacheMap` 要求的属性，直接从沙箱 `window` 中找到并返回
+  - 包含：描述信息中不存在 `get` 属性的 `window` 对象，以及 `undefined`
 
 **`set` 操作**
 
