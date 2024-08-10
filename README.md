@@ -1924,8 +1924,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 返回 `getTargetValue` 获取沙箱 `window` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]：
 
 - 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window`
-- 不符合 `setFnCacheMap` 要求的属性，直接从沙箱 `window` 中找到属性并返回
-  - 包含：描述信息中不存在 `get` 属性的 `window` 对象，以及 `undefined`
+- 不符合 `setFnCacheMap` 要求直接从沙箱 `window` 中找到属性并返回，找不到返回 `undefined`
+- 全局 `window` 描述信息中不存在 `get` 属性，从沙箱 `window` 中获取属性 `window`
 
 **`set` 操作**
 
