@@ -4454,15 +4454,20 @@ window.onfocus = () => {
 
 返回：
 
-- 从 `target` 找找到 `p` 返回回来
+- 对象中找到的属性，没有则是 `undefined`
 
-分别有以下几种情况：
+根据映射表 `setFnCacheMap` 获取对象属性 [[查看](#1-setfncachemap-存储绑定上下文的方法)]：
 
-- `setFnCacheMap`：映射表中存在直接返回
-- 非函数的属性直接返回
-- 函数但是 `bound` 开头的剪头函数直接返回，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
-- 可以实例化的函数直接返回，见：`isConstructable` [[查看](e#isconstructable判断函数是否可以-new)]
-- 其他函数通过 `bind.call` 修正 `this` 指向并返回新函数
+- 存在映射表直接返回
+- 不存在但符合映射表条件，绑定上下文后保存方法并返回
+- 不存在又不符合映射表条件，直接返回对象属性，不存在返回 `undefined`
+
+符合条件如何绑定上下文：
+
+- 通过 `Function.prototype.bind.call` 绑定上下文得到新的方法 `boundValue`
+- 将原始的方法和 `boundValue` 通过键值的方式保存在 `setFnCacheMap`
+- 将原始方法上的属性绑定到 `boundValue`
+- 劫持 `boundValue` 的 `prototype` 指向原始方法的 `prototype`
 
 > 关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
 >
@@ -4470,12 +4475,6 @@ window.onfocus = () => {
 > - `apply`：和 `call` 一样，不同的是传递的参数是以数组形式
 > - `bind`：可以看做将 `call` 柯里化之后返回新的函数
 > - `bind.call`：和 `bind` 一样，不同的是会在第一个参数前面插入一个函数对象，用于修正调用的方法
-
-`bind.call` 修正 `this` 指向过程：
-
-- 通过 `Function.prototype.bind.call` 将函数上下文 `this` 指向 `target` 返回新函数
-- 将新的方法记录在映射表 `setFnCacheMap` 中
-- 遍历方法对象中的属性，绑定在新的方法中，如果方法存在原型，也绑定在新方法中
 
 绑定原型是让当前方法和绑定的方法原型链一致，遍历属性的目的见下方演示：
 
