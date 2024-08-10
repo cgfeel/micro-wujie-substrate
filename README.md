@@ -1923,24 +1923,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 返回 `getTargetValue` 获取沙箱 `window` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]：
 
-- 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window`
+- 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window` [[查看](#1-setfncachemap-存储绑定上下文的方法)]
 - 不符合 `setFnCacheMap` 要求直接从沙箱 `window` 中找到属性并返回，找不到返回 `undefined`
 - 全局 `window` 描述信息中不存在 `get` 属性，从沙箱 `window` 中获取属性
 
 **`set` 操作**
 
-直接绑定在 `iframeWindow` 对象上：
+直接绑定在沙箱 `window` 对象上：
 
-- 但会通过 `checkProxyFunction` 对符合条件的方法缓存在映射表 `setFnCacheMap` 中
-- 以便下次代理 `get` 操作时，直接从缓存表中获取
-
-要求：
-
-- 是函数 `isCallable` [[查看](#iscallable判断对象是一个函数)]，且不可 `isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]，也不可 `isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
-
-缓存 `setFnCacheMap`：
-
-- `WeakMap` 对象，键名 `property` 取出来的函数，键值一定是昂定了 `iframeWindow` 作为 `this` 的不可实例化的函数
+- 绑定前会通过 `checkProxyFunction` 将符合要求的方法存入映射表，见：`setFnCacheMap` [[查看](#1-setfncachemap-存储绑定上下文的方法)]
+- 以便下次 `get` 操作时，直接从缓存表中获取
 
 **`has` 操作**
 
