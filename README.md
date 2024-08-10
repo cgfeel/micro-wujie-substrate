@@ -4327,7 +4327,7 @@ window.onfocus = () => {
 需要说明的是：
 
 - 劫持样式元素的属性打补丁，每次 `handleStylesheetElementPatch` 都会提取完整的样式进行匹配
-- 对于动态操作，可能会造成重复执行，但重复添加样式不产生问题，不会影响使用
+- 对于动态操作，可能会造成重复执行，但不会影响使用，见：额外说明 [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md#4-%E9%A2%9D%E5%A4%96%E8%AF%B4%E6%98%8E)]
 
 ### 辅助方法 - 实用工具
 
