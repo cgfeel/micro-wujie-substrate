@@ -1663,7 +1663,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `:host` 改名即可，放入容器的 `head` 会自动生效
 - `@font-face` 放入 `doocument` 下即可，但为了便于管理放在 `shadowRoot.host` 里面
 
-> 补丁样式清空的方式，见：单独总结
+> 补丁样式清空的方式，见：单独总结 [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md#3-%E6%80%BB%E7%BB%93)]
 
 调用场景：
 
