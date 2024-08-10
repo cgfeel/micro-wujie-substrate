@@ -1891,9 +1891,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 返回 1 对象，包含 3 个属性：
 
-- `proxyWindow`：代理 `iframeWindow`，这个属性是降级代理 `localGenerator` 不能提供的
-- `proxyDocument`：代理空对象，但是会从渲染容器和全局 `document` 中获取属性
-- `proxyLocation`：代理空对象，但是会从沙箱 `location` 和子应用入口链接获取属性
+- `proxyWindow`：代理沙箱 `window` 对象，降级代理 `localGenerator` 不提供
+- `proxyDocument`：代理空对象，但根据情况选择不同容器进行劫持或操作
+- `proxyLocation`：代理空对象，但根据情况使用子应用链接或沙箱 `location` 劫持或操作
 
 #### 1. 代理 `iframeWindow` 作为 `proxyWindow`
 
