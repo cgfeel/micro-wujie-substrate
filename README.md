@@ -1801,7 +1801,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 因此得出：
 
 - `hrefFlag` 标记时，表示当前应用的链接并非来自基座
-- 只有子应用内通过 `location.href` 修改当前页面链接才会拦截触法
+- 只有子应用内通过 `location.href` 修改当前页面链接才会拦截触发
 - 由于 `locationHrefSet` 存在 `bug` [[查看](#locationhrefset拦截子应用-locationhref)]，因此仅限来自非降级模式下的子应用
 
 用途：
