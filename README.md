@@ -1936,11 +1936,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **`has` 操作**
 
-直接从 `iframeWindow` 判断是否存在对象，回顾一下 `get` 方法会发现：
+直接从 `proxyWindow` 中判断是否存在对象：
 
-- 除了 `self`、`window`、`location`，全部都从 `iframeWindow` 中获取
-- 而 `self`、`window`、`location` 这 3 个属性在 `iframwWindow` 也依旧存在
-- 因此 `get` 和 `has` 的逻辑就一致了，虽然 `get` 取值的时候不一定是从 `iframeWindow` 中获取
+- 由于 `proxyWindow` 就是沙箱 `window` 的代理，直接从 `proxyWindow` 判断即可
 
 #### 2. 代理空对象作为 `proxyDocument`
 
