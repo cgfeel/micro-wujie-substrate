@@ -1913,7 +1913,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 返回自身 `proxyWindow`：
 
 - `self`
-- `window`：获取全局 `window` 描述，如果存在 `get` 属性
+- `window`：必须是全局 `window` 描述中存在 `get` 属性
 
 从 `iframeWindow` 通过 `property` 获取对象直接返回：
 
