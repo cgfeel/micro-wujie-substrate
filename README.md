@@ -1706,7 +1706,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 7. `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]                                                                           | 动态样式 | 为动态样式打补丁                                 |
 
 - 对于方法：2、3，对比加载 `script`，方法全部归纳在 `start` [[查看](#-start-启动应用)]
-- 对于打补丁的方法：5、8，执行的过程是一样的
+- 对于打补丁的方法：4、7，执行的过程是一样的
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
