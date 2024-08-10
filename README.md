@@ -1936,9 +1936,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **`has` 操作**
 
-直接从 `proxyWindow` 中判断是否存在对象：
+从 `proxyWindow` 中判断是否存在对象：
 
-- 由于 `proxyWindow` 就是沙箱 `window` 的代理，直接从 `proxyWindow` 判断即可
+- `proxyWindow` 是沙箱 `window` 的代理，可直通过 `in` 判断属性是否存在
 
 #### 2. 代理空对象作为 `proxyDocument`
 
