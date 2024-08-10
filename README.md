@@ -1925,7 +1925,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window`
 - 不符合 `setFnCacheMap` 要求直接从沙箱 `window` 中找到属性并返回，找不到返回 `undefined`
-- 全局 `window` 描述信息中不存在 `get` 属性，从沙箱 `window` 中获取属性 `window`
+- 全局 `window` 描述信息中不存在 `get` 属性，从沙箱 `window` 中获取属性
 
 **`set` 操作**
 
