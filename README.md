@@ -1906,11 +1906,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **`get` 操作按照获取的 `property` 返回相应对象**
 
-返回 `proxyLocation` 对象 [[查看](#3-代理空对象作为-proxylocation)]：
+返回 `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]：
 
 - `location`
 
-返回自身 `proxyWindow` 对象：
+返回自身 `proxyWindow`：
 
 - `self`
 - `window`：获取全局 `window` 描述，如果存在 `get` 属性
