@@ -1847,7 +1847,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 为什么？
 
-- 对于重建模式，每次都会销毁实例重建，`url` 已 `startApp` 提供的配置为准
+- 对于重建模式，每次都会销毁实例重建，`url` 以 `startApp` 提供的配置为准
 - 其他不销毁实例的模式下，`active` 设置 `url` 后仅做了同步路由的操作
 - 其他关于路由、`location` 等操作已在构造函数完成
 - 而应用资源则在 `active` 之前已通过 `importHTML` 加载完毕 [[查看](#importhtml-加载资源)]
@@ -1855,6 +1855,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 只能说 `url` 分开赋值有可能造成隐患，如何彻底杜绝呢？
 
 - `active` 取消赋值 `url`，直接从 `this.url` 中获取，因为构造函数已赋值了
+
+那 `preloadApp` 和 `startApp` 提供的应用名不一样呢？
+
+- 那就作为不同的应用加载了，`wujie` 按照应用名来划分应用
 
 ### `wujie` 中的代理
 
