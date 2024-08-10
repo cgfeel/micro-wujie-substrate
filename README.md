@@ -1692,7 +1692,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 流程和 `handleStylesheetElementPatch` 中宏任务的回调函数是一样的 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]：
 
 - 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
-- 若存在 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
+- 若存在 `hostStyleSheetElement`：`:host` 样式元素，将其插入 `shadowRoot.head`
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 如果通过上述任意样式打过补丁，标记 `WUJIE_DATA_ATTACH_CSS_FLAG` 避免下次重复执行
 
@@ -4279,7 +4279,7 @@ window.onfocus = () => {
 `patcher` 做了什么：
 
 - 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
-- 若存在 `hostStyleSheetElement`：`host` 样式元素，将其插入 `shadowRoot.head`
+- 若存在 `hostStyleSheetElement`：`:host` 样式元素，将其插入 `shadowRoot.head`
 - 若存在 `fontStyleSheetElement`：字体样式元素，将其插入 `shadowRoot.host` 末尾
 - 将属性 `_patcher` 设为 `undefined`，允许后续继续操作
 
