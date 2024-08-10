@@ -1658,6 +1658,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 关于 `@font-face` 两篇外网资料: robdodson [[查看](https://robdodson.me/posts/at-font-face-doesnt-work-in-shadow-dom/)]、chromium [[查看](https://issues.chromium.org/issues/41085401)]
 
+放入位置有什么讲究：
+
+- `:host` 改名即可，放入容器的 `head` 会自动生效
+- `@font-face` 放入 `doocument` 下即可，但为了便于管理放在 `shadowRoot.host` 里面
+
+> 补丁样式清空的方式，见：单独总结
+
 调用场景：
 
 - `active` 激活应用：将资源注入 `shadowRoot` 之后 [[查看](#-active-激活应用)]
