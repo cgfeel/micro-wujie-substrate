@@ -1837,7 +1837,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - ❎ 目前不可能，源码中只要声明实例，那么随后一定会使用相同的 `url` 加载资源，`active` 激活应用
 
-问题 2：构造函数和 `active` 提供的 `url`不一样
+问题 2：`preloadApp` 和 `startApp` 时 `url` 不一样呢
 
 - ✅ 有可能
 
