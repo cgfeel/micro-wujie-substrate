@@ -1895,9 +1895,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `proxyDocument`：代理空对象，但根据情况选择不同容器进行劫持或操作
 - `proxyLocation`：代理空对象，但根据情况使用子应用链接或沙箱 `location` 劫持或操作
 
-#### 1. 代理 `iframeWindow` 作为 `proxyWindow`
+#### 1. 代理沙箱 `window` 作为 `proxyWindow`
 
-分别对 `get`、`set`、`has` 做了代理
+分别对 `get`、`set`、`has` 做了代理，在提供的流程图中可以看到 [[查看](#wujie-中的代理)]
+
+- `proxyWindow` 是包裹在 `script module` 下工作的
+- 即子应用中的 `script` 对 `window` 等全局对象操作都指向同一个 `proxyWindow`
+- 这样即便是沙箱 `window` 也不会收到污染
+- 而对于不同的应用，各自应用下的 `script` 都指向各自应用的 `proxyWindow`
 
 **`get` 操作按照获取的 `property` 返回相应对象**
 
