@@ -4244,7 +4244,8 @@ window.onfocus = () => {
 
 1. 通过 `active` 将 `template` 注入容器后通过 `patchRenderEffect` 重写注入方法 [[查看](#patchrendereffect-为容器打补丁)]
 2. 通过 `start` 将入口文件添加到沙箱 `iframe`，执行动态渲染
-3. 通过 `rewriteAppendOrInsertChild` 拦截写入操作，根据情况打补丁
+3. 通过 `rewriteAppendOrInsertChild` 拦截空的样式元素写入，并对属性做拦截
+4. 通过 `patchStylesheetElement` 拦截样式写入元素，提取指定样式打补丁
 
 > 静态样式的提取通过 `patchCssRules` 打补丁，不会按照动态样式操作 [[查看](#-patchcssrules-子应用样式打补丁)]
 
