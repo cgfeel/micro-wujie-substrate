@@ -1878,7 +1878,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 📝 `proxyGenerator` 非降级情况下的代理
 
-非降级 `degrade` 情况下 `window`、`document`、`location`代理
+非降级 `degrade` 情况下代理：`window`、`document`、`location`
 
 目录：`entry.ts` - `proxyGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L40)]
 
