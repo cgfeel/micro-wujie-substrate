@@ -1815,8 +1815,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 通常来自配置文件设定挂载节点，但是下面情况除外：
 
-- `preloadApp` 预加载：沙箱 `iframe` 的 `body`
-- `startApp` 加载应用不提供 `el`：沙箱 `iframe` 的 `body`
+- `preloadApp` 预加载：挂载到沙箱 `iframe` 的 `body`
+- `startApp` 加载应用不提供 `el`：挂载到沙箱 `iframe` 的 `body`
 - `startApp` 切换应用不提供 `el`：直接报错
 
 属性值的更新：
