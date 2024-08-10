@@ -1693,7 +1693,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 篇幅太长单独整理了一篇，见：`wujie` 中 `patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
 
-除此之外在这里不得不吐槽一下，`wujie` 处理样式真的很零乱：
+在这里不得不吐槽一下，`wujie` 处理样式真的很零乱：
 
 | 方法                                                                                                                                                                      | 样式类型 | 用途                                             |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------ |
@@ -1707,6 +1707,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 对于方法：2、3，对比加载 `script`，方法全部归纳在 `start` [[查看](#-start-启动应用)]
 - 对于打补丁的方法：4、7，执行的过程是一样的
+
+除此之外以下方法执行过程也高度相似：
+
+- `startApp` 的实例初始化和 `preloadApp` 中 `runPreload`
+- `umd` 切换应用和 `mount` 方法
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
 
