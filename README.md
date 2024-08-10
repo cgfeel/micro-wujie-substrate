@@ -1858,6 +1858,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `active` 取消赋值 `url`，直接从 `this.url` 中获取，因为构造函数已赋值了
 
+`url` 使用的场景：
+
+- `WuJie`：构造函数实例化 [[查看](#-constructor-构造函数)]
+- `initBase`：初始化设置沙箱 `base` 元素 [[查看](#base标签操作)]
+- `importHTML`：加载应用资源 [[查看](#importhtml-加载资源)]
+- `active`：激活应用 [[查看](#-active-激活应用)]
+- `syncUrlToIframe`：同步基座的路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+
+> 顺序从上至下，只列觉了和 `url` 直接有关系的方法，不包含通过 `url` 衍生对象，例如：`proxyLocation`
+
 那 `preloadApp` 和 `startApp` 提供的应用名不一样呢？
 
 - 那就作为不同的应用加载了，`wujie` 按照应用名来划分应用
