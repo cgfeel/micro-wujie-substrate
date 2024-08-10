@@ -1915,12 +1915,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `self`
 - `window`：必须是全局 `window` 描述中存在 `get` 属性
 
-从 `iframeWindow` 通过 `property` 获取对象直接返回：
+从沙箱 `window` 直接获取 `property` 不需要绑定 `this`：
 
-- `window`：通过 `getOwnPropertyDescriptor` 获取全局 `window` 描述，不存在 `get` 属性
-- 通过 `getOwnPropertyDescriptor` 从 `iframeWindow` 获取描述信息，返回的对象不可配置且不可写
-- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`：这是初始 `iframe` 时绑定的原生方法不需要代理，见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
-- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：同 `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`：见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+- `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+- 通过 `getOwnPropertyDescriptor` 获取 `property` 描述信息为不可配置且不可写
+
+需要将 `this` 指向沙箱 `window` 的 `property`：
+
+- 沙箱 `window` 中通过
+
+- `window`：如果全局 `window` 描述中不存在 `get` 属性
 - `getTargetValue` 中所有不能缓存在映射表 `setFnCacheMap` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]
 
 其他情况：
@@ -4621,6 +4626,30 @@ proxyWindow.addEventListener;
 除此之外：
 
 - `wujie` 还提供了 `props` 通信通信和 `window` 通信，来避免 `EventBus`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
+
+#### 📝 作用域下的映射表
+
+#### 1. `setFnCacheMap` 存储绑定上下文的方法
+
+目录：`utils.ts` - `setFnCacheMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L82)]
+
+以下要求必须全部都满足：
+
+- 必须是一个函数，见：`isCallable` [[查看](#iscallable判断对象是一个函数)]
+- 不能是 `bound` 开头的剪头函，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
+- 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
+
+存储类型为 `WeakMap` 的对象：
+
+- 键名：从对象中提取的原始方法
+- 键值：上下文 `this` 绑定到属性所附属的对像后的方法
+
+> 劫持 `set` 绑定到对象上的新方法，键值和键名都是对象上的方法，不需要额外绑定，默认 `this` 指向属性所在的对象上
+
+使用场景：
+
+- `checkProxyFunction`：添加到映射表
+- `getTargetValue`：获取映射表 [[查看](#gettargetvalue-从对象中获取属性)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
