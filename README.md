@@ -1732,12 +1732,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 由于 `umd` 模式初次 `start` 之后，再次启动不会重复注入执行 `script`
 - 因此应用中的动态样式也不会重新注入，需要在 `mount` 前通过 `styleSheetElements` 恢复样式
 
-> `styleSheetElements` 的样式来自 2 处，见：`styleSheetElements` [[查看](#同时添加元素)]
+> `styleSheetElements` 的样式收集来自 2 处 [[查看](#2-stylesheetelements-收集样式表)]
 
 恢复方式：
 
-- 遍历 `styleSheetElements` 集合，如果不存在或者为空则跳过恢复
-- 根据容器决定将集合中的样式添加到 `shadowRoot` 还是 `iframe` 容器中
+- 遍历 `styleSheetElements` 集合将集合中的样式元素注入应用的容器中
+- 通过 `patchCssRules` 为恢复的样式打补丁
+
+> 为样式打补丁存在重复加载的 `Bug`，见：单独总结 [[查看](https://github.com/cgfeel/micro-wujie-substrate?tab=readme-ov-file#handlestylesheetelementpatch%E4%B8%BA%E5%BA%94%E7%94%A8%E4%B8%AD%E5%8A%A8%E6%80%81%E6%A0%B7%E5%BC%8F%E6%89%93%E8%A1%A5%E4%B8%81)]
 
 #### 📝 `destroy` 销毁实例
 
