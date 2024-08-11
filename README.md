@@ -2321,9 +2321,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 在 `patchDocumentEffect` 打补丁时如何指向 `proxyDocument`：
 
-- 通过 `documentProxyProperties` 遍历操作 `documet` 的属性集合，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L504)]
-- 遍历时通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 上对应的属性
-- 将其 `get` 操作是返回 `proxyDocument` 中对应的属性
+- 遍历 `documentProxyProperties` 匹配 `documet` 的属性集合
+- 为每一项通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 上对应的属性
+- 将其 `get` 操作指向 `proxyDocument` 中对应的属性
 
 在 `proxyDocument` 收到请求后怎么处理：
 
