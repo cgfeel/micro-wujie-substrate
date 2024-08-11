@@ -2067,7 +2067,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 设计初衷：
 
-- 在沙箱 `iframe` 初始化时已将 `src` 设为和基座同域，由此决定了沙箱中的 `locationn`
+- 在沙箱 `iframe` 初始化时已将 `src` 设为和基座同域，由此决定了沙箱 `locationn`
 - 而在沙箱中更新链接或 `history`，也需要确保更新的 `url` 和基座同域
 - 但是子应用中通过 `location` 读取属性时，则需要保持和资源入口链接同域
 
