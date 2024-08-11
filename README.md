@@ -2367,7 +2367,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 | `url` 获取  | 子应用入口链接         | `host` 和基座同域     | 子应用入口链接  |
 | `host`      | 子应用                 | 基座同域              | 子应用          |
 | `reload`    | 屏蔽                   | 不屏蔽                | 屏蔽            |
-| `href` 更新 | 创建 `iframe` 代替容器 | 浏览器默认行为        | 目前用不到      |
+| `href` 更新 | 创建 `iframe` 代替容器 | 在沙箱 `iframe` 跳转  | 目前用不到      |
 | `replace`   | 替换绝对路径和基座同域 | 不做任何处理          | 目前用不到      |
 
 原因：
