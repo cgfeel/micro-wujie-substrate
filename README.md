@@ -2091,7 +2091,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 初衷：毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
 - 原因：子应 `reload` 用会因为自身的 `src` 是基座的 `host`，重新加载基座造成错误
 - 问题：但同时也阉割子应用 `location.reload` 功能
-- 修复：正确的做法应该是转发自全局 `window.reload`
+- 修复：正确的做法应该是转发自全局 `window.location.reload`
 
 处理 `replace` 的 `bug`，先解读流程：
 
