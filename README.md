@@ -2088,7 +2088,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 屏蔽 `reload` 的 `bug`：
 
-- 毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
+- 屏蔽初衷：毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
 - 一旦 `reload` 子应用会因为自身的 `src` 是基座的 `host` 重新加载基座造成错误
 - 但同时也阉割子应用 `reload` 功能，正确的做法应该是转发自全局 `window.reload`
 
