@@ -2212,7 +2212,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### 📝 `localGenerator` 降级情况下的代理
 
-降级情况下`document`、`location`代理处理
+降级情况下 `document`、`location` 的代理，`window` 采用沙箱 `window`，也不需要包裹 `script module`，直接使用沙箱 `iframe` 做隔离，见：流程图 [[查看](#wujie-中的代理)]
 
 目录：`proxy.ts` - `localGenerator` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/proxy.ts#L261)]
 
