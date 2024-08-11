@@ -2092,7 +2092,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 应用中所有的 `script` 的 `location` 操作都指向 `proxyLocation`
 - 应用的 `window` 指向 `prooxyWindow`，而 `proxyWindow` 的 `location` 指向 `proxyLocation`
-- 而沙箱 `iframe` 读取操作的 `location` 对象不会受到任何污染
+- 而沙箱 `iframe` 读取操作的 `location` 对象，不会受到来自 `proxyLocationn` 对象任何污染
 
 拦截的方法：
 
