@@ -2077,24 +2077,22 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 拦截子应用读取 `location` 对象中所有属性和方法
 
-**从子应用入口链接获取信息，包含：**
+从子应用入口链接获取信息，包含：
 
 - `host`、`hostname`、`protocol`、`port`、`origin`
 
-**获取 `href`：**
+获取 `href`：
 
 - 获取沙箱 `iframe` 的 `location.href`，返回之前要用主应用的 `host` 替换为子应用的 `host`
 - 因为 `iframe` 的 `host` 和基座同域，在子应用中的 `href` 要和子应用的 `host` 对齐
 
-**屏蔽 `reload` 的 `bug`：**
+屏蔽 `reload` 的 `bug`：
 
 - 毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
 - 一旦 `reload` 子应用会因为自身的 `src` 是基座的 `host` 重新加载基座造成错误
 - 但同时也阉割子应用 `reload` 功能，正确的做法应该是转发自全局 `window.reload`
 
-**处理 `replace` 的 `bug`**
-
-先解读流程：
+处理 `replace` 的 `bug`，先解读流程：
 
 - 获取沙箱 `iframe` 的 `location.replace` 通过 `call` 将 `this` 指向 `iframe` 的 `location`
 - 处理之前会将子应用的 `host` 替换为基座 `host`
@@ -2119,7 +2117,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 iframeWindow.history.replaceState(null, "", args[0])
 ```
 
-**其他情况**
+其他情况：
 
 - 通过 `getTargetValue` 直接从 `iframe` 中的 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
 
