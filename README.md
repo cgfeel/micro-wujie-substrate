@@ -2438,6 +2438,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
+**存在的 `bug`**
+
 以上描述仅在正常情况，不巧 `locationHrefSet` 也有 `bug`：
 
 - 这个问题来自代理 `localGenerator`，因为降级模式下不使用 `proxyLocation` [[查看](#proxylocation-的问题)]
