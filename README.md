@@ -2331,7 +2331,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 关于 `documentProxyProperties` 集合：
 
-- 集合中涵盖了 `document` 需要劫持的属性，包括 `createElement`、`createTextNode` 这些在劫持过程中特殊处理的属性
+- 集合中涵盖了 `document` 需要劫持的属性，包括 `createElement`、`createTextNode` 等需要劫持过程中特殊处理的属性
 - 在 `Proxy` 的 `get` 中会先匹配处理特殊指定的属性，将其结果返回
 - 然后再遍历 `documentProxyProperties` 批量定义的属性进行处理，避免因为冲突覆盖已经处理的代理属性
 
