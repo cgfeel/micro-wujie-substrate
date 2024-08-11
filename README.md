@@ -2263,7 +2263,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 容器中所有的元素通过 `patchElementEffect` 将 `ownerDocument` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]：
 
-- 所以无论是 `documentProxyProperties` 包含的属性，还是不需要考虑的属性，都可以直接从沙箱 `iframe.contentDocument` 中获取
+- 所以无论是 `documentProxyProperties` 包含的属性，还是不需要考虑的属性，都可以直接从容器 `document` 中获取，因为在此之前，它们的 `ownerDocument` 已指向沙箱 `iframe.contentDocument`
 
 #### 2. 劫持空对象作为 `proxyLocation`
 
