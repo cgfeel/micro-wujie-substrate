@@ -2228,8 +2228,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `proxyDocument`：代理空对象，但是会从渲染容器和全局 `document` 中获取属性
 - `proxyLocation`：代理空对象，但是会从沙箱 `location` 和子应用入口链接获取属性
 
-> 由于降级采用 `iframe` 作为容器，子应用的 `window` 指向 `iframe`，不需额外代理
-
 #### 劫持空对象作为 `proxyDocument`
 
 和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyDocument` [[查看](2-代理空对象作为-proxydocument)]
