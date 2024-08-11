@@ -2292,7 +2292,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 那 `degrade` 降级时真的不需要代理 `window` 吗？
 
 - 并不是，至少 `location` 就不是
-- 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation` 的问题
+- 降级后 `iframe` 的 `location` 存在哪些问题？见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 以下属性在降级情况的确不用 `proxyWindow`：
 
