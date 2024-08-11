@@ -1950,7 +1950,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 从全局 `window` 上获取：`document`
 - 从应用实例上获取：`shadowRoot` 容器、`proxyLocation`
-- 从 `iframeWindow` 上获取原生方法：`rawCreateElement` 创建元素、`rawCreateTextNode` 创建文本
+- 从沙箱 `window` 上获取原生方法：`rawCreateElement` 创建元素、`rawCreateTextNode` 创建文本
 
 > 在获取对象前需要确保 `shadowRoot` 已实例化，否则通过 `stopMainAppRun` 输出警告并抛出错误中断执行
 
