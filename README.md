@@ -2088,7 +2088,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 获取 `href`：
 
-- 获取沙箱 `iframe` 的 `location.href`，返回之前要用主应用的 `host` 替换为子应用的 `host`
+- 获取沙箱 `iframe` 的 `location.href`，返回之前要将主应用的 `host` 替换为子应用的 `host`
 - 因为 `iframe` 的 `host` 和基座同域，在子应用中的 `href` 要和子应用的 `host` 对齐
 
 屏蔽 `reload` 的 `bug`：
@@ -2101,7 +2101,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 处理 `replace` 的 `bug`，先解读流程：
 
 - 代理沙箱的 `location.replace` 在 `apply` 中将更新 `replace` 操作的 `url`
-- 更新 `url` 的方式：用子应用的 `host` 替换为基座 `host`
+- 更新 `url` 的方式：将子应用的 `host` 替换为基座 `host`
 - 目的：保持沙箱 `iframe` 和基座同源
 
 `replace` 的条件：
