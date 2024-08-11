@@ -2431,7 +2431,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 替换渲染容器有 2 种情况，先看 `degrade` 主动降级：
 
 - 通过 `rawDocumentQuerySelector` （原生方法），拿到沙箱 `body`
-- 通过 `renderElementToContainer` 将渲染容器中的 `html` 添加到沙箱 `iframeBody` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 通过 `renderElementToContainer` 将渲染容器中的 `html` 元素添加到沙箱 `body` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 - 通过 `renderIframeReplaceApp` 创建一个新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
 非主动降级 `degrade` 只做一件事：
