@@ -2424,7 +2424,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 执行替换有 3 步：
 
-- 标记 `hrefFlag` 以便点击后退时将渲染容器重新替换新建的 `iframe`
+- 标记 `hrefFlag` 以便点击后退时还原渲染容器
 - 替换渲染容器为新建的 `iframe`
 - `pushUrlToWindow` 推送指定 `url` 到主应用路由 [[查看](#pushurltowindow推送-url-到基座路由)]
 
