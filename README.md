@@ -1991,8 +1991,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 其他情况全部在 `shadowRoot` 获取，但是获取前需要转换下参数：
 
 - `getElementsByTagName`：不需要处理
-- `getElementsByClassName`：转换成 `.{$arg}`
-- `getElementsByName`：转换成 `[name="${arg}"]`
+- `getElementsByClassName`：转换成元素类名 `.{$arg}`
+- `getElementsByName`：转换成元素属性名 `[name="${arg}"]`
 
 **代理：`getElementById`**
 
