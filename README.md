@@ -2241,7 +2241,13 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `proxyGenerator` 通过 `Proxy` 拦截对象做代理
 - `locationHrefSet` 通过 `Object.defineProperties` 劫持空对象做代理
-- `documentProxyProperties` 见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+- `documentProxyProperties` 处理方式不同
+
+> 关于 `documentProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+
+为什么降级后代理采用 `Object.defineProperties`：
+
+- 因为 `Proxy` 不兼容 `IE`
 
 `documentProxyProperties` 的处理：
 
