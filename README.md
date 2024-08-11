@@ -2342,7 +2342,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 | 调用场景                                                                        | 模式   | 用途                                       |
 | ------------------------------------------------------------------------------- | ------ | ------------------------------------------ |
-| `getCurUrl` 必要参数                                                            | 通用   | 获取应用当前 `url` 传递给 `loader` 插件    |
+| `getCurUrl` 必要参数                                                            | 通用   | 获取应用的 `url` 传递给 `loader` 插件      |
 | `patchElementEffect` 给应用元素打补丁 [[查看](#patchelementeffect为元素打补丁)] | 通用   | 让元素 `baseURI` 通过 `proxyLocation` 获取 |
 | `proxyDocument`                                                                 | 通用   | 代理中属性 `documentURI`、`URL` 的指向     |
 | `proxyWindow`                                                                   | 非降级 | 代理中属性 `location` 的指向               |
