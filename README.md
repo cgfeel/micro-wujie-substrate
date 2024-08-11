@@ -2296,12 +2296,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 以下属性在降级情况的确不用 `proxyWindow`：
 
-| 属性     | 非降级模式                                            | `degrade` 降级      |
-| -------- | ----------------------------------------------------- | ------------------- |
-| `self`   | `proxyWindow`                                         | 沙箱 `iframeWindow` |
-| `window` | 全局 `window` 描述信息存在 `get` 属性为 `proxyWindow` | 沙箱 `iframeWindow` |
+| 属性     | 非降级模式                                            | `degrade` 降级 |
+| -------- | ----------------------------------------------------- | -------------- |
+| `self`   | `proxyWindow`                                         | 沙箱 `window`  |
+| `window` | 全局 `window` 描述信息存在 `get` 属性为 `proxyWindow` | 沙箱 `window`  |
 
-以下属性无论降级不降级都从 `iframeWindow` 获取：
+以下属性无论降不降级都从沙箱 `window` 中获取：
 
 - 全局 `window` 描述信息不存在 `get` 属性
 - `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`、`__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`
