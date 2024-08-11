@@ -2095,7 +2095,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 处理 `replace` 的 `bug`，先解读流程：
 
-- 获取沙箱 `iframe` 的 `location.replace` 通过 `call` 将 `this` 指向 `iframe` 的 `location`
+- 代理沙箱的 `location.replace` 通过 `call`
 - 处理之前会将子应用的 `host` 替换为基座 `host`
 
 `replace` 的条件：
