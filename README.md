@@ -2194,7 +2194,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **`ownKeys` 枚举所有属性**
 
-- 从沙箱 `iframe` 的 `location` 中获取所有 `property`，但不包括 `reload`
+- 从沙箱 `location` 中获取所有 `property`，但不包括被屏蔽的 `reload`
 
 **`getOwnPropertyDescriptor` 获取描述信息**
 
