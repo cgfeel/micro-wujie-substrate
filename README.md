@@ -2354,8 +2354,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 问题 1：在 `wujie` 子应用中谨慎使用 `location`
 
-- 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议你通过 `history` 来执行
-- 否则可能会有意想不到的效果哦～
+- 如果只是获取值那么一切正常，如果是要跳转、更新 `location` 建议通过 `history` 来执行
+- 否则可能会因为 `location.replace` 或者更新 `location.href` 造成意外的结果
 
 问题 2：在降级模式下的 `location` 和非降级模式下不一致
 
