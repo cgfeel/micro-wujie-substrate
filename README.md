@@ -2414,13 +2414,13 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 渲染容器：`shadowRoot`、`document`，根据 `degrade` 决定要替换的容器
 - `id`，用处 1：降级时从 `Dom` 中找到 `iframe` 容器，用处 2：更新链接，从 `search` 找到当前应用
-- `degradeAttrs`：来自启动配置，用于劫持容器能够匹配页面
+- `degradeAttrs`：来自启动配置，用于劫持容器能够适配页面
 - `url`：通常情况下是 `location.href` 更新的链接，但是相对路径需要转换一下
 
 转换相对路径：
 
 - 通过 `anchorElementGenerator` 将链接转换成 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- 提取 `appHostPath` 子应用 `host` + 链接对象的 `pathname` + `search` + `hash` 作为 `url`
+- 提取 `appHostPath` 子应用 `host` + 提供链接的 `pathname` + `search` + `hash` 作为 `url`
 
 执行替换有 3 步：
 
