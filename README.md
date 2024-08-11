@@ -2386,7 +2386,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 复现问题：
 
-- 在基座中找到 `/src/pages/VuePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/VuePage.tsx)]
+- 在基座中找到：`/src/pages/VuePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/VuePage.tsx)]
 - 在组建中添加 `degrade` 属性，运行切换到 `vue` 应用，点击 `about` 切换到页面
 - 这个时候看到拿到的 `url` 是 `http://localhost:3000/about`
 - 单独打开子应用拿到的 `url` 是 `http://localhost:8080/about`
@@ -2406,7 +2406,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目的：
 
-- 创建一个 `iframe` 去加载子应用的链接，用来代替挂载当前渲染容器
+- 创建 `iframe` 加载拦截的链接，挂载到指定节点，用来代替当前渲染容器
 
 **提取对象**
 
