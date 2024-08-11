@@ -2380,9 +2380,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 怎么打补丁：
 
-- 通过 `Object.getOwnPropertyNames` 遍历 `iframeWindow` 拿到属性 `location`
+- 通过 `Object.getOwnPropertyNames` 遍历沙箱 `window` 拿到属性 `location`
 - 从 `iframeWindow.__WUJIE` 中获取 `degrade`
-- 如果存在降级通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
+- 如果存在降级，通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
 
 复现问题：
 
