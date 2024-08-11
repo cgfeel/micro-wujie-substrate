@@ -2466,9 +2466,10 @@ iframeWindow.history.replaceState(null, "", args[0])
 流程：
 
 - 通过 `anchorElementGenerator` 拿到 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- 通过 `getAnchorElementQueryMap` 拿到 `searc` 的键值对
+- 通过 `getAnchorElementQueryMap` 拿到 `search` 的键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 根据当前应用名 `id` 将值更新为 `encode` 的 `url`
-- 将更新后的键值对更新为 `searh`，并通过 `window.history.pushState` 更新记录
+- 将更新后的键值对还原成字符更新 `url.searh`
+- 通过 `window.history.pushState` 更新记录，以便浏览器回退还原容器
 
 ### 辅助方法 - 提取应用资源
 
