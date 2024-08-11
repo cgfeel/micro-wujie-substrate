@@ -2308,9 +2308,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 不可配置不可重写的属性
 - 通过 `getTargetValue` 从沙箱 `window` 获取属性 [[查看](#gettargetvalue-从对象中获取属性)]
 
-为什么降级后渲染容器 `iframe` 的 `window` 是沙箱 `iframe` 中获取：
+为什么降级后容器 `iframe` 的 `window` 从沙箱 `iframe` 中获取：
 
-- 因为 `script` 是注入在沙箱 `iframe` 中
+- 因为 `script` 是注入并运行在沙箱 `iframe` 中
 
 #### `proxyDocument` 在哪调用
 
