@@ -2412,7 +2412,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 从实例中提取以下对象：
 
-- 渲染容器：`shadowRoot`、`document`，根据 `degrade` 决定新建的 `iframe` 替换的对象
+- 渲染容器：`shadowRoot`、`document`，根据 `degrade` 决定要替换的容器
 - `id`，用处 1：降级时从 `Dom` 中找到 `iframe` 容器，用处 2：更新链接，从 `search` 找到当前应用
 - `degradeAttrs`：来自启动配置，便于使用者需要时让新建的 `iframe` 替换不那么突兀
 - `url`：通常情况下是 `location.href` 更新的链接，但是相对路径需要转换一下
