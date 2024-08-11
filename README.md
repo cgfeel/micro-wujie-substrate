@@ -2115,7 +2115,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 拦截后所有链接跳转是在沙箱 `iframe` 下进行的
 - 假定 `replace` 跳转到子应用首页，最终会替换 `url` 为基座首页
-- 导致沙箱 `iframe` 链接跳转到基座首页，从而引发子应用的沙箱去加载基座，导致问题
+- 导致沙箱 `iframe` 链接跳转到基座首页，从而引发子应用的沙箱去加载基座，产生问题
 
 复现：
 
