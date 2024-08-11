@@ -2075,7 +2075,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **`get` 取值**
 
-- 读取子应用中 `location` 对象所有属性和方法时拦截
+- 拦截子应用读取 `location` 对象中所有属性和方法
 
 **从子应用入口链接获取信息，包含：**
 
