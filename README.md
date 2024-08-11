@@ -2137,7 +2137,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 其他情况：
 
-- 通过 `getTargetValue` 直接从 `iframe` 中的 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
+- 通过 `getTargetValue` 直接从沙箱 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
 
 **`set` 赋值**
 
