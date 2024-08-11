@@ -2461,7 +2461,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 调用场景：
 
 - 只有 `locationHrefSet` 拦截子应用 `location.href`
-- 同时也说明监听 `popstate` 时检测前进的页面，正是来自 `locationHrefSet` 做的拦截后推送的更新
+- 也说明监听 `popstate` 时检测前进的页面，只能来自 `pushUrlToWindow` 推送的更新 [[查看](#processappforhrefjump-监听前进和后端)]
 
 流程：
 
