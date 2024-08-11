@@ -2114,13 +2114,22 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 问题：
 
 - 拦截后所有链接跳转是在沙箱 `iframe` 下进行的
-- 假定 `replace` 跳转到子应用首页，那么最终会导致沙箱 `iframe` 链接跳转到基座首页，从而引发问题
-- 这个问题我在 `vue` 子应用中复现了，见路由页面 `/about` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3)]
+- 假定 `replace` 跳转到子应用首页，最终会替换 `url` 为基座首页
+- 导致沙箱 `iframe` 链接跳转到基座首页，从而引发子应用的沙箱去加载基座，导致问题
+
+复现：
+
+- `vue-project` 子应用中复现了问题 [[查看](https://github.com/cgfeel/micro-wujie-app-vue3)]
+- 运行方法：启动子应用和基座，选择 `Vue 应用`，点击进入应用中 `about` 路由
+- 点击按钮 "replace go home" 查看错误演示
 
 怎么修复：
 
-- 开发人员可能需要用到的是 `history` 上的 `replace`，如下演示
-- 而子应用的 `history` 在沙箱 `iframe` 初始化时已经打补丁了，见：`patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- 拦截 `location.replace`，检测跳转的链接是应用内部路由还是外部链接
+- 外部链接通过 `locationHrefSet` 创建临时的劫持容器 [[查看](#locationhrefset拦截子应用-locationhref)]
+- 应用内部路由通过 `history.replace` 进行处理，如下演示
+
+> 子应用的 `history` 在沙箱 `iframe` 初始化时已经打补丁了，见：`patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
 ```
 iframeWindow.history.replaceState(null, "", args[0])
