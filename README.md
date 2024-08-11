@@ -1996,7 +1996,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **代理：`getElementById`**
 
-- 返回：劫持 `shadowRoot.querySelector`
+- 劫持 `shadowRoot.querySelector` 返回 `Proxy` 对象
 - 在返回的方法中通过 `apply` 去处理子应用获取代理方法后，作为处理执行结果并返回
 
 如果上下文 `this` 不是 `iframe.contentDocument`：
