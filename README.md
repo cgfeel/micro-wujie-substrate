@@ -2306,7 +2306,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 全局 `window` 描述信息不存在 `get` 属性
 - `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR__`、`__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`
 - 不可配置不可重写的属性
-- `getTargetValue`
+- 通过 `getTargetValue` 从沙箱 `window` 获取属性 [[查看](#gettargetvalue-从对象中获取属性)]
 
 为什么降级后渲染容器 `iframe` 的 `window` 是沙箱 `iframe` 中获取：
 
