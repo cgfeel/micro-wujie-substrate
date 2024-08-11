@@ -2408,7 +2408,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 创建 `iframe` 加载拦截的链接，挂载到指定节点，用来代替当前渲染容器
 
-**提取对象**
+**操作流程**
 
 从实例中提取以下对象：
 
