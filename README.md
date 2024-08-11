@@ -2011,12 +2011,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 **代理：查询方法**
 
 - 包含：`querySelector`、`querySelectorAll`
-- 返回：通过 `shadowRoot` 劫持对应方法
-- 在返回的方法中通过 `apply` 去处理子应用获取代理方法后，作为处理执行结果并返回
+- 劫持 `shadowRoot` 对应方法返回 `Proxy` 对象
+- 在返回的对象中通过 `apply` 去处理子应用获取代理方法后，处理执行结果并返回
 
 如果上下文 `this` 不是 `iframe.contentDocument`：
 
-- 直接从上下文中获取元素
+- 直接从上下文中获取元素，说明当前操作的 `Dom` 对象没有打补丁指向沙箱 `document`
 
 否则：
 
