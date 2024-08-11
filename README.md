@@ -2005,7 +2005,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 否则：
 
-- 转换参数转换成匹配 `querySelector` 的查询参数，如：`[id="${arg}"]`
+- 转换参数去匹配 `querySelector` 做查询，如：`[id="${arg}"]`
 - 优先从 `shadowRoot` 去查询，找不到再去沙箱 `iframe` 中查询，因为获取的有可能是 `script`
 
 **代理：查询方法**
