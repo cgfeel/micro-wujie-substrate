@@ -2265,7 +2265,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 所以无论是 `documentProxyProperties` 包含的属性，还是不需要考虑的属性，都可以直接从沙箱 `iframe.contentDocument` 中获取
 
-#### 劫持空对象作为 `proxyLocation`
+#### 2. 劫持空对象作为 `proxyLocation`
 
 和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
 
