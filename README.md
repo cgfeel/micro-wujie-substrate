@@ -2370,11 +2370,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 | `href` 更新 | 创建 `iframe` 代替容器 | 在沙箱 `iframe` 跳转  | 目前用不到      |
 | `replace`   | 替换绝对路径和基座同域 | 不做任何处理          | 目前用不到      |
 
-原因：
-
-- 非降级的 `location` 在`insertScriptToIframe` 注入 `script` 到沙箱 `iframe` 时，包裹到模块中 [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 降级的子应用 `location` 为沙箱 `iframe` 的 `location`，不做代理
-- 而降级的沙箱 `iframe` 和基座的 `host` 同域，也就造成了子应用的 `location` 和真实不符
+> 原因参考：`proxyLocation` 在哪里调用 [[查看](#proxylocation-在哪里调用)]
 
 那为什么 `degrade` 下基座不一样呢？
 
