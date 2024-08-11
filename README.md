@@ -2020,7 +2020,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 否则：
 
-- 优先从 `shadowRoot` 查询，查询不到再去沙箱 `iframe` 中插叙
+- 优先从 `shadowRoot` 查询，查询不到再去沙箱 `iframe` 中查询
 - 但不会去查沙箱 `iframe` 中的 `base` 元素，因为他会影响路由
 
 > 从上面可以明确知道，存放 `script` 一定是沙箱 `iframe`，其他元素一定是 `shadowRoot`，否则就会匹配错乱
