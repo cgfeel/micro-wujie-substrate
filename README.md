@@ -2112,7 +2112,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 获取 `href`：
 
 - 获取沙箱 `iframe` 的 `location.href`，返回之前要将主应用的 `host` 替换为子应用的 `host`
-- 因为 `iframe` 的 `host` 和基座同域，在子应用中的 `href` 要和子应用的 `host` 对齐
+- 因为 `iframe` 的 `host` 和基座同域，而应用中资源的 `url` 是和子应用的 `host` 对齐
 
 屏蔽 `reload` 的 `bug`：
 
