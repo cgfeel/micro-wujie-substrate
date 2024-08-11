@@ -2180,7 +2180,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 这意味着：
 
 - 实际使用过程中，哪怕没有考虑需要 `degrade` 主动降级
-- 但只要应用中存在 `location.href` 更新页面链接，就需要考虑添加 `degradeAttrs` 配置
+- 但只要应用中存在 `location.href` 更新页面链接，就需要添加 `degradeAttrs` 配置
 
 设计初衷：
 
