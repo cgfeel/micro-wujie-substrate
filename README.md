@@ -2333,9 +2333,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 集合中涵盖了 `document` 需要劫持的属性，包括 `createElement`、`createTextNode` 等需要劫持过程中特殊处理的属性
 - 在 `Proxy` 的 `get` 中会先匹配处理特殊指定的属性，将其结果返回
-- 然后再遍历 `documentProxyProperties` 批量定义的属性进行处理，避免因为冲突覆盖已经处理的代理属性
+- 然后再遍历 `documentProxyProperties` 批量定义的属性进行处理，避免因冲突覆盖已处理的代理属性
 
-> 对于降级的 `proxyDocument` 则是通过 `modifyLocalProperties` 排除已定义的特殊属性，见：源码[[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L44)]
+> 对于降级的 `proxyDocument` 则通过 `modifyLocalProperties` 排除已定义的特殊属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L44)]
 
 #### `proxyLocation` 在哪里调用
 
