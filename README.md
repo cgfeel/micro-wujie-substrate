@@ -2342,7 +2342,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `getCurUrl` 必要参数，目的获取应用当前 `url` 传递给 `loader` 插件
 - `patchElementEffect` 给子应用元素打补丁，让其 `baseURI` 通过 `proxyLocation` 获取 [[查看](#patchelementeffect为元素打补丁)]
-- 通过 `insertScriptToIframe` 在非降级模式下为所有 `script` 包裹的模块代理 `location` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- `insertScriptToIframe` 非降级模式下包裹注入沙箱的 `script` 作为 `location` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+> 其中 `getCurUrl` 和 `baseURI` 的操作方式一模一样
 
 #### `proxyLocation` 的问题
 
