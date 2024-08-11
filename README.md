@@ -2316,13 +2316,18 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 来自沙箱 `document` 打补丁有 2 处，见：`patchDocumentEffect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
-- 遍历 `documentProxyProperties` 集合劫持沙箱 `document` 属性
-- 获取 `body` 和 `head` 对象时，从渲染容器里返回 `Dom` 元素
+- 遍历 `documentProxyProperties` 集合，劫持沙箱 `document` 属性
+- 获取 `body` 和 `head` 对象时，从 `proxyDocument` 里返回 `Dom` 元素
 
-在 `proxyDocument` 执行顺序：
+在 `patchDocumentEffect` 打补丁时如何指向 `proxyDocument`：
 
-- `patchDocumentEffect` 打补丁时候通过 `defineProperty` 劫持，然后调用 `proxyDocument` 的 `get` 拦截
-- 为了能够拦截的更全面，会迭代 `documentProxyProperties` 属性集合，依次拦截
+- 通过 `documentProxyProperties` 遍历操作 `documet` 的属性集合，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L504)]
+- 遍历时通过 `Object.defineProperty` 劫持 `iframeWindow.Document.prototype` 上对应的属性
+- 将其 `get` 操作是返回 `proxyDocument` 中对应的属性
+
+在 `proxyDocument` 收到请求后怎么处理：
+
+- 按照 `get` 的属性返回相应对象，参考：代理空对象作为 `proxyDocument` [[查看](#2-代理空对象作为-proxydocument)]
 
 关于 `documentProxyProperties` 集合：
 
