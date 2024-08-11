@@ -2230,7 +2230,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### 劫持空对象作为 `proxyDocument`
 
-和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyDocument` [[查看](2-代理空对象作为-proxydocument)]
+和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyDocument` [[查看](#2-代理空对象作为-proxydocument)]
 
 - 创建元素和文本：`createElement`、`createTextNode`
 - 代理 `documentURI` 和 `URL`
