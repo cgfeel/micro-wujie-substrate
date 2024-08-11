@@ -2443,7 +2443,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 以上描述仅在正常情况，不巧 `locationHrefSet` 也有 `bug`：
 
 - 因为降级模式下不使用 `proxyLocation` [[查看](#proxylocation-的问题)]
-- 因此降级模式下也不会拦截 `location.href` 的更新，导致在 `iframe` 容器中不会拦截并创建劫持容器
+- 因此也不会拦截 `location.href` 的更新，导致在 `iframe` 容器中并不会因此创建劫持容器
 
 复现和修复：
 
