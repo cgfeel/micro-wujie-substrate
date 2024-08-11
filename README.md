@@ -1961,8 +1961,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 在 `Proxy` 中通过 `apply` 在调用时代理操作行为：
 
 - 根据 `property` 决定使用 `rawCreateElement` 还是 `rawCreateTextNode`
-- 执行方法时通过 `apply` 绑定 `iframe.contentDocument` 作为 `this`，透传参数 `arg`
-- 为每一个生成的 `Dom` 打补丁后并返回，见：`patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
+- 执行方法时通过 `apply` 绑定沙箱 `iframe.contentDocument` 作为 `this`，透传参数 `arg`
+- 通过 `patchElementEffect` 为每一个生成的 `Dom` 打补丁后并返回： [[查看](#patchelementeffect为元素打补丁)]
 
 备注：
 
