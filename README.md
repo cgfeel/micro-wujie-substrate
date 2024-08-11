@@ -1940,6 +1940,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `proxyWindow` 是沙箱 `window` 的代理，可直通过 `in` 判断属性是否存在
 
+**一道思考题：`proxyWindow` 中的 `document` 指向谁？**
+
+先说答案：
+
+- 会通过 `getTargetValue` 从沙箱 `window` 中直接获取 `document` 属性
+
+> `proxyWindow` 和 `proxyLocation` 可以包裹在 `script module` 中，但是 `proxyDocument` 不行，因为 `Dom` 本身是从上至下的树状结构
+
+衍生问题：沙箱 `documennt` 如何指向 `proxyDocument`
+
+- 通过 `patchDocumentEffect` 进行拦截，见：`proxyDocument` 在哪调用 [[查看](#proxydocument-在哪调用)]
+
 #### 2. 代理空对象作为 `proxyDocument`
 
 代理的是一个空对象 `{}`，且只有 `get` 取值：
