@@ -2207,7 +2207,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 关于 `value` 的 `bug`：
 
-- 这里通过 `this` 取值，而 `this` 是 `fake` 空对象 `{}`，所以有可能是 `undefined`
+- 这里通过 `this` 取值，而 `this` 是 `_fakeLocation` 空对象，所以有可能是 `undefined`
 - 当然空对象也有原型链，例如：`toString` 是可以拿到的，但这就和 `location` 无关了
 
 #### 📝 `localGenerator` 降级情况下的代理
