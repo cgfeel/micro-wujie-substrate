@@ -2372,15 +2372,11 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > 原因参考：`proxyLocation` 在哪里调用 [[查看](#proxylocation-在哪里调用)]
 
-那为什么 `degrade` 下基座不一样呢？
-
-- 基座中调用的 `location` 全都来自 `proxyLocation`，这个对象绑定在了 `Wujie` 这个实例对象上了
-
 要怎么修复：
 
 - 我的想法是在 `proxyWindow` 劫持 `location` 指向 `proxyLocation`
-- 但是降级后的 `iframe` 容器使用的是沙箱 `iframeWindow`，而不是 `proxyWindow`
-- 这样就需要从 `patchWindowEffect` 着手打补丁了
+- 但是降级后的 `iframe` 容器使用的是沙箱 `window`，而不是 `proxyWindow`
+- 这样就需要从 `patchWindowEffect` 着手打补丁了 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 
 怎么打补丁：
 
