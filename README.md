@@ -2064,7 +2064,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 第一个对象也称为 `_fakeDocument`（假的 `document`），不会从这个对象上做任何操作
 - 因此所有 `location` 从 `iframe.contentWindow.location` 来获取
-- 在沙箱 `iframe` 初始化之前已将 `location` 设为和基座同域
+- 在沙箱 `iframe` 初始化之前已将 `src` 设为和基座同域
 
 拦截的方法：
 
