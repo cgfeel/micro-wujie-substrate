@@ -2316,7 +2316,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 来自沙箱 `document` 打补丁有 2 处，见：`patchDocumentEffect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
-- 遍历 `documentProxyProperties` 集合，劫持沙箱 `document` 属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
+- 遍历 `documentProxyProperties` 集合，劫持沙箱 `document` 属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L510)]
 - 劫持沙箱 `body`、`head`，从 `proxyDocument` 里返回 `Dom` 元素，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L545)]
 
 在 `patchDocumentEffect` 打补丁时如何指向 `proxyDocument`：
