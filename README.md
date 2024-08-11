@@ -2071,6 +2071,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 而在沙箱中更新链接或 `history`，也需要确保更新的 `url` 和基座同域
 - 但是子应用中通过 `location` 读取属性时，则需要保持和资源入口链接同域
 
+概念名词：
+
+- `proxyLocation`：在沙箱中包裹在 `script module` 中作为代理的 `location`，见：流程图 [[查看](#wujie-中的代理)]
+- 沙箱 `locationn`：沙箱 `iframe` 下的 `location` 对象
+
+这样就意味着：
+
+- 应用中所有的 `script` 的 `location` 操作都指向 `proxyLocation`
+- 应用的 `window` 指向 `prooxyWindow`，而 `proxyWindow` 的 `location` 指向 `proxyLocation`
+- 而沙箱 `iframe` 读取操作的 `location` 对象不会受到任何污染
+
 拦截的方法：
 
 - `get`：取值
