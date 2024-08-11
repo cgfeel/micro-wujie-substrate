@@ -1982,7 +1982,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 如果上下文 `this` 不是 `iframe.contentDocument`：
 
-- 直接从上下文中获取元素
+- 直接从上下文中获取元素，说明当前操作的 `Dom` 对象没有打补丁指向沙箱 `document`
 
 如果 `getElementsByTagName` 获取所有的 `script`：
 
