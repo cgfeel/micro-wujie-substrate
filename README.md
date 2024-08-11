@@ -2043,8 +2043,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `ownerProperties`、`shadowProperties`：
 
-- 如果 `property` 是 `activeElement`，且 `shadowRoot` 找不到的情况下返回 `shadowRoot.body`
-- 其他一律从 `shadowRoot` 中招对应的属性返回
+- 如果 `property` 是 `activeElement`，且 `shadowRoot` 中不存在的情况下返回 `shadowRoot.body`
+- 其他一律从 `shadowRoot` 中返回对应的属性
 
 `shadowMethods`：
 
