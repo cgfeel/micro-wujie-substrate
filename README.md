@@ -2251,8 +2251,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 `documentProxyProperties` 的处理：
 
-- 遍历集合罗列的属性，劫持并通过容器 `iframe` 查找对应的属性
-- 如果是可执行的方法，绑定 `this` 为容器 `iframe` 并返回，否则直接返回属性
+- 遍历集合中的属性，劫持容器 `document` 中对应的属性
+- 如果是可执行的方法，绑定 `this` 为容器 `document` 并返回，否则直接返回属性
 
 不需要考虑的属性：
 
@@ -2261,7 +2261,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 获取集合：`forms`、`images`、`links`
 - 查询方法：`querySelector`、`querySelectorAll`
 
-> 这些方法在 `iframe` 中可以和通过 `document` 获取，不需要代理，而容器中所有的元素都通过 `patchElementEffect` 将 `ownerDocument` 指向沙箱 `iframeWindow.document` [[查看](#patchelementeffect为元素打补丁)]
+容器中所有的元素通过 `patchElementEffect` 将 `ownerDocument` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]：
+
+- 所以无论是 `documentProxyProperties` 包含的属性，还是不需要考虑的属性，都可以直接从沙箱 `iframe.contentDocument` 中获取
 
 #### 劫持空对象作为 `proxyLocation`
 
