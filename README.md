@@ -2095,13 +2095,16 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 处理 `replace` 的 `bug`，先解读流程：
 
-- 代理沙箱的 `location.replace` 通过 `call`
-- 处理之前会将子应用的 `host` 替换为基座 `host`
+- 代理沙箱的 `location.replace` 在 `apply` 中将更新 `replace` 操作的 `url`
+- 更新 `url` 的方式：用子应用的 `host` 替换为基座 `host`
+- 目的：保持沙箱 `iframe` 和基座同源
 
 `replace` 的条件：
 
-- 只处理带有基座 `host` 的绝对路径，只拦截 `location.replace` 不拦截 `history.replace`
-- 而对于 `spa` 应用来说通常是由 `history` 来负责做这件事，也很少人会将完整的 `url` 进行跳转，毕竟线上线下 `host` 不一样
+| 条件                                               | 通常做法                                                                                                                                                                    |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 只替换带有子应用 `host` 的绝对路径                 | 通查使用相对路径，毕竟线上线下 `host` 不一样，但相对路径也存在相同的问题                                                                                                    |
+| 只拦截 `location.replace` 不拦截 `history.replace` | 对于 `SPA` 应用来说通常是由 `history` 来负责路由 `replace`，这个操作在沙箱初始化时由 `patchIframeHistory` 做了拦截 [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)] |
 
 问题：
 
