@@ -2504,7 +2504,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 最终返回 `Promise<htmlParseResult>`，其中 `htmlParseResult` 包含：
 
 - `template`：处理后的资源内容
-- `assetPublicPath`：资源路径
+- `assetPublicPath`：资源路径，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 - `getExternalScripts`：提取外部 `script` 的方法，返回 `ScriptResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 - `getExternalStyleSheets`：提取外部 `style` 的方法，返回 `StyleResultList[]` 集合 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
 
