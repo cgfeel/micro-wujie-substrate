@@ -2477,7 +2477,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### `importHTML` 加载资源
 
-加载子应用资源、获取提取资源的方法
+加载应用资源、提取资源的方法
 
 目录：`entry.ts` - `importHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L200)]
 
