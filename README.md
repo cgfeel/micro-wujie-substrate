@@ -2873,7 +2873,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 只做 2 件事：
 
 - 从 `cache` 缓存对象中获取加载资源的 `Promise`
-- 缓存不存在，通过 `fetch` 加载资源，缓存到 `cache` 之后，将 `Promise` 返回
+- 缓存不存在通过 `fetch` 加载资源，缓存到 `cache` 之后将 `Promise` 返回
 
 缓存机制：
 
