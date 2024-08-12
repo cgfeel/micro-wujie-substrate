@@ -2496,10 +2496,10 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 `opts` 包含 4 个可选属性：
 
-- `fetch`：默认的 `fetch` 还是自定义的 `fetch`
-- `plugins`：子应插件，详细见文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
-- `loadError`：子应用加载资源失败后触发，`startApp` 时配置
-- `fiber`：空闲加载
+- `fetch`：自定义的 `fetch`，没有提供则使用全局 `window` 提供的 `fetch`
+- `plugins`：应插件，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#plugins)]
+- `loadError`：应用加载资源失败后触发，`startApp` 时配置
+- `fiber`：空闲加载，默认为 `true`
 
 最终返回 `Promise<htmlParseResult>`，其中 `htmlParseResult` 包含：
 
