@@ -4753,9 +4753,29 @@ proxyWindow.addEventListener;
 - `checkProxyFunction`：添加到映射表
 - `getTargetValue`：获取映射表 [[查看](#gettargetvalue-从对象中获取属性)]
 
-#### 2. `embedHTMLCache` 缓存资源入口资源
+#### 2. 资源缓存集合
 
-目录：`utils.ts` - `setFnCacheMap` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L82)]
+目录：`entry.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L39)]
+
+有 3 个集合：
+
+- `styleCache`：从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`
+- `scriptCache`：从应用入口资源中提取的静态 `script` 资源，类型为：`Promise<string>`
+
+**`embedHTMLCache`：缓存应用入口链接资源**
+
+- 用资源入口作为键名，键值类型为：`Promise<htmlParseResult>`
+- `htmlParseResult` 见：`importHTML` [[查看](#getembedhtml转换样式)]
+
+不缓存的情况：
+
+- 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+
+**`styleCache`：缓存静态样式资源**
+
+从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`
+
+
 
 #### 📝 `Wujie` 实例中映射表和队列
 
