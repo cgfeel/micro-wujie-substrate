@@ -2488,7 +2488,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > 除了 `qiankun` 使用的是 `import-html-entry` [[查看](https://github.com/kuitos/import-html-entry)]，其他都是单独开发的
 
-先从入参看，参数为包含 3 个属性的 `params`：
+参数为包含 3 个属性的 `params` 对象：
 
 - `url`：远程资源连接
 - `html`：静态资源，存在则优先使用
