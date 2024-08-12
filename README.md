@@ -4773,9 +4773,11 @@ proxyWindow.addEventListener;
 
 **`styleCache`：缓存静态样式资源**
 
-从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`
+从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`：
 
-
+- 由 `getExternalStyleSheets` 发起请求，见：`importHTML` [[查看](#importhtml-加载资源)]
+- 由 `fetchAssets` 记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- 由 `fetchAssets` 记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
