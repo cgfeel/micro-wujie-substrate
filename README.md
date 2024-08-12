@@ -4258,6 +4258,18 @@ window.onfocus = () => {
 
 > 参数 `hash` 存在的意义在于 `url` 是 `hash` 时直接返回而不用合并 `base`
 
+#### `defaultGetPublicPath`：获取资源链接的 `path`
+
+目录：`utils.ts` - `defaultGetPublicPath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L253)]
+
+根据参数 `entry` 返回链接的 `path` 有 3 种情况：
+
+| 参数类型        | 开头字符 | 返回                                 |
+| --------------- | -------- | ------------------------------------ |
+| `object`        | 没有     | `/`                                  |
+| `string`        | `/`      | `origin` + `pathname` 上一层级 + `/` |
+| `proxyDocument` | 非 `/`   | `origin` + `/`                       |
+
 #### 子应用中的链接指向
 
 | 位置          | 分类                        | 描述                                                             | 说明                                                |
