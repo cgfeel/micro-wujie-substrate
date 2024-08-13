@@ -3004,7 +3004,7 @@ return (cache[key] = Promise.resolve());
 
 发起的微任务由 `scripts` 集合中的 `contentPromise` 决定：
 
-- 类型为 `Promise` 的微任务，将确保已将资源 `resolve`，流程见上方总结
+- 类型为 `Promise` 的微任务，将确保资源 `resolve`
 - 类型为 `fetchAssets` 返回的微任务，将确保发起请求
 
 > 为了很好的理解区别，用 `codepen` 做了一个演示 [[查看](https://codepen.io/levi0001/pen/qBzPwZe?editors=1111)]
