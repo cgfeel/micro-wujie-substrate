@@ -2945,6 +2945,8 @@ return (cache[key] = Promise.resolve());
 - `ignore`：仅限 `async` 或 `defer` 的外联 `script` 通过 `fetchAssets` 加载资源
 - 其他情况都会通过 `fetchAssets` 加载资源
 
+> 对于 `ignore` 外联 `script` 支持加载的情况，我想可能是开发人员遗漏了，如果真的需要屏蔽，建议可以通过 `jsExcludes` 来排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+
 通过 `fetchAssets` 不同的加载方式：
 
 - `async` 或 `defer` 下有 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
