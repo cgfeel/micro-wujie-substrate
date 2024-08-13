@@ -3041,7 +3041,6 @@ return (cache[key] = Promise.resolve());
 返回：
 
 - 遍历样式集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
-- 除此之外对于内联样式，会将 `src` 更新为空字符
 
 `contentPromise` 加载情况有 4 种：
 
@@ -3051,6 +3050,8 @@ return (cache[key] = Promise.resolve());
 | `src` 内联样式     | 无       | 提取元素中的样式，在 `Promise` 中以内联代码返回                              |
 | `src` 外联样式     | `ignore` | 在 `Promise` 中以空字符返回                                                  |
 | `src` 外联样式     | 无       | 通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)] |
+
+> 除此之外对于内联样式，会将 `src` 更新为空字符
 
 #### 通过配置替换资源
 
