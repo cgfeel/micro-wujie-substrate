@@ -2978,7 +2978,7 @@ return (cache[key] = Promise.resolve());
 调用方法不需要提供参数，但内部会将以下参数传递给加载方法 `getExternalScripts`：
 
 - `scripts`：筛选后的静态 `script` 集合
-- `fetch`：自定义方法，没有提供则使用你浏览器自带的方法
+- `fetch`：自定义方法，没有提供则使用浏览器自带的方法
 - `loadError`：加载失败通知方法，配置时提供，可选参数
 - `fiber`：透传 `importHTML` 的参数，配置时提供，默认 `true` [[查看](#importhtml-加载资源)]
 
