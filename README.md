@@ -2940,7 +2940,7 @@ return (cache[key] = Promise.resolve());
 
 - `module`：在 `Promise` 中以空字符返回
 - `ignore`：仅限 `async` 或 `defer` 的外联 `script` 通过 `fetchAssets` 加载资源
-- 其他情况都会通过 `fetchAssets` 加载资源
+- 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 > 对于 `ignore` 外联 `script` 支持加载的情况，我想可能是开发人员遗漏了，如果真的需要屏蔽，建议可以通过 `jsExcludes` 来排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
 
@@ -3041,8 +3041,16 @@ return (cache[key] = Promise.resolve());
 返回：
 
 - 遍历样式集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
+- 除此之外对于内联样式，会将 `src` 更新为空字符
 
-> 这也是 `getExternalStyleSheets` 唯一做的 1 件事
+`contentPromise` 加载情况有 4 种：
+
+| 分类               | 条件     | 处理方式                                                                     |
+| ------------------ | -------- | ---------------------------------------------------------------------------- |
+| `content` 内联样式 | 无       | 在 `Promise` 中以内联代码返回                                                |
+| `src` 内联样式     | 无       | 提取元素中的样式，在 `Promise` 中以内联代码返回                              |
+| `src` 外联样式     | `ignore` | 在 `Promise` 中以空字符返回                                                  |
+| `src` 外联样式     | 无       | 通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)] |
 
 #### 通过配置替换资源
 
