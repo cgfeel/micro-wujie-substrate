@@ -2919,7 +2919,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `scripts`：要提取的 `script` 集合，包含的 `script` 可以是外联也可以是内联
+- `scripts`：提取的 `script` 集合，包含的 `script` 可以是外联也可以是内联
 - `fetch`：透传给 `fetchAssets` 的请求方法 [[查看](#fetchassets加载资源缓存后返回-promise)]
 - `loadError`：资源加载失败通知，并非必选参数，同样透传给 `fetchAssets`
 - `fiber`：是否空闲时间加载资源，默认是 `true`
@@ -2929,13 +2929,6 @@ return (cache[key] = Promise.resolve());
 - 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
 
 > 这也是 `getExternalScripts` 唯一做的 1 件事
-
-调用场景：
-
-- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
-- `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
-
-> `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
 
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
@@ -2970,6 +2963,19 @@ return (cache[key] = Promise.resolve());
 
 - `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
 - 这意味着即便是作为内联的 `module`，也要等待文档解析之后触发
+
+调用场景：
+
+- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
+- `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
+
+> `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
+
+手动配置的 `js-loader` 不会通过 `getExternalScripts` 加载资源：
+
+- 包含：`jsBeforeLoaders`、`jsAfterLoaders`，因为沙箱 `iframe` 允许注入外联 `script`
+
+> 应用中除了通过 `js-loader` 手动配置注入沙箱，可以是外联 `script`，其他全部都是内联 `script`，包括 `rewriteAppendOrInsertChild` 拦截应用中动态添加的 `script`
 
 **2. `importHTML` 中的包装方法**
 
@@ -3023,6 +3029,20 @@ return (cache[key] = Promise.resolve());
 1. 加载方法 `getExternalStyleSheets`
 
 应用中所有样式加载、缓存的方法，包括 `importHTML` 中静态样式提取，也是包装 `getExternalStyleSheets` 作为属性返回
+
+目录：`entry.ts` - `getExternalStyleSheets` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L143)]
+
+参数：
+
+- `styles`：提取的样式集合，包含的样式可以是外联也可以是内联
+- `fetch`：透传给 `fetchAssets` 的请求方法 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- `loadError`：资源加载失败通知，并非必选参数，同样透传给 `fetchAssets`
+
+返回：
+
+- 遍历样式集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
+
+> 这也是 `getExternalStyleSheets` 唯一做的 1 件事
 
 #### 通过配置替换资源
 
