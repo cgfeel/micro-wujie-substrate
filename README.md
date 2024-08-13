@@ -3022,6 +3022,8 @@ return (cache[key] = Promise.resolve());
 
 1. 加载方法 `getExternalStyleSheets`
 
+应用中所有样式加载、缓存的方法，包括 `importHTML` 中静态样式提取，也是包装 `getExternalStyleSheets` 作为属性返回
+
 #### 通过配置替换资源
 
 包含 2 个插件和一个启动配置，分别是
