@@ -2929,6 +2929,8 @@ return (cache[key] = Promise.resolve());
 - `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
 
+> `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
+
 方法内只做了 1 件事：
 
 - 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
@@ -2936,7 +2938,7 @@ return (cache[key] = Promise.resolve());
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
 - `ignore`：在 `Promise` 中以空字符返回，只有外联 `script` 特定情况除外，见下方总结
-- 内联 `script`：除了 `ignore`，全部在 `Promise` 中以内联代码返回
+- 内联 `script`：除了 `ignore`，全部在 `Promise` 中以内联代码返回，包括 `module`
 - 外联 `script` 根据条件进行处理
 
 外联 `script` 的处理方式：
