@@ -2956,6 +2956,14 @@ return (cache[key] = Promise.resolve());
 
 > 注意：匹配规则从上到下，上面条件满足加载条件后，不用管下面写的规则
 
+加载外联 `script` 时传递给 `fetchAssets` 的参数：
+
+- `src`：外联脚本的资源链接
+- `scriptCache`：用于缓存 `script` 加载的资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+- `fetch`：透传自身参数 `fetch`
+- `cssFlag`：不是样式资源，全部设为 `false`
+- `loadError`：透传自身参数 `loadError`
+
 除此之外做了什么：
 
 - `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
