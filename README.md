@@ -2990,7 +2990,7 @@ return (cache[key] = Promise.resolve());
 
 `scripts` 从哪里来：
 
-- 由 `processTpl` 从提取的入口资源筛选处静态 `script` [[查看](#processtpl-提取资源)]
+- 由 `processTpl` 从提取的入口资源筛选出静态 `script` [[查看](#processtpl-提取资源)]
 
 调用场景：
 
