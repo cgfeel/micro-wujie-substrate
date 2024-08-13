@@ -3002,7 +3002,7 @@ return (cache[key] = Promise.resolve());
 - 在 `importHTML` 包裹 `getExternalScripts` 方法确保不会立即执行
 - 而在调用场景中通过 `await` 可以确保执行前优先发起任务
 
-发起的任务由 `scripts` 集合中的 `contentPromise` 决定：
+发起的微任务由 `scripts` 集合中的 `contentPromise` 决定：
 
 - 类型为 `Promise` 的微任务，将确保已将资源 `resolve`，流程见上方总结
 - 类型为 `fetchAssets` 返回的微任务，将确保发起请求
