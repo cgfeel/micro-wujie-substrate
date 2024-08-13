@@ -2924,16 +2924,18 @@ return (cache[key] = Promise.resolve());
 - `loadError`：资源加载失败通知，并非必选参数，同样透传给 `fetchAssets`
 - `fiber`：是否空闲时间加载资源，默认是 `true`
 
+返回：
+
+- 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
+
+> 这也是 `getExternalScripts` 唯一做的 1 件事
+
 调用场景：
 
 - `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
 
 > `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
-
-方法内只做了 1 件事：
-
-- 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
 
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
@@ -3013,6 +3015,12 @@ return (cache[key] = Promise.resolve());
 
 - 在 `start` 时应用中的资源将被分配到同步和异步代码中执行 [[查看](#1-收集队列)]
 - 无论是同步代码还是异步代码，都是 `Promise` 队列，必须等待上条执行完毕后才能发起新的微任务
+
+#### `getExternalStyleSheets`：加载样式资源
+
+有 2 个同名的方法，为了做区分这里称呼为：加载方法和 `importHTML` 中的包装方法
+
+1. 加载方法 `getExternalStyleSheets`
 
 #### 通过配置替换资源
 
