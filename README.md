@@ -2953,7 +2953,7 @@ return (cache[key] = Promise.resolve());
 
 加载外联 `script` 时传递给 `fetchAssets` 的参数：
 
-- `src`：外联脚本的资源链接
+- `src`：外联 `script` 的资源链接
 - `scriptCache`：用于缓存 `script` 加载的资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 - `fetch`：透传自身参数 `fetch`
 - `cssFlag`：不是样式资源，全部设为 `false`
@@ -2966,7 +2966,7 @@ return (cache[key] = Promise.resolve());
 
 调用场景：
 
-- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
+- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态 `script`，下面会详细说明
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
 
 > `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
@@ -3051,7 +3051,24 @@ return (cache[key] = Promise.resolve());
 | `src` 外联样式     | `ignore` | 在 `Promise` 中以空字符返回                                                  |
 | `src` 外联样式     | 无       | 通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)] |
 
-> 除此之外对于内联样式，会将 `src` 更新为空字符，因为存在 `src` 为样式元素的情况
+加载外联样式时传递给 `fetchAssets` 的参数：
+
+- `src`：外联样式的资源链接
+- `styleCache`：用于缓存样式加载的资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+- `fetch`：透传自身参数 `fetch`
+- `cssFlag`：样式资源设为 `true`
+- `loadError`：透传自身参数 `loadError`
+
+除此之外做了什么：
+
+- 内联样式会将 `src` 更新为空字符，因为存在 `src` 为样式元素的情况
+
+调用场景：
+
+- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态样式，下面会详细说明
+- `rewriteAppendOrInsertChild`：处理应用中动态加载的外联样式
+
+> 应用中动态加载的内联样式不需要调用 `getExternalStyleSheets`，作为 `SPA` 类型的应用，如 `React` 通常会通过入口文件动态加载样式，以内联的方式将代码注入样式，加载流程单独总结了，见：`patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
 
 #### 通过配置替换资源
 
