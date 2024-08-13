@@ -2959,7 +2959,7 @@ return (cache[key] = Promise.resolve());
 除此之外做了什么：
 
 - `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
-- 哪怕是在 `Promise` 中以空字符返回
+- 这意味着即便是作为内联的 `module`，也要等待文档解析之后触发
 
 **2. `importHTML` 中的包装方法**
 
