@@ -2954,7 +2954,7 @@ return (cache[key] = Promise.resolve());
 - `async` 或 `defer` 下有 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
 - 其他全部直接加载
 
-> 注意：越往下说明的加载情况，一定是匹配过上面已经提到的规则
+> 注意：匹配规则从上到下，上面条件满足加载条件后，不用管下面写的规则
 
 除此之外做了什么：
 
