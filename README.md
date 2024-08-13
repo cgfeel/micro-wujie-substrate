@@ -2870,6 +2870,11 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 通过 `fetch` 返回的 `Promise`
 
+调用场景：
+
+- `getExternalScripts`：加载 `script` 资源
+- `getExternalStyleSheets`：加载样式资源
+
 只做 2 件事：
 
 - 从 `cache` 缓存对象中获取加载资源的 `Promise`
@@ -2901,6 +2906,101 @@ iframeWindow.history.replaceState(null, "", args[0])
 // 这里返回的一定是等号右边的 `Promise`，而不是 `cache`
 return (cache[key] = Promise.resolve());
 ```
+
+#### `getExternalScripts`：加载 `script` 资源
+
+有 2 个同名的方法，为了做区分这里称呼为：加载方法和 `importHTML` 中的包装方法
+
+**1. 加载方法 `getExternalScripts`**
+
+应用中所有 `script` 加载、缓存的方法，包括 `importHTML` 中静态 `script` 提取，也是包装 `getExternalScripts` 作为属性返回
+
+目录：`entry.ts` - `getExternalScripts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L167)]
+
+参数：
+
+- `scripts`：要提取的 `script` 集合，包含的 `script` 可以是外联也可以是内联
+- `fetch`：透传给 `fetchAssets` 的请求方法 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- `loadError`：资源加载失败通知，并非必选参数，同样透传给 `fetchAssets`
+- `fiber`：是否空闲时间加载资源，默认是 `true`
+
+调用场景：
+
+- `importHTML`：包装后作为返回对象的属性，用于加载应用中静态的 `script`，下面会详细说明
+- `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
+
+方法内只做了 1 件事：
+
+- 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
+
+`contentPromise` 加载情况，条件限制从上到下逐步增加：
+
+- `ignore`：在 `Promise` 中以空字符返回，只有外联 `script` 特定情况除外，见下方总结
+- 内联 `script`：除了 `ignore`，全部在 `Promise` 中以内联代码返回
+- 外联 `script` 根据条件进行处理
+
+外联 `script` 的处理方式：
+
+- `module`：在 `Promise` 中以空字符返回
+- `ignore`：仅限 `async` 或 `defer` 的外联 `script` 通过 `fetchAssets` 加载资源
+- 其他情况都会通过 `fetchAssets` 加载资源
+
+通过 `fetchAssets` 不同的加载方式：
+
+- `async` 或 `defer` 下有 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
+- 其他全部直接加载
+
+> 注意：越往下说明的加载情况，一定是匹配过上面已经提到的规则
+
+除此之外做了什么：
+
+- `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
+- 哪怕是在 `Promise` 中以空字符返回
+
+**2. `importHTML` 中的包装方法**
+
+只能用于应用中的静态 `script` 加载，例如入口文件
+
+目录：`entry.ts` - `importHTML` - `getExternalScripts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L239)]
+
+调用方法不需要提供参数，但内部会将以下参数传递给加载方法 `getExternalScripts`：
+
+- `scripts`：筛选后的静态 `script` 集合
+- `fetch`：自定义方法，没有提供则使用你浏览器自带的方法
+- `loadError`：加载失败通知方法，配置时提供，可选参数
+- `fiber`：透传 `importHTML` 的参数，配置时提供，默认 `true` [[查看](#importhtml-加载资源)]
+
+`scripts` 筛选规则：
+
+- 内联的静态 `script` 都允许
+- 外联的 `script` 不在 `jsExcludes` 配置列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- 所有符合要求且匹配 `jsIgnores` 的外联 `script`，需要标记 `ignore` 为 `true`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+
+`scripts` 从哪里来：
+
+- 由 `processTpl` 从提取的入口资源筛选处静态 `script` [[查看](#processtpl-提取资源)]
+
+调用场景：
+
+- `preloadApp`：预加载没有预执行时调用 [[查看](#preloadapp-预加载流程)]
+- `start`：启动应用，包括 `preloadApp` 预执行、以及 `startApp` 启动应用 [[查看](#-start-启动应用)]
+
+发挥的作用：
+
+- 在 `importHTML` 包裹 `getExternalScripts` 确保方法不会理解被调用
+- 而在调用场景中通过 `await` 可以确保执行恰优先发起任务
+
+发起的任务由 `scripts` 集合中的 `contentPromise` 决定：
+
+- 类型为 `Promise` 的微任务，将确保已将资源 `resolve`，流程见上方总结
+- 类型为 `fetchAssets` 返回的微任务，将确保发起请求
+
+> 为了很好的理解区别，用 `codepen` 做了一个演示 [[查看](https://codepen.io/levi0001/pen/qBzPwZe?editors=1111)]
+
+那注入 `script` 到沙箱时，`fetchAssets` 还没有加载完怎么办？
+
+- 在 `start` 时应用中的资源将被分配到同步和异步代码中执行 [[查看](#1-收集队列)]
+- 无论是同步代码还是异步代码，它们都是 `Promise` 队列，必须等待上一条执行完毕后才能发起新的微任务
 
 #### 通过配置替换资源
 
@@ -4764,16 +4864,16 @@ proxyWindow.addEventListener;
 
 **`embedHTMLCache`：缓存应用入口链接资源**
 
-- 用资源入口作为键名，键值类型为：`Promise<htmlParseResult>`
+- 用资源入口链接作为键名，键值类型为：`Promise<htmlParseResult>`
 - `htmlParseResult` 见：`importHTML` [[查看](#getembedhtml转换样式)]
 
 不缓存的情况：
 
 - 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 
-**`styleCache`：缓存静态样式资源**
+**`styleCache`：缓存样式资源**
 
-从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`：
+下载并并记录应用中静态和动态添加的外联样式资源，类型为：`Promise<string>`：
 
 - 由 `getExternalStyleSheets` 发起请求，见：`importHTML` [[查看](#importhtml-加载资源)]
 - 由 `fetchAssets` 记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
