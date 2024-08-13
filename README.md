@@ -2951,7 +2951,7 @@ return (cache[key] = Promise.resolve());
 
 通过 `fetchAssets` 不同的加载方式：
 
-- `async` 或 `defer` 下有 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
+- `async` 或 `defer` 下使用 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
 - 其他全部直接加载
 
 > 注意：匹配规则从上到下，上面条件满足加载条件后，不用管下面写的规则
