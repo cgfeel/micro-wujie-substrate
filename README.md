@@ -2914,7 +2914,7 @@ return (cache[key] = Promise.resolve());
 
 有 2 个同名的方法，为了做区分这里称呼为：加载方法和 `importHTML` 中的包装方法
 
-**1. `getExternalScripts` 加载方法**
+**1. 加载方法 `getExternalScripts`**
 
 应用中所有 `script` 加载、缓存的方法，包括 `importHTML` 中静态 `script` 提取，也是包装 `getExternalScripts` 作为属性返回
 
@@ -3037,7 +3037,7 @@ return (cache[key] = Promise.resolve());
 
 有 2 个同名的方法，为了做区分这里称呼为：加载方法和 `importHTML` 中的包装方法
 
-1. 加载方法 `getExternalStyleSheets`
+**1. 加载方法 `getExternalStyleSheets`**
 
 应用中所有样式加载、缓存的方法，包括 `importHTML` 中静态样式提取，也是包装 `getExternalStyleSheets` 作为属性返回
 
