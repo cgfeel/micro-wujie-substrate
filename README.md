@@ -2977,6 +2977,13 @@ return (cache[key] = Promise.resolve());
 
 > 应用中除了通过 `js-loader` 手动配置注入沙箱，可以是外联 `script`，其他全部都是内联 `script`，包括 `rewriteAppendOrInsertChild` 拦截应用中动态添加的 `script`
 
+关于 `ignore` 的问题：
+
+- 应用中提取或拦截的 `script` 会忽略 `ignore`，无论是动态还是静态，即便属性中存在
+- 应用中的静态 `script` 都会被注释，之后重新注入沙箱 `iframe`，无论是不是 `ignore`
+- 而 `ignore` 只能通过 `jsIgnores` 手动忽略外联 `script`
+- 但是对于 `async` 和 `defer` 类型的外联 `script`，手动忽略 `ignore` 无效
+
 **2. `importHTML` 中的包装方法**
 
 只能用于应用中的静态 `script` 加载，例如入口文件
@@ -3067,8 +3074,52 @@ return (cache[key] = Promise.resolve());
 
 - `importHTML`：包装后作为返回对象的属性，用于加载应用中静态样式，下面会详细说明
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的外联样式
+- `processCssLoaderForTemplate`：通过配置手动注入样式到应用头部和尾部 [[查看](#processcssloaderfortemplate手动添加样式)]
 
 > 应用中动态加载的内联样式不需要调用 `getExternalStyleSheets`，作为 `SPA` 类型的应用，如 `React` 通常会通过入口文件动态加载样式，以内联的方式将代码注入样式，加载流程单独总结了，见：`patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
+
+由此得出：
+
+- 应用内的样式无论动态还是静态，无论内联还是外联，最终都会以内联的方式注入
+
+关于 `ignore` 的问题：
+
+- 应用中提取或拦截的样式会忽略 `ignore`，无论是动态还是静态，即便属性中存在
+- 应用中静态样式都会被注释，但 `ignore` 和其他样式注释方式不一样，所以 `ignore` 的样式将不被还原
+- 除此之外 `ignore` 可以通过 `cssIgnores` 手动忽略外联样式
+- 手动忽略 `ignore` 的外联样式将将在 `Promise` 返回空字符
+
+**2. `importHTML` 中的包装方法**
+
+只能用于应用中的静态样式加载，例如手动为入口 `template` 添加了静态样式
+
+目录：`entry.ts` - `importHTML` - `getExternalStyleSheets` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L248)]
+
+调用方法不需要提供参数，但内部会将以下参数传递给加载方法 `getExternalStyleSheets`：
+
+- `styles`：筛选后的静态样式集合
+- `fetch`：自定义方法，没有提供则使用浏览器自带的方法
+- `loadError`：加载失败通知方法，配置时提供，可选参数
+
+`scripts` 筛选规则：
+
+- 内联的静态样式都允许
+- 外联的样式不在 `cssExcludes` 配置列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+- 所有符合要求且匹配 `cssIgnores` 的外联样式，需要标记 `ignore` 为 `true`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+
+`scripts` 从哪里来：
+
+- 由 `processTpl` 从提取的入口资源筛选出静态样式 [[查看](#processtpl-提取资源)]
+
+调用场景：
+
+- 全部来自 `processCssLoader` 加载样式资源 [[查看](#processcssloader处理-css-loader)]
+- `start`：启动应用，包括 `preloadApp` 预执行、以及 `startApp` 启动应用 [[查看](#-start-启动应用)]
+
+发挥的作用：
+
+- 在 `importHTML` 包裹 `getExternalScripts` 方法确保不会立即执行
+- 而在调用场景中通过 `await` 可以确保执行前优先发起任务
 
 #### 通过配置替换资源
 
