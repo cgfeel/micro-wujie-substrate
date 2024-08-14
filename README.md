@@ -2930,15 +2930,12 @@ return (cache[key] = Promise.resolve());
 
 > 这也是 `getExternalScripts` 唯一做的 1 件事
 
-`contentPromise` 加载情况，条件限制从上到下逐步增加：
+`contentPromise` 内联 `script` 加载情况：
 
-- 内联 `script`：全部在 `Promise` 中返回代码字符，包括存在 `module` 等其他属性
-- `ignore`：在 `Promise` 中返回空字符，只有外联 `script` 特定情况除外，见下方总结
-- 外联 `script` 根据条件进行处理
+- 全部在 `Promise` 中返回代码字符，包括存在 `module` 等其他属性
+- 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignoore` 说明
 
-> 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignoore` 说明
-
-外联 `script` 的处理方式：
+`contentPromise` 外联 `script` 加载情况：
 
 - `module`：在 `Promise` 中以空字符返回
 - `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中返回空字符
