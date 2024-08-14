@@ -2842,22 +2842,18 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 返回：
 
-- 遍历集合提取 `contentPromise`，将拿到的样式替换 `template` 中对应的注释后，返回 `Promise<string>` 对象
+- 用静态样式替换掉注释后的资源对象，类型为 `Promise<string>`
 
-流程：
+通过 `Promise.all` 批量处理 `style` 集合中每一项的 `contentPromise`：
 
-- 通过 `Promise.all` 迭代 `style` 集合中每一项的 `contentPromise`
-- 如果是带有 `src` 的外联 `style` 替换 `genLinkReplaceSymbol` 注释的样式
-- 如果是带有 `content` 的内联 `style` 替换 `getInlineStyleReplaceSymbol` 注释的样式
+| 资源类型               | 替换的备注                    | 处理方式                 |
+| ---------------------- | ----------------------------- | ------------------------ |
+| 外联样式 - `ignore`    | `genLinkReplaceSymbol`        | 用 `link` 元素加载 `src` |
+| 外联样式 - 非 `ignore` | `genLinkReplaceSymbol`        | 用内联样式替换           |
+| 内联样式               | `getInlineStyleReplaceSymbol` | 用内联样式替换           |
 
-> 注释元素参考：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
-
-替换样式的 `bug`，`ignore` 无效，见：[[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
-
-- 首先在提取样式时不会记录 `ignore`，所以在替换时候取 `ignore` 是一个无效值
-- 其次对于包含 `ignore` 的外联 `style`，注释通过 `genIgnoreAssetReplaceSymbol` 替换，而不是 `genLinkReplaceSymbol`
-- 恰巧两个错误起到了“负负得正”的效果，永远不会因为找到错误的注释替换成了错误的样式链接
-- 最后对于内联 `style`，在替换时就没有考虑 `ignore`，即便 `ignore` 存在，也会在 `getExternalStyleSheets` 时候作为空值
+- `ignore` 来自 `cssIgnores` 手动配置，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
+- 注释元素，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
 #### `fetchAssets`：加载资源，缓存后返回 `Promise`
 
