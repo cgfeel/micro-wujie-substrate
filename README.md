@@ -3079,7 +3079,7 @@ return (cache[key] = Promise.resolve());
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的外联样式
 - `processCssLoaderForTemplate`：通过配置手动注入样式到应用头部和尾部 [[查看](#processcssloaderfortemplate手动添加样式)]
 
-> 应用中动态加载的内联样式不需要调用 `getExternalStyleSheets`，作为 `SPA` 类型的应用，如 `React` 通常会通过入口文件动态加载样式，以内联的方式将代码注入样式，加载流程单独总结了，见：`patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
+> 应用中动态加载的内联样式不需要调用 `getExternalStyleSheets`；作为 `SPA` 类型的应用，如 `React` 通常会通过入口文件动态加载样式，以内联的方式将代码注入样式，加载流程单独总结了，见：`patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
 
 由此得出：
 
