@@ -3095,10 +3095,10 @@ return (cache[key] = Promise.resolve());
 - 通过 `cssIgnores` 手动忽略外联样式，无论是动态还是静态
 - 手动忽略 `ignore` 的外联样式将将在 `Promise` 返回空字符
 
-由此得出可以顺利加载的情况：
+由此得出在 `getExternalStyleSheets` 中加载的样式：
 
-- 动态加载的内联样式可以不用管 `ignore` 属性
-- 动态加载的外联样式，且不在 `cssIgnores` 集合
+- 内联样式不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `cssIgnores`
+- 外联样式存在通过 `cssIgnores` 添加的 `ignore`，会在 `Promise` 中作为空字符返回
 
 **2. `importHTML` 中的包装方法**
 
