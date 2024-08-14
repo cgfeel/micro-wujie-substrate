@@ -2828,14 +2828,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目录：`entry.ts` - `getEmbedHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L77)]
 
-无论外联样式还是内联样式，统一转换成内联样式，用来提升效率
+无论外联样式还是内联样式，统一转换成内联样式，用来提升效率：
 
 - 在 `processTpl` 中样式将替换成特定的注释 [[查看](#processtpl-提取资源)]
 - 之后在 `getEmbedHTML` 将加载的样式替换对应的备注，修正回来
 
 参数：
 
-- `template`：子应用的资源，源码是 `any` 实际是 `string`，因为 `processCssLoader` 传过来就是字符 [[查看](#processcssloader处理-css-loader)]
+- `template`：应用资源，源码是 `any` 实际是 `string`，因为 `processCssLoader` 传过来就是字符 [[查看](#processcssloader处理-css-loader)]
 - `styleResultList`：通过 `getExternalStyleSheets` 提取出来的 `styles` 集合 [[查看](#getexternalstylesheets加载样式资源)]
 
 返回：
