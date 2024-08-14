@@ -2932,8 +2932,8 @@ return (cache[key] = Promise.resolve());
 
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
-- 内联 `script`：全部在 `Promise` 中以内联代码返回，包括 `module` 等其他属性
-- `ignore`：在 `Promise` 中以空字符返回，只有外联 `script` 特定情况除外，见下方总结
+- 内联 `script`：全部在 `Promise` 中返回代码字符，包括 `module` 等其他属性
+- `ignore`：在 `Promise` 中返回空字符，只有外联 `script` 特定情况除外，见下方总结
 - 外联 `script` 根据条件进行处理
 
 > 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignoore` 说明
@@ -2941,7 +2941,7 @@ return (cache[key] = Promise.resolve());
 外联 `script` 的处理方式：
 
 - `module`：在 `Promise` 中以空字符返回
-- `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中以空字符返回
+- `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中返回空字符
 - 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 > 对于 `ignore` 外联 `script` 支持加载的情况，我想可能是开发人员遗漏了，如果真的需要屏蔽，建议可以通过 `jsExcludes` 来排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
