@@ -2941,7 +2941,7 @@ return (cache[key] = Promise.resolve());
 外联 `script` 的处理方式：
 
 - `module`：在 `Promise` 中以空字符返回
-- `ignore`：仅限 `async` 或 `defer` 的外联 `script` 通过 `fetchAssets` 加载资源
+- `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中以空字符返回
 - 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 > 对于 `ignore` 外联 `script` 支持加载的情况，我想可能是开发人员遗漏了，如果真的需要屏蔽，建议可以通过 `jsExcludes` 来排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
