@@ -2828,12 +2828,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目录：`entry.ts` - `getEmbedHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L77)]
 
-仅限应用中的静态样式替换，无论外联还是内联样式，统一转换成内联样式，用来提升加载效率：
+仅限应用中的静态样式替换：
 
 - 在 `processTpl` 中样式将替换成特定的注释 [[查看](#processtpl-提取资源)]
 - 之后在 `getEmbedHTML` 将加载的样式替换对应的备注，修正回来
 
-> 对于动态添加的样式通过 `rewriteAppendOrInsertChild` 拦截并注入，不存在需要替换的注释
+> 动态添加的样式通过 `rewriteAppendOrInsertChild` 拦截并注入容器，不存在需要替换的注释
 
 参数：
 
