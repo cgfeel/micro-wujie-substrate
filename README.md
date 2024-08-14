@@ -2993,18 +2993,17 @@ return (cache[key] = Promise.resolve());
 - 应用中提取的静态 `script` 存在 `ignore` 属性将被注释，资源不会被收集，无论内联还是外联
 - 应用中动态添加的 `script`，不收集元素 `ignore` 属性，无论内联还是外联能够顺利加载
 - 通过 `jsIgnores` 手动忽略外联 `script`，但不忽略 `async` 或 `defer` 非 `module` 的外联 `script`
-- `ignore` 的 `script` 将将在 `Promise` 返回空字符
+- `ignore` 的 `script` 将将在 `Promise` 返回空字符，需要通过 `src` 加载 `script`
 
 由此得出在 `getExternalScripts` 中加载的 `script`：
 
 - 内联 `script` 不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `jsIgnores`
-- 外联 `script` 存在通过 `jsIgnores` 添加的 `ignore`
-- 仅限 `async` 和 `defer` 的非 `module` 的外联 `script` 加载，其余作为空字符
+- 外联 `script` 在通过 `jsIgnores` 添加的 `ignore`
 
-需要再次强调的是：
+通过 `src` 加载 `script` 需要注意：
 
-- 作为 `Promise` 返回空字符时，将作为外联 `script` 注入沙箱，而并非不加载
-- 应用中的静态 `script` 如果标记了 `ignore`，处理结果就是替换成注释不会再加载，这和 `jsIgnores` 匹配 `ignore` 的处理方式是不一样的
+- 外联 `script` 没有包裹 `proxyLocation`，调用 `location` 是建立在基座 `url` 上
+- 需要通过 `window.$wujie.location` 来代替 `location`
 
 **2. `importHTML` 中的包装方法**
 
