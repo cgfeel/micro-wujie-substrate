@@ -2946,8 +2946,6 @@ return (cache[key] = Promise.resolve());
 - `async` 或 `defer` 下使用 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
 - 其他全部直接加载
 
-> 注意：匹配规则从上到下，上面条件满足加载条件后，不用管下面写的规则
-
 加载外联 `script` 时传递给 `fetchAssets` 的参数：
 
 - `src`：外联 `script` 的资源链接
