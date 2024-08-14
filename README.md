@@ -3008,7 +3008,7 @@ return (cache[key] = Promise.resolve());
 由此得出在 `getExternalScripts` 中加载的 `script`：
 
 - 内联 `script` 不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `jsIgnores`
-- 外联 `script` 在通过 `jsIgnores` 添加的 `ignore`
+- 外联 `script` 通过 `jsIgnores` 添加的 `ignore`
 
 通过 `src` 加载 `script` 需要注意：
 
@@ -3111,21 +3111,23 @@ return (cache[key] = Promise.resolve());
 
 > 应用中动态加载的内联样式不需要调用 `getExternalStyleSheets`；作为 `SPA` 类型的应用，如 `React` 通常会通过入口文件动态加载样式，以内联的方式将代码注入样式，加载流程单独总结了，见：`patchCssRules` 存在重复加载的 `Bug` [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md)]
 
-由此得出：
-
-- 应用内的样式无论动态还是静态，无论内联还是外联，甚至手动配置添加，最终都会以内联的方式注入
-
 关于 `ignore` 的补充：
 
 - 应用中提取的静态样式存在 `ignore` 属性将被注释，资源不会被收集，无论内联还是外联
-- 应用中动态添加的样式，不收集元素 `ignore` 属性，无论内联还是外联能够顺利加载
-- 通过 `cssIgnores` 手动忽略外联样式，无论是动态还是静态
-- 手动忽略 `ignore` 的外联样式将将在 `Promise` 返回空字符
+- 应用中动态添加的样式，不收集元素 `ignore` 属性，除了 `cssIgnores` 都能顺利加载
+- 通过 `cssIgnores` 将手动忽略外联样式
+- 手动忽略 `ignore` 的外联样式将将在 `Promise` 返回空字符，通过 `link` 加载样式
 
 由此得出在 `getExternalStyleSheets` 中加载的样式：
 
 - 内联样式不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `cssIgnores`
-- 外联样式存在通过 `cssIgnores` 添加的 `ignore`，会在 `Promise` 中作为空字符返回
+- 外联样式通过 `cssIgnores` 添加的 `ignore`
+
+`ignore` 在不同场景下的表现：
+
+- `processTpl`：提取静态样式，用注释替换掉不做任何处理
+- `cssIgnores`：手动忽略样式，采用 `link` 加载样式
+- `processCssLoaderForTemplate`：手动配置样式，直接跳出不做任何操作
 
 **2. `importHTML` 中的包装方法**
 
