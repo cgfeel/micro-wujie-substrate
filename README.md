@@ -2846,11 +2846,11 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 通过 `Promise.all` 批量处理 `style` 集合中每一项的 `contentPromise`：
 
-| 资源类型               | 替换的备注                    | 处理方式                 |
-| ---------------------- | ----------------------------- | ------------------------ |
-| 外联样式 - `ignore`    | `genLinkReplaceSymbol`        | 用 `link` 元素加载 `src` |
-| 外联样式 - 非 `ignore` | `genLinkReplaceSymbol`        | 用内联样式替换           |
-| 内联样式               | `getInlineStyleReplaceSymbol` | 用内联样式替换           |
+| 资源类型               | 替换的备注                    | 处理方式                     |
+| ---------------------- | ----------------------------- | ---------------------------- |
+| 外联样式 - `ignore`    | `genLinkReplaceSymbol`        | 用 `link` 元素加载样式并替换 |
+| 外联样式 - 非 `ignore` | `genLinkReplaceSymbol`        | 用内联样式替换               |
+| 内联样式               | `getInlineStyleReplaceSymbol` | 用内联样式替换               |
 
 - `ignore` 来自 `cssIgnores` 手动配置，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 - 注释元素，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
