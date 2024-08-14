@@ -2970,7 +2970,10 @@ return (cache[key] = Promise.resolve());
 除此之外做了什么：
 
 - `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
-- 这意味着即便是作为内联的 `module`，也要等待文档解析之后触发
+- 在 `start` 启动应用时，会将其作为同步代码 [[查看](#1-收集队列)]
+- 这意味着：
+  1. 即便是作为内联的 `module`，也要等待文档解析之后开始执行
+  2. 启动应用时需要按照 `execQueue` 队列顺序先后注入
 
 调用场景：
 
