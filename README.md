@@ -2946,7 +2946,7 @@ return (cache[key] = Promise.resolve());
 - `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中返回空字符
 - 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-通过 `Promise` 返回空字符的情况会通过 `insertScriptToIframe` 作为外联 `script` 进行加载：
+通过 `Promise` 返回空字符的情况会通过 `insertScriptToIframe` 作为外联 `script` 进行加载 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - 因为 `contentPromise` 只能决定 `script` 中的 `content`
 - `content` 不存在的话，会通过 `src` 去加载 `script`，这样通过浏览器机制有效避开跨域问题
