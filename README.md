@@ -2932,8 +2932,8 @@ return (cache[key] = Promise.resolve());
 
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
+- 内联 `script`：全部在 `Promise` 中以内联代码返回，包括 `module` 等其他属性
 - `ignore`：在 `Promise` 中以空字符返回，只有外联 `script` 特定情况除外，见下方总结
-- 内联 `script`：全部在 `Promise` 中以内联代码返回
 - 外联 `script` 根据条件进行处理
 
 > 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignoore` 说明
