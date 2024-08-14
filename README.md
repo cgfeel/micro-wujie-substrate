@@ -3099,10 +3099,6 @@ return (cache[key] = Promise.resolve());
 - `cssFlag`：样式资源设为 `true`
 - `loadError`：透传自身参数 `loadError`
 
-除此之外做了什么：
-
-- 内联样式会将 `src` 更新为空字符，因为存在 `src` 为元素 `outHTML` 的情况
-
 调用场景：
 
 - `importHTML`：包装后作为返回对象的属性，用于加载应用中静态样式，下面会详细说明
@@ -3128,6 +3124,10 @@ return (cache[key] = Promise.resolve());
 - `processTpl`：提取静态样式，用注释替换掉不做任何处理
 - `cssIgnores`：手动忽略样式，采用 `link` 加载样式
 - `processCssLoaderForTemplate`：手动配置样式，直接跳出不做任何操作
+
+除此之外做了什么：
+
+- 内联样式会将 `src` 更新为空字符，因为存在 `src` 为元素 `outHTML` 的情况
 
 **2. `importHTML` 中的包装方法**
 
