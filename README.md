@@ -2932,7 +2932,7 @@ return (cache[key] = Promise.resolve());
 
 `contentPromise` 加载情况，条件限制从上到下逐步增加：
 
-- 内联 `script`：全部在 `Promise` 中返回代码字符，包括 `module` 等其他属性
+- 内联 `script`：全部在 `Promise` 中返回代码字符，包括存在 `module` 等其他属性
 - `ignore`：在 `Promise` 中返回空字符，只有外联 `script` 特定情况除外，见下方总结
 - 外联 `script` 根据条件进行处理
 
