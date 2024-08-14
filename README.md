@@ -2835,8 +2835,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 参数：
 
-- `template`：子应用的资源，虽然是 `any` 但它只能是 `string`，因为 `processCssLoader` 传过来就是 `string`
-- `styleResultList`：通过 `getExternalStyleSheets` 提取出来的 `styles` 集合，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
+- `template`：子应用的资源，源码是 `any` 实际是 `string`，因为 `processCssLoader` 传过来就是字符 [[查看](#processcssloader处理-css-loader)]
+- `styleResultList`：通过 `getExternalStyleSheets` 提取出来的 `styles` 集合 [[查看](#getexternalstylesheets加载样式资源)]
 
 返回：
 
