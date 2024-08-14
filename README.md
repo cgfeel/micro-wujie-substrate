@@ -2981,13 +2981,14 @@ return (cache[key] = Promise.resolve());
 
 - 应用中提取的 `script` 会忽略 `ignore`，资源不会被收集，无论内联还是外联
 - 应用中动态添加的 `script`，不收集元素 `ignore` 属性，无论内联还是外联能够顺利加载
-- 通过 `jsIgnores` 手动忽略外联 `script`，无论是动态还是静态
+- 通过 `jsIgnores` 手动忽略外联 `script`，但不忽略 `async` 或 `defer` 的外联 `script`
 - `ignore` 的 `script` 将将在 `Promise` 返回空字符
 
-由此得出可以顺利加载的情况：
+由此得出在 `getExternalScripts` 中加载的 `script`：
 
-- 动态加载的内联 `script` 可以不用管 `ignore` 属性
-- 动态加载的外联 `script`，且不在 `jsIgnores` 集合
+- 内联 `script` 不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `jsIgnores`
+- 外联 `script` 存在通过 `jsIgnores` 添加的 `ignore`
+- 仅限 `async` 和 `defer` 的非 `module` 的外联 `script` 加载，其余作为空字符
 
 **2. `importHTML` 中的包装方法**
 
