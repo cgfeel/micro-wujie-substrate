@@ -2948,7 +2948,7 @@ return (cache[key] = Promise.resolve());
 
 加载外联 `script` 时传递给 `fetchAssets` 的参数：
 
-- `src`：外联 `script` 的资源链接
+- `src`：外联 `script` 的资源链接，内联 `script` 设置为空
 - `scriptCache`：用于缓存 `script` 加载的资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 - `fetch`：透传自身参数 `fetch`
 - `cssFlag`：不是样式资源，全部设为 `false`
