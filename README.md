@@ -2952,7 +2952,11 @@ return (cache[key] = Promise.resolve());
 - `content` 不存在的话，会通过 `src` 去加载 `script`，这样通过浏览器机制有效避开跨域问题
 - 其中包含了：所有外联的 `module`，非 `async` 和 `defer` 的 `ignnore`
 
-> 关于 `ignore` 通 `fetchAssets` 加载 `async` 或 `defer`，可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+`ignore` 通 `fetchAssets` 加载 `async` 或 `defer`，仅限提取静态 `script`：
+
+- 动态添加的 `script` 不存在 `async` 或 `defer`
+
+> 这可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
 
 通过 `fetchAssets` 不同的加载方式：
 
@@ -2985,8 +2989,13 @@ return (cache[key] = Promise.resolve());
 手动配置的 `js-loader` 不会通过 `getExternalScripts` 加载资源：
 
 - 包含：`jsBeforeLoaders`、`jsAfterLoaders`，因为沙箱 `iframe` 允许注入外联 `script`
+- 当然 `js-loader` 也接受内联 `script`
 
-> 应用中除了通过 `js-loader` 手动配置注入沙箱，可以是外联 `script`，其他全部都是内联 `script`，包括 `rewriteAppendOrInsertChild` 拦截应用中动态添加的 `script`
+根据以上总结，以下情况将通过 `src` 在沙箱中加载 `script`：
+
+- 类型为 `module` 的外联 `script`，无论是静态提取还是动态添加
+- `ignore` 非 `async` 或 `defer` 的外联 `script`
+- 手动配置 `js-loader` 的外联 `script`
 
 关于 `ignore` 的问题：
 
