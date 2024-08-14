@@ -3125,7 +3125,7 @@ return (cache[key] = Promise.resolve());
 
 `ignore` 在不同场景下的表现：
 
-- `processTpl`：提取静态样式，用注释替换掉不做任何处理
+- `processTpl`：提取静态样式，用注释替换掉样式
 - `cssIgnores`：手动忽略样式，采用 `link` 加载样式
 - `processCssLoaderForTemplate`：手动配置样式，直接跳出不做任何操作
 
