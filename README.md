@@ -5019,7 +5019,7 @@ proxyWindow.addEventListener;
 
 **`embedHTMLCache`：缓存应用入口链接资源**
 
-- 用资源入口链接作为键名，键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#getembedhtml转换样式)]
+- 用资源入口链接作为键名，键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#importhtml-加载资源)]
 
 不缓存的情况：
 
