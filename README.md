@@ -2842,7 +2842,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 返回：
 
-- 遍历并加载每一个静态样式，替换 `template` 资源对应的注释后，返回 `Promise<string>` 对象
+- 遍历集合提取 `contentPromise`，将拿到的样式替换 `template` 中对应的注释后，返回 `Promise<string>` 对象
 
 流程：
 
