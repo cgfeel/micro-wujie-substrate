@@ -5012,10 +5012,7 @@ proxyWindow.addEventListener;
 
 目录：`entry.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L39)]
 
-有 3 个集合：
-
-- `styleCache`：从应用入口资源中提取的静态样式资源，类型为：`Promise<string>`
-- `scriptCache`：从应用入口资源中提取的静态 `script` 资源，类型为：`Promise<string>`
+资源集合有 3 个，当使用重建模式时，通过资源缓存集合可以避免重复请求资源。
 
 **`embedHTMLCache`：缓存应用入口链接资源**
 
@@ -5025,13 +5022,31 @@ proxyWindow.addEventListener;
 
 - 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 
-**`styleCache`：缓存样式资源**
+**`styleCache`：缓存外联样式资源**
 
-下载并并记录应用中静态和动态添加的外联样式资源，类型为：`Promise<string>`：
+加载匹配要求的外联样式，并缓存加载结果，包含：
 
-- 由 `getExternalStyleSheets` 发起请求，见：`importHTML` [[查看](#importhtml-加载资源)]
-- 由 `fetchAssets` 记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
-- 由 `fetchAssets` 记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- `processTpl`：提取应用内静态样式 [[查看](#processtpl-提取资源)]
+- `processCssLoaderForTemplate`：手动配置应用样式 [[查看](#processcssloaderfortemplate手动添加样式)]
+- `rewriteAppendOrInsertChild`：应用中动态添加样式
+
+如何收集缓存：
+
+- `getExternalStyleSheets` 匹配样式发起请求 [[查看](#getexternalstylesheets加载样式资源)]
+- `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
+
+**`scriptCache`：缓存外联 `script` 资源**
+
+加载匹配要求的外联 `script`，并缓存加载结果，包含：
+
+- `processTpl`：提取应用内静态样式 [[查看](#processtpl-提取资源)]
+- `start`：加载手动配置的 `script` [[查看](#1-收集队列)]
+- `rewriteAppendOrInsertChild`：应用中动态添加 `script`
+
+如何收集缓存：
+
+- `getExternalScripts` 匹配 `script` 发起请求 [[查看](#getexternalscripts加载-script-资源)]
+- `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
