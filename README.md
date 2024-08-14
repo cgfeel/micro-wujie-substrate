@@ -2954,7 +2954,8 @@ return (cache[key] = Promise.resolve());
 
 `ignore` 通 `fetchAssets` 加载 `async` 或 `defer`，仅限提取静态 `script`：
 
-- 动态添加的 `script` 不存在 `async` 或 `defer`
+- 动态添加的 `script` 属性 `async` 或 `defer` 存放在 `attrs` 中
+- 不能作为 `getExternalScripts` 判断条件，只能作为注入沙箱时添加到 `script` 上的属性
 
 > 这可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
 
