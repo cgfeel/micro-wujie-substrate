@@ -2979,12 +2979,15 @@ return (cache[key] = Promise.resolve());
 
 关于 `ignore` 的问题：
 
-- 应用中提取或拦截的 `script` 会忽略 `ignore`，无论是动态还是静态，即便属性中存在
-- 应用中的静态 `script` 都会被注释，之后重新注入沙箱 `iframe`，无论是不是 `ignore`
-- 而 `ignore` 只能通过 `jsIgnores` 手动忽略外联 `script`
-- 但是对于 `async` 和 `defer` 类型的外联 `script`，手动忽略 `ignore` 无效
+- 应用中提取的 `script` 会忽略 `ignore`，资源不会被收集，无论内联还是外联
+- 应用中动态添加的 `script`，不收集元素 `ignore` 属性，无论内联还是外联能够顺利加载
+- 通过 `jsIgnores` 手动忽略外联 `script`，无论是动态还是静态
+- `ignore` 的 `script` 将将在 `Promise` 返回空字符
 
-> 因此 `ignore` 的 `script` 只能提供手动
+由此得出可以顺利加载的情况：
+
+- 动态加载的内联 `script` 可以不用管 `ignore` 属性
+- 动态加载的外联 `script`，且不在 `jsIgnores` 集合
 
 **2. `importHTML` 中的包装方法**
 
