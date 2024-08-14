@@ -2828,10 +2828,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目录：`entry.ts` - `getEmbedHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L77)]
 
-无论外联样式还是内联样式，统一转换成内联样式，用来提升效率：
+仅限应用中的静态样式替换，无论外联还是内联样式，统一转换成内联样式，用来提升加载效率：
 
 - 在 `processTpl` 中样式将替换成特定的注释 [[查看](#processtpl-提取资源)]
 - 之后在 `getEmbedHTML` 将加载的样式替换对应的备注，修正回来
+
+> 对于动态添加的样式通过 `rewriteAppendOrInsertChild` 拦截并注入，不存在需要替换的注释
 
 参数：
 
@@ -2840,15 +2842,15 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 返回：
 
-- 将替换后的资源通过 `promise` 的方式返回
+- 遍历并加载每一个静态样式，替换 `template` 资源对应的注释后，返回 `Promise<string>` 对象
 
-流程，关联参考：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]：
+流程：
 
 - 通过 `Promise.all` 迭代 `style` 集合中每一项的 `contentPromise`
 - 如果是带有 `src` 的外联 `style` 替换 `genLinkReplaceSymbol` 注释的样式
 - 如果是带有 `content` 的内联 `style` 替换 `getInlineStyleReplaceSymbol` 注释的样式
 
-> 从这里知道每一个 `style` 已通过微任务确保替换前已完成加载
+> 注释元素参考：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
 替换样式的 `bug`，`ignore` 无效，见：[[查看](#importhtml-加载资源)] - 4.2. `getExternalStyleSheets`
 
