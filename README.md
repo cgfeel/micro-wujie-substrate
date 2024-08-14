@@ -2828,7 +2828,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目录：`entry.ts` - `getEmbedHTML` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L77)]
 
-无论外联的 `link` 还是内联的 `style`，统一转换成内联样式，用来提升效率
+无论外联样式还是内联样式，统一转换成内联样式，用来提升效率
 
 - 在 `processTpl` 中样式将替换成特定的注释 [[查看](#processtpl-提取资源)]
 - 之后在 `getEmbedHTML` 将加载的样式替换对应的备注，修正回来
