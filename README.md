@@ -2946,6 +2946,14 @@ return (cache[key] = Promise.resolve());
 - `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中返回空字符
 - 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
+通过 `Promise` 返回空字符的情况会通过 `insertScriptToIframe` 作为外联 `script` 进行加载：
+
+- 因为 `contentPromise` 只能决定 `script` 中的 `content`
+- `content` 不存在的话，会通过 `src` 去加载 `script`，这样通过浏览器机制有效避开跨域问题
+- 其中包含了：所有外联的 `module`，非 `async` 和 `defer` 的 `ignnore`
+
+> 关于 `ignore` 通 `fetchAssets` 加载资源这个情况，我想可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+
 通过 `fetchAssets` 不同的加载方式：
 
 - `async` 或 `defer` 下使用 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
@@ -2989,6 +2997,11 @@ return (cache[key] = Promise.resolve());
 - 内联 `script` 不存在 `ignore`，因为加载前被筛选出去，或无法匹配 `jsIgnores`
 - 外联 `script` 存在通过 `jsIgnores` 添加的 `ignore`
 - 仅限 `async` 和 `defer` 的非 `module` 的外联 `script` 加载，其余作为空字符
+
+需要再次强调的是：
+
+- 作为 `Promise` 返回空字符时，将作为外联 `script` 注入沙箱，而并非不加载
+- 应用中的静态 `script` 如果标记了 `ignore`，处理结果就是替换成注释不会再加载，这和 `jsIgnores` 匹配 `ignore` 的处理方式是不一样的
 
 **2. `importHTML` 中的包装方法**
 
