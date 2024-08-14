@@ -2914,7 +2914,7 @@ return (cache[key] = Promise.resolve());
 
 有 2 个同名的方法，为了做区分这里称呼为：加载方法和 `importHTML` 中的包装方法
 
-**1. 加载方法 `getExternalScripts`**
+**1.加载方法 `getExternalScripts`**
 
 应用中所有 `script` 加载、缓存的方法，包括 `importHTML` 中静态 `script` 提取，也是包装 `getExternalScripts` 作为属性返回
 
@@ -2988,7 +2988,7 @@ return (cache[key] = Promise.resolve());
 - 外联 `script` 存在通过 `jsIgnores` 添加的 `ignore`
 - 仅限 `async` 和 `defer` 的非 `module` 的外联 `script` 加载，其余作为空字符
 
-**2. `importHTML` 中的包装方法**
+**2.`importHTML` 中的包装方法**
 
 只能用于应用中的静态 `script` 加载，例如入口文件
 
