@@ -3071,7 +3071,7 @@ return (cache[key] = Promise.resolve());
 
 除此之外做了什么：
 
-- 内联样式会将 `src` 更新为空字符，因为存在 `src` 为样式元素的情况
+- 内联样式会将 `src` 更新为空字符，因为存在 `src` 为元素 `outHTML` 的情况
 
 调用场景：
 
