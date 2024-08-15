@@ -2505,8 +2505,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `template`：处理后的资源内容
 - `assetPublicPath`：资源路径，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
-- `getExternalScripts`：提取应用静态 `script`，返回 `ScriptResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
-- `getExternalStyleSheets`：提取应用静态样式，返回 `StyleResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
+- `getExternalScripts`：加载应用中静态 `script` 资源 [[查看](#getexternalscripts加载-script-资源)]
+- `getExternalStyleSheets`：加载应用中静态样式资源 [[查看](#getexternalstylesheets加载样式资源)]
 
 > 返回的 `Promise` 会根据 `plugins` 是否不存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
