@@ -2591,6 +2591,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 通过插件排除的外联资源将直接过滤，如：`jsExcludes`、`cssExcludes`
 - 通过插件忽略的外联资源将添加 `ignore` 属性，如：`jsIgnores`、`cssIgnores`
 
+> 关于资源筛选，详细见上述说明
+
 **5. 存在的 2 个问题：**
 
 一个似乎不影响使用的问题：
