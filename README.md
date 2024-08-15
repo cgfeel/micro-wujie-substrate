@@ -2510,7 +2510,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > 返回的资源会根据 `plugins` 是否存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
-用到 `importHTML` 的地方有 3 处：
+调用场景有 3 处：
 
 - `preloadApp` 预加载
 - `startApp` 切换 `alive` 模式的应用
