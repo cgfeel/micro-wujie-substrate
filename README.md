@@ -2508,10 +2508,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `getExternalScripts`：提取应用静态 `script`，返回 `ScriptResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 - `getExternalStyleSheets`：提取应用静态样式，返回 `StyleResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
 
-返回的资源会根据 `plugins` 是否存在 `htmlLoader` 来处理结果：
-
-- 存在：使用自定义的 `loader` 函数处理 `html`，不缓存
-- 不存在：使用默认的 `loader` 函数 `defaultGetTemplate` 处理，将结果缓存到 `embedHTMLCache` 以避免重复加载资源
+> 返回的资源会根据 `plugins` 是否存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 用到 `importHTML` 的地方有 3 处：
 
