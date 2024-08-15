@@ -5090,7 +5090,9 @@ proxyWindow.addEventListener;
 - `getExternalScripts` 匹配 `script` 发起请求 [[查看](#getexternalscripts加载-script-资源)]
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-**外俩**
+**动态添加的样式**
+
+应用中动态添加的样式，以及打补丁后的 `:host`，存储在 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
@@ -5123,7 +5125,7 @@ proxyWindow.addEventListener;
 
 收集应用中动态添加的样式，`:host` 样式，收集的样式以元素类型存储在集合，目的：
 
-- 为了 `umd` 模式切换应用时通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
+- 为了 `umd` 模式切换应用时，通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
 **集合收集有 3 处**
 
