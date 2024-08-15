@@ -2577,7 +2577,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **3. 处理返回资源：**
 
-- 获取资源路径 `assetPublicPath`，注 n (`assetPublicPath`)
+- 获取资源路径 `assetPublicPath`
 - 通过 `htmlLoader` 处理获取的资源
 - 如果通过 `plugins` 传入 `htmlLoader` 处理，会将获取的资源作为字符参数传递过去
 - 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、`script`、`style`，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
@@ -4575,13 +4575,16 @@ window.onfocus = () => {
 
 目录：`utils.ts` - `defaultGetPublicPath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L253)]
 
-根据参数 `entry` 返回链接的 `path` 有 3 种情况：
+根据参数 `entry` 返回链接的 `path` 有 4 种情况：
 
-| 参数类型 | 开头字符 | 返回                                 |
-| -------- | -------- | ------------------------------------ |
-| `object` | 没有     | `/`                                  |
-| `string` | `/`      | `origin` + `pathname` 上一层级 + `/` |
-| `string` | 非 `/`   | `origin` + `/`                       |
+| 参数类型            | 开头字符    | 返回                                          |
+| ------------------- | ----------- | --------------------------------------------- |
+| `object`            | 没有        | `/`                                           |
+| `pathname`          | `/`         | `location.origin` + `pathname` 上一层级 + `/` |
+| `string` - 非 `url` | 非 `/`      | `location.origin` + `/`                       |
+| `url` - 绝对路径    | `https?://` | 绝对路径上一层级                              |
+
+> 作为资源入口时通常为绝对路径的 `url`
 
 #### 子应用中的链接指向
 
