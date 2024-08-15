@@ -2595,7 +2595,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **5. 重复提取资源**
 
-重建模式下，每次切换应用就是一次实例初始化，同样的也会重复调用 `importHTML` 提取资源，再次调用资源时会尽量通过缓存获取资源。
+重建模式下，每次切换应用就是一次实例初始化，同样的也会重复调用 `importHTML` 提取资源，此时会尽量通过缓存获取资源。
 
 - `embedHTMLCache`：应用入口资源缓存，仅限 `htmlLoader` 没有提供时候
 - `styleCache`：加载过的样式全部记录在缓存，只有加载失败的情况会继续请求
