@@ -5082,7 +5082,7 @@ proxyWindow.addEventListener;
 类型为 `Partial<Record<string, Promise<string>|null>>`：
 
 - 键名是提取的外联样式 `src`
-- 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null`
+- 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 加载匹配要求的外联样式，并缓存加载结果，包含：
 
@@ -5100,7 +5100,7 @@ proxyWindow.addEventListener;
 类型为 `Partial<Record<string, Promise<string>|null>>`：
 
 - 键名是提取的外联样式 `src`
-- 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null`
+- 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 加载匹配要求的外联 `script`，并缓存加载结果，包含：
 
