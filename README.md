@@ -2516,18 +2516,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `startApp` 加载还未执行的 `alive` 模式应用
 - `startApp` 初次加载沙箱实例
 
-子应用样式提取概览：
-
-- 匹配的外联样式和内联样式会通过 `processTpl` 替换为注释 [[查看](#processtpl-提取资源)]
-- 通过 `getExternalStyleSheets` 为每个 `style` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
-- 通过 `processCssLoader` 统一在 `getEmbedHTML` 中再次替换成内联样式 [[查看](#getembedhtml-转换样式)]
-
-子应用 `script` 提取概览：
-
-- 只对 `ignore` 和 `ES` 不匹配的情况的 `script` 注释，注释后不会再还原 [[查看](#processtpl-提取资源)]
-- 其他情况通过 `getExternalScripts` 为每个 `script` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
-- 在启动应用 `start` 时，会将子应用的 `script` 分为：同步代码通过 `execQueue` 队列执行、异步代码通过微任务执行 [[查看](#-start-启动应用)]
-
 **1. 提取必要的配置：**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
@@ -2584,29 +2572,24 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **4. 获取外部资源：**
 
-`getExternalScripts` 获取 `script`，`getExternalStyleSheets` 获取 `css`，获取前都将资源遍历一遍：
+在返回的对象中包含了 2 个包装方法：
 
-- 剔除拥有外链且被 `jsExcludes｜cssExcludes` 排除的资源
-- 遍历过滤后的集合，对拥有外链且被 `jsIgnores|cssIgnores` 资源对象打上 `ignore` 的属性
+- `getExternalScripts`：提取应用中静态 `script` [[查看](#getexternalscripts加载-script-资源)]
+- `getExternalStyleSheets`：提取应用中静态样式 [[查看](#getexternalstylesheets加载样式资源)]
 
-除此之外他们都会将 `fetch`、`loadError` 传过去作为处理，不同在于 `script` 还会将 `fiber` 传过去
+> 提取的资源来自方法 `processTpl` [[查看](#processtpl-提取资源)]
 
-**4.1. `getExternalScripts`：**
+提取资源传递的参数：
 
-传过去一个集合 `ScriptObject[]`，直接 `map` 后返回。不同的是为每一项资源添加了一个 `promise` 方法 `contentPromise`，分为 3 个情况：
+- 提取的资源集合：如 `script` 集合或样式集合
+- `fetch`：透传自 `opts` 中的参数
+- `loadError`：外联资源加载失败通知方法，来自配置的可选参数
+- `fiber`：是否空闲加载，仅限 `script` 加载
 
-1. 有 `src`，且不是 `ES` 模块，通过 `fetchAssets` 加载资源
-2. 有 `src` 的 `ES` 模块，返回一个空字符的 `promise`
-3. 内联脚本内容作为 `promise` 返回
+提供的资源筛选规则：
 
-> 对于外链 `script` 且存在 `async` 或 `defer`，会根据 `fiber` 决定是在 `requestIdleCallback` 空闲情况下 `fetchAssets` 加载资源
-
-**4.2. `getExternalStyleSheets`：**
-
-传过去一个集合 `StyleObject[]`，直接 `map` 后返回。分为 2 个情况：
-
-1. 内联样式用 `content` 换成一个 `promise` 对象 `contentPromise`
-2. 外链样式添加 `promise` 对象 `contentPromise`，根据 `ignore` 决定返回空字符还是通过 `fetchAssets` 加载资源
+- 通过插件排除的外联资源将直接过滤，如：`jsExcludes`、`cssExcludes`
+- 通过插件忽略的外联资源将添加 `ignore` 属性，如：`jsIgnores`、`cssIgnores`
 
 **5. 存在的 2 个问题：**
 
