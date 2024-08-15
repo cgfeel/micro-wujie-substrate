@@ -5068,13 +5068,21 @@ proxyWindow.addEventListener;
 
 **`embedHTMLCache`：缓存应用入口链接资源**
 
-- 用资源入口链接作为键名，键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#importhtml-加载资源)]
+类型为 `Partial<Record<string, Promise<htmlParseResult>>>`：
+
+- 键名为资源入口链接
+- 键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#importhtml-加载资源)]
 
 不缓存的情况：
 
 - 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 
 **`styleCache`：缓存外联样式资源**
+
+类型为 `Partial<Record<string, Promise<string>|null>>`：
+
+- 键名是提取的外联样式 `src`
+- 如果获取资源呢成功，键值和 `fetchAssets` 返回类型一致，否则为 `null`
 
 加载匹配要求的外联样式，并缓存加载结果，包含：
 
@@ -5088,6 +5096,11 @@ proxyWindow.addEventListener;
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 **`scriptCache`：缓存外联 `script` 资源**
+
+类型为 `Partial<Record<string, Promise<string>|null>>`：
+
+- 键名是提取的外联样式 `src`
+- 如果获取资源呢成功，键值和 `fetchAssets` 返回类型一致，否则为 `null`
 
 加载匹配要求的外联 `script`，并缓存加载结果，包含：
 
