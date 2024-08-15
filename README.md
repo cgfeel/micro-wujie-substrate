@@ -2534,19 +2534,21 @@ iframeWindow.history.replaceState(null, "", args[0])
 2. 远程加载或直接返回要加载的资源
 3. 处理资源
 
-**1. 提取必要的资源：**
+**1. 提取必要的配置：**
 
-- `fetch`：只能是自定义的 `fetch` 或 `window.fetch`
-- `fiber`：是否空闲加载
-- 提取 `plugins` 用于自定义 `loader` 处理资源，提取 `loadError` 用于提取外部资源失败时使用
-- `htmlLoader`：根据 `plguins` 返回自定义处理 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
-- 通过 `getEffectLoaders` 提取 `jsExcludes`：`js` 排除列表，注 n (`getEffectLoaders`)
-- 通过 `getEffectLoaders` 提取 `cssExcludes`：`css` 排除列表
-- 通过 `getEffectLoaders` 提取 `jsIgnores`：`js` 忽略列表
-- 通过 `getEffectLoaders` 提取 `cssIgnores`：`css` 忽略列表
+- 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，来自参数 `opts`，见上述总结
+- `htmlLoader`：从 `plguins` 提取 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
+- 通过 `getEffectLoaders` 提取 `plugins`
 - 通过 `defaultGetPublicPath` 将子应用的 `url` 和 `localhost.href` 计算出资源路径
 
-> 注 n：`getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
+`getEffectLoaders` 提取的 `plugin` 包含：
+
+- `jsExcludes`：`js` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `cssExcludes`：`css` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `jsIgnores`：`js` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `cssIgnores`：`css` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+
+> `getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
 **2. 获取资源：**
 
