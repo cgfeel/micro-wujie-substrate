@@ -2541,6 +2541,10 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 通过 `getEffectLoaders` 提取 `plugins`
 - 声明一个资源路径计算函数 `getPublicPath`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
+`htmlLoader` 提取规则：
+
+- 提供 `plugin`，但没提供 `htmlLoader`，通过
+
 `getEffectLoaders` 提取的 `plugin` 包含：
 
 - `jsExcludes`：`js` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
@@ -4872,6 +4876,39 @@ const proxyWindow = new Proxy(window, {
 });
 proxyWindow.addEventListener;
 ```
+
+#### `compose` 用柯里化的方式拍平一组函数
+
+提供一个数组函数，通过 `reduce` 拍平执行，通过柯里化的方式返回执行函数，确保无论如何都能执行
+
+目录：`utils.ts` - `compose` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L270)]
+
+参数：
+
+- `fnList`：一组执行函数
+
+> 源码中 `fnList` 的类型是 `Array<Function>`，实际应该是 `Array<(...args: Array<string>) => string>`
+
+返回：
+
+- 返回一个方法，类型和 `fnList` 中的函数是一致的，确保无论如何都能执行
+
+调用场景：
+
+| 调用函数                                                      | 提取 `plugin`                                                                                    | 用处                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| `processCssLoader` [[查看](#processcssloader处理-css-loader)] | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换应用中提取的静态样式               |
+| `importHTML` [[查看](#importhtml-加载资源)]                   | `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)] | 替换应用入口资源                       |
+| `getCssLoader`                                                | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换动态添加的样式，替换手动添加的样式 |
+| `getJsLoader`                                                 | `jsLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]     | 替换注入沙箱的内联 `script`            |
+
+> `getJsLoader` 对于注入沙箱的外联 `script` 也可以返回 `code`，但是没有任何意义，最终还是会通过 `src` 加载 `script`
+
+操作原理：
+
+- 通过 `reduce` 将 `fnList` 数组中的函数拍平执行，初始值为提供的原始 `code`
+- 这样即便 `fnList` 数组没有任何函数，也能够将原始的 `code` 返回
+- 如果 `fnList` 中提供了函数，将 `code` 及其他参数传过去，返回新的值依次执行并返回最终替换结果
 
 ### 映射表和队列
 
