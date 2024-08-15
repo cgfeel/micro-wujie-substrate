@@ -2577,18 +2577,16 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **3. 处理返回资源：**
 
-- 获取资源路径 `assetPublicPath`
-- 通过 `htmlLoader` 处理获取的资源
-- 如果通过 `plugins` 传入 `htmlLoader` 处理，会将获取的资源作为字符参数传递过去
-- 通过 `processTpl` 传入处理过后的 `html`、`assetPublicPath`，提取 `template`、`script`、`style`，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
-- 最终返回资源对象，即上述最终返回的 `Promise<htmlParseResult>`
+- 应用入口链接通过 `getPublicPath` 获取资源路径链接，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
+- 使用 `processTpl` 将资源中的样式和 `script` 提取出来，并用注释替换 [[查看](#processtpl-提取资源)]
+- 返回 `Promise<htmlParseResult>` 见上述总结
 
-> 注 n：`assetPublicPath`
->
-> - `qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径
-> - `qiankun` 根据 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 配置
-> - `micro-app` 根据 `window.__MICRO_APP_PUBLIC_PATH__` 配置
-> - `wujie` 不需要配置 `__webpack_public_path__`，通过 `defaultGetPublicPath` 计算子应用入口 `url` 为 `baseurl`
+`qiankun` 和 `micro-app` 通过 `__webpack_public_path__` 配置资源路径：
+
+- `qiankun`：通过 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 获取，见：示例 [[查看](https://github.com/cgfeel/micro-qiankun-app-cra/blob/main/src/public-path.ts)]
+- `micro-app`：通过 `window.__MICRO_APP_PUBLIC_PATH__` 获取，见：示例 [[查看](https://github.com/cgfeel/micro-app-react-project/blob/main/src/public-path.ts)]
+
+> 相对来说 `wujie` 对子硬用的倾入是最少的
 
 **4. 获取外部资源：**
 
