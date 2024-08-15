@@ -2556,6 +2556,11 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > `getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
+通过 `ignore` 匹配的列表资源，将通过外联的方式加载资源，这样有效解决跨域问题：
+
+- `jsIgnores` 见：`getExternalScripts` [[查看](#getexternalscripts加载-script-资源)]
+- `cssIgnores` 见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
+
 **2. 获取资源：**
 
 通过 `getHtmlParseResult` 获取资源，接受 3 个参数：
@@ -2999,7 +3004,7 @@ return (cache[key] = Promise.resolve());
 - `ignore` 非 `async` 或 `defer` 的外联 `script`
 - 手动配置 `js-loader` 的外联 `script`
 
-关于 `ignore` 的问题：
+关于 `ignore` 的补充：
 
 - 应用中提取的静态 `script` 存在 `ignore` 属性将被注释，资源不会被收集，无论内联还是外联
 - 应用中动态添加的 `script`，不收集元素 `ignore` 属性，除了 `jsIgnores` 都能顺利加载
