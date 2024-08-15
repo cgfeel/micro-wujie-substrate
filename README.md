@@ -2528,12 +2528,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 其他情况通过 `getExternalScripts` 为每个 `script` 包裹一个 `Promise` 属性 `contentPromise`（当前章节.4）
 - 在启动应用 `start` 时，会将子应用的 `script` 分为：同步代码通过 `execQueue` 队列执行、异步代码通过微任务执行 [[查看](#-start-启动应用)]
 
-整个流程分 3 步：
-
-1. 提取必要的配置
-2. 远程加载或直接返回要加载的资源
-3. 处理资源
-
 **1. 提取必要的配置：**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
