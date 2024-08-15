@@ -2937,9 +2937,11 @@ return (cache[key] = Promise.resolve());
 
 返回：
 
-- 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
+- `script` 提取结果的集合 `ScriptResultList[]`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 
-> 这也是 `getExternalScripts` 唯一做的 1 件事
+主要做的 1 件事：
+
+- 遍历 `script` 集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
 
 `contentPromise` 内联 `script` 加载情况：
 
@@ -3083,6 +3085,10 @@ return (cache[key] = Promise.resolve());
 - `loadError`：资源加载失败通知，并非必选参数，同样透传给 `fetchAssets`
 
 返回：
+
+- 提取样式结果的集合 `StyleResultList[]`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
+
+主要做的 1 件事：
 
 - 遍历样式集合，为每一项增加一个 `Promise` 类型的属性 `contentPromise`
 
