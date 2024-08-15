@@ -5119,23 +5119,29 @@ proxyWindow.addEventListener;
 
 #### 2. `styleSheetElements` 收集样式表
 
-数组类型，分 2 个部分：
+用于收集应用中添加的内联样式元素，目的：
 
-- `patchCssRules`：实例方法，用于子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
-- `rewriteAppendOrInsertChild`：收集来自应用中动态添加的内联和外联样式
+- 为了 `umd` 模式切换应用时通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
-加载流程和 `execQueue` 稍微不一样：
+**集合收集有 3 处**
 
-1.  预加载应用或初次启动应用时通过 `processCssLoader` 替换应用中的静态样式 [[查看](#processcssloader处理-css-loader)]，这部分样式不会被收集
-2.  通过 `active` 激活应用，渲染 `template` 到容器
-3.  通过 `patchRenderEffect` 给容器打补丁收集来自应用中动态添加的 `style`，并将动态样式插入容器
-4.  `active` 激活最后 `shadowRoot` 下会遍历容器中所有 `style`，提取并记录 `:root` 样式
+注入资源到容器后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]：
 
-问题：
+- 仅收集容器中所有打补丁的样式 `:host`
 
-- `styleSheetElements` 并不收集应用内的除 `:root` 以外的静态样式
-- 而是每次激活应用时重复提取并加载样式，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
-- 当然可以通过 `alive` 模式和 `umd` 模式，在切换应用时避免重复加载
+收集的样式来自 `rewriteAppendOrInsertChild` 拦截动态添加的样式：
+
+- `link` 外联样式：下载后创建内联元素记录在集合中
+- `style`内联央视：直接记录在集合中
+
+**静态样式**
+
+对于应用中静态样式资源的缓存通过 `styleCache`，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+
+- 对于重建模式来说每次会通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
+- 通过 `processCssLoader` 去加载应用中的静态样式 [[查看](#processcssloader处理-css-loader)]
+
+> 在缓存允许的情况下，会优先通过缓存加载
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
