@@ -5063,7 +5063,7 @@ proxyWindow.addEventListener;
 - `getExternalScripts` 匹配 `script` 发起请求 [[查看](#getexternalscripts加载-script-资源)]
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-**动态添加的样式**
+**为 `umd` 模式记录的样式**
 
 应用中动态添加的样式，以及打补丁后的 `:host`，存储在 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
 
