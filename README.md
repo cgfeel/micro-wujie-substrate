@@ -2544,9 +2544,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 `getEffectLoaders` 提取的 `plugin` 包含：
 
 - `jsExcludes`：`js` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
-- `cssExcludes`：`css` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
-- `jsIgnores`：`js` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
-- `cssIgnores`：`css` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `cssExcludes`：`css` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+- `jsIgnores`：`js` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+- `cssIgnores`：`css` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 
 > `getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
