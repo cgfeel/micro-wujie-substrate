@@ -2937,7 +2937,7 @@ return (cache[key] = Promise.resolve());
 
 返回：
 
-- `script` 提取结果的集合 `ScriptResultList[]`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
+- 提取 `script` 结果的集合 `ScriptResultList[]`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 
 主要做的 1 件事：
 
