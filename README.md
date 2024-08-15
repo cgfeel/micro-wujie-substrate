@@ -2539,7 +2539,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，来自参数 `opts`，见上述总结
 - `htmlLoader`：从 `plguins` 提取 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
 - 通过 `getEffectLoaders` 提取 `plugins`
-- 通过 `defaultGetPublicPath` 将子应用的 `url` 和 `localhost.href` 计算出资源路径
+- 声明一个资源路径计算函数 `getPublicPath`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
 `getEffectLoaders` 提取的 `plugin` 包含：
 
