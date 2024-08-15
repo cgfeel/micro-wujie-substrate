@@ -5111,14 +5111,12 @@ proxyWindow.addEventListener;
 - `link` 外联样式：下载后创建内联元素记录在集合中
 - `style`内联样式：直接记录在集合中
 
-**静态样式**
+**换粗外联样式**
 
-对于应用中静态样式资源的缓存通过 `styleCache`，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+对于应用中外联样式通过 `styleCache` 缓存资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
-- 对于重建模式来说每次会通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
-- 通过 `processCssLoader` 去加载应用中的静态样式 [[查看](#processcssloader处理-css-loader)]
-
-> 在缓存允许的情况下，会优先通过缓存加载
+- `styleSheetElements` 和 `styleCache` 存在重叠的情况，都缓存外联样式
+- 但他们用途不一样，调用场景也不相同
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
