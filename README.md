@@ -2508,7 +2508,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `getExternalScripts`：提取应用静态 `script`，返回 `ScriptResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L19)]
 - `getExternalStyleSheets`：提取应用静态样式，返回 `StyleResultList[]` 集合，类型见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L20)]
 
-> 返回的资源会根据 `plugins` 是否存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+> 返回的资源会根据 `plugins` 是否不存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 调用场景有 3 处：
 
