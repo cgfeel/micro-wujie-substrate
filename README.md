@@ -2537,13 +2537,15 @@ iframeWindow.history.replaceState(null, "", args[0])
 **1. 提取必要的配置：**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
-- `htmlLoader`：从 `plguins` 提取 `loader` 函数，不存在使用默认提供的 `defaultGetTemplate`
+- `htmlLoader`：作为替换资源入口 `template` 的方法
 - 通过 `getEffectLoaders` 提取 `plugins`
 - 声明一个资源路径计算函数 `getPublicPath`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
-`htmlLoader` 提取规则：
+`htmlLoader` 声明规则：
 
-- 提供 `plugin`，但没提供 `htmlLoader`，通过
+- 提供 `plugin` 但不存在 `htmlLoader`，通过 `compose` 直接返回传入的资源 [[查看](#compose-用柯里化的方式拍平一组函数)]
+- 通过 `plugin` 提供 `htmlLoader`，通过 `compose` 直依次使用自定义的 `htmlLoader` 替换资源
+- 不提供 `plugins` 使用 `defaultGetTemplate` 直接返回传入的资源
 
 `getEffectLoaders` 提取的 `plugin` 包含：
 
