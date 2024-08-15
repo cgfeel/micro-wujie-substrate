@@ -2513,7 +2513,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 调用场景有 3 处：
 
 - `preloadApp` 预加载
-- `startApp` 切换 `alive` 模式的应用
+- `startApp` 加载还未执行的 `alive` 模式应用
 - `startApp` 初次加载沙箱实例
 
 子应用样式提取概览：
