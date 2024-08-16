@@ -2505,8 +2505,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `template`：处理后的资源内容
 - `assetPublicPath`：资源路径，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
-- `getExternalScripts`：加载应用中静态 `script` 资源 [[查看](#getexternalscripts加载-script-资源)]
-- `getExternalStyleSheets`：加载应用中静态样式资源 [[查看](#getexternalstylesheets加载样式资源)]
+- `getExternalScripts`：加载应用中静态 `script` 的包装方法 [[查看](#getexternalscripts加载-script-资源)]
+- `getExternalStyleSheets`：加载应用中静态样式的包装方法 [[查看](#getexternalstylesheets加载样式资源)]
 
 > 返回的 `Promise` 会根据 `plugins` 是否不存在 `htmlLoader` 来缓存结果，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
