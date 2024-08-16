@@ -2513,8 +2513,15 @@ iframeWindow.history.replaceState(null, "", args[0])
 调用场景有 3 处：
 
 - `preloadApp` 预加载
-- `startApp` 加载还未执行的 `alive` 模式应用
 - `startApp` 初次加载沙箱实例
+- `alive` 模式应用预加载后 `startApp` 会再次提取资源
+
+`alive` 模式预加载后重复执行的原因：
+
+- 提取 `getExternalScripts` 交给 `start` 启动应用前获取 `script` 集合
+- 预加载时已通过 `processCssLoader` 加载样式替换 `template` [[查看](#processcssloader处理-css-loader)]
+- 替换后的样式通过 `active` 保存在实例 `template` 中，但 `script` 需要重新提取
+- 重新提取资源会尽可能从缓存中获取 [[查看](#2-资源缓存集合)]
 
 **1. 提取必要的配置：**
 
