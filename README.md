@@ -2850,6 +2850,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
+参数：
+
+- `sandbox`：应用实例，用于获取 `cssLoader` [[查看](#通过配置替换资源)]
+- `template`：已替换注释的应用入口资源，见：`processTpl` [[查看](#processtpl-提取资源)]
+- `getExternalStyleSheets`：通过 `importHTML` 获取的包装方法，用于提取静态样式 [[查看](#getexternalstylesheets加载样式资源)]
+
 触发场景有 3 个：
 
 - `preloadApp`：预加载应用
@@ -2858,26 +2864,24 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > 预加载应用时会将应用的资源提取并替换样式后，保存到实例 `template` 中，`alive` 模式的应用启动时无需再次提取样式
 
-参数：
+**第一步：获取并更新样式集合**
 
-- `sandbox`：应用实例，用于获取 `cssLoader` [[查看](#通过配置替换资源)]
-- `template`：已替换注释的应用入口资源，见：`processTpl` [[查看](#processtpl-提取资源)]
-- `getExternalStyleSheets`：提取应用中静态样式 [[查看](#getexternalstylesheets加载样式资源)]
+- 通过 `proxyLocation` 获取应用的 `base url`，为：`host` + `pathname`
+- 通过 `compose` 获取 `cssLoader` [[查看](#compose-用柯里化的方式拍平一组函数)]
+- 通过 `getExternalStyleSheets` 遍历样式集合，为每一个 `contentPromise` 添加一个微任务 [[查看](#getexternalstylesheets加载样式资源)]
 
-获取并更新样式集合：
+微任务只做 1 件事：
 
-- 通过 `getCurUrl` 获取 `base url`
-- 通过 `compose` 柯里化获取插件 `cssLoader`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)] - `compose`
-- 遍历 `getExternalStyleSheets()`，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)] - `getExternalStyleSheets`
-- 目的是用 `cssLoader` 替换每一项 `css` 的 `contentPromise`，见文档：`css-loader` [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
+- 用 `cssLoader` 替换已加载的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 
-替换资源中的样式：
+**第二步：替换资源中的样式：**
 
-- 通过 `getEmbedHTML` 将之前注释的样式替换成内联样式 [[查看](#getembedhtml转换样式)]
-- 如果有提供的话通过 `replace` 更新资源 [[查看](#1-更新配置应用信息)]
-- 最后将更新的资源返回
+- 通过 `getEmbedHTML` 将样式元素替换对应的注释 [[查看](#getembedhtml转换样式)]
+- 更新的资源返回
 
-`processCssLoader` 存在的重复执行的问题，见：`importHTML` - 5. 存在的 2 个问题 [[查看](#importhtml-加载资源)]
+`processCssLoader` 中的 `replace` 不可用：
+
+- 因为执行时 `sandbox` 实例还没有绑定 `replace` 方法，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
 #### `getEmbedHTML`：转换样式
 
