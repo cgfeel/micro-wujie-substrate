@@ -3230,16 +3230,25 @@ return (cache[key] = Promise.resolve());
 
 `processCssLoader` 替换应用中的静态样式和 `template` [[查看](#processcssloader处理-css-loader)]：
 
-- 为每个样式资源 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
-- 通过 `getEmbedHTML` 加载样式后，替换 `template` 中提取时已注释的样式
+- 为样式资源属性 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
+- 通过 `getEmbedHTML` 将加载的样式替换 `template` 中对应的注释
 - 最后通过 `replace` 替换已更新资源后的 `template`
 
 `processCssLoader` 调用场景：
 
-- `startApp` 创建应用实例 [[查看](#startapp-启动流程)]，以及 `preloadApp` 预加载 [[查看](#preloadapp-预加载流程)]
-- 要调用 `processCssLoader`，在此之前就一定会提取资源，见：`importHTML` [[查看](#importhtml-加载资源)]
+- `startApp` 创建应用实例 [[查看](#startapp-启动流程)]
+- `preloadApp` 预加载 [[查看](#preloadapp-预加载流程)]
 
-> 从这里可以看出 `replace` 不能替换应用中的静态样式
+> 调用 `processCssLoader` 之前就一定会通过 `importHTML` 提取资源 [[查看](#importhtml-加载资源)]
+
+存在 2 个问题：
+
+- `replace` 不能替换应用中的静态样式，只能用 `css-loader` 代替
+- `replace` 在 `processCssLoader` 不可用
+
+因为 `replace` 必须在应用 `active` 是绑定在实例：
+
+- 而 `processCssLoader` 是在 `active` 之前调用，执行时 `sandbox.replace` 方法还不存在
 
 `getCssLoader` 柯里化处理运行时的样式：
 
