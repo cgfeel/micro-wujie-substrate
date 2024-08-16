@@ -1901,6 +1901,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `ignore`：空字符，样式只能作为外联加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 - 其他情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
+> 因此通过 `ignore` 实现外联加载的样式，引用的资源需要设为绝对路径或 `base64`，否则会因为路径不对找不到资源
+
 调用场景：
 
 - `processCssLoader`：处理应用中的静态样式替换 [[查看](#processcssloader处理-css-loader)]
