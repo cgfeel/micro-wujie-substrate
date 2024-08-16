@@ -3214,7 +3214,6 @@ return (cache[key] = Promise.resolve());
 调用场景：
 
 - 全部来自 `processCssLoader` 加载样式资源 [[查看](#processcssloader处理-css-loader)]
-- `start`：启动应用，包括 `preloadApp` 预执行、以及 `startApp` 启动应用 [[查看](#-start-启动应用)]
 
 发挥的作用：
 
