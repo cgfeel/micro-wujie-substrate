@@ -5034,7 +5034,7 @@ proxyWindow.addEventListener;
 - 键名是提取的外联样式 `src`
 - 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-加载匹配要求的外联样式，并缓存加载结果，包含：
+加载符合要求的外联样式，并缓存加载结果，包含：
 
 - `processTpl`：提取应用内静态样式 [[查看](#processtpl-提取资源)]
 - `processCssLoaderForTemplate`：手动配置应用样式 [[查看](#processcssloaderfortemplate手动添加样式)]
@@ -5052,7 +5052,7 @@ proxyWindow.addEventListener;
 - 键名是提取的外联样式 `src`
 - 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-加载匹配要求的外联 `script`，并缓存加载结果，包含：
+加载符合要求的外联 `script`，并缓存加载结果，包含：
 
 - `processTpl`：提取应用内静态 `script` [[查看](#processtpl-提取资源)]
 - `start`：加载手动配置的 `script` [[查看](#1-收集队列)]
@@ -5066,6 +5066,20 @@ proxyWindow.addEventListener;
 **为 `umd` 模式记录的样式**
 
 应用中动态添加的样式，以及打补丁后的 `:host`，存储在 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
+
+**不同模式下缓存的使用**
+
+| 场景              | `embedHTMLCache`     | `styleCache`                         | `template`           | `styleSheetElements`         |
+| ----------------- | -------------------- | ------------------------------------ | -------------------- | ---------------------------- |
+| 初次启动应用      | 提取资源时按条件记录 | 缓存外联样式后，替换入口资源参与渲染 | 应用 `active` 时记录 | 用于收集样式元素，不参与渲染 |
+| `active` 模式切换 | 不记录               | 不使用                               | 使用但不参与渲染     | 不使用                       |
+| `umd` 模式切换    | 不记录               | 不使用                               | 用于恢复容器资源     | 用于恢复容器样式             |
+| 重建模式切换      | 存在则使用           | 使用缓存替换入口资源参与渲染         | 重新记录             | 重新记录，不参与渲染         |
+
+`scriptCache` 只有初次启动和重建模式切换会用到：
+
+- `active` 和 `umd` 模式都不会销毁沙箱 `iframe`，不需要用到
+- 初次加载会缓存外联 `script`，等重建模式切换应用时使用缓存 `start` 应用
 
 #### 📝 `Wujie` 实例中映射表和队列
 
@@ -5117,6 +5131,10 @@ proxyWindow.addEventListener;
 
 - `styleSheetElements` 和 `styleCache` 存在重叠的情况，都缓存外联样式
 - 但他们用途不一样，调用场景也不相同
+
+区别：
+
+- 初次启动
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
