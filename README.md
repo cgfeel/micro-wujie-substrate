@@ -3153,7 +3153,7 @@ return (cache[key] = Promise.resolve());
 
 加载外联样式时传递给 `fetchAssets` 的参数：
 
-- `src`：外联样式的资源链接，内联样式为空或是元素 `outHTML`
+- `src`：资源链接
 - `styleCache`：用于缓存样式加载的资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 - `fetch`：透传自身参数 `fetch`
 - `cssFlag`：样式资源设为 `true`
