@@ -2545,7 +2545,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > `getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
-通过 `ignore` 匹配的列表资源，将通过外联的方式加载资源，这样有效解决跨域问题：
+通过 `ignore` 匹配的列表资源，将使用外联的方式加载资源，这样有效解决跨域问题：
 
 - `jsIgnores` 见：`getExternalScripts` [[查看](#getexternalscripts加载-script-资源)]
 - `cssIgnores` 见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
