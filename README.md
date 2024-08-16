@@ -5088,7 +5088,7 @@ proxyWindow.addEventListener;
 - `active` 和 `umd` 模式都不会销毁沙箱 `iframe`，不需要用到
 - 初次加载会缓存外联 `script`，等重建模式切换应用时使用缓存 `start` 应用
 
-> `active` 模式预加载后 `startApp` 需要再次提取资源，会尽可能从缓存中国获取，见：`importHTML` [[查看](#importhtml-加载资源)]
+> `active` 模式预加载后 `startApp` 需要再次提取资源，会尽可能从缓存中获取，见：`importHTML` [[查看](#importhtml-加载资源)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
