@@ -2854,7 +2854,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `preloadApp`：预加载应用
 - `startApp`：初次加载应用（不包含预加载后 `alive` 模式的应用）
-- `startApp`：每次切换非 `alive` 模式或 `umd` 模式的应用
+- `startApp`：重建模式每次切换应用
+
+> 预加载应用时会将应用的资源提取并替换样式后，保存到实例 `template` 中，`alive` 模式的应用启动时无需再次提取样式
 
 参数：
 
