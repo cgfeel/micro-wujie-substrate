@@ -2605,8 +2605,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 重建模式下，每次切换应用就是一次实例初始化，同样的也会重复调用 `importHTML` 提取资源，此时会尽量通过缓存获取资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 - `embedHTMLCache`：应用入口资源缓存，仅限没有提供 `htmlLoader`
-- `styleCache`：加载过的样式全部记录在缓存，只有加载失败的情况会继续请求
-- `scriptCache`：加载过的 `script` 全部记录在缓存，只有加载失败的情况会继续请求
+- `styleCache`：缓存加载的外联样式，只有加载失败的情况会继续请求
+- `scriptCache`：缓存加载的 `script`，只有加载失败的情况会继续请求
 
 > `alive` 和 `umd` 模式再次切换应用时，不会重复调用 `importHTML`
 
