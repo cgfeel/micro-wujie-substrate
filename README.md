@@ -5130,11 +5130,7 @@ proxyWindow.addEventListener;
 对于应用中外联样式通过 `styleCache` 缓存资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 - `styleSheetElements` 和 `styleCache` 存在重叠的情况，都缓存外联样式
-- 但他们用途不一样，调用场景也不相同
-
-区别：
-
-- 初次启动
+- 但他们用途不一样，调用场景也不相同，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
