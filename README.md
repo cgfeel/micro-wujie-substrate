@@ -3046,8 +3046,7 @@ return (cache[key] = Promise.resolve());
 
 手动配置的 `js-loader` 不会通过 `getExternalScripts` 加载资源：
 
-- 包含：`jsBeforeLoaders`、`jsAfterLoaders`，因为沙箱 `iframe` 允许注入外联 `script`
-- 当然 `js-loader` 也接受内联 `script`
+- 包含 `jsBeforeLoaders`、`jsAfterLoaders`
 
 根据以上总结，以下情况将通过 `src` 在沙箱中加载 `script`：
 
