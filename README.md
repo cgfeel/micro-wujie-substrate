@@ -2584,7 +2584,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `getExternalScripts`：提取应用中静态 `script` [[查看](#getexternalscripts加载-script-资源)]
 - `getExternalStyleSheets`：提取应用中静态样式 [[查看](#getexternalstylesheets加载样式资源)]
 
-> 提取的资源来自方法 `processTpl` [[查看](#processtpl-提取资源)]
+> 提取的资源、样式、`script` 来自 `processTpl` [[查看](#processtpl-提取资源)]
 
 提取资源传递的参数：
 
