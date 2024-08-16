@@ -2862,7 +2862,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `sandbox`：应用实例，用于获取 `cssLoader` [[查看](#通过配置替换资源)]
 - `template`：已替换注释的应用入口资源，见：`processTpl` [[查看](#processtpl-提取资源)]
-- `getExternalStyleSheets`：提取 `css` 资源的函数，返回 `css` 集合，见：`importHTML` 加载资源 [[查看](#importhtml-加载资源)]
+- `getExternalStyleSheets`：提取应用中静态样式，见：`importHTML` [[查看](#getexternalstylesheets加载样式资源)]
 
 获取并更新样式集合：
 
