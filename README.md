@@ -3220,6 +3220,17 @@ return (cache[key] = Promise.resolve());
 - 在 `importHTML` 包裹 `getExternalScripts` 方法确保不会立即执行
 - 而在调用场景中通过 `await` 可以确保执行前优先发起任务
 
+发起的任务由样式集合中的 `contentPromise` 决定：
+
+- 类型为 `Promise` 的微任务，将确保资源 `resolve`
+- 类型为 `fetchAssets` 返回的微任务，将确保发起请求
+
+> 为了很好的理解区别，用 `codepen` 做了一个演示 [[查看](https://codepen.io/levi0001/pen/qBzPwZe?editors=1111)]
+
+和 `script` 不同的加载方式：
+
+- 样式加载每一步都由 `await` 确保执行完毕，不存在还没有拿到 `fetchAssets` 请求结果的情况
+
 #### 通过配置替换资源
 
 包含 2 个插件和一个启动配置，分别是
