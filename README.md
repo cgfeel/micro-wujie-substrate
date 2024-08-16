@@ -2995,7 +2995,7 @@ return (cache[key] = Promise.resolve());
 `contentPromise` 内联 `script` 加载情况：
 
 - 全部在 `Promise` 中返回代码字符，包括存在 `module` 等其他属性
-- 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignoore` 说明
+- 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignore` 说明
 
 `contentPromise` 外联 `script` 加载情况：
 
