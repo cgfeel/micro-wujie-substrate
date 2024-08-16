@@ -2550,7 +2550,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `jsIgnores` 见：`getExternalScripts` [[查看](#getexternalscripts加载-script-资源)]
 - `cssIgnores` 见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 
-> 对于子应用中静态资源标记 `ignore` 的策略是用注释替换，将不会加载到基座中
+> 对于子应用中静态资源标记 `ignore` 的策略是用注释替换，将不会作为应用中的资源加载
 
 **2. 获取资源：**
 
