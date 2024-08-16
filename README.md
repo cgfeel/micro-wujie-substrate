@@ -3201,13 +3201,13 @@ return (cache[key] = Promise.resolve());
 - `fetch`：自定义方法，没有提供则使用浏览器自带的方法
 - `loadError`：加载失败通知方法，配置时提供，可选参数
 
-`scripts` 筛选规则：
+样式筛选规则：
 
 - 内联的静态样式都允许
 - 外联的样式不在 `cssExcludes` 配置列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
 - 所有符合要求且匹配 `cssIgnores` 的外联样式，需要标记 `ignore` 为 `true`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 
-`scripts` 从哪里来：
+样式从哪里来：
 
 - 由 `processTpl` 从提取的入口资源筛选出静态样式 [[查看](#processtpl-提取资源)]
 
