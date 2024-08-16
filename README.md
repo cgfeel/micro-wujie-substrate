@@ -3007,7 +3007,7 @@ return (cache[key] = Promise.resolve());
 
 - 因为 `contentPromise` 只能决定 `script` 中的 `content`
 - `content` 不存在的话，会通过 `src` 去加载 `script`，这样通过浏览器机制有效避开跨域问题
-- 其中包含了：所有外联的 `module`，非 `async` 和 `defer` 的 `ignnore`
+- 其中包含了：所有外联的 `module`，非 `async` 和 `defer` 的 `ignore`
 
 `ignore` 通 `fetchAssets` 加载 `async` 或 `defer`，仅限提取静态 `script`：
 
