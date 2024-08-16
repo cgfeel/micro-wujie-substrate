@@ -1883,12 +1883,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 构建时通过 `getPlugins` 确保至少包含 2 个默认插件。
 
-插件 1：`cssBeforeLoaders` - `内联样式`
+插件 1：`cssBeforeLoaders` - `内联样式`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/plugin.ts#L70)]
 
 - 由 `processCssLoaderForTemplate` 添加到每个应用头部 [[查看](#processcssloaderfortemplate手动添加样式)]
 - 解决 `shadowRoot` 下浮窗层级问题，见：`issue` [[查看](https://github.com/Tencent/wujie/issues/455)]
 
-插件 2：`cssLoader` - `cssRelativePathResolve`
+插件 2：`cssLoader` - `cssRelativePathResolve`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/plugin.ts#L57)]
 
 参数：
 
