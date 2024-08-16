@@ -2536,12 +2536,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 通过 `plugin` 提供 `htmlLoader`，通过 `compose` 依次使用自定义的 `htmlLoader` 替换资源 [[查看](#compose-用柯里化的方式拍平一组函数)]
 - 不提供 `plugins` 使用 `defaultGetTemplate` 直接返回传入的资源
 
-`getEffectLoaders` 提取的 `plugin` 包含：
+`getEffectLoaders` 提取的 `plugins` 包含：
 
-- `jsExcludes`：`js` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
-- `cssExcludes`：`css` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
-- `jsIgnores`：`js` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
-- `cssIgnores`：`css` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+- `jsExcludes`：外联 `script` 排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `cssExcludes`：外联样式排除列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+- `jsIgnores`：外联 `script` 忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+- `cssIgnores`：外联样式忽略列表，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 
 > `getEffectLoaders` 提取的资源通过 `reduce` 最终拷贝返回一个新的 `Array<string | RegExp>` 对象
 
