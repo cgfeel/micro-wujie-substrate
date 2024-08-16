@@ -1773,7 +1773,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `execQueue`            | `start` 应用中的任务队列                                                                                                                                            | `[]`                                                                           | `null`                  |
 | `id`                   | 应用名列                                                                                                                                                            | `name`，字符类型                                                               | 不处理                  |
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                                                 | `undefined`                                                                    | `null`                  |
-| `plugins`              | `wujie` 的插件系统，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]                                                                          | `Array<plugin>`                                                                | `null`                  |
 | `provide`              | 为子应用提供通信 `bus`、代理的 `location`，可选对象：传递数据 `props`、`shadowRoot` 容器，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)] | 在构造函数里提供 `bus`、`location`，在 `active` 中提供 `props` 和 `shadowRoot` | `null`                  |
 | `styleSheetElements`   | 收集应用中动态添加的样式，`:host` 补丁样式 [[查看](#2-stylesheetelements-收集样式表)]                                                                               | `[]`                                                                           | `null`                  |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                                           | `unndefined`，只在 `active` 时通过配置文件设置                                 | 不处理                  |
@@ -1872,6 +1871,91 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 那 `preloadApp` 和 `startApp` 提供的应用名不一样呢？
 
 - 那就作为不同的应用加载了，`wujie` 按照应用名来划分应用
+
+**`plugins`：插件集合**
+
+`wujie` 的插件系统，类型为 `Array<plugin>`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+
+属性值的更新：
+
+- `constructor` 构建：`Array<plugin>`
+- `destroy` 销毁：`null`
+
+构建时通过 `getPlugins` 确保至少包含 2 个默认插件。
+
+插件 1：`cssBeforeLoaders` - `内联样式`
+
+- 由 `processCssLoaderForTemplate` 添加到每个应用头部 [[查看](#processcssloaderfortemplate手动添加样式)]
+- 解决 `shadowRoot` 下浮窗层级问题，见：`issue` [[查看](https://github.com/Tencent/wujie/issues/455)]
+
+插件 2：`cssLoader` - `cssRelativePathResolve`
+
+参数：
+
+- `code`：样式代码或空字符
+- `src`：内联样式是空字符，外联样式为链接相对路径，或绝对路径
+- `base`：从 `proxyLocation` 中提取：`host` + `pathname`
+
+`code` 根据 `ignore` 来决定提供的内容：
+
+- `ignore`：空字符，样式只能作为外联加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
+- 其他情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
+
+调用场景：
+
+- `processCssLoader`：处理应用中的静态样式替换 [[查看](#processcssloader处理-css-loader)]
+- `getCssLoader`：来自动态添加和手动添加的样式替换，见：通过配置替换资源 [[查看](#通过配置替换资源)]
+
+处理前会根据 `src` 计算 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
+
+- 空字符：采用应用的 `base`，如内联样式
+- 相对路径：`base` + `src`
+- 字符串 - 非 `url`：`base.origin` + `/` + `src`
+- 绝对路径：忽略 `base`，采用绝对路径
+
+之后再提取样式中的路径，去匹配 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
+
+- 空字符：`baseUrl`，这样是错误情况，拿不到任何资源
+- 相对路径：`baseUrl` + `url`
+- 字符串 - 非 `url`：`baseUrl.origin` + `/` + `url`
+- 绝对路径：`url` 不做处理，忽略 `baseUrl`
+
+最后说说正则：
+
+```
+/(url\((?!['"]?(?:data):)['"]?)([^'")]*)(['"]?\))/g
+```
+
+> `//g`：说明是匹配样式全局中所有的内容
+
+第一层分成 3 个括号，先看后 2 个：
+
+- `(['"]?\))` 包含：`')`、`")`、`)`
+- `([^'")]*)` 包含：除双引号或单引号之外所有内容
+
+第 1 个括号里面的正则：
+
+- `(url\(.*)`：以 `url(` 开头
+- `(?!)`：负前瞻规则
+- `['"]?`：最多有 1 个单引号或双引号
+
+负前瞻规则 `exp1(?!exp2)` 解读：
+
+- 查找后面不是 `exp2` 的 `exp1`
+- 这里的 `exp2` 是：`['"]?(?:data):`，开头最多 1 个引号 + `data:`
+
+> `?:` 表示非捕获分组，匹配的值不会保存，和它相反的是捕获分组 `()`
+
+连起来看 `replace` 中第二个函数中的参数：
+
+- `_m`：匹配的全部字符，这里用不上
+- `pre`：以 `url(` 开头跟着 1 个引号，但不能是 `"data:`、`'data:`、`data:`
+- `url`：`post` 之前所有的内容
+- `post`：`')`、`")`、`)`
+
+最终将 `url` 替换成绝对路径返回：
+
+- `pre` + `absoluteUrl` + `post`
 
 ### `wujie` 中的代理
 
