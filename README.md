@@ -5085,10 +5085,10 @@ proxyWindow.addEventListener;
 | `umd` 模式切换        | 不记录               | 不使用                               | 用于恢复容器资源     | 用于恢复容器样式                                   |
 | 重建模式切换          | 存在则使用           | 使用缓存替换入口资源参与渲染         | 重新记录             | 重新记录，不参与渲染                               |
 
-`scriptCache` 只有初次启动和重建模式切换会用到：
+`scriptCache` 只有初次启动、预加载和重建模式切换会用到：
 
-- `active` 和 `umd` 模式都不会销毁沙箱 `iframe`，不需要用到
-- 初次加载会缓存外联 `script`，等重建模式切换应用时使用缓存 `start` 应用
+- `active` 和 `umd` 切换应用都不会销毁沙箱 `iframe`，不需要用到 `scriptCache`
+- 初次加载会缓存外联 `script`，等再次提取资源时，外联 `script` 将从缓存中获取
 
 备注：
 
