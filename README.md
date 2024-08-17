@@ -2694,7 +2694,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 接受 3 个参数：
 
 - `tpl`：字符类型，要提取的源内容
-- `baseURI`：字符类型，资源 `url`
+- `baseURI`：来自 `importHTML` 中的资源路径 `assetPublicPath` [[查看](#importhtml-加载资源)]
 - `postProcessTemplate`：可选参数，传入会在提取资源返回前进行最后处理
 
 返回一个 `TemplateResult` 对象 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L64)] 包含 4 个属性：
