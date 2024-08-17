@@ -4028,6 +4028,15 @@ window.onfocus = () => {
 - 通过 `fixElementCtrSrcOrHref` 重写 `setAttribute`，`Object.defineProperty` 劫持资源属性 [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
 - 从而对动态设置相对路径的资源修复为绝对路径
 
+修复的元素：
+
+- `HTMLImageElement`：图片 `src`
+- `HTMLAnchorElement`：链接 `href`
+- `HTMLSourceElement`：媒体 `src`
+- `HTMLLinkElement`：资源 `href`
+- `HTMLScriptElement`：脚本 `src`
+- `HTMLMediaElement`：音视频 `src`
+
 #### `fixElementCtrSrcOrHref`：对元素资源打补丁
 
 劫持元素原型对相对地址的赋值转绝对地址
@@ -4052,6 +4061,10 @@ window.onfocus = () => {
 
 - 相对路径，按照 `baseURI` 取转换为绝对路径，`baseURI` 见：`base` 元素 [[查看](#base标签操作)]
 - 绝对路径或是 `hash`，不处理直接返回
+
+调用场景：
+
+- `patchRelativeUrlEffect`：修复动态添加元素资源 [[查看](#patchrelativeurleffect修复动态添加元素资源)]
 
 ### 辅助方法 - 沙箱 `iframe`
 
