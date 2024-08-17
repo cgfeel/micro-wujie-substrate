@@ -1358,7 +1358,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `iframeWindow` 提取沙箱的 `window`，用于注入 `script`
 
-- 同时绑定 `__POWERED_BY_WUJIE__` 到沙箱 `window`，便于字应用确认运行环境
+- 同时绑定 `__POWERED_BY_WUJIE__` 到沙箱 `window`，便于子应用确认运行环境
 
 执行队列之前会通过 `removeLoading` 关闭 `loading` 状态：
 
