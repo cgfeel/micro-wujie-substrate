@@ -5014,7 +5014,7 @@ proxyWindow.addEventListener;
 从这里可以知道：
 
 - `preloadApp`：预加载可以极大的提升子应用首次打开速度
-- `startApp`：只要应用名和链接没变，通过组件重复插入子应用不会重复创建实例
+- `startApp`：只要应用名和链接没变，通过组件重复渲染应用不会重复创建实例
 - `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
 
 > `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
