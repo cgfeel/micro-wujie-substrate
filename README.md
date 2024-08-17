@@ -2706,8 +2706,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 函数内部作了 2 件事：
 
-- 声明对象用于收集提取的资源，分别是：`scripts`、`styles`、`entry`、`moduleSupport`、`template`
-- 执行替换，按照 `replace` 分别执行如下
+- 声明对象用于收集提取的资源，分别是：`scripts`、`styles`、`entry`、`moduleSupport`
+- 替换 `tpl`，按照 `replace` 分组替换资源绑定在 `template`
 
 **1.替换备注：**
 
