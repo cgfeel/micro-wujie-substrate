@@ -5329,23 +5329,19 @@ proxyWindow.addEventListener;
 | `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]                   | 执行          | 执行              |
 | 标记 `hrefFlag` 以便后退时能够返回应用                                                                                        | 执行          | 执行              |
 
-后退时 `hrefFlag` 存在怎么做：
+后退时 `hrefFlag` 存在，`shadowRoot` 容器怎么做：
 
-- 只看 `shadowRoot` 模式，通过 `renderElementToContainer` 将 `shadowRoot` 重新替换挂载到节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 通过 `renderElementToContainer` 将 `shadowRoot` 重新替换挂载到节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
-为什么后退时忽略 `degrade`：
+后退时 `hrefFlag` 存在，`iframe` 容器和 `active` 步骤一样 [[查看](#41-degrade-主动降级渲染)]：
 
-- 先看 `degrade` 下 `locationHrefSet` 拦截时的操作 [[查看](#locationhrefset拦截子应用-locationhref)]
-- 会通过 `renderElementToContainer` 清空沙箱 `iframe` 然后再把 `iframe` 容器的 `html` 添加进来
-- `popstate` 恢复时会通过 `initRenderIframeAndContainer` 重建 `iframe` 替换挂载到节点
-- 然后将沙箱 `iframeBody` 下的第一个元素添加到 `iframe` 容器的 `document` 下
+- 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂在到指定节点 [[插卡](#创建-iframe-容器)]
+- 通过 `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
+- 绑定 `onunload` 到 `iframe` 容器上用于销毁时主动 `unmount` 应用
+- 将之前迁移到沙箱 `body` 中的 `html` 元素添加到容器 `document` 下
+- 将容器 `document` 绑定在应用实例的 `document` 上
 
 问题：
-
-- 难道不是把 `iframeBody` 的 `parentElement`，添加到容器 `document` 下吗？
-- 渲染容器是恢复了，沙箱 `iframe` 的 `script` 叻？在 `locationHrefSet` 时已被清空了啊。。。
-
-幸运的时目前不会碰到上述问题：
 
 - 因为 `locationHrefSet` 存在 `bug`，`degrade` 模式下不能劫持 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
 
