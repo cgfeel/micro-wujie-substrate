@@ -1050,13 +1050,13 @@
 
 **提取子应用的 `script`：**
 
-通过 `getExternalScripts` 得到 `scriptResultList`，详细见：`importHTML` [[查看](#importhtml-加载资源)]
+通过 `getExternalScripts` 得到 `scriptResultList` [[查看](#getexternalscripts加载-script-资源)]
 
 声明 3 个集合：
 
 - `syncScriptResultList`：同步代码
-- `asyncScriptResultList`：`async` 代码无需保证顺序，所以不用放入执行队列
-- `deferScriptResultList`：`defer` 代码需要保证顺序并且在触发 `loaded` 前完成
+- `asyncScriptResultList`：`async` 无需保证加载顺序，所以不用放入执行队列
+- `deferScriptResultList`：`defer` 需要保证加载顺序并且在触发 `DOMContentLoaded` 前完成
 
 遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
