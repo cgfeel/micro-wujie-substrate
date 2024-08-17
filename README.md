@@ -2695,14 +2695,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `tpl`：字符类型，要提取的源内容
 - `baseURI`：来自 `importHTML` 中的资源路径 `assetPublicPath` [[查看](#importhtml-加载资源)]
-- `postProcessTemplate`：可选参数，用于返回前更新提取的资源，目前没有用到，可忽略
+- `postProcessTemplate`：可选参数，用于返回前更新提取的资源，目前没有用到可忽略
 
 返回一个 `TemplateResult` 对象包含 4 个属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L64)]
 
-- `template`：替换特定内容后的资源
-- `scripts`：提取的脚本
-- `styles`：提取的样式
-- `entry`：入口资源
+- `template`：替换样式和 `script` 为注释后的资源
+- `scripts`：提取的 `script` 集合，类型和 `getExternalScripts` 返回对象一致 [[查看](#getexternalscripts加载-script-资源)]
+- `styles`：提取的样式集合，类型和 `getExternalStyleSheets` 返回对象一致 [[查看](#getexternalstylesheets加载样式资源)]
+- `entry`：入口 `script`，不存在则是 `null`，目前没有用到可忽略
 
 函数内部作了 2 件事：
 
