@@ -2501,13 +2501,13 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 替换渲染容器为新建的 `iframe`
 - `pushUrlToWindow` 推送指定 `url` 到主应用路由 [[查看](#pushurltowindow推送-url-到基座路由)]
 
-替换渲染容器有 2 种情况，先看 `degrade` 主动降级：
+若是 `degrade` 主动降级，替换 `iframe` 容器：
 
 - 通过 `rawDocumentQuerySelector` （原生方法），拿到沙箱 `body`
 - 通过 `renderElementToContainer` 将渲染容器中的 `html` 元素添加到沙箱 `body` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 - 通过 `renderIframeReplaceApp` 创建新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
-非主动降级 `degrade` 只做一件事：
+非主动降级 `degrade` 则替换 `shadowRoot`：
 
 - 通过 `renderIframeReplaceApp` 创建新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
