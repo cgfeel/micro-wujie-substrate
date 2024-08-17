@@ -2691,7 +2691,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `micro-app` 中的 `flatChildren`，见：`micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
 
-从入参开始，接受 3 个参数：
+接受 3 个参数：
 
 - `tpl`：字符类型，要提取的源内容
 - `baseURI`：字符类型，资源 `url`
