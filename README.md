@@ -2421,7 +2421,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 | `proxyWindow`                                                                   | 非降级 | 代理中属性 `location` 的指向               |
 | `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]         | 非降级 | 包裹注入沙箱的 `script` 作为 `location`    |
 
-> 其中 `getCurUrl` 和 `baseURI` 的操作方式一模一样，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
+> 其中 `getCurUrl` 和 `patchElementEffect` 中的 `baseURI` 的操作方式一模一样，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
 
 #### `proxyLocation` 的问题
 
