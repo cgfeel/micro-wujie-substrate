@@ -2593,7 +2593,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 提取 `getExternalScripts` 交给 `start` 启动应用前获取 `script` 集合 [[查看](#-start-启动应用)]
 - 预加载时已通过 `processCssLoader` 加载样式替换 `template` [[查看](#processcssloader处理-css-loader)]
-- 替换后的样式通过 `active` 保存在实例 `template` 中，但 `script` 需要重新提取 [[查看](#-active-激活应用)]
+- 替换后的资源通过 `active` 保存在实例 `template` 中，但 `script` 需要重新提取 [[查看](#-active-激活应用)]
 - 重新提取资源会尽可能从缓存中获取 [[查看](#2-资源缓存集合)]
 
 **1. 提取必要的配置：**
