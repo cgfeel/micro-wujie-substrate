@@ -487,11 +487,10 @@
 - 激活应用 `active` [[查看](#-active-激活应用)]
 - 根据配置 `exec` 决定是否启动应用 `start` [[查看](#-start-启动应用)]
 
-这里有个问题：
+默认 `exec` 不会预执行：
 
-- `getExternalScripts` 是同步函数，不需要 `await`，见：注 ① [[查看](#5-队列前的准备)]
-- 当没有提供 `exec` 预执行时，会执行这个方法
-- 在预加载中通过 `await` 执行虽然不会报错，但之后 `start` 启动应用时，会重复执行一遍
+- 从 `importHTML` 提取 `getExternalScripts` 并执行，见：发挥的作用 [[查看](#getexternalscripts加载-script-资源)]
+- 通过 `await` 会将此前已经提交微任务的队列作为上下文同步任务执行
 
 #### 4. 对比 `startApp` 的配置
 
