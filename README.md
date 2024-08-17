@@ -178,7 +178,7 @@
 
 1. `preloadApp` 预加载（非 `alive` 模式和非预执行下的 `umd` 模式不推荐）[[查看](#preloadapp-预加载流程)]
 2. `startApp` 根据实例情况决定初始化还是切换应用 [[查看](#startapp-启动流程)]
-3. 首次启动和非 `alive`、`umd` 模式切换应用，要求 `destroy` 销毁后重新初始化 [[查看](#-destroy-销毁实例)]
+3. 首次启动和切换重建模式的应用，会 `destroy` 销毁后重新初始化 [[查看](#-destroy-销毁实例)]
 4. 声明实例，创建沙箱 `iframe`、代理 `proxy`、通信 `EventBus` 等 [[查看](#-constructor-构造函数)]
 5. `importHTML` 加载资源 [[查看](#importhtml-加载资源)]
 6. `processCssLoader` 处理 `css-loader` [[查看](#processcssloader处理-css-loader)]
