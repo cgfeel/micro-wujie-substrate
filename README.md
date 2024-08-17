@@ -2650,7 +2650,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 > 相对来说 `wujie` 对子硬用的倾入是最少的
 
-**4. 获取外部资源：**
+**4. 包装获取样式和 `script` 的方法：**
 
 在返回的对象中包含了 2 个包装方法：
 
