@@ -2697,7 +2697,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `baseURI`：来自 `importHTML` 中的资源路径 `assetPublicPath` [[查看](#importhtml-加载资源)]
 - `postProcessTemplate`：可选参数，用于返回前更新提取的资源，目前没有用到，可忽略
 
-返回一个 `TemplateResult` 对象 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L64)] 包含 4 个属性：
+返回一个 `TemplateResult` 对象包含 4 个属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L64)]
 
 - `template`：替换特定内容后的资源
 - `scripts`：提取的脚本
