@@ -2711,7 +2711,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **1.替换备注：**
 
-全部替换为空
+全部替换为空字符
 
 **2.提取或替换 `link` 标签：**
 
