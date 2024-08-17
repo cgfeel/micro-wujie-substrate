@@ -5335,7 +5335,7 @@ proxyWindow.addEventListener;
 
 后退时 `hrefFlag` 存在，`iframe` 容器和 `active` 步骤一样 [[查看](#41-degrade-主动降级渲染)]：
 
-- 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂在到指定节点 [[插卡](#创建-iframe-容器)]
+- 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂在到指定节点 [[查看](#创建-iframe-容器)]
 - 通过 `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
 - 绑定 `onunload` 到 `iframe` 容器上用于销毁时主动 `unmount` 应用
 - 将之前迁移到沙箱 `body` 中的 `html` 元素添加到容器 `document` 下
