@@ -1329,59 +1329,46 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 由于目前还在研究阶段，没有对官方提 PR。
 
-**总结：**
+**关于 `bug` 的总结：**
 
 1. 使用 `wujie` 过程中谨慎关闭 `fiber`，默认是不会关闭 `fiber` 的
 2. 不要在 `beforeScriptResultList` 或 `afterScriptResultList` 传入带有 `async` 属性的对象，虽然 `ScriptObjectLoader` 这个对象是允许配置 `async` 的，虽然官方在文档中也并没有说 `async` 是可选配置，但是擅自添加 `async` 在源码中是有逻辑问题的
 
 #### 5. 队列前的准备
 
-- `execFlag` 设置为 `true`，从这里知道 `execFlag` 表示是否启动应用
+`execFlag` 设置为 `true`，表示已启动应用：
+
 - `execFlag` 会在 `destroy` 设 `null`，从这里知道注销应用后只能重新创造应用实例
-- `scriptResultList` 提取要执行的 `script`，注 ①
-- `iframeWindow` 提取沙箱的 `window`
-- 为子应用注入 `__POWERED_BY_WUJIE__` 用于子应用是基座时，通过 `inject` 向父级获取对象 [[查看](#1-inject-注入子应用-3-个对象)]
 
-> 注 ①：`scriptResultList`，这是个不影响使用的问题
->
-> - 类型声明 `getExternalScripts` 是 `() => ScriptResultList`，没有 `Promise` 是不需要 `await` 的
-> - `getExternalScripts` 返回一个数组集合，集合中包含带有类型为 `Promise` 的属性 `contentPromise`，函数本身不是微任务
-> - 返回的集合会根据 `script` 类型分别做同步代码和异步代码处理
->
-> 由此可以知道：
->
-> - 在遍历子应用每一项 `script` 时，`contentPromise` 项都是一个微任务
-> - 这也就是为什么同步代码和异步代码都是通过微任务将 `script` 添加到 `iframe` 中执行的原因了
-> - 而其他的循环插入队列的 `script` 不需要通过微任务去执行操作
-> - 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
->
-> 一道思考题：子应用的静态 `script` 是怎么注入到沙箱 `iframe`
->
-> 1. 通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
-> 2. 通过 `processTpl` 将替换资源拿到：`template`，和两个集合 `scripts`、`styles` [[查看](#processtpl-提取资源)]
->    - 集合的类型为 `ScriptObject`、`StyleObject`，包含的属性见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L29)]
-> 3. 结合提取的资源，返回：`template`、`assetPublicPath`、`getExternalScripts`、`getExternalStyleSheets`
-> 4. 通过 `getExternalScripts` 遍历 `script` 集合，为集合中每一项增加一个类型为 `Promise` 的属性 `contentPromise` 用于提取 `script` 的内容，见：`importHTML` 加载资源 - `getExternalScripts` [[查看](#importhtml-加载资源)]
-> 5. `start` 应用时调用 `getExternalScripts`，根据集合每项 `script` 信息分配到同步代码或异步代码
-> 6. 同步代码或异步代码通过微任务 `contentPromise` 拿到 `script` 的内容 `content`
-> 7. 将 `content` 作为内联 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
->
-> 因此：
->
-> - 子应用 `script` 只有外联的 `ES` 模块或带有 `ignore` 属性，会当做空内容
-> - 其他情况都作为内联 `script` 处理，外联的 `script` 会在插入 `iframe` 前下载下来，即便是 `async` 或 `defer`
+通过 `importHTML` 包装方法 `getExternalScripts` 提取要注入沙箱的静态 `script` 集合 [[查看](#getexternalscripts加载-script-资源)]
 
-关闭加载状态：
+- `getExternalScripts` 返回的 `script` 集合中，属性 `contentPromise` 是一个微任务
+- 这也就是为什么同步代码和异步代码都是通过微任务将 `script` 添加到 `iframe` 中执行的原因
 
-- 在第一次提取队列 `this.execQueue.shift()?.()` 之前，会通过 `removeLoading` 关闭 `loading` 状态
-- 关于加载状态的添加和删除，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
+> 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
 
-删除条件：
+一道思考题：子应用中静态 `script` 是怎么注入到沙箱 `iframe`
 
-- 没有提供 `__WUJIE_UNMOUNT` 的所有模式
-- 因为 `start` 不能像 `active` 那样判断当前应用是初次加载还是切换应用
+1. 通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
+2. 通过 `processTpl` 提取资源中的样式和 `script`，并替换成注释 [[查看](#processtpl-提取资源)]
+3. 通过 `processCssLoader` 提取样式替换资源中的注释后通过 `active` 注入容器 [[查看](#processcssloader处理-css-loader)]
+4. `start` 应用时调用 `importHTML` 提供的包装方法 `getExternalScripts` 提取 `script` [[查看](#getexternalscripts加载-script-资源)]
+5. 将提取的 `script` 分为同步代码或异步代码分别处理，同步代码加上手动注入的 `script` 一同添加到队列
+6. 通过 `insertScriptToIframe` 将队列中提供的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
-`umd` 模式 `start` 时会重复执行：
+`iframeWindow` 提取沙箱的 `window`，用于注入 `script`
+
+- 同时绑定 `__POWERED_BY_WUJIE__` 到沙箱 `window`，便于字应用确认运行环境
+
+执行队列之前会通过 `removeLoading` 关闭 `loading` 状态：
+
+- 关于加载状态，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
+
+删除 `loading` 的条件：
+
+- 没有提供 `__WUJIE_UNMOUNT` 的所有模式，因为 `start` 不能像 `active` 那样判断当前应用是初次加载还是切换应用
+
+`umd` 模式 `start` 时会重复调用 `removeLoading`：
 
 - 第 1 遍：在执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
 - 第 2 遍：将应用入口 `script` 注入沙箱后，`mount` 时沙箱 `window` 已绑定 `__WUJIE_MOUNT`
