@@ -571,6 +571,10 @@
 - `umd` 预执行后 `startApp` 会清空容器重新
 - `umd` 模式需要用到 `styleSheetElements`，其他模式不需要
 
+除此之外可以通过 `setupApp` 提前缓存配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
+
+- 这样避免预加载和启动应用时重复填写配置信息
+
 ### `WuJie` 应用类
 
 目录：`sandbox.ts` - `WuJie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
