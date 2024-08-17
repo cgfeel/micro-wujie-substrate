@@ -994,7 +994,7 @@
 
 参数：
 
-- `getExternalScripts`：返回一个要加载的 `script` 集合的函数，见：`importHTML` [[查看](#importhtml-加载资源)]
+- `getExternalScripts`：返回加载应用中静态 `script` 集合的函数 [[查看](#getexternalscripts加载-script-资源)]
 
 返回：
 
