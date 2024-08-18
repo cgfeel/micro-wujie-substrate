@@ -2861,7 +2861,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `defer`：操作 `Dom` 不存在问题，因为在此之前资源已通过 `active` 注入 [[查看](#-active-激活应用)]
 - `defer`：多个静态 `script` 相互依赖，会因为 `defer` 丢失，立即执行而找不到依赖
 
-外联 `script` 中存在 `async` 或 `defer` 属性，会在集合插入对象中添加如下属性：
+外联 `script` 中存在 `async` 或 `defer` 属性，会在上述插入集合的对象中添加 2 个属性：
 
 ```
 {
