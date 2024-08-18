@@ -2718,21 +2718,21 @@ iframeWindow.history.replaceState(null, "", args[0])
 有 2 个情况会将 `link` 标签替换为备注：
 
 1. `ref="stylesheet"` 的外联样式
-2. `preload|prefetch|modulepreload` 模式下，存在 `href` 的 `font` 类型资源
+2. 除了字体以外，所有 `preload|prefetch|modulepreload` 模式下外联资源
 
 > 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换，例如：`favicon`
 
-替换备注有 2 种方式：
+替换备注有 3 种方式：
 
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的外联样式
-- `genLinkReplaceSymbol`：默认替换的方式
+- `genLinkReplaceSymbol`：替换非预加载、空闲加载的外联样式
+- `genLinkReplaceSymbol`：替换预加载、空闲加载的外联资源，第二个参数为 `true`
 
-`genLinkReplaceSymbol` 在 2 中情况注释的不同处：
+收集样式只有 1 种情况：
 
-- 样式：不提供第二个参数，无无加载
-- 字体：提供第二个参数，作为 `perfetch` 或 `preload`
+- 替换非预加载、空闲加载的外联样式：记录外联的 `src` 记录在 `styles` 集合中
 
-> 记住这个模式在启动应用前 `processCssLoader` 根据注释替换资源
+> 通过 `processCssLoader` 仅还原收集在 `styles` 集合的样式 [[查看](#processcssloader处理-css-loader)]
 
 **3.提取或替换 `style` 内联样式：**
 
