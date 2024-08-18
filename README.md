@@ -2752,6 +2752,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
 
+> 补充说明：`processTpl` 提取的外联样式，全部是应用中的静态样式，动态样式需要通过 `patchRenderEffect` 重写方法拦截写入 [[查看](#patchrendereffect-为容器打补丁)]
+
 **3.提取或替换 `style` 内联样式：**
 
 所有内联样式都会被注释替换，替换注释有 2 种：
