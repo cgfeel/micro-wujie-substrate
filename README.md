@@ -2881,6 +2881,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `content`：代码 `code`
 - 不存在属性 `async` 和 `defer`
 
+> 类型为 `type="text/ng-template"` 也会作为内联 `script` 进行收集
+
 #### `processCssLoader`：处理 `css-loader`
 
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
