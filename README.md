@@ -2830,7 +2830,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 不能是 `scriptIgnore`：带有 `ignore` 属性
 - 不能是 `moduleScriptIgnore`：被忽略的 `esModule`
 
-> 除此之外内联 `script` 还要求：存在代码 `code` 且不能全部为空或单杠注释
+> 除此之外内联 `script` 还要求：存在代码 `code` 且不能全部为空或行注释
 
 外联 `script` 插入集合的对象：
 
