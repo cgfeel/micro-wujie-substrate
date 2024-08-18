@@ -2885,6 +2885,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### `processCssLoader`：处理 `css-loader`
 
+处理 `css-loader` 来自备注，实际上主要的目的是是通过 `getEmbedHTML` 加载样式并替换应用入口资源，在此之前会为通过 `getExternalStyleSheets` 提取样式集合，为每个样式的属性 `contentPromise` 添加一个微任务用于通过 `css-loader` 操作替换
+
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
 参数：
