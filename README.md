@@ -2725,7 +2725,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 引入的样式，替换备注有 2 种方式：
 
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的外联样式
-- `genLinkReplaceSymbol`：替换非 `ignore` 的外联样式
+- `genLinkReplaceSymbol`：替换非 `ignore` 的外联引入样式
 
 预加载和空闲加载的资源替换备注的方式：
 
@@ -2743,7 +2743,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 收集样式只有 1 种情况：
 
-- 替换引入的外联样式：记录外联的 `src` 记录在 `styles` 集合中
+- 非 `ignore` 的外联引入样式：记录外联的 `src` 记录在 `styles` 集合中
 
 > 通过 `processCssLoader` 仅还原收集在 `styles` 集合的样式 [[查看](#processcssloader处理-css-loader)]
 
