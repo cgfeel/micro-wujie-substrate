@@ -2802,7 +2802,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 不处理 `script` 的情况有 3 种：
 
-- `!matchedScriptType`：说明 `script` 缺少 `type` 属性，直接返回不处理
+- `isValidJavaScriptType` 检测不符合要求：说明不是可执行的 `script`，直接返回不处理
 - 存在多入口 `script`：`entry` 和 `matchedScriptEntry` 同时存在，抛出 `Error`
 - `src` 属性值为空：直接返回不处理（难道不是注释掉更合理吗？）
 
