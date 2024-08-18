@@ -2749,7 +2749,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 外联样式收集的 `src` 校正：
 
-- 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径转为绝对路径
+- 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
 
 **3.提取或替换 `style` 内联样式：**
 
