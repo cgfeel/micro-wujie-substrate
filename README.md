@@ -2717,20 +2717,33 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 有 2 个情况会将 `link` 标签替换为备注：
 
-1. `ref="stylesheet"` 的外联样式
+1. `ref="stylesheet"` 引入的外联样式
 2. 除了字体以外，所有 `preload|prefetch|modulepreload` 模式下外联资源
 
 > 以上情况都不符合，会原封不动将数据返回，对于 `link` 标签不做替换，例如：`favicon`
 
-替换备注有 3 种方式：
+引入的样式，替换备注有 2 种方式：
 
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的外联样式
-- `genLinkReplaceSymbol`：替换非预加载、空闲加载的外联样式
-- `genLinkReplaceSymbol`：替换预加载、空闲加载的外联资源，第二个参数为 `true`
+- `genLinkReplaceSymbol`：替换非 `ignore` 的外联样式
+
+预加载和空闲加载的资源替换备注的方式：
+
+- `genLinkReplaceSymbol`：第二个参数为 `true`
+
+> 因为提取样式本身之后会通过 `getExternalStyleSheets` 发起预加载 [[查看](#getexternalstylesheets加载样式资源)]
+
+通过 `rel` 区分引入的资源类型
+
+- `stylesheet`：引入的外联样式
+- `preload`：预加载，`modulepreload` 用于加载 `esModule`，不匹配 `link`
+- `prefetch`：空闲加载
+
+> 用 `codepen` 演示了 `link` 元素 `ref` 的特性 [[查看](https://codepen.io/levi0001/pen/rNEJxZr)]
 
 收集样式只有 1 种情况：
 
-- 替换非预加载、空闲加载的外联样式：记录外联的 `src` 记录在 `styles` 集合中
+- 替换引入的外联样式：记录外联的 `src` 记录在 `styles` 集合中
 
 > 通过 `processCssLoader` 仅还原收集在 `styles` 集合的样式 [[查看](#processcssloader处理-css-loader)]
 
@@ -2743,7 +2756,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 所有内联样式都会被注释替换，替换注释有 2 种：
 
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的内联样式
-- `getInlineStyleReplaceSymbol`：默认替换方式
+- `getInlineStyleReplaceSymbol`：替换方式
 
 默认替换方式做 2 件事：
 
