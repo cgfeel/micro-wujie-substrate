@@ -2738,7 +2738,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `stylesheet`：引入的外联样式
 - `preload`：预加载资源
-- `modulepreload` 用于加载 `esModule`，不匹配 `link`
+- `modulepreload` 用于预加载 `esModule`，不匹配 `link`
 - `prefetch`：空闲加载资源
 
 > 浏览器通常不加载不存在 `rel` 属性的 `link` 元素，关于这个特性用 `codepen` 做了演示 [[查看](https://codepen.io/levi0001/pen/rNEJxZr)]
