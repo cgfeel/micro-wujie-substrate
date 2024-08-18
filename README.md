@@ -2727,11 +2727,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的外联样式
 - `genLinkReplaceSymbol`：替换非 `ignore` 的外联引入样式
 
+> 带有 `ignore` 属性的外联样式替换备注后将彻底废弃不再还原
+
 预加载和空闲加载的资源替换备注的方式：
 
-- `genLinkReplaceSymbol`：第二个参数为 `true`
-
-> 因为提取样式本身之后会通过 `getExternalStyleSheets` 发起预加载 [[查看](#getexternalstylesheets加载样式资源)]
+- `genLinkReplaceSymbol`：第 2 个参数为 `true`，替换备注后将彻底废弃不再还原
+- 因为提取样式本身之后会通过 `getExternalStyleSheets` 发起预加载 [[查看](#getexternalstylesheets加载样式资源)]
 
 通过 `rel` 区分引入的资源类型
 
