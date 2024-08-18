@@ -2745,7 +2745,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 收集样式只有 1 种情况：
 
-- 非 `ignore` 的外联引入样式：记录外联的 `src` 记录在 `styles` 集合中
+- 非 `ignore` 的外联引入样式：记录 `src` 在 `styles` 集合中
 
 > 通过 `processCssLoader` 仅还原收集在 `styles` 集合的样式 [[查看](#processcssloader处理-css-loader)]
 
@@ -2759,13 +2759,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 所有内联样式都会被注释替换，替换注释有 2 种：
 
-- `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的内联样式
-- `getInlineStyleReplaceSymbol`：替换方式
+- `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的内联样式，注释中的 `url` 为 `style file`
+- `getInlineStyleReplaceSymbol`：非 `ignore` 的内联样式，备注中按照集合中的索引替换成备注
 
-默认替换方式做 2 件事：
+收集样式只有 1 种情况：
 
-- 将 `{ src: "", content: code }` 添加到 `styles`
-- 记录当前样式在 `styles` 中的 `index`，在启动应用前 `processCssLoader` 根据注释替换资源
+- 非 `ignore` 的内联样式：记录代码为 `content` 在 `styles` 集合中
 
 **4.提取或替换 `script`：**
 
