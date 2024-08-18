@@ -2768,13 +2768,13 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **4.提取或替换 `script`：**
 
-先获取以下对象：
+先声明以下对象：
 
 - `scriptIgnore`：提取带有 `ignore` 属性的 `script`
 - `isModuleScript`：判断是否是 `esModule`
 - `isCrossOriginScript`：提取跨域行为 `crossorigin` 的 `script`
 - `crossOriginType`：跨域类型，只提取 `anonymous` 不发送凭据，`use-credentials` 发送凭据，否则为空字符
-- `moduleScriptIgnore`：是为作为 `esModule` 被忽略
+- `moduleScriptIgnore`：作为 `esModule` 被忽略
 - `matchedScriptTypeMatch`：提取带有 `type` 属性的 `script`，不存在为 `null`
 - `matchedScriptType`：`script` 的 `type` 值，不存在为 `undefined`
 
@@ -2783,15 +2783,32 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 览器支持 `esModule`：但 `script` 带有属性 `nomodule`
 - 或浏览器不支持 `esModule`：但 `isModuleScript` 为 `true`，当前 `script` 是 `esModule`
 
-分 3 个情况：
+外联 `script` 还需要声明 3 个对象：
 
-- 不是有效的可执行 `script`，直接返回不处理
-- 有效的外部链接：不包含 `type="text/ng-template"` 且有 `src` 的外部 `script`
-- 其他情况，如：内联 `script`、`ng-template`
+- `matchedScriptEntry`：匹配带有 `entry` 的 `script`
+- `matchedScriptSrcMatch`：匹配带有 `src` 的 `script`
+- `matchedScriptSrc`：提取外联 `script` 的 `src` 值
 
-用注释替换 `script` 有 2 种：
+> `matchedScriptSrcMatch` 值应该放入外部声明，目前重复执行了匹配
 
-- `scriptIgnore`、`moduleScriptIgnore`
+所有外联 `script` 是不包含 `type="text/ng-template"` 的：
+
+- `ng-template` 也是内联 `script`，只是允许包含 `src` 属性的 `template`，见：`issue` [[查看](https://github.com/angular/angular.js/issues/2820#issuecomment-18806961)]
+
+不处理 `script` 的情况有 3 种：
+
+- `!matchedScriptType`：说明 `script` 缺少 `type` 属性，直接返回不处理
+- 存在多入口 `script`：`entry` 和 `matchedScriptEntry` 同时存在，抛出 `Error`
+- `src` 属性值为空：直接返回不处理（难道不是注释掉更合理吗？）
+
+用注释替换 `script` 有 4 种：
+
+| 注释                           | 匹配条件                   | 注释方式                                                                  |
+| ------------------------------ | -------------------------- | ------------------------------------------------------------------------- |
+| `genIgnoreAssetReplaceSymbol`  | `scriptIgnore`             | 优先提供 `src`，否则用 `js file`                                          |
+| `genModuleScriptReplaceSymbol` | `moduleScriptIgnore`       | 优先提供 `src`，否则用 `js file`，除此之外提供第 2 个参数 `moduleSupport` |
+| `genScriptReplaceSymbol`       | 有 `src` 值的外联 `script` | `src` 属性值，以及异步或延迟属性，不存在为空字符                          |
+| `inlineScriptReplaceSymbol`    | 内联 `script`              | 统一注释信息                                                              |
 
 **4.1 有效的外部链接，先提取 3 个对象：**
 
