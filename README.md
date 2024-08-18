@@ -2771,11 +2771,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 先获取以下对象：
 
 - `scriptIgnore`：提取带有 `ignore` 属性的 `script`
-- `isModuleScript`：判断是否是 `ES` 模块的 `script`
+- `isModuleScript`：判断是否是 `esModule`
 - `isCrossOriginScript`：提取跨域行为 `crossorigin` 的 `script`
-- `crossOriginType`：跨端的类型的值
-  - 这里只提取 `anonymous` 不发送凭据和 `use-credentials` 发送凭据 2 个类型
-  - `crossorigin` 不存在默认为空字符
+- `crossOriginType`：跨域类型，只提取 `anonymous` 不发送凭据，`use-credentials` 发送凭据，否则为空字符
 - `moduleScriptIgnore`：`script` 作为被忽略的 `ES` 模块
   - 当浏览器支持 `ES` 模块而 `script` 标签带有 `nomodule` 属性
   - 或浏览器不支持 `ES` 模块并且当前 `script` 是 `module` 类型
