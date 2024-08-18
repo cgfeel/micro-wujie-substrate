@@ -2774,7 +2774,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `isModuleScript`：判断是否是 `esModule`
 - `isCrossOriginScript`：提取跨域行为 `crossorigin` 的 `script`
 - `crossOriginType`：跨域类型，只提取 `anonymous` 不发送凭据，`use-credentials` 发送凭据，否则为空字符
-- `moduleScriptIgnore`：作为 `esModule` 被忽略
+- `moduleScriptIgnore`：被忽略的 `esModule`
 - `matchedScriptTypeMatch`：提取带有 `type` 属性的 `script`，不存在为 `null`
 - `matchedScriptType`：`script` 的 `type` 值，不存在为 `undefined`
 
@@ -2798,7 +2798,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 内联 `script` 还需要声明 2 个对象：
 
 - `code`：内联 `script` 的代码内容
-- `isPureCommentBlock`：`script` 每一行不为空，或者是以 `//` 开头的单例注释
+- `isPureCommentBlock`：`script` 每一行为空，或者是以 `//` 开头的单例注释
 
 不处理 `script` 的情况有 3 种：
 
@@ -2825,9 +2825,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - 不同的注释只能作为源码参考，加载的 `script` 最终注入的是沙箱，而替换成注释的资源注入的是渲染容器
 
-收集 `script` 有 2 种情况：
+收集 `script` 情况有 2 种，外联 `script`、内联 `src`，都要求：
 
-- 外联 `script`、内联 `src`
+- 不能是 `scriptIgnore`：带有 `ignore` 属性
+- 不能是 `moduleScriptIgnore`：被忽略的 `esModule`
+
+> 除此之外内联 `script` 还要求：存在代码 `code` 且不能全部为空或单杠注释
 
 外联 `script` 插入集合的对象：
 
@@ -2849,28 +2852,16 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 `parseTagAttributes` 提取属性：
 
-- `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为 `key`、`value` 的键值对象返回
+- `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为键值对象返回
+- 因此对于只有属性名的 `async` 和 `defer`，不会提取也不会恢复
 
-**4.1 有效的外部链接，先提取 3 个对象：**
+造成的问题：
 
-- `matchedScriptEntry`：提取的 `script` 是带有 `entry` 的主入口
-- `matchedScriptSrcMatch`：提取的 `script` 是带有 `src` 属性
-- `matchedScriptSrc`：`script` 的 `src` 链接或 `undefined`
+- `async`：不会有任何问题，作为异步代码注入沙箱，见：队列执行顺序 [[查看](#3-队列执行顺序)]
+- `defer`：操作 `Dom` 不存在问题，因为在此之前资源已通过 `active` 注入 [[查看](#-active-激活应用)]
+- `defer`：多个静态 `script` 相互依赖，会因为 `defer` 丢失，立即执行而找不到依赖
 
-以下情况会 `throw`：
-
-- 多入口：`entry` 和 `matchedScriptEntry` 同时存在
-
-以下情况会设置入口 `entry`
-
-- `entry` 为 `null`，`matchedScriptEntry` 存在，设置为 `matchedScriptSrc`
-- 在设置之前会检查并更新 `matchedScriptSrc` 为有效的 `url`
-
-> 如果 `src` 提供的是相对路径，会根据资源路由 `baseURI` 获取相对 `url`
-
-`matchedScriptSrc`：对于已提取出 `src` 的情况会提取出一个对象插入 `scripts`
-
-除此之外还会提取 `script` 中的 `async` 和 `defer` 属性，只有有一个属性存在，会在插入对象中添加如下属性
+外联 `script` 中存在 `async` 或 `defer` 属性，会在集合插入对象中添加如下属性：
 
 ```
 {
@@ -2879,26 +2870,16 @@ iframeWindow.history.replaceState(null, "", args[0])
 }
 ```
 
-其他情况带有外链的 `script` 将直接返回不做任何处理
+提取的 `async` 和 `defer` 有什么用：
 
-**4.2 内联 `script`：**
+- `getExternalScripts` 判断加载方式 [[查看](#getexternalscripts加载-script-资源)]
+- `start` 应用时是同步代码还是异步代码 [[查看](#1-收集队列)]
 
-无论哪种情况内联 `script` 都会被注释代替，当内联 `script` 不存在 `scriptIgnore`，也不存在 `moduleScriptIgnore` 时：
+内联 `script` 插入集合的对象和外联 `script` 基本一样，不同在于：
 
-- 通过 `getInlineCode` 提取 `script` 中的脚本内容
-- 遍历每一行查看是否为空或已单行注释得到 `isPureCommentBlock`
-- 如果是有效的内联 `script` 和上面外链 `script` 一样添加到 `scripts`
-
-> 这里 `wujie` 好像没有考虑多行注释
-
-插入 `scripts` 的 `item` 和外链不同点
-
-```
-{
-    src: "",
-    content: code,
-}
-```
+- `src`：空字符
+- `content`：代码 `code`
+- 不存在属性 `async` 和 `defer`
 
 #### `processCssLoader`：处理 `css-loader`
 
@@ -3087,9 +3068,6 @@ return (cache[key] = Promise.resolve());
 
 - `module` 非 `async` 的 `script`，需要标记 `defer` 为 `true`
 - 在 `start` 启动应用时，会将其作为同步代码 [[查看](#1-收集队列)]
-- 这意味着：
-  1. 所有 `module` 无论内联还是外联，都要等文档解析之后开始执行
-  2. 启动应用时需要按照 `execQueue` 队列顺序先后注入 [[查看](#3-队列执行顺序)]
 
 调用场景：
 
