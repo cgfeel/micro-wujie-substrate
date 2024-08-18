@@ -2795,11 +2795,20 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `ng-template` 也是内联 `script`，只是允许包含 `src` 属性的 `template`，见：`issue` [[查看](https://github.com/angular/angular.js/issues/2820#issuecomment-18806961)]
 
+内联 `script` 还需要声明 2 个对象：
+
+- `code`：内联 `script` 的代码内容
+- `isPureCommentBlock`：`script` 每一行不为空，或者是以 `//` 开头的单例注释
+
 不处理 `script` 的情况有 3 种：
 
 - `!matchedScriptType`：说明 `script` 缺少 `type` 属性，直接返回不处理
 - 存在多入口 `script`：`entry` 和 `matchedScriptEntry` 同时存在，抛出 `Error`
 - `src` 属性值为空：直接返回不处理（难道不是注释掉更合理吗？）
+
+`entry` 入口资源按照 `matchedScriptEntry` 决定设置为外联 `script` 的 `src`：
+
+- 但 `entry` 作为导出对象的属性，目前没有被调用
 
 用注释替换 `script` 有 4 种：
 
@@ -2809,6 +2818,38 @@ iframeWindow.history.replaceState(null, "", args[0])
 | `genModuleScriptReplaceSymbol` | `moduleScriptIgnore`       | 优先提供 `src`，否则用 `js file`，除此之外提供第 2 个参数 `moduleSupport` |
 | `genScriptReplaceSymbol`       | 有 `src` 值的外联 `script` | `src` 属性值，以及异步或延迟属性，不存在为空字符                          |
 | `inlineScriptReplaceSymbol`    | 内联 `script`              | 统一注释信息                                                              |
+
+> 注释的函数见源码，匹配条件见上述声明对象
+
+关于 `script` 的注释：
+
+- 不同的注释只能作为源码参考，加载的 `script` 最终注入的是沙箱，而替换成注释的资源注入的是渲染容器
+
+收集 `script` 有 2 种情况：
+
+- 外联 `script`、内联 `src`
+
+外联 `script` 插入集合的对象：
+
+```
+{
+    src: matchedScriptSrc,
+    module: isModuleScript,
+    crossorigin: !!isCrossOriginScript,
+    crossoriginType: crossOriginType,
+    attrs: parseTagAttributes(match),
+}
+```
+
+> 赋值属性的对象见上述总结
+
+外联样式收集的 `src` 校正：
+
+- 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
+
+`parseTagAttributes` 提取属性：
+
+- `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为 `key`、`value` 的键值对象返回
 
 **4.1 有效的外部链接，先提取 3 个对象：**
 
@@ -2828,18 +2869,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 > 如果 `src` 提供的是相对路径，会根据资源路由 `baseURI` 获取相对 `url`
 
 `matchedScriptSrc`：对于已提取出 `src` 的情况会提取出一个对象插入 `scripts`
-
-```
-{
-    src: matchedScriptSrc,
-    module: isModuleScript,
-    crossorigin: !!isCrossOriginScript,
-    crossoriginType: crossOriginType,
-    attrs: parseTagAttributes(match),
-}
-```
-
-> 以上属性上述已说明， `parseTagAttributes` 会提取 `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为 `key`、`value` 的键值对象返回
 
 除此之外还会提取 `script` 中的 `async` 和 `defer` 属性，只有有一个属性存在，会在插入对象中添加如下属性
 
@@ -3036,8 +3065,8 @@ return (cache[key] = Promise.resolve());
 
 `ignore` 通 `fetchAssets` 加载 `async` 或 `defer`，仅限提取静态 `script`：
 
-- 动态添加的 `script` 属性 `async` 或 `defer` 存放在 `attrs` 中
-- 不能作为 `getExternalScripts` 判断条件，只能作为注入沙箱时添加到 `script` 上的属性
+- 动态添加外联 `script` 忽略了此属性
+- 手动添加带有 `src` 的 `js-loader`，不会加载而是作为外联 `script` 注入沙箱
 
 > 这可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
 
