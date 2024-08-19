@@ -3193,7 +3193,7 @@ return (cache[key] = Promise.resolve());
 | `src` 外联样式       | `ignore` | 在 `Promise` 中以空字符返回                                                  |
 | `src` 外联样式       | 无       | 通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)] |
 
-> `src` 作为元素 `outHTML`，虽然看上去不合理，但是这是目前用于和内联样式区分的唯一办法
+> `src` 作为元素 `outHTML`，虽然看上去不合理，但这是用于和内联样式区分的唯一办法，目前没有用到
 
 加载外联样式时传递给 `fetchAssets` 的参数：
 
