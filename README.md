@@ -3360,6 +3360,8 @@ return (cache[key] = Promise.resolve());
 | 执行结果 | 返回 `iframe` 容器                                                                                                                                                | 将劫持容器渲染到 `el` 挂载节点                                                                                                                                     |
 | 调用场景 | `initRenderIframeAndContainer`，继续往下看                                                                                                                        | `locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]、`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]                       |
 
+> `createIframeContainer` 的挂载方式，通过 `initRenderIframeAndContainer` 调用 `renderElementToContainer`，而 `renderIframeReplaceApp` 挂载方式，直接调用 `renderElementToContainer`
+
 为什么要放到一起总结？
 
 - 因为作为容器它们只是调用场景不一样，但创建的方式是一样的
