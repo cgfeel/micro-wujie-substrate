@@ -3095,7 +3095,7 @@ return (cache[key] = Promise.resolve());
 根据以上总结，以下情况将通过 `src` 在沙箱中加载 `script`：
 
 - 类型为 `module` 的外联 `script`，无论是静态提取还是动态添加
-- `ignore` 非 `async` 或 `defer` 的外联 `script`
+- 手动配置 `ignore` 非 `async` 或 `defer` 的外联 `script`
 - 手动配置 `js-loader` 的外联 `script`
 
 关于 `ignore` 的补充：
