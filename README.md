@@ -2953,6 +2953,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `ignore` 来自 `cssIgnores` 手动配置，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 - 注释元素分类，见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
+> 在应用资源中，带有 `ignore` 属性的静态样式将被彻底注释，不做任何操作
+
 #### `fetchAssets`：加载资源，缓存后返回 `Promise`
 
 目录：`entry.ts` - `fetchAssets` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L103)]
