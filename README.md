@@ -2918,9 +2918,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 通过 `getEmbedHTML` 将样式元素替换对应的注释 [[查看](#getembedhtml转换样式)]
 - 更新的资源返回
 
-`processCssLoader` 中的 `replace` 不可用：
+`processCssLoader` 中应用实例的 `replace` 不可用：
 
-- 因为执行时 `sandbox` 实例还没有绑定 `replace` 方法，见：通过配置替换资源 [[查看](#通过配置替换资源)]
+- 因为执行时应用实例还没有绑定 `replace` 方法，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
 #### `getEmbedHTML`：转换样式
 
