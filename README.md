@@ -864,12 +864,12 @@
 
 `分支 2` - 非 `alive` 模式下切换应用
 
-- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
 - `recoverDocumentListeners` 非保活场景需要恢复根节点的事件，防止 `react16` 监听事件丢失，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 
 `分支 3` - 初次渲染
 
-- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
+- 通过 `renderTemplateToIframe` 将 `template` 注入创建 `iframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
 
 至此整个降级过程完成，直接返回不再执行下面流程
 
@@ -1710,7 +1710,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `umd` 切换应用 [[查看](#22-umd-模式切换应用)]                                            | 应用 `mount` [[查看](#1-umd-方式启动)]                                                                                                               | 执行生命周期方法、挂载应用                                                               |
 | `getCssLoader`                                                                           | `getJsLoader`                                                                                                                                        | 一模一样，唯一的区别是提取插件的属性名，见：通过配置替换资源 [[查看](#通过配置替换资源)] |
 | `createIframeContainer`                                                                  | `renderIframeReplaceApp`                                                                                                                             | 见：创建 `iframe` 容器 [[查看](#创建-iframe-容器)]                                       |
-| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]                                                                         | 创建 `html` 元素、手动插入样式、修正容器 `parentNode`，重写容器方法                      |
+| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]                                                                    | 创建 `html` 元素、手动插入样式、修正容器 `parentNode`，重写容器方法                      |
 | `patchElementEffect` - `baseURI` [[查看](#patchelementeffect为元素打补丁)]               | `getCurUrl`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L201)] | 都是通过 `proxyLocation` 获取 `protocol` + `host` + `pathname`                           |
 
 #### 📝 `rebuildStyleSheets` 重新恢复样式
@@ -3318,7 +3318,7 @@ return (cache[key] = Promise.resolve());
 `processCssLoaderForTemplate` 来自激活应用时渲染容器，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
 
 - `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
-- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
+- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
 
 `rewriteAppendOrInsertChild` 会通过 `patchRenderEffect` 重写方法 [[查看](#patchrendereffect-为容器打补丁)]：
 
@@ -3468,7 +3468,7 @@ renderDocument.replaceChild(processedHtml, renderDocument.documentElement);
 - 只要不是 `degrade` 主动降级，也不是 `alive` 模式切换应用
 - 其他所有模式激活应用都会通过 `renderTemplateToShadowRoot` 渲染 `shadowRoot`
 
-流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]，不同在于：
+流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]，不同在于：
 
 | 分类           | `renderTemplateToIframe` | `renderTemplateToShadowRoot`   |
 | -------------- | ------------------------ | ------------------------------ |
@@ -5275,7 +5275,7 @@ proxyWindow.addEventListener;
 倒推流程：
 
 - `rewriteAppendOrInsertChild` 来自 `patchRenderEffect`
-- `patchRenderEffect` 有 2 处：`renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]、`renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe)]
+- `patchRenderEffect` 有 2 处：`renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]、`renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
 - 渲染容器的 2 个方法都来自 `active` 激活应用 [[查看](#-active-激活应用)]
 
 由此得出启动应用过程时：
