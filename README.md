@@ -3410,7 +3410,7 @@ return (cache[key] = Promise.resolve());
 
 什么时候会提供 `LOADING_DATA_FLAG`：
 
-- `startApp` 加载应用时通过 `addLoading` 设置，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
+- `startApp` 启动应用时通过 `addLoading` 设置，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 
 为什么 `addLoading` 后就不需要清空容器：
 
