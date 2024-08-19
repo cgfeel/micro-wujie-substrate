@@ -3291,11 +3291,6 @@ return (cache[key] = Promise.resolve());
 - 通过 `getEmbedHTML` 将加载的样式替换 `template` 中对应的注释
 - 最后通过 `replace` 替换已更新资源后的 `template`
 
-`processCssLoader` 调用场景：
-
-- `startApp` 创建应用实例 [[查看](#startapp-启动流程)]
-- `preloadApp` 预加载 [[查看](#preloadapp-预加载流程)]
-
 > 调用 `processCssLoader` 之前就一定会通过 `importHTML` 提取资源 [[查看](#importhtml-加载资源)]
 
 存在 2 个问题：
