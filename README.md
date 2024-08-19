@@ -3103,7 +3103,7 @@ return (cache[key] = Promise.resolve());
 - 应用中提取的静态 `script` 存在 `ignore` 属性将被注释，资源不会被收集，无论内联还是外联
 - 应用中动态添加的 `script`，不收集元素 `ignore` 属性，除了 `jsIgnores` 都能顺利加载
 - 通过 `jsIgnores` 手动忽略外联 `script`，但不忽略 `async` 或 `defer` 非 `module` 的外联 `script`
-- `ignore` 的 `script` 将将在 `Promise` 返回空字符，需要通过 `src` 加载 `script`
+- `ignore` 的 `script` 将在 `Promise` 返回空字符，需要通过 `src` 加载 `script`
 
 由此得出在 `getExternalScripts` 中加载的 `script`：
 
@@ -3220,7 +3220,7 @@ return (cache[key] = Promise.resolve());
 - 应用中提取的静态样式存在 `ignore` 属性将被注释，资源不会被收集，无论内联还是外联
 - 应用中动态添加的样式，不收集元素 `ignore` 属性，除了 `cssIgnores` 都能顺利加载
 - 通过 `cssIgnores` 将手动忽略外联样式
-- 手动忽略 `ignore` 的外联样式将将在 `Promise` 返回空字符，通过 `link` 加载样式
+- 手动忽略 `ignore` 的外联样式将在 `Promise` 返回空字符，通过 `link` 加载样式
 
 由此得出在 `getExternalStyleSheets` 中加载的样式：
 
