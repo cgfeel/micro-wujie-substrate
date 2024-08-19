@@ -2973,8 +2973,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 调用场景：
 
-- `getExternalScripts`：加载 `script` 资源
-- `getExternalStyleSheets`：加载样式资源
+- `getExternalScripts`：加载 `script` 资源 [[查看](#getexternalscripts加载-script-资源)]
+- `getExternalStyleSheets`：加载样式资源 [[查看](#getexternalstylesheets加载样式资源)]
 
 只做 2 件事：
 
