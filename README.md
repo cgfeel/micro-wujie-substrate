@@ -725,10 +725,13 @@
 
 #### 1. 更新配置应用信息
 
-第一步：将 `props` 拿到的信息更新当前实例
+第一步：用参数 `options` 更新实例，部分属性，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-- 部分实例属性，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- 其中 `replace` 用于替换资源，见：通过配置替换资源 [[查看](#通过配置替换资源)]
+还有几个单独声明的属性：
+
+- `hrefFlag`：设置为 `false`，见：特殊属性 [[查看](#2-特殊属性)]
+- `provide`：绑定在 `this.provide.props`，应用中通过 `window.$wujie.props` 获取
+- `activeFlag`：表明应用已激活
 
 第二步：等待 `iframe` 初始化 `await this.iframeReady`
 
