@@ -3363,7 +3363,7 @@ return (cache[key] = Promise.resolve());
 为什么要放到一起总结？
 
 - 因为作为容器它们只是调用场景不一样，但创建的方式是一样的
-- 从这点也能看出来 `wujie` 的源码相对会 `micro-app` 零散很多
+- 从这点也能看出来 `wujie` 的源码相对会 `micro-app` 零散很多 [[查看](#2-重复提取样式的-bug)]
 
 **`initRenderIframeAndContainer` 挂载容器到指定节点**
 
