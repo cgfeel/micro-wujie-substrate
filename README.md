@@ -3334,7 +3334,7 @@ return (cache[key] = Promise.resolve());
 
 > 在这里 `replace` 会优先于 `js-loader` 执行替换
 
-`getJsLoader` 只能通过 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]，包含：
+`getJsLoader` 只能通过 `insertScriptToIframe` 调用，分别来自以下场景 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - `start` 启动应用：手动添加 `script`、应用内静态 `script`（含入口文件）[[查看](#-start-启动应用)]
 - `rewriteAppendOrInsertChild`：应用中动态添加的 `script`，包括 `chunk`
