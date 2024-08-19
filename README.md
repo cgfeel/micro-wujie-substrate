@@ -675,6 +675,15 @@
 
 #### 📝 `active` 激活应用
 
+参数只有 1 个 `options` 对象，包含以下属性：
+
+除此之外，以下属性用于同步路由：
+
+| 同步方法                                                           | `sync`                                        | `url`        | `prefix`   |
+| ------------------------------------------------------------------ | --------------------------------------------- | ------------ | ---------- |
+| `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 决定同步的路由来自当前 `url` 还是资源入口链接 | 资源入口链接 | 短连接集合 |
+| `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 决定是否同步路由                              | 不需要       | 不需要     |
+
 分 5 部分：
 
 1. 更新配置应用信息，见：实例中关键属性 [[查看](#1-更新配置应用信息)]
@@ -3432,7 +3441,7 @@ return (cache[key] = Promise.resolve());
 
 - `renderDocument`：降级 `iframe` 容器的 `document`
 - `iframeWindow`：沙箱的 `iframeWindow`
-- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+- `template`：通过 `active` 透传过来的应用入口资源
 
 主动降级时将资源渲染到 `iframe`，调用场景：
 
