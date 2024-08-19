@@ -3306,7 +3306,7 @@ return (cache[key] = Promise.resolve());
 
 - 返回一个函数，参数有：`code` 样式内容、`src` 样式链接、`base` 基座链接
 - 先通过 `replace` 替换 `code` 样式，然后将参数透传给 `compose` 返回的函数
-- `compose` 也是柯里化函数，通过 `reduce` 依次调用 `css-loader` 替换样式
+- `compose` 也是柯里化函数，通过 `reduce` 依次调用 `css-loader` 替换样式 [[查看](#compose-用柯里化的方式拍平一组函数)]
 
 > 在这里 `replace` 会优先于 `css-loader` 执行替换
 
