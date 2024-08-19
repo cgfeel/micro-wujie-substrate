@@ -727,7 +727,7 @@
 
 第一步：用参数 `options` 更新实例，部分属性，见：实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-还有几个单独声明的属性：
+需要额外说明的属性：
 
 - `hrefFlag`：设置为 `false`，见：特殊属性 [[查看](#2-特殊属性)]
 - `provide`：绑定在 `this.provide.props`，应用中通过 `window.$wujie.props` 获取
