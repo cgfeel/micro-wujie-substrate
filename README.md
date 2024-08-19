@@ -2885,7 +2885,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 #### `processCssLoader`：处理 `css-loader`
 
-处理 `css-loader` 来自备注，实际上主要的目的是是通过 `getEmbedHTML` 加载样式并替换应用入口资源，在此之前会为通过 `getExternalStyleSheets` 提取样式集合，为每个样式的属性 `contentPromise` 添加一个微任务用于通过 `css-loader` 替换样式内容
+处理 `css-loader` 来自备注，实际上主要的目的是替换应用入口资源中对应的备注
 
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
@@ -2902,6 +2902,12 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `startApp`：重建模式每次切换应用
 
 > 预加载应用时会将应用的资源提取并替换样式后，保存到实例 `template` 中，`alive` 模式的应用启动时无需再次提取样式
+
+目的：
+
+- 通过 `getEmbedHTML` 加载样式并替换应用入口资源中对应的备注
+- 在此之前会为通过 `getExternalStyleSheets` 提取样式集合
+- 为每个样式的属性 `contentPromise` 添加一个微任务用于通过 `css-loader` 替换样式内容
 
 **第一步：获取并更新样式集合**
 
