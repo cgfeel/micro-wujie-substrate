@@ -2969,7 +2969,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 返回：
 
-- 通过 `fetch` 返回的 `Promise`
+- 通过 `fetch` 返回的 `Promise<string>`
 
 调用场景：
 
