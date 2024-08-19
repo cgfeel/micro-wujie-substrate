@@ -3347,7 +3347,7 @@ return (cache[key] = Promise.resolve());
 
 #### 创建 `iframe` 容器
 
-分 2 部分：创建 `iframe` 容器和渲染容器
+分 2 部分：创建 `iframe` 容器和挂载容器
 
 **创建 `iframe` 容器：**
 
