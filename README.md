@@ -3424,7 +3424,7 @@ return (cache[key] = Promise.resolve());
 - `initRenderIframeAndContainer`：创建 `iframe` 容器添加到挂载点 [[查看](#创建-iframe-容器)]
 - `processAppForHrefJump` 监听后退操作：用 `shadowRoot` 容器替换劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
 
-#### `renderTemplateToIframe` 渲染资源到 `iframe`
+#### `renderTemplateToIframe` 渲染资源到 `iframe` 容器
 
 目录：`shadow.ts` - `renderTemplateToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L252)]
 
