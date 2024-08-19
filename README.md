@@ -3420,9 +3420,9 @@ return (cache[key] = Promise.resolve());
 
 - `renderIframeReplaceApp`：劫持 `url` 创建 `iframe` 替换容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 - `locationHrefSet`：降级处理时将 `iframe` 容器的 `html` 添加到沙箱 `body` [[查看](#locationhrefset拦截子应用-locationhref)]
-- `active` 激活应用时，将 `shadowRoot` 添加到挂载节点 [[查看](#-active-激活应用)]
-- `initRenderIframeAndContainer`：创建 `iframe` 容器添加到挂载点 [[查看](#2-degrade-主动降级渲染)]
-- `popstate` 时将 `iframe` 容器的 `html` 添加到沙箱 `iframe`，或将 `shadowRoot` 添加到挂载点 [[查看](#processappforhrefjump-监听前进和后端)]
+- `active` 激活应用时，将 `shadowRoot` 添加到挂载节点 [[查看](#42-挂载子应用切换初始化预加载)]
+- `initRenderIframeAndContainer`：创建 `iframe` 容器添加到挂载点 [[查看](#创建-iframe-容器)]
+- `processAppForHrefJump` 监听后退操作：用 `shadowRoot` 容器替换劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
 
 #### `renderTemplateToIframe` 渲染资源到 `iframe`
 
