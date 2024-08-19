@@ -3387,7 +3387,7 @@ return (cache[key] = Promise.resolve());
 调用场景：
 
 - `active` 激活应用：`degrade` 降级时创建容器 [[查看](#41-degrade-主动降级渲染)]
-- `popstate` 监听后退操作，用降级的 `iframe` 容器替换劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
+- `processAppForHrefJump` 监听后退操作：用降级的 `iframe` 容器替换劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
 
 #### `renderElementToContainer`：将节点元素挂载到容器
 
