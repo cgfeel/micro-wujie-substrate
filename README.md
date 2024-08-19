@@ -3242,7 +3242,7 @@ return (cache[key] = Promise.resolve());
 调用方法不需要提供参数，但内部会将以下参数传递给加载方法 `getExternalStyleSheets`：
 
 - `styles`：筛选后的静态样式集合
-- `fetch`：自定义方法，没有提供则使用浏览器自带的方法
+- `fetch`：自定义方法，没有提供则使用全局 `window` 提供的 `fetch`
 - `loadError`：加载失败通知方法，配置时提供，可选参数
 
 样式筛选规则：
