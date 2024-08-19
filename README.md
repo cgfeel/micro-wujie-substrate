@@ -3057,6 +3057,10 @@ return (cache[key] = Promise.resolve());
 - 动态添加外联 `script` 忽略了此属性
 - 手动添加带有 `src` 的 `js-loader`，不会加载而是作为外联 `script` 注入沙箱
 
+需要强调的是能够被提取的静态 `script`，一定是通过手动标记的 `ignore`：
+
+- 因为包含 `ignore` 属性的静态 `script` 将被注释替换不再恢复
+
 > 这可能是开发人员的遗漏，因为文档中描述 `ignore` 的设计就是为了解决跨域请求资源的问题，而避开使用 `fetchAssets` 加载资源，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
 
 通过 `fetchAssets` 不同的加载方式：
