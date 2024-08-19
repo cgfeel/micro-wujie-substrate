@@ -2984,7 +2984,9 @@ iframeWindow.history.replaceState(null, "", args[0])
 缓存机制：
 
 - 通过 `fetch` 获取资源后，将 `Promise` 保存到 `cache` 中，键值为 `url`
-- 这样重复获取请求时将优先通过缓存处理
+- 这样使用 `url` 再次请求时，将优先通过缓存处理
+
+> 使用 `codepen` 按照 `fetchAssets` 做的演示 [[查看](https://codepen.io/levi0001/pen/qBzPwZe)]
 
 捕获失败：
 
