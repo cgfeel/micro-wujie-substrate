@@ -3406,7 +3406,7 @@ return (cache[key] = Promise.resolve());
 
 需要注意的是：
 
-- 不存在 `LOADING_DATA_FLAG` 节点的情况下，挂载到容器前需要先 `clearChild` 清空容器
+- 不存在 `LOADING_DATA_FLAG` 节点的情况下，挂载到 `container` 前需要通过 `clearChild` 清空容器
 
 什么时候会提供 `LOADING_DATA_FLAG`：
 
