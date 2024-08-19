@@ -2962,7 +2962,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 参数：
 
 - `src`：资源链接，用于 `fetch` 请求用
-- `cache`：缓存对象，包含：`scriptCache`、`styleCache` [[查看](#2-资源缓存集合)]
+- `cache`：缓存集合，包含：`scriptCache`、`styleCache` [[查看](#2-资源缓存集合)]
 - `fetch`：配置提供的加载的方法，没有提供采用全局 `window` 默认提供的 `fetch`
 - `cssFlag`：加载的资源是否是样式，否则就作为 `script`
 - `loadError`：配置时提供，可选参数，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#loaderror)]
@@ -2978,8 +2978,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 只做 2 件事：
 
-- 从 `cache` 缓存对象中获取加载资源的 `Promise`
-- 缓存不存在通过 `fetch` 加载资源，缓存到 `cache` 之后将 `Promise` 返回
+- 从 `cache` 缓存集合中获取加载资源
+- 缓存集合不存在资源，通过 `fetch` 加载后缓存到 `cache` 然后返回
 
 缓存机制：
 
