@@ -729,7 +729,7 @@
 
 需要额外说明的属性：
 
-- `hrefFlag`：设置为 `false`，见：特殊属性 [[查看](#2-特殊属性)]
+- `hrefFlag`：设置为 `false` 表明当前容器来自基座，见：特殊属性 [[查看](#2-特殊属性)]
 - `provide`：绑定在 `this.provide.props`，应用中通过 `window.$wujie.props` 获取
 - `activeFlag`：表明应用已激活
 
