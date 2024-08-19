@@ -3330,7 +3330,7 @@ return (cache[key] = Promise.resolve());
 `getJsLoader` 柯里化处理运行时的 `script`：
 
 - 执行方式和 `getCssLoader` 是一样的
-- 都是柯里化后 `replace`，然后 `compose` 通过 `reduce` 依次调用 `js-loader`
+- 都是柯里化后 `replace`，然后 `compose` 通过 `reduce` 依次调用 `js-loader` [[查看](#compose-用柯里化的方式拍平一组函数)]
 
 > 在这里 `replace` 会优先于 `js-loader` 执行替换
 
