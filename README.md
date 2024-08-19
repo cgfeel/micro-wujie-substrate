@@ -3453,12 +3453,15 @@ return (cache[key] = Promise.resolve());
 
 - `renderDocument`：降级 `iframe` 容器的 `document`
 - `iframeWindow`：沙箱的 `iframeWindow`
-- `template`：通过 `active` 透传过来的应用入口资源
+- `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
-主动降级时将资源渲染到 `iframe`，调用场景：
+降级时无论是初次加载还是切换应用，都需要新建 `iframe` 容器并注入资源，不同的是：
 
-- 应用初次激活 `active`
-- 非 `active` 模式切换应用
+- 首次激活：将应用资源注入 `iframe` 容器
+- `alive` 再次激活：将首次注入容器的 `html` 元素，替换到新容器中的 `html` 元素
+- 其他模式再激活：同首次激活一样
+
+> 注入容器的 `template` 会绑定在实例，`umd` 再次激活时可以直接使用
 
 流程：
 
