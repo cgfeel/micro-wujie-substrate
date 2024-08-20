@@ -3538,9 +3538,14 @@ return (cache[key] = Promise.resolve());
 
 - 整个完成渲染并更新资源的 `html` 元素
 
+调用场景：
+
+- `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
+
 做了 3 件事：
 
-- 通过沙箱 `iframe` 下的 `document` 创建一个 `html` 元素，并将 `template` 作为 `innerHTML`
+- 通过沙箱 `document` 创建一个 `html` 元素，并将 `template` 作为 `innerHTML`
 - 遍历 `html` 下所有可见元素，通过 `patchElementEffect` 为每个元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 获取所有 `a`、`img`、`source` 元素，修正资源相对路径
 
