@@ -3557,8 +3557,10 @@ return (cache[key] = Promise.resolve());
 在末尾可能是担心不存在 `head` 或 `body` 的情况进行了补全：
 
 - 但目前来看似乎做了多余的工作
-- 因为当为一个 `html` 元素设置 `innerHTML` 时候，会根据情况自动补全
-- 所以完全不用担心 `head` 或 `body` 缺失造成下次切换应用提取实例时拿不到对象
+- 为 `html` 元素设置 `innerHTML` 时候，会根据情况自动补全 `head` 和 `body`
+- 并且会丢弃外部包裹的 `html` 根元素及其他相关声明
+
+> 用 `code` 做了一个静态的资源补全的演示 [[查看](https://codepen.io/levi0001/pen/JjQpQbb)]
 
 修正相对路径的细节：
 
