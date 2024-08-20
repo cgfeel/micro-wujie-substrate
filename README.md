@@ -3469,16 +3469,10 @@ return (cache[key] = Promise.resolve());
 流程：
 
 - 通过 `renderTemplateToHtml` 将 `template` 渲染为 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
-- 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
-- 将更新后的 `html` 替换容器 `iframe` 的 `html`
-- 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `iframeWindow.document`
+- 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
+- 将更新后的 `html` 元素替换 `iframe` 容器的 `html`
+- 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `document`
 - 通过 `patchRenderEffect` 给容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
-
-注意向容器添加元素，会同时在沙箱 `iframe` 中也添加一份，如下所示。见：同时添加元素 [[查看](#同时添加元素)]
-
-```
-renderDocument.replaceChild(processedHtml, renderDocument.documentElement);
-```
 
 #### `renderTemplateToShadowRoot` 渲染资源到 `shadowRoot`
 
