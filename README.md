@@ -3678,7 +3678,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `el`：挂载容器
+- `el`：挂载容器的节点，配置时提供
 
 做了 3 件事：
 
