@@ -3587,8 +3587,8 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `sandbox`：应用实例
-- `html`：由 `renderTemplateToHtml` [[查看](#rendertemplatetohtml渲染-template-为-html-元素)] 渲染的 `html` 元素
+- `sandbox`：应用实例，作用：① 获取沙箱 `document` 创建元素； ② 为加载资源透传实例属性
+- `html`：由 `renderTemplateToHtml` 渲染的 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 
 返回：
 
