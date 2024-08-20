@@ -3551,8 +3551,9 @@ return (cache[key] = Promise.resolve());
 
 优化 `umd` 模式加载的应用：
 
-- 组件多次渲染，`head` 和 `body` 必须一直使用同一个来应对被缓存的场景
-- 所以启动之前将 `head` 和 `body` 指向应用实例，以便下次通过 `replaceHeadAndBody` 直接替换
+- 组件多次渲染，`head` 和 `body` 必须一直使用同一个来应对被缓存的场景（来自备注）
+- 所以 `start` 应用之前将 `head` 和 `body` 指向应用实例
+- 下次生成 `html` 元素时，通过 `replaceHeadAndBody` 使用最初记录的 `head` 和 `body`
 
 在末尾可能是担心不存在 `head` 或 `body` 的情况进行了补全：
 
