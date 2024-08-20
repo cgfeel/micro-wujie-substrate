@@ -3452,7 +3452,7 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `renderDocument`：降级 `iframe` 容器的 `document`
-- `iframeWindow`：沙箱的 `iframeWindow`
+- `iframeWindow`：沙箱的 `window`
 - `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
 降级时需要新建 `iframe` 容器并注入资源，包含：
