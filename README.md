@@ -3711,6 +3711,13 @@ return (cache[key] = Promise.resolve());
 - 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：`Wujie` 实例中关键属性 [[查看](#1-常规属性)]
 - 然后再监听或删除子应用相关事件
 
+记录事件方式：
+
+- 键名：`Node` 监听事件的节点
+- 键值：包含：`type`、`handle`、`options` 的数组集合
+
+> 若删除监听的事件后，发现数组集合空了，同时在映射表中删除当前监听的事件节点
+
 调用场景：
 
 - `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
@@ -3732,10 +3739,38 @@ return (cache[key] = Promise.resolve());
 
 - `alive` 模式切换应用时通过 `active` 激活时恢复事件 [[查看](#41-degrade-主动降级渲染)]
 
+> `umd`：每次都清空容器，重建模式：每次都销毁实例，因此不存在恢复容器中元素监听的事件
+
 **3. `recoverDocumentListeners`：恢复容器 `document` 事件**
 
-- 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
-- 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
+参数：
+
+- `oldRootElement`：初始激活时绑定的容器 `document`
+- `newRootElement`：再次激活是重新创建的容器 `document`
+- `iframeWindow`：沙箱 `window`
+
+流程：
+
+- 和 `recoverEventListeners` 一样，不同的是仅恢复容器 `document` 的监听事件
+
+调用场景：
+
+- `umd` 模式切换应用时通过 `active` 激活时恢复事件 [[查看](#41-degrade-主动降级渲染)]
+
+> 重建模式每次 `startApp` 都是销毁后重新声明实例，不存在事件恢复，见：创建新的沙箱实例 [[查看](#3-创建新的沙箱实例)]
+
+目的：
+
+- 防止 `react16` 监听事件丢失（来自备注），`React 16` 及之前的版本事件记录在 `document`
+
+> `React 16` 之后事件绑定在应用根节点，如：`#root`；`umd` 启动应用后会通过 `__WUJIE_MOUNT` 重新委托事件捕获
+
+不需要恢复 `document` 事件：
+
+- `shadowRoot`：因为本身就是跟节点，`degrade` 降级时每次都是新建 `iframe` 容器
+- 重建模式：每次激活都是新的应用实例
+
+> `alive` 模式通过 `recoverEventListeners` 恢复事件
 
 ### 辅助方法 - 打补丁
 
