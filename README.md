@@ -3701,6 +3701,12 @@ return (cache[key] = Promise.resolve());
 
 **1. `recordEventListeners`：记录容器中所有事件**
 
+参数：
+
+- `iframeWindow`：沙箱 `window`
+
+流程：
+
 - 重写子应用 `addEventListener` 和 `removeEventListener`
 - 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：`Wujie` 实例中关键属性 [[查看](#1-常规属性)]
 - 然后再监听或删除子应用相关事件
@@ -3711,9 +3717,16 @@ return (cache[key] = Promise.resolve());
 
 **2. `recoverEventListeners`：恢复容器中所有元素事件**
 
-- 通过 `createTreeWalker` 拿到应用下所有的可见元素
-- 遍历元素，通过 `elementEventCacheMap` 获取事件监听对象，将拿到的事件对象记录到一个新的 `WeakMap`
-- 更新实例 `elementEventCacheMap`
+参数：
+
+- `rootElement`：`iframe` 容器中 `html` 元素
+- `iframeWindow`：沙箱 `window`
+
+流程：
+
+- 通过 `createTreeWalker` 拿到 `rootElement` 下所有的可见元素
+- 遍历元素通过 `elementEventCacheMap` 获取事件监听对象，记录到一个新的 `WeakMap` 对象上
+- 将筛选赋值后的 `WeakMap` 更新实例映射表 `elementEventCacheMap`
 
 调用场景：
 
