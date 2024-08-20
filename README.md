@@ -3604,7 +3604,7 @@ return (cache[key] = Promise.resolve());
 
 > 其中 `cssLoader` 通过 `getCssLoader` 柯里化返回函数，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
-提取样式的步骤和 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 提取应用内部样式一样：
+提取样式的步骤和 `processCssLoader` 提取应用内部样式一样 [[查看](#processcssloader处理-css-loader)]：
 
 - 通过 `getExternalStyleSheets` 为每个样式添加一个 `promise` 对象 `contentPromise`
 - 通过 `contentPromise` 将所有样式都变成内联样式
