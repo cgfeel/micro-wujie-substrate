@@ -3695,7 +3695,7 @@ return (cache[key] = Promise.resolve());
 
 #### 记录、恢复 `iframe` 容器事件
 
-目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
+目录：`iframe.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
 
 仅用于 `degrade` 主动降级：
 
