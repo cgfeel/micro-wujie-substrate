@@ -3659,7 +3659,7 @@ return (cache[key] = Promise.resolve());
 
 - 作为 `loading` 父节点，添加样式 `position` 为 `absolute`，居中展示
 - 添加标签 `LOADING_DATA_FLAG`，避免激活应用时通过 `renderElementToContainer` 清空挂载点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
-- 将提供的 `loading` 添加到 `loadingContainer`，没有就使用默认的 `svg`，之后将整个元素添加到挂载节点
+- 将参数 `loading` 添加到 `loadingContainer`，没有就使用默认的 `svg`，之后将整个元素添加到挂载节点
 
 此时的 `loading` 是不可见的：
 
