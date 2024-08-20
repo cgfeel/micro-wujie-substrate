@@ -3599,8 +3599,8 @@ return (cache[key] = Promise.resolve());
 先提取 3 个 `plugin`：
 
 - `cssLoader`：用于每条样式加载成功后自定义处理，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
-- `cssBeforeLoaders`：用于插入应用容器 `head` 的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
-- `cssAfterLoaders`：用于插入应用容器 `body` 的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
+- `cssBeforeLoaders`：插入应用容器 `head` 头部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
+- `cssAfterLoaders`：插入应用容器 `body` 尾部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
 
 > 其中 `cssLoader` 通过 `getCssLoader` 柯里化返回函数，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
