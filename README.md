@@ -3549,11 +3549,10 @@ return (cache[key] = Promise.resolve());
 - 遍历 `html` 下所有可见元素，通过 `patchElementEffect` 为每个元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 获取所有 `a`、`img`、`source` 元素，修正资源相对路径
 
-优化 `umd` 模式加载的应用：
+优化 `umd` 模式加载的应用，将`head` 和 `body`绑定在应用实例中：
 
 - 组件多次渲染，`head` 和 `body` 必须一直使用同一个来应对被缓存的场景（来自备注）
-- 所以 `start` 应用之前将 `head` 和 `body` 指向应用实例
-- 下次生成 `html` 元素时，通过 `replaceHeadAndBody` 使用最初记录的 `head` 和 `body`
+- 初次声明节点会绑定到应用实例，再次调用 `renderTemplateToHtml`，将通过 `replaceHeadAndBody` 恢复最初记录的节点到 `html` 元素
 
 在末尾可能是担心不存在 `head` 或 `body` 的情况进行了补全：
 
