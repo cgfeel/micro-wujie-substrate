@@ -3706,8 +3706,12 @@ return (cache[key] = Promise.resolve());
 **1. 记录事件：**
 
 - 重写子应用 `addEventListener` 和 `removeEventListener`
-- 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- 然后再监听子应用相关事件
+- 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：`Wujie` 实例中关键属性 [[查看](#1-常规属性)]
+- 然后再监听或删除子应用相关事件
+
+调用场景：
+
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
 **2. 恢复容器元素事件：**
 
