@@ -3578,7 +3578,7 @@ return (cache[key] = Promise.resolve());
 
 容器中所有元素都通过沙箱 `document` 创建，因为：
 
-- 需要通过沙箱 `window` 获取应用实例，以便根据应用处理元素，例如：记录 `head` 和 `body`
+- 通过沙箱 `window` 获取应用实例，以便做出对应操作，例如：记录 `head` 和 `body`
 - `patchElementEffect` 通过沙箱的 `window` 为每个元素打补丁
 
 #### `processCssLoaderForTemplate`：手动添加样式
