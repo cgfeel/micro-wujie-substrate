@@ -3607,12 +3607,13 @@ return (cache[key] = Promise.resolve());
 除此之外：
 
 - 从应用实例中获取 `proxyLocation`，通过 `getCurUrl` 拿到应用 `host` + `pathname`
+- 在 `cssLoader` 中需要提供：加载的样式内容、样式的链接，应用的链接
 
 提取样式的步骤和 `processCssLoader` 提取应用内部样式一样 [[查看](#processcssloader处理-css-loader)]：
 
 - 通过 `getExternalStyleSheets` 为每个手动样式添加一个 `Promise` 对象 `contentPromise`
 - 通过 `Promis.all` 加载所有 `contentPromise`，提取列表中每一项 `src`、`contennt`
-- 遍历加载后的列表，创建一个内联样式，通过 `cssLoader` 替换样式后，作为内联样式
+- 遍历加载后的列表，创建一个内联样式，通过 `cssLoader` 替换样式后，作为内联样式内容
 - 根据加载的样式类型决定将样式插入 `head` 头部，还是 `body` 尾部
 
 #### 启动应用时添加、删除 `loading`
