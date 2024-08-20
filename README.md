@@ -3711,10 +3711,13 @@ return (cache[key] = Promise.resolve());
 
 **2. `recoverEventListeners`：恢复容器中所有元素事件**
 
-- 仅用于 `degrade` 降级处理切换 `alive` 模式的应用
 - 通过 `createTreeWalker` 拿到应用下所有的可见元素
 - 遍历元素，通过 `elementEventCacheMap` 获取事件监听对象，将拿到的事件对象记录到一个新的 `WeakMap`
 - 更新实例 `elementEventCacheMap`
+
+调用场景：
+
+- `alive` 模式切换应用时通过 `active` 激活时恢复事件 [[查看](#41-degrade-主动降级渲染)]
 
 **3. `recoverDocumentListeners`：恢复容器 `document` 事件**
 
