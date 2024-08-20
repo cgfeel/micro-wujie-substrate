@@ -3531,12 +3531,12 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱的 `iframeWindow`
-- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+- `iframeWindow`：沙箱的 `window`
+- `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
 返回：
 
-- 整个渲染完成并更新资源的 `html` 元素
+- 整个完成渲染并更新资源的 `html` 元素
 
 做了 3 件事：
 
