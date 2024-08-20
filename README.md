@@ -3596,13 +3596,13 @@ return (cache[key] = Promise.resolve());
 
 - 将更新后的 `html` 元素作为 `Promise` 返回，无论是 `resolve` 成功，还是 `reject` 拒绝
 
-先提取了 3 个 `plugin`：
+先提取 3 个 `plugin`：
 
 - `cssLoader`：用于每条样式加载成功后自定义处理，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
-- `cssBeforeLoaders`：用于插入应用 `html` 头部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
-- `cssAfterLoaders`：用于插入应用 `html` 末尾的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
+- `cssBeforeLoaders`：用于插入应用容器 `head` 的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
+- `cssAfterLoaders`：用于插入应用容器 `body` 的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
 
-> 其中 `cssLoader` 通过 `getCssLoader` 柯里化，方式和 `getJsLoader` 一致，见：`insertScriptToIframe` - 第一步 [[查看](#insertscripttoiframe为沙箱插入-script)]
+> 其中 `cssLoader` 通过 `getCssLoader` 柯里化返回函数，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
 提取样式的步骤和 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 提取应用内部样式一样：
 
