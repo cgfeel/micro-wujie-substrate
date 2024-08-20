@@ -3625,17 +3625,18 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `el`：挂载容器
-- `loading`：加载状态的 `HTMLElement`，应该是可选的，按照配置文件传入的类型决定
+- `el`：挂载容器的节点，配置时提供
+- `loading`：加载状态的 `HTMLElement`，配置时提供，应该是可选类型
 
-两个参数只能来自配置文件：
+> `wujie` 的 `tsconfig.json` 并没按照严格来申明，很多类型不太正确
 
-- 因为 `addLoading` 只能在 `startApp` 调用 [[查看](#3-创建新的沙箱实例)]
+调用场景：
+
+- `startApp` 启动应用 [[查看](#3-创建新的沙箱实例)]
 
 用途：
 
-- 清空挂载节点
-- 给节点中添加 `loading` 元素
+- 清空挂载节点、给节点中添加 `loading` 元素
 
 流程：
 
