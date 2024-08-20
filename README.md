@@ -3489,7 +3489,7 @@ return (cache[key] = Promise.resolve());
 
 - 容器会绑定在实例属性 `shadowRoot` 中，再次激活直接挂载到指定节点 `el`
 
-流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]：
+流程和 `renderTemplateToIframe` 一样：
 
 | 分类                                                                             | `renderTemplateToIframe` | `renderTemplateToShadowRoot` |
 | -------------------------------------------------------------------------------- | ------------------------ | ---------------------------- |
