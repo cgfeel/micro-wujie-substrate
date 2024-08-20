@@ -3733,6 +3733,7 @@ return (cache[key] = Promise.resolve());
 
 - 通过 `createTreeWalker` 拿到 `rootElement` 下所有的可见元素
 - 遍历元素通过 `elementEventCacheMap` 获取事件监听对象，记录到一个新的 `WeakMap` 对象上
+- 将拿到事件集合重新在节点上监听
 - 将筛选赋值后的 `WeakMap` 更新实例映射表 `elementEventCacheMap`
 
 调用场景：
