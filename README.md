@@ -3481,13 +3481,19 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `shadowRoot`：注入的容器
-- `iframeWindow`：沙箱的 `iframeWindow`
-- `template`：通过 `importHTML` [[查看](#importhtml-加载资源)] 提取，并由 `processCssLoader` [[查看](#processcssloader处理-css-loader)] 处理过的应用资源
+- `iframeWindow`：沙箱的 `window`
+- `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
-调用场景：
+调用场景来自非 `degrade` 降级下 `active` 激活应用 [[查看](#42-挂载子应用切换初始化预加载)]：
 
-- 只要不是 `degrade` 主动降级，也不是 `alive` 模式切换应用
-- 其他所有模式激活应用都会通过 `renderTemplateToShadowRoot` 渲染 `shadowRoot`
+- 首次 `aclive`：将应用资源注入 `shadowRoot`
+- `umd` 模式再激活：将资源重新注入已清空的 `shadowRoot`
+
+> 重建模式每次都是首次 `active`
+
+`alive` 再次激活不会用到 `renderTemplateToShadowRoot`：
+
+- 容器会绑定在实例属性 `shadowRoot` 中，再次激活直接挂载到指定节点 `el`
 
 流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]，不同在于：
 
