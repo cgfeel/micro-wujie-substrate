@@ -3466,13 +3466,7 @@ return (cache[key] = Promise.resolve());
 
 - 将通过实例的 `document` 将首次注入容器的 `html` 元素，`replace` 新容器中的 `html` 元素
 
-流程：
-
-- 通过 `renderTemplateToHtml` 将 `template` 渲染为 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
-- 通过 `processCssLoaderForTemplate` 手动添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
-- 将更新后的 `html` 元素替换 `iframe` 容器的 `html`
-- 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `document`
-- 通过 `patchRenderEffect` 给容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+流程和 `renderTemplateToShadowRoot` 一样 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
 #### `renderTemplateToShadowRoot` 渲染资源到 `shadowRoot`
 
@@ -3505,11 +3499,15 @@ return (cache[key] = Promise.resolve());
 | 修复 `parentNode`                                                                | 需要                     | 需要                         |
 | `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]                    | 给容器打补丁             | 给容器打补丁                 |
 
+如何修复 `parentNode`：
+
+- 通过 `Object.defineProperty` 劫持容器 `html` 元素的 `parentNode`，指向沙箱 `document`
+
 不同在于：
 
 | 分类           | `renderTemplateToIframe` | `renderTemplateToShadowRoot`   |
 | -------------- | ------------------------ | ------------------------------ |
-| 容器           | `iframe.document`        | `shadowRoot`                   |
+| 容器根节点     | `iframe.document`        | `shadowRoot`                   |
 | 指向实例属性   | `this.document`          | `this.shadowRoot`              |
 | 容器 `head`    | `this.document.head`     | `this.shadowRoot.head`         |
 | 容器 `body`    | `this.document.body`     | `this.shadowRoot.body`         |
