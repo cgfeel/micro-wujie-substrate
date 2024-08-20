@@ -3587,7 +3587,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `sandbox`：应用实例，作用：① 获取沙箱 `document` 创建元素； ② 为加载样式透传实例属性
+- `sandbox`：应用实例，作用：① 获取沙箱 `document` 创建元素；② 为加载样式透传实例属性
 - `html`：由 `renderTemplateToHtml` 渲染的 `html` 元素 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 
 > 样式通过 `getExternalStyleSheets` 加载，需要的参数也绑定在实例属性中 [[查看](#getexternalstylesheets加载样式资源)]
