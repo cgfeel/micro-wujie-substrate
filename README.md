@@ -3495,7 +3495,17 @@ return (cache[key] = Promise.resolve());
 
 - 容器会绑定在实例属性 `shadowRoot` 中，再次激活直接挂载到指定节点 `el`
 
-流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]，不同在于：
+流程和 `renderTemplateToIframe` 一样 [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]：
+
+| 分类                                                                             | `renderTemplateToIframe` | `renderTemplateToShadowRoot` |
+| -------------------------------------------------------------------------------- | ------------------------ | ---------------------------- |
+| `renderTemplateToHtml` [[查看](#rendertemplatetohtml渲染-template-为-html-元素)] | 创建 `html` 元素         | 创建 `html` 元素             |
+| `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)] | 手动添加样式             | 手动添加样式                 |
+| 注入 `html`                                                                      | 替换容器 `html` 元素     | `appendChild` 到容器         |
+| 修复 `parentNode`                                                                | 需要                     | 需要                         |
+| `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]                    | 给容器打补丁             | 给容器打补丁                 |
+
+不同在于：
 
 | 分类           | `renderTemplateToIframe` | `renderTemplateToShadowRoot`   |
 | -------------- | ------------------------ | ------------------------------ |
