@@ -3695,15 +3695,11 @@ return (cache[key] = Promise.resolve());
 
 #### 记录、恢复 `iframe` 容器事件
 
+仅用于 `degrade` 主动降级
+
 目录：`iframe.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
 
-仅用于 `degrade` 主动降级：
-
-- `recordEventListeners`：记录容器中所有事件
-- `recoverEventListeners`：恢复容器中所有元素事件
-- `recoverDocumentListeners`：恢复容器 `document` 事件
-
-**1. 记录事件：**
+**1. `recordEventListeners`：记录容器中所有事件**
 
 - 重写子应用 `addEventListener` 和 `removeEventListener`
 - 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：`Wujie` 实例中关键属性 [[查看](#1-常规属性)]
@@ -3713,14 +3709,14 @@ return (cache[key] = Promise.resolve());
 
 - `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
-**2. 恢复容器元素事件：**
+**2. `recoverEventListeners`：恢复容器中所有元素事件**
 
 - 仅用于 `degrade` 降级处理切换 `alive` 模式的应用
 - 通过 `createTreeWalker` 拿到应用下所有的可见元素
 - 遍历元素，通过 `elementEventCacheMap` 获取事件监听对象，将拿到的事件对象记录到一个新的 `WeakMap`
 - 更新实例 `elementEventCacheMap`
 
-**3. 恢复容器 `document` 事件：**
+**3. `recoverDocumentListeners`：恢复容器 `document` 事件**
 
 - 仅用于 `degrade` 降级处理切换非 `alive` 模式的应用
 - 和恢复容器元素事件一样的步骤，不同的是仅获取、恢复容器 `document` 的监听事件
