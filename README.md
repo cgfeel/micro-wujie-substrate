@@ -3818,7 +3818,7 @@ return (cache[key] = Promise.resolve());
 
 调用场景：
 
-- `initIframeDom`：初始化 `iframe` 的 `dom` 结构
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
 在此之前需要明白一个概念：
 
@@ -3854,7 +3854,7 @@ return (cache[key] = Promise.resolve());
 
 调用场景：
 
-- `initIframeDom`：初始化 `iframe` 的 `dom` 结构
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
 劫持的方法：
 
