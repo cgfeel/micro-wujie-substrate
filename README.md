@@ -3507,12 +3507,6 @@ return (cache[key] = Promise.resolve());
 
 > 因此 `patchRenderEffect` 打补丁的容器对象也不一样 [[查看](#patchrendereffect-为容器打补丁)]
 
-注意向容器添加元素，会同时在沙箱 `iframe` 中也添加一份，如下所示。见：同时添加元素 [[查看](#同时添加元素)]
-
-```
-shadowRoot.appendChild(processedHtml);
-```
-
 关于 `head`、`body`：
 
 - 容器的 `head`、`body` 主要用于容器事件、元素操作的代理和劫持
