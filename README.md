@@ -3615,6 +3615,7 @@ return (cache[key] = Promise.resolve());
 - 通过 `Promis.all` 加载所有 `contentPromise`，提取列表中每一项 `src`、`content`
 - 遍历加载后的列表，创建一个内联样式，通过 `cssLoader` 替换样式后，作为内联样式内容
 - 根据加载的样式类型决定将样式插入 `head` 头部，还是 `body` 尾部
+- 通过 `Promise.all` 将最终处理的 `html` 元素返回
 
 #### 启动应用时添加、删除 `loading`
 
