@@ -709,7 +709,7 @@
 
 有 2 种情况会 `active` 激活应用：
 
-- `startApp` 无论是切换应用还是初始化实力 [[查看](#startapp-启动流程)]
+- `startApp` 无论是切换应用还是初始化实例 [[查看](#startapp-启动流程)]
 - `preloadApp` 预加载应用 [[查看](#preloadapp-预加载流程)]
 
 在 `active` 激活应用时容器节点变更有 4 种情况：
@@ -3617,6 +3617,15 @@ return (cache[key] = Promise.resolve());
 - 根据加载的样式类型决定将样式插入 `head` 头部，还是 `body` 尾部
 - 通过 `Promise.all` 将最终处理的 `html` 元素返回
 
+手动添加样式的 `bug`：
+
+- 忘记为手动添加的样式通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
+
+应用中的元素如何打补丁：
+
+- `renderTemplateToHtml`：为应用中提取的静态资源打补丁 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+- `rewriteAppendOrInsertChild`：为应用中动态添加的元素打补丁 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+
 #### 启动应用时添加、删除 `loading`
 
 目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts)]
@@ -5003,7 +5012,7 @@ window.onfocus = () => {
 接受一个 `opt` 对象，包含 2 个属性：
 
 - `rawDOMAppendOrInsertBefore`：原生添加 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-- `wujieId`：应用名
+- `wujieId`：应用名，用于获取应用实例
 
 添加 `Dom` 的方法：
 
@@ -5023,10 +5032,20 @@ window.onfocus = () => {
 
 返回函数：
 
-- 类型和 `rawDOMAppendOrInsertBefore` 一致，但会在 `patchRenderEffect` 通过 `as` 断言纠正类型 [[查看](#patchrendereffect-为容器打补丁)]
+- 类型和 `rawDOMAppendOrInsertBefore` 一致，但会在 `patchRenderEffect` 通过 `as` 断言纠正 [[查看](#patchrendereffect-为容器打补丁)]
 - 即 `rawDOMAppendOrInsertBefore` 提供什么类型，就会断言返回的函数是什么类型
 
 返回函数所需参数：
+
+- `this`：用于 `TS` 指定上下文类型，见：官方文档 [[查看](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#specifying-the-type-of-this-for-functions)]
+- `newChild`：添加的节点
+- `refChild`：替换的节点，可选参数
+
+重写的方法中会拦截 4 个添加的元素进行处理：
+
+**1. `link`：资源元素**
+
+`link` 元素不是样式：
 
 ### 辅助方法 - 实用工具
 
