@@ -5129,6 +5129,8 @@ window.onfocus = () => {
 - `getCssLoader` 不会处理 `React` 内应用动态添加的样式 [[查看](#通过配置替换资源)]
 - 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
+**3. `style`：内联样式**
+
 #### `manualInvokeElementEvent`：手动触发事件回调
 
 目录：`effect.ts` - `manualInvokeElementEvent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L51)]
@@ -5307,6 +5309,43 @@ proxyWindow.addEventListener;
 - 通过 `reduce` 将 `fnList` 数组中的函数拍平执行，初始值为提供的原始 `code`
 - 这样即便 `fnList` 数组没有任何函数，也能够将原始的 `code` 返回
 - 如果 `fnList` 中提供了函数，将 `code` 及其他参数传过去，返回新的值依次执行并返回最终替换结果
+
+#### 为动态添加的 `script` 打标记
+
+**1. `setTagToScript` 添加标记**
+
+目录：`utils.ts` - `setTagToScript` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L300)]
+
+参数：
+
+- `element`：`HTMLScriptElement` 元素
+- `tag`：设置标记名，选填
+
+流程：
+
+- 判断 `element` 是否为 `script` 元素，是则打上标记 `WUJIE_SCRIPT_ID`
+- 标记值为 `tag`，没有提供的话采用自增 `id`
+
+通过打标记 `WUJIE_SCRIPT_ID`，方便通过：
+
+- `getTagFromScript`：提取 `script` 中的标签，见下方详细说明
+- `findScriptElementFromIframe`：查找动态添加的 `script`
+
+调用场景：
+
+- `rewriteAppendOrInsertChild`：为动态添加 `script` 打标记 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+- `insertScriptToIframe`：动态注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+关于动态注入 `script` 到沙箱：
+
+- 需要先通过 `rewriteAppendOrInsertChild` 为动态添加的 `script` 打标记
+- 然后用打了标记的 `script` 通过 `insertScriptToIframe` 为注入的 `script` 打标记
+
+> `insertScriptToIframe` 对于静态提取的 `script`，手动添加的 `script`，不会打标记
+
+**2. `getTagFromScript` 提取 `script` 中标记值**
+
+目录：`utils.ts` - `setTagToScript` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L300)]
 
 ### 映射表和队列
 
