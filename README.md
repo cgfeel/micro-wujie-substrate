@@ -5056,8 +5056,6 @@ window.onfocus = () => {
 - 添加元素，表示：`rawDOMAppendOrInsertBefore` + `execHooks`
 - 添加元素并打补丁，表示：添加元素的 2 个方法 + `patchElementEffect`
 
-如果处理过程中出现异常，得不到最终结果那么：
-
 重写的方法根据添加的元素分为 5 种情况：
 
 **1. 仅添加元素并打补丁**
@@ -5067,6 +5065,20 @@ window.onfocus = () => {
 **1. `link`：资源元素**
 
 `link` 元素不是样式：
+
+- 添加元素并返回不做其他处理
+- 判定样式的 3 个条件：`rel`、`type`、链接以 `.css` 结尾
+
+`href` 不存在或为空值，或链接被 `cssExcludes` 排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+
+- 用沙箱 `document` 创建备注，通过 `rawDOMAppendOrInsertBefore` 添加备注并返回
+
+允许加载的外联样式通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
+
+- `src`：外联样式的链接 `href`
+- `ignore`：通过 `cssIgnores` 匹配链接决定是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+- `fetch`：来自应用实例 `active` 打补丁后的 `fetch` [[查看](#2-动态修改-fetch)]
+- `loadError`：加载失败通知，手动配置，绑定在应用实例，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#loaderror)]
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
