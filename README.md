@@ -5042,7 +5042,7 @@ window.onfocus = () => {
 - `newChild`：添加的节点
 - `refChild`：替换的节点，可选参数
 
-> 执行返回的函数最终会拿到添加的元素 `newChild` 的实例
+> 执行返回的函数，最终会拿到添加的元素 `newChild` 的实例
 
 函数最终会执行的操作：
 
@@ -5056,11 +5056,36 @@ window.onfocus = () => {
 - 添加元素，表示：`rawDOMAppendOrInsertBefore` + `execHooks`
 - 添加元素并打补丁，表示：添加元素的 2 个方法 + `patchElementEffect`
 
-重写的方法中会拦截 4 个添加的元素进行处理：
+如果处理过程中出现异常，得不到最终结果那么：
+
+重写的方法根据添加的元素分为 5 种情况：
+
+**1. 仅添加元素并打补丁**
+
+对于 `link`、`style`、`script`、`iframe` 之外的元素全部添加元素并打补丁
 
 **1. `link`：资源元素**
 
 `link` 元素不是样式：
+
+#### `manualInvokeElementEvent`：手动触发事件回调
+
+目录：`effect.ts` - `manualInvokeElementEvent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L51)]
+
+参数：
+
+- `element`：触发事件的元素，只接受两类元素 `HTMLLinkElement` 和 `HTMLScriptElement`
+- `event`：事件名，目前提供的事件只有 `onload` 和 `onerror`
+
+调用场景：
+
+- `rewriteAppendOrInsertChild`：动态添加元素 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+
+流程：
+
+- 通过 `CustomEvent` 定义事件
+- 通过 `patchCustomEvent` 劫持事件，添加函数类型属性 `srcElement`、`target`，全部返回 `element`
+- 回调方法通过 `on` 绑定在元素上时优先执行，否则通过 `dispatchEvent` 派发事件
 
 ### 辅助方法 - 实用工具
 
