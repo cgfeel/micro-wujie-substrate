@@ -3789,7 +3789,7 @@ return (cache[key] = Promise.resolve());
 
 劫持对象：
 
-| 重写方法       | `render` | `render.head` | `render.body` | 重写方法                     |
+| 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                     |
 | -------------- | -------- | ------------- | ------------- | ---------------------------- |
 | `appendChild`  | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
 | `insertBefore` | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
@@ -4995,6 +4995,26 @@ window.onfocus = () => {
 
 - 劫持样式元素的属性打补丁，每次 `handleStylesheetElementPatch` 都会提取完整的样式进行匹配
 - 对于动态操作，可能会造成重复执行，但不会影响使用，见：额外说明 [[查看](https://github.com/cgfeel/zf-micro-app/blob/main/doc/wujie-umd-patch_css_rules.md#4-%E9%A2%9D%E5%A4%96%E8%AF%B4%E6%98%8E)]
+
+#### `rewriteAppendOrInsertChild`：重写 `appendChild` 和 `insertBefore`
+
+目录：`effect.ts` - `rewriteAppendOrInsertChild` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)]
+
+接受一个 `opt` 对象，包含 2 个属性：
+
+- `rawDOMAppendOrInsertBefore`：原生添加 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+- `wujieId`：应用名
+
+添加 `Dom` 的方法：
+
+| 重写方法                   | 方法名                | 引用对象                                 |
+| -------------------------- | --------------------- | ---------------------------------------- |
+| `render.head.appendChild`  | `rawAppendChild`      | `Node.prototype.appendChild`             |
+| `render.body.appendChild`  | `rawAppendChild`      | `Node.prototype.appendChild`             |
+| `render.head.insertBefore` | `rawHeadInsertBefore` | `HTMLHeadElement.prototype.insertBefore` |
+| `render.body.insertBefore` | `rawBodyInsertBefore` | `HTMLBodyElement.prototype.insertBefore` |
+
+> 重写方法中的 `render` 透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 ### 辅助方法 - 实用工具
 
