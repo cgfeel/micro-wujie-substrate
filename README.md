@@ -5042,43 +5042,72 @@ window.onfocus = () => {
 - `newChild`：添加的节点
 - `refChild`：替换的节点，可选参数
 
-> 执行返回的函数，最终会拿到添加的元素 `newChild` 的实例
+执行函数返回对象：
+
+- 按照原生方法：`appendChild`、`insertBefore` 一样，返回添加的元素
+- 只有当添加的元素是 `script` 或是允许加载的外联样式时会创建注释元素并返回
+
+原因在于添加元素属于上下文同步操作，而：
+
+- 添加外联样式通过 `getExternalStyleSheets` 发起微任务
+- 添加外联 `script` 通过 `insertScriptToIframe` 发起微任务
+- 添加内联 `script` 在 `fiber` 下通过 `requestIdleCallback` 发起宏任务
+- 只有内联 `script` 且取消 `fiber` 才是同步操作，但返回的仍旧是创建的注释元素
+
+> 因此动态添加外联样式和 `script`，一旦通过 `head`、`script` 添加到 `Dom` 之后不要再捕获操作
 
 函数最终会执行的操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
 - `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `widnow`
+- 按照条件返回添加的元素或创建的注释元素
 
-> 另外会根据情况通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
-
-为了做区分，在当前重写方法归类中分两个名词代指行为：
-
-- 添加元素，表示：`rawDOMAppendOrInsertBefore` + `execHooks`
-- 添加元素并打补丁，表示：添加元素的 2 个方法 + `patchElementEffect`
+> 为了便于总结，在当前重写方法总结中，将以上操作流程称为：添加元素并返回
 
 重写的方法根据添加的元素分为 5 种情况：
 
 **1. 仅添加元素并打补丁**
 
-对于 `link`、`style`、`script`、`iframe` 之外的元素全部添加元素并打补丁
+- 对于 `link`、`style`、`script`、`iframe` 之外的元素全部添加元素并打补丁
+- 另外会根据情况通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
 
 **1. `link`：资源元素**
 
 `link` 元素不是样式：
 
-- 添加元素并返回不做其他处理
+- 添加元素并返回，不做其他处理
 - 判定样式的 3 个条件：`rel`、`type`、链接以 `.css` 结尾
 
-`href` 不存在或为空值，或链接被 `cssExcludes` 排除，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+`link` 元素是样式：
 
-- 用沙箱 `document` 创建备注，通过 `rawDOMAppendOrInsertBefore` 添加备注并返回
+- 创建一个注释元素并返回
 
-允许加载的外联样式通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
+返回注释前，如果外联样式不在 `cssExcludes` 列表需要先做以下处理：
+
+- 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
+- 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合添加微任务添加样式
+
+加载样式提供的参数：
 
 - `src`：外联样式的链接 `href`
 - `ignore`：通过 `cssIgnores` 匹配链接决定是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 - `fetch`：来自应用实例 `active` 打补丁后的 `fetch` [[查看](#2-动态修改-fetch)]
 - `loadError`：加载失败通知，手动配置，绑定在应用实例，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#loaderror)]
+
+`ignore` 外联样式如何添加：
+
+- 通过 `rawDOMAppendOrInsertBefore` 将外联样式添加到容器，用浏览器加载避免跨域问题
+
+非 `ignnore` 外联样式如何加载：
+
+- 用 `parseTagAttributes` 提取外联样式属性的键值对 `rawAttrs`
+- 用沙箱 `document` 创建一个内联样式元素
+- 从实例获取插件 `getCssLoader` 处理加载后的样式，将其作为内联样式的内容 [[查看](#通过配置替换资源)]
+- 插入集合 `styleSheetElements` 以便 `umd` 模式切换应用时恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
+- 通过 `setAttrsToElement` 将属性键值对还原到内联样式
+- 通过 `rawDOMAppendOrInsertBefore` 将内联样式添加到容器
+- 通过 `handleStylesheetElementPatch` 为动态添加的外联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- 通过 `manualInvokeElementEvent` 发起 `onload` [[查看](#manualinvokeelementevent手动触发事件回调)]
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
