@@ -3626,6 +3626,8 @@ return (cache[key] = Promise.resolve());
 - `renderTemplateToHtml`：为应用中提取的静态资源打补丁 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - `rewriteAppendOrInsertChild`：为应用中动态添加的元素打补丁 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
+> 先不讨论手动添加样式是否需要打补丁，但是从这里也能看出来 `wujie` 源码太散了
+
 #### 启动应用时添加、删除 `loading`
 
 目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts)]
