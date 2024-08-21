@@ -5007,14 +5007,14 @@ window.onfocus = () => {
 
 添加 `Dom` 的方法：
 
-| 重写方法                   | 方法名                | 引用对象                                 |
+| 重写方法                   | 提供方法              | 引用对象                                 |
 | -------------------------- | --------------------- | ---------------------------------------- |
 | `render.head.appendChild`  | `rawAppendChild`      | `Node.prototype.appendChild`             |
 | `render.body.appendChild`  | `rawAppendChild`      | `Node.prototype.appendChild`             |
 | `render.head.insertBefore` | `rawHeadInsertBefore` | `HTMLHeadElement.prototype.insertBefore` |
 | `render.body.insertBefore` | `rawBodyInsertBefore` | `HTMLBodyElement.prototype.insertBefore` |
 
-> 重写方法中的 `render` 透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+> 重写方法中的 `render` 以及提供方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 ### 辅助方法 - 实用工具
 
