@@ -3783,7 +3783,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `render`：容器的 `shadowRoot` 或 `document`
+- `render`：`shadowRoot` 或 `document`
 - `id`：应用名称
 - `degrade`：是否主动降级
 
