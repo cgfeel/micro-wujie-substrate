@@ -3617,16 +3617,15 @@ return (cache[key] = Promise.resolve());
 - 根据加载的样式类型决定将样式插入 `head` 头部，还是 `body` 尾部
 - 通过 `Promise.all` 将最终处理的 `html` 元素返回
 
-手动添加样式的 `bug`：
+手动添加样式的疑惑：
 
 - 忘记为手动添加的样式通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
+- 但是手动添加的样式按理说子应用中不会匹配做相应操作
 
 应用中的元素如何打补丁：
 
 - `renderTemplateToHtml`：为应用中提取的静态资源打补丁 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - `rewriteAppendOrInsertChild`：为应用中动态添加的元素打补丁 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-
-> 先不讨论手动添加样式是否需要打补丁，但是从这里也能看出来 `wujie` 源码太散了
 
 #### 启动应用时添加、删除 `loading`
 
@@ -3742,7 +3741,7 @@ return (cache[key] = Promise.resolve());
 
 流程：
 
-- 通过 `createTreeWalker` 拿到 `rootElement` 下所有的可见元素
+- 通过 `createTreeWalker` 拿到 `rootElement` 下所有 `Element` 节点
 - 遍历元素通过 `elementEventCacheMap` 获取事件监听对象，记录到一个新的 `WeakMap` 对象上
 - 将拿到事件集合重新在节点上监听
 - 将筛选赋值后的 `WeakMap` 更新实例映射表 `elementEventCacheMap`
@@ -5042,6 +5041,8 @@ window.onfocus = () => {
 - `this`：用于 `TS` 指定上下文类型，见：官方文档 [[查看](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#specifying-the-type-of-this-for-functions)]
 - `newChild`：添加的节点
 - `refChild`：替换的节点，可选参数
+
+函数最终会执行的操作：
 
 重写的方法中会拦截 4 个添加的元素进行处理：
 
