@@ -5021,10 +5021,12 @@ window.onfocus = () => {
 - `<T extends Node>(newChild: T, refChild?: Node | null) => T;`
 - 其中 `refChild` 为可选参数，这样无论是 `appendChild` 还是 `insertBefore` 都通用
 
-返回：
+返回函数：
 
-- 返回一个函数，函数返回的类型可以忽略，会在 `patchRenderEffect` 通过 `as` 断言纠正类型
+- 类型和 `rawDOMAppendOrInsertBefore` 一致，但会在 `patchRenderEffect` 通过 `as` 断言纠正类型 [[查看](#patchrendereffect-为容器打补丁)]
 - 即 `rawDOMAppendOrInsertBefore` 提供什么类型，就会断言返回的函数是什么类型
+
+返回函数所需参数：
 
 ### 辅助方法 - 实用工具
 
