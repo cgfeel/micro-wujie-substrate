@@ -5056,29 +5056,29 @@ window.onfocus = () => {
 
 > 因此动态添加外联样式和 `script`，一旦通过 `head`、`script` 添加到 `Dom` 之后不要再捕获操作
 
-函数最终会执行的操作：
+对于非外联样式和 `script` 都会执行以下操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
 - `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `widnow`
-- 按照条件返回添加的元素或创建的注释元素
+- 按照条件返回添加的元素
 
-> 为了便于总结，在当前重写方法总结中，将以上操作流程称为：添加元素并返回
+> 为了便于总结将以上 3 步操作流程称为：添加元素并返回
 
 重写的方法根据添加的元素分为 5 种情况：
 
 **1. 仅添加元素并打补丁**
 
-- 对于 `link`、`style`、`script`、`iframe` 之外的元素全部添加元素并打补丁
+- 对于 `link`、`style`、`script`、`iframe` 之外的元素全部：添加元素并返回
 - 另外会根据情况通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
 
-**1. `link`：资源元素**
+**2. `link`：资源元素**
 
 `link` 元素不是样式：
 
 - 添加元素并返回，不做其他处理
 - 判定样式的 3 个条件：`rel`、`type`、链接以 `.css` 结尾
 
-`link` 元素是样式：
+`link` 元素是外联样式：
 
 - 创建一个注释元素并返回
 
@@ -5103,11 +5103,31 @@ window.onfocus = () => {
 - 用 `parseTagAttributes` 提取外联样式属性的键值对 `rawAttrs`
 - 用沙箱 `document` 创建一个内联样式元素
 - 从实例获取插件 `getCssLoader` 处理加载后的样式，将其作为内联样式的内容 [[查看](#通过配置替换资源)]
-- 插入集合 `styleSheetElements` 以便 `umd` 模式切换应用时恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
-- 通过 `setAttrsToElement` 将属性键值对还原到内联样式
+- 将内联样式插入集合 `styleSheetElements`，以便 `umd` 模式恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
+- 通过 `setAttrsToElement` 将属性键值对 `rawAttrs` 还原到内联样式
 - 通过 `rawDOMAppendOrInsertBefore` 将内联样式添加到容器
 - 通过 `handleStylesheetElementPatch` 为动态添加的外联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
-- 通过 `manualInvokeElementEvent` 发起 `onload` [[查看](#manualinvokeelementevent手动触发事件回调)]
+- 通过 `manualInvokeElementEvent` 发起 `load` [[查看](#manualinvokeelementevent手动触发事件回调)]
+
+加载异常怎么办：
+
+- 通过 `manualInvokeElementEvent` 发起 `error`
+
+**3. `style`：内联样式**
+
+- 将内联样式插入集合 `styleSheetElements`，以便 `umd` 模式恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
+- 从实例获取插件 `getCssLoader`，只有内联样式内容不为空时才执行替换 [[查看](#通过配置替换资源)]
+- 通过 `patchStylesheetElement` 劫持处理样式元素的属性 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
+- 添加元素并返回
+
+在 `React` 中样式会通过动态的方式添加：
+
+- 会先添加一个空的内联样式元素，然后根据情况添加样式内容
+
+所以：
+
+- `getCssLoader` 不会处理 `React` 内应用动态添加的样式 [[查看](#通过配置替换资源)]
+- 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
@@ -5116,7 +5136,7 @@ window.onfocus = () => {
 参数：
 
 - `element`：触发事件的元素，只接受两类元素 `HTMLLinkElement` 和 `HTMLScriptElement`
-- `event`：事件名，目前提供的事件只有 `onload` 和 `onerror`
+- `event`：事件名，目前提供的事件只有 `load` 和 `error`
 
 调用场景：
 
