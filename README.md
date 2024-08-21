@@ -3789,12 +3789,12 @@ return (cache[key] = Promise.resolve());
 
 劫持对象：
 
-| 重写方法       | `render` | `render.head` | `render.body` |
-| -------------- | -------- | ------------- | ------------- |
-| `appendChild`  | ❎       | ✅            | ✅            |
-| `insertBefore` | ❎       | ✅            | ✅            |
-| `removeChild`  | ❎       | ✅            | ❎            |
-| `contains`     | ✅       | ✅            | ❎            |
+| 重写方法       | `render` | `render.head` | `render.body` | 重写方法                     |
+| -------------- | -------- | ------------- | ------------- | ---------------------------- |
+| `appendChild`  | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
+| `insertBefore` | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
+| `removeChild`  | ❎       | ✅            | ❎            | `rewriteRemoveChild`         |
+| `contains`     | ✅       | ✅            | ❎            | `rewriteContains`            |
 
 做的事情（部分）：
 
