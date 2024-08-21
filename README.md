@@ -3787,6 +3787,15 @@ return (cache[key] = Promise.resolve());
 - `id`：应用名称
 - `degrade`：是否主动降级
 
+劫持对象：
+
+| 重写方法       | `render` | `render.head` | `render.body` |
+| -------------- | -------- | ------------- | ------------- |
+| `appendChild`  | ❎       | ✅            | ✅            |
+| `insertBefore` | ❎       | ✅            | ✅            |
+| `removeChild`  | ❎       | ✅            | ❎            |
+| `contains`     | ✅       | ✅            | ❎            |
+
 做的事情（部分）：
 
 - 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
