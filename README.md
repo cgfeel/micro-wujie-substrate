@@ -5029,7 +5029,7 @@ window.onfocus = () => {
 `rawDOMAppendOrInsertBefore` 的类型：
 
 - `<T extends Node>(newChild: T, refChild?: Node | null) => T;`，其中 `refChild` 为可选参数
-- 这样在 `appendChild` 时是无效参数，在 `insertBefore` 中是替换元素
+- 这样在 `appendChild` 是无效参数，在 `insertBefore` 中是替换元素
 
 返回函数：
 
@@ -5042,9 +5042,19 @@ window.onfocus = () => {
 - `newChild`：添加的节点
 - `refChild`：替换的节点，可选参数
 
+> 执行返回的函数最终会拿到添加的元素 `newChild` 的实例
+
 函数最终会执行的操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
+- `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `widnow`
+
+> 另外会根据情况通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
+
+为了做区分，在当前重写方法归类中分两个名词代指行为：
+
+- 添加元素，表示：`rawDOMAppendOrInsertBefore` + `execHooks`
+- 添加元素并打补丁，表示：添加元素的 2 个方法 + `patchElementEffect`
 
 重写的方法中会拦截 4 个添加的元素进行处理：
 
