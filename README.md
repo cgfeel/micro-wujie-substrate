@@ -5028,8 +5028,8 @@ window.onfocus = () => {
 
 `rawDOMAppendOrInsertBefore` 的类型：
 
-- `<T extends Node>(newChild: T, refChild?: Node | null) => T;`
-- 其中 `refChild` 为可选参数，这样无论是 `appendChild` 还是 `insertBefore` 都通用
+- `<T extends Node>(newChild: T, refChild?: Node | null) => T;`，其中 `refChild` 为可选参数
+- 这样在 `appendChild` 时是无效参数，在 `insertBefore` 中是替换元素
 
 返回函数：
 
@@ -5043,6 +5043,8 @@ window.onfocus = () => {
 - `refChild`：替换的节点，可选参数
 
 函数最终会执行的操作：
+
+- `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
 
 重写的方法中会拦截 4 个添加的元素进行处理：
 
