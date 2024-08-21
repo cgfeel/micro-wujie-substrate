@@ -5345,7 +5345,20 @@ proxyWindow.addEventListener;
 
 **2. `getTagFromScript` 提取 `script` 中标记值**
 
-目录：`utils.ts` - `setTagToScript` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L300)]
+目录：`utils.ts` - `getTagFromScript` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L307)]
+
+参数：
+
+- `element`：`HTMLScriptElement` 元素
+
+流程：
+
+- 判断 `element` 是否为 `script` 元素，是则提取标记 `WUJIE_SCRIPT_ID`
+
+调用场景：
+
+- `findScriptElementFromIframe`：查找动态添加的 `script`
+- `insertScriptToIframe`：动态注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 ### 映射表和队列
 
