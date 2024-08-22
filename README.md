@@ -5157,9 +5157,10 @@ window.onfocus = () => {
 关于 `insertScriptToIframe` 注入 `script`：
 
 - 会将动态添加的 `script` 作为第三个参考对象，用于提取元素中的标签值
-- 这样动态添加的 `script` 和注入沙箱 `script` 就关联起来了，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
-  4.1 加载外联 `script`
+> 这样动态添加的 `script` 和注入沙箱 `script` 就关联起来了，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
+4.1 加载外联 `script`
 
 要求存在属性 `src`，且链接不在 `jsExcludes` 列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
 
@@ -5214,6 +5215,17 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - `src`：`null`
 - `content`：内联 `script` 代码
 - `attrs`：通过 `parseTagAttributes` 提取，动态添加 `script` 的属性键值对
+
+> 对于像 `React` 这样的 `spa` 应用，往往都是入口 `script` 为静态的，注入沙箱后动态添加内联 `script`
+
+**4. `iframe`：动态添加**
+
+根据动态添加元素的属性 `WUJIE_DATA_FLAG` 决定如何添加元素：
+
+- 存在 `WUJIE_DATA_FLAG`：说明添加的是应用沙箱 `iframe`，添加到当前沙箱 `iframe` 下
+- 不存在 `WUJIE_DATA_FLAG`：添加到容器 `body` 下
+
+> 也可以将 `iframe` 添加到容器 `head`，但是没有意义
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
