@@ -5152,6 +5152,33 @@ window.onfocus = () => {
 - 通过 `patchCustomEvent` 劫持事件，添加函数类型属性 `srcElement`、`target`，全部返回 `element`
 - 回调方法通过 `on` 绑定在元素上时优先执行，否则通过 `dispatchEvent` 派发事件
 
+#### `findScriptElementFromIframe`：查找动态添加的 `iframe`
+
+目录：`effect.ts` - `findScriptElementFromIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L342)]
+
+参数：
+
+- `rawElement`：应用中需要动态添加的 `script`
+- `wujieId`：应用名
+
+返回一个对象包含 2 个属性：
+
+- `targetScript`：拦截动态添加的 `script`，根据加载内容注入沙箱的 `script`
+- `iframe`：沙箱 `iframe`
+
+设计初衷：
+
+- 子应用动态添加 `script` 将会被 `rewriteAppendOrInsertChild` 拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+- 然后通过 `insertScriptToIframe` 重创 `script` 加载动态添加的 `js` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 这时注入沙箱的 `script` 和应用中动态添加的元素无关了，并且应用中也不能直接获取
+- 如果需要 `contains` 检查和 `remove` 删除就需要通过 `findScriptElementFromIframe` 来进行匹配
+
+流程：
+
+- 使用动态添加的 `script` 通过 `getTagFromScript` 获取元素上的标签 [[查看](#为动态添加的-script-打标记)]
+- 使用应用名通过 `getWujieById` 获取实例中的沙箱 `iframe`
+- 将拿到的标签在沙箱 `iframe` 中查找对应注入的 `script`，找到返回对象，找不到输出警告
+
 ### 辅助方法 - 实用工具
 
 #### `isConstructable`：判断函数是否可以 `new`
