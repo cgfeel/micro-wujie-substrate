@@ -5176,7 +5176,7 @@ window.onfocus = () => {
 流程：
 
 - 使用动态添加的 `script` 通过 `getTagFromScript` 获取元素上的标签 [[查看](#为动态添加的-script-打标记)]
-- 使用应用名通过 `getWujieById` 获取实例中的沙箱 `iframe`
+- 使用应用名通过 `getWujieById` 获取实例中的沙箱 `iframe` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 - 将拿到的标签在沙箱 `iframe` 中查找对应注入的 `script`，找到返回对象，找不到输出警告
 
 ### 辅助方法 - 实用工具
