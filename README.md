@@ -5141,7 +5141,13 @@ window.onfocus = () => {
 
 **4. `script`：动态添加**
 
-动态添加 `script`
+整体分 3 步骤：
+
+- 通过 `setTagToScript` 为内联打标记 [[查看](#为动态添加的-script-打标记)]
+- 加载 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 创建一个注释并返回
+
+加载外联 `script` 要求存在属性 `src`，且链接不在 `jsExcludes` 列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
