@@ -5128,7 +5128,7 @@ window.onfocus = () => {
 
 所以：
 
-- `getCssLoader` 不会处理 `React` 内应用动态添加的样式 [[查看](#通过配置替换资源)]
+- `getCssLoader` 不会处理 `React` 内应用动态添加的样式（添加元素时内容为空） [[查看](#通过配置替换资源)]
 - 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
 **3. `style`：内联样式**
