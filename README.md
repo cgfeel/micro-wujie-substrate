@@ -5101,7 +5101,7 @@ window.onfocus = () => {
 
 加载样式提供的参数：
 
-- 样式集合每个对象包含：`src` 链接、`ignore` 是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+- 样式集合，每个对象包含：`src` 链接、`ignore` 是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 - `fetch`：来自应用实例 `active` 打补丁后的 `fetch` [[查看](#2-动态修改-fetch)]
 - `loadError`：加载失败通知，手动配置，绑定在应用实例，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#loaderror)]
 
