@@ -5375,6 +5375,8 @@ proxyWindow.addEventListener;
 - 需要先通过 `rewriteAppendOrInsertChild` 为动态添加的 `script` 打标记
 - 然后用打了标记的 `script` 通过 `insertScriptToIframe` 为注入的 `script` 打标记
 
+由此知道分别打的标签编号是一致的，原因见： `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
 > `insertScriptToIframe` 对于静态提取的 `script`，手动添加的 `script`，不会打标记
 
 **2. `getTagFromScript` 提取 `script` 中标记值**
