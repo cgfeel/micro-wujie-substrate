@@ -5058,7 +5058,7 @@ window.onfocus = () => {
 
 由此得出：
 
-- 动态添加的外联样式最终会以内联样式注入容器，之后操作动态样式不会产生任何关联
+- 动态添加的外联样式最终会以内联样式注入容器，之后操作和动态样式不会产生任何关联
 - 动态添加的 `script` 可以通过 `findScriptElementFromIframe` 查找注入的 `script` 进行操作 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
 对于非外联样式和非 `script` 的元素，会执行以下操作：
