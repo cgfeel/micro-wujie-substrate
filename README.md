@@ -5094,7 +5094,7 @@ window.onfocus = () => {
 
 > `link` 是外联样式，将创建一个注释元素并返回
 
-返回注释前，如果外联样式不在 `cssExcludes` 列表需要先做以下处理：
+如果外联样式不在 `cssExcludes` 列表需要先做以下处理：
 
 - 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合添加微任务添加样式
