@@ -5218,7 +5218,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 > 对于像 `React` 这样的 `spa` 应用，往往都是入口 `script` 为静态的，注入沙箱后动态添加内联 `script`
 
-**4. `iframe`：动态添加**
+**5. `iframe`：动态添加**
 
 根据动态添加元素的属性 `WUJIE_DATA_FLAG` 决定如何添加元素：
 
