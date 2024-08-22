@@ -5026,7 +5026,7 @@ window.onfocus = () => {
 | `render.head.insertBefore` | `rawHeadInsertBefore` | `HTMLHeadElement.prototype.insertBefore` |
 | `render.body.insertBefore` | `rawBodyInsertBefore` | `HTMLBodyElement.prototype.insertBefore` |
 
-> 重写方法中的 `render` 以及提供方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+> 重写方法中的 `render` 以及提供方法，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 `rawDOMAppendOrInsertBefore` 的类型：
 
