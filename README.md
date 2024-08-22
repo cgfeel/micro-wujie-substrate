@@ -5166,6 +5166,11 @@ window.onfocus = () => {
 - `targetScript`：拦截动态添加的 `script`，根据加载内容注入沙箱的 `script`
 - `iframe`：沙箱 `iframe`
 
+调用场景：
+
+- `rewriteContains`：查找应用中是否存在元素
+- `rewriteRemoveChild`：从应用中删除元素
+
 设计初衷：
 
 - 子应用动态添加 `script` 将会被 `rewriteAppendOrInsertChild` 拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
