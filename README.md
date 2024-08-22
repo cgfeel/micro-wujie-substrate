@@ -5061,13 +5061,18 @@ window.onfocus = () => {
 - 动态添加的外联样式最终会以内联样式注入容器，之后操作动态样式不会产生任何关联
 - 动态添加的 `script` 可以通过 `findScriptElementFromIframe` 查找注入的 `script` 进行操作 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
-对于非外联样式和 `script` 都会执行以下操作：
+对于非外联样式和非 `script` 的元素，会执行以下操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
 - `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `widnow`
 - 按照条件返回添加的元素
 
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
+
+动态添加的 `newChild` 如何处理：
+
+- 引用声明新的对象 `element`，对于外联加载的元素无论成功失败，在触发事件后都会更新为 `null`
+- 对于非外联的元素，通过 `rawDOMAppendOrInsertBefore` 添加到容器后返回 `res` 同样指向 `newChild`
 
 重写的方法根据添加的元素分为 5 种情况：
 
