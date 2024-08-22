@@ -5074,6 +5074,10 @@ window.onfocus = () => {
 - 引用声明新的对象 `element`，对于外联加载的元素无论成功失败，在触发事件后都会更新为 `null`
 - 对于非外联的元素，通过 `rawDOMAppendOrInsertBefore` 添加到容器后返回 `res` 同样指向 `newChild`
 
+加载外联资源失败怎么处理：
+
+- 通过 `manualInvokeElementEvent` 发起 `error` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
+
 重写的方法根据添加的元素分为 5 种情况：
 
 **1. 仅添加元素并打补丁**
@@ -5099,8 +5103,7 @@ window.onfocus = () => {
 
 加载样式提供的参数：
 
-- `src`：外联样式的链接 `href`
-- `ignore`：通过 `cssIgnores` 匹配链接决定是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+- 样式集合每个对象包含：`src` 链接、`ignore` 是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 - `fetch`：来自应用实例 `active` 打补丁后的 `fetch` [[查看](#2-动态修改-fetch)]
 - `loadError`：加载失败通知，手动配置，绑定在应用实例，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#loaderror)]
 
@@ -5117,11 +5120,7 @@ window.onfocus = () => {
 - 通过 `setAttrsToElement` 将属性键值对 `rawAttrs` 还原到内联样式
 - 通过 `rawDOMAppendOrInsertBefore` 将内联样式添加到容器
 - 通过 `handleStylesheetElementPatch` 为动态添加的外联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
-- 通过 `manualInvokeElementEvent` 发起 `load` [[查看](#manualinvokeelementevent手动触发事件回调)]
-
-加载异常怎么办：
-
-- 通过 `manualInvokeElementEvent` 发起 `error`
+- 通过 `manualInvokeElementEvent` 发起 `load` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
 
 **3. `style`：内联样式**
 
@@ -5147,6 +5146,19 @@ window.onfocus = () => {
 - 加载 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 创建一个注释并返回
 
+无论 `script` 是外联还是内联，都会插入到实例队列 `execQueue` 中执行：
+
+- 提取队列长度，用于判断插入队列后是否要立即执行
+- 添加一个队列，通过 `execScript` 将 `script` 注入沙箱
+- 如果 `fiber` 提供的情况下会将 `execScript` 包裹在 `requestIdleCallback` 执行
+
+> 为了便于归纳，上述 3 个步骤称呼为：插入 `execQueue` 队列中执行
+
+关于 `insertScriptToIframe` 注入 `script`：
+
+- 会将动态添加的 `script` 作为第三个参考对象，用于提取元素中的标签值
+- 这样动态添加的 `script` 和注入沙箱 `script` 就关联起来了，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
   4.1 加载外联 `script`
 
 要求存在属性 `src`，且链接不在 `jsExcludes` 列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
@@ -5154,7 +5166,7 @@ window.onfocus = () => {
 先声明一个注入 `script` 方法 `execScript`：
 
 - 要求应用实例中沙箱 `iframe` 存在（只有注销实例沙箱才会被销毁）
-- 创建 `onload` 方法，用于通过 `manualInvokeElementEvent` 发起 `load` [[查看](#manualinvokeelementevent手动触发事件回调)]
+- 创建 `onload` 方法，用于通过 `manualInvokeElementEvent` 发起 `load` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
 - 通过 `insertScriptToIframe` 注入 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 声明一个 `script` 属性集合 `scriptOptions`：
@@ -5162,7 +5174,46 @@ window.onfocus = () => {
 - 集合中的属性和 `processTpl` 提取外联 `script` 一样，但不包含：`async`、`defer` [[查看](#processtpl-提取资源)]
 - 除此之外通过 `jsIgnores` 添加属性 `ignore` 用于浏览器加载
 
-通过 `getExternalScripts` 加载 `script`：
+通过 `getExternalScripts` 加载 `script`，参数和动态加载外联样式一样，不同在于：
+
+- 集合对象采用 `scriptOptions`
+- 从实例中获取 `fiber` 决定是否通过 `requestIdleCallback` 空闲加载
+
+`getExternalScripts` 提取的集合，会通过 `dynamicScriptExecStack` 发起微任务：
+
+```
+dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
+  scriptResult.contentPromise.then(() => {})
+);
+```
+
+> 保证集合中的 `script` 以微任务队列的形式，加载完一个发起下一个加载
+
+提取加载的 `script` 不会立即注入沙箱，而是：插入 `execQueue` 队列中执行
+
+- 插入队列前需确保，应用实例中存在 `execQueue`（只有实例注销后才会销毁）
+
+从注入 `script` 的过程也能够看出集合中没有 `asyc` 的原因：
+
+- 如果 `ignore` 匹配的情况下作为外联 `script` 注入沙箱
+- 由于 `asynnc` 导致加载后不会提取执行下一个队列，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+> 通过 `jsExcludes` 排除的外联 `script` 会作为内联 `script` 加载，但是由于没有脚本内容，导致插入的沙箱的也是空的 `script` 元素。
+
+4.2 加载内联 `script`
+
+流程和外联基本一致，也是：插入 `execQueue` 队列中执行
+
+不同在于：
+
+- 插入队列的方法会直接通过 `insertScriptToIframe` 注入 `script`，而不需要加载
+- 注入方法 `insertScriptToIframe` 参数不同
+
+`insertScriptToIframe` 参数：
+
+- `src`：`null`
+- `content`：内联 `script` 代码
+- `attrs`：通过 `parseTagAttributes` 提取，动态添加 `script` 的属性键值对
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
