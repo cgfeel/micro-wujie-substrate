@@ -5147,7 +5147,22 @@ window.onfocus = () => {
 - 加载 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 创建一个注释并返回
 
-加载外联 `script` 要求存在属性 `src`，且链接不在 `jsExcludes` 列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+  4.1 加载外联 `script`
+
+要求存在属性 `src`，且链接不在 `jsExcludes` 列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+
+先声明一个注入 `script` 方法 `execScript`：
+
+- 要求应用实例中沙箱 `iframe` 存在（只有注销实例沙箱才会被销毁）
+- 创建 `onload` 方法，用于通过 `manualInvokeElementEvent` 发起 `load` [[查看](#manualinvokeelementevent手动触发事件回调)]
+- 通过 `insertScriptToIframe` 注入 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+声明一个 `script` 属性集合 `scriptOptions`：
+
+- 集合中的属性和 `processTpl` 提取外联 `script` 一样，但不包含：`async`、`defer` [[查看](#processtpl-提取资源)]
+- 除此之外通过 `jsIgnores` 添加属性 `ignore` 用于浏览器加载
+
+通过 `getExternalScripts` 加载 `script`：
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
