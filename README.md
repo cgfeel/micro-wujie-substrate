@@ -5083,7 +5083,7 @@ window.onfocus = () => {
 **1. 仅添加元素并打补丁**
 
 - 对于 `link`、`style`、`script`、`iframe` 之外的元素全部：添加元素并返回
-- 另外会根据情况通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 通过 `patchElementEffect` 为新增元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 
 **2. `link`：资源元素**
 
