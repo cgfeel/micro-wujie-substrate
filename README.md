@@ -5097,7 +5097,7 @@ window.onfocus = () => {
 如果外联样式不在 `cssExcludes` 列表需要先做以下处理：
 
 - 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
-- 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合添加微任务添加样式
+- 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
 
 加载样式提供的参数：
 
