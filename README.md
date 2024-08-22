@@ -5047,16 +5047,19 @@ window.onfocus = () => {
 执行函数返回对象：
 
 - 按照原生方法：`appendChild`、`insertBefore` 一样，返回添加的元素
-- 只有当添加的元素是 `script` 或是允许加载的外联样式时会创建注释元素并返回
+- 只有当添加的元素是 `script` 或是允许加载的外联样式时，会在沙箱 `iframe` 创建注释并返回
 
-原因在于添加元素属于上下文同步操作，而：
+原因在于添加元素属于上下文同步操作：
 
-- 添加外联样式通过 `getExternalStyleSheets` 发起微任务
-- 添加外联 `script` 通过 `insertScriptToIframe` 发起微任务
+- 添加外联样式通过 `getExternalStyleSheets` 发起微任务 [[查看](#getexternalstylesheets加载样式资源)]
+- 添加外联 `script` 通过 `getExternalScripts` 发起微任务 [[查看](#getexternalscripts加载-script-资源)]
 - 添加内联 `script` 在 `fiber` 下通过 `requestIdleCallback` 发起宏任务
 - 只有内联 `script` 且取消 `fiber` 才是同步操作，但返回的仍旧是创建的注释元素
 
-> 因此动态添加外联样式和 `script`，一旦通过 `head`、`script` 添加到 `Dom` 之后不要再捕获操作
+由此得出：
+
+- 动态添加的外联样式最终会以内联样式注入容器，之后操作动态样式不会产生任何关联
+- 动态添加的 `script` 可以通过 `findScriptElementFromIframe` 查找注入的 `script` 进行操作 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
 对于非外联样式和 `script` 都会执行以下操作：
 
@@ -5131,7 +5134,9 @@ window.onfocus = () => {
 - `getCssLoader` 不会处理 `React` 内应用动态添加的样式（添加元素时内容为空） [[查看](#通过配置替换资源)]
 - 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-**3. `style`：内联样式**
+**4. `script`：动态添加**
+
+动态添加 `script`
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
