@@ -3794,17 +3794,17 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `render`：`shadowRoot` 或 `document`
-- `id`：应用名称
-- `degrade`：是否主动降级
+- `id`：应用名称，用于透传给重写方法用于获取实例
+- `degrade`：是否主动降级，决定是否记录事件
 
 劫持对象：
 
-| 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                     |
-| -------------- | -------- | ------------- | ------------- | ---------------------------- |
-| `appendChild`  | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
-| `insertBefore` | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` |
-| `removeChild`  | ❎       | ✅            | ❎            | `rewriteRemoveChild`         |
-| `contains`     | ✅       | ✅            | ❎            | `rewriteContains`            |
+| 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                                                                                           |
+| -------------- | -------- | ------------- | ------------- | -------------------------------------------------------------------------------------------------- |
+| `appendChild`  | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] |
+| `insertBefore` | ❎       | ✅            | ✅            | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] |
+| `removeChild`  | ❎       | ✅            | ❎            | `rewriteRemoveChild` [[查看](#rewriteremovechild重写-removechild)]                                 |
+| `contains`     | ✅       | ✅            | ❎            | `rewriteContains` [[查看](#rewritecontains重写-contains)]                                          |
 
 做的事情（部分）：
 
