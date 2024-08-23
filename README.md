@@ -5148,8 +5148,7 @@ window.onfocus = () => {
 无论 `script` 是外联还是内联，都会插入到实例队列 `execQueue` 中执行：
 
 - 提取队列长度，用于判断插入队列后是否要立即执行
-- 添加一个队列，通过 `execScript` 将 `script` 注入沙箱
-- 如果 `fiber` 提供的情况下会将 `execScript` 包裹在 `requestIdleCallback` 执行
+- 添加一个队列将 `script` 注入沙箱，如果 `fiber` 开启会包裹在 `requestIdleCallback` 执行
 
 > 为了便于归纳，上述 3 个步骤称呼为：插入 `execQueue` 队列中执行
 
