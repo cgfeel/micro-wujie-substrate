@@ -5173,6 +5173,11 @@ window.onfocus = () => {
 - 集合中的属性和 `processTpl` 提取外联 `script` 一样，但不包含：`async`、`defer` [[查看](#processtpl-提取资源)]
 - 除此之外通过 `jsIgnores` 添加属性 `ignore` 用于浏览器加载
 
+`scriptOptions` 的使用流程：
+
+- 提供给 `getExternalScripts` 处理后得到带有 `contentPromise` 的 `scriptResult` [[查看](#getexternalscripts加载-script-资源)]
+- 将 `scriptResult` 提供给 `scriptOptions`，会结合 `onload` 提供给 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
 通过 `getExternalScripts` 加载 `script`，参数和动态加载外联样式一样，不同在于：
 
 - 集合对象采用 `scriptOptions`
