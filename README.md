@@ -3781,7 +3781,7 @@ return (cache[key] = Promise.resolve());
 - `shadowRoot`：因为本身就是跟节点，`degrade` 降级时每次都是新建 `iframe` 容器
 - 重建模式：每次激活都是新的应用实例
 
-> `alive` 模式通过 `recoverEventListeners` 恢复事件
+> `degrade` 降级下，`alive` 模式通过 `recoverEventListeners` 恢复事件
 
 ### 辅助方法 - 打补丁
 
