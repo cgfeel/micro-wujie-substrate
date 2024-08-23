@@ -5216,9 +5216,9 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 不同在于：
 
 - 插入队列的方法会直接通过 `insertScriptToIframe` 注入 `script`，而不需要加载
-- 注入方法 `insertScriptToIframe` 参数不同
+- 注入方法 `insertScriptToIframe` 提供的参数不同
 
-`insertScriptToIframe` 参数：
+`insertScriptToIframe` 参数 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - `src`：`null`
 - `content`：内联 `script` 代码
@@ -5260,7 +5260,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 设计初衷：和原生方法 `rawElementRemoveChild` 目的一样删除 `head` 下的元素
 
 - 而应用中动态添加的 `script` 会通过 `insertScriptToIframe` 重建 `script` 注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 没有特殊属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
+- 没有特殊定性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
 - 通过 `findScriptElementFromIframe`，提供动态添加的 `script` 匹配沙箱中对应的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
 > 如果删除的 `script` 来自浏览器加载，而并非 `fetch`，这样就没有办法匹配到对应的 `script`，而是直接通过原生方法 `rawElementRemoveChild` 删除
