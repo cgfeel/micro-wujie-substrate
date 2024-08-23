@@ -5231,7 +5231,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 根据动态添加元素的属性 `WUJIE_DATA_FLAG` 决定如何添加元素：
 
 - 存在 `WUJIE_DATA_FLAG`：说明添加的是应用沙箱 `iframe`，追加到当前沙箱 `html` 元素末尾
-- 不存在 `WUJIE_DATA_FLAG`：添加到容器 `body` 下
+- 不存在 `WUJIE_DATA_FLAG`：添加到容器 `body` 下，因为拦截的对象就是 `body` 和 `head`
 
 > 也可以将 `iframe` 添加到容器 `head`，但是没有意义
 
