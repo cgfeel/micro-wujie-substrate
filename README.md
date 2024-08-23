@@ -5259,7 +5259,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 设计初衷：和原生方法 `rawElementRemoveChild` 目的一样删除 `head` 下的元素
 
-- 而应用中动态添加的 `script` 会通过 `insertScriptToIframe` 重建 `script` 注入沙箱
+- 而应用中动态添加的 `script` 会通过 `insertScriptToIframe` 重建 `script` 注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 没有特殊属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
 - 通过 `findScriptElementFromIframe`，提供动态添加的 `script` 匹配沙箱中对应的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
