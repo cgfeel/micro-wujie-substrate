@@ -5150,7 +5150,7 @@ window.onfocus = () => {
 - 提取队列长度，用于判断插入队列后是否要立即执行
 - 队列中添加一个函数，将 `script` 注入沙箱，开启 `fiber` 下会包裹在 `requestIdleCallback` 执行
 
-> 为了便于归纳，上述 3 个步骤称呼为：插入 `execQueue` 队列中执行
+> 为了便于归纳，上述步骤称呼为：插入 `execQueue` 队列中执行
 
 关于 `insertScriptToIframe` 注入 `script`：
 
