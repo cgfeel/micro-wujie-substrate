@@ -5203,7 +5203,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 如果 `ignore` 匹配的情况下作为外联 `script` 注入沙箱
 - 由于 `async` 导致加载后不会提取执行下一个队列，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
-> 通过 `jsExcludes` 排除的外联 `script` 会作为内联 `script` 加载，但是由于没有脚本内容，导致插入的沙箱的也是空的 `script` 元素。
+> 通过 `jsExcludes` 排除的外联 `script` 会作为内联 `script` 加载，但是由于没有脚本内容，导致插入的沙箱的 `script` 是一个空元素。
 
 4.2 加载内联 `script`
 
