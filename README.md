@@ -5099,6 +5099,8 @@ window.onfocus = () => {
 - 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
 
+> 在 `cssExcludes` 列表中的样式返回注释不做任何处理，添加注释后不接受样式上的任何处理
+
 加载样式提供的参数：
 
 - 样式集合，每个对象包含：`src` 链接、`ignore` 是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
