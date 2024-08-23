@@ -5239,7 +5239,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 目录：`effect.ts` - `rewriteRemoveChild` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L367)]
 
-接受一个 `opt` 对象，包含 2 个属性：
+接受一个 `opts` 对象，包含 2 个属性：
 
 - `rawElementRemoveChild`：原生删除 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 - `wujieId`：应用名，用于透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
@@ -5252,18 +5252,55 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 重写方法返回：
 
-- `findScriptElementFromIframe` 匹配到 `targetScript`：找到删除并返回，否则返回 `null`
-- 通过原生方法 `rawElementRemoveChild` 并返回
+- `findScriptElementFromIframe`：找到删除并返回沙箱中的 `script`，否则返回 `null`
+- 不是 `script` 通过原生方法 `rawElementRemoveChild` 删除渲染容器中的元素并返回
 
-> `rawElementRemoveChild` 原生方法删除元素前需要确保存在于 `head` 下
+> `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
 
 设计初衷：和原生方法 `rawElementRemoveChild` 目的一样删除 `head` 下的元素
 
-- 而应用中动态添加的 `script` 会通过 `insertScriptToIframe` 重建 `script` 注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 没有特殊定性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
-- 通过 `findScriptElementFromIframe`，提供动态添加的 `script` 匹配沙箱中对应的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+- 而应用中存在 2 个容器：存放 `script` 的沙箱容器，除了 `script` 的应用渲染容器
+- 因此需要根据删除的元素，分开查找并删除
 
-> 如果删除的 `script` 来自浏览器加载，而并非 `fetch`，这样就没有办法匹配到对应的 `script`，而是直接通过原生方法 `rawElementRemoveChild` 删除
+但沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]：
+
+- 没有特定属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
+- 于是需要 `findScriptElementFromIframe` 根据提供的元素，找出注入沙箱的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
+> 删除动态添加的 `script` 无论是内联还是外联，都会同时为动态添加的 `script` 和注入沙箱的 `script` 打上相同的标记，见：为动态添加的 `script` 打标记 [[查看](#为动态添加的-script-打标记)]
+
+删除静态 `script` 的问题：
+
+- 当 `script` 提取自应用中静态 `script`，注入沙箱 `iframe` 是不会打上任何标记的
+- 使用 `rewriteRemoveChild` 删除元素时，发现元素是 `script` 但没有标签，返回 `null` 不做任何操作
+
+> 这个问题也存在手动添加 `script`，但是这种情况不存在通过子应用删除的场景，可以忽略
+
+#### `rewriteContains`：重写 `contains`
+
+目录：`effect.ts` - `rewriteContains` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L355)]
+
+接受一个 `opts` 对象，包含 2 个属性：
+
+- `rawElementContains`：原生查找 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+- `wujieId`：应用名，用于透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
+> `patchRenderEffect` 提供 `rawElementContains` 时，通过 `bind` 将上下文根据重写方法来自容器 `head` 还是容器，纠正 `this` 的指向
+
+返回一个方法用于重写 `contains`，方法需要的参数：
+
+- `other`：查找的节点元素或 `null`
+
+重写方法返回：
+
+- 和原生 `rawElementContains` 一样，上下文找到 `script` 得到 `true` 否则 `false`
+
+流程和设计初衷和 `rewriteRemoveChild` 一样 [[查看](#rewriteremovechild重写-removechild)]：
+
+- 通过 `findScriptElementFromIframe` 匹配 `script`，找到返回 `true` 否则 `false`
+- 不是 `script` 则通过原生方法 `rawElementContains` 去判断
+
+这里粗在一个问题
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
