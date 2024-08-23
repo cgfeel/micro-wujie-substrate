@@ -5176,7 +5176,7 @@ window.onfocus = () => {
 `scriptOptions` 的使用流程：
 
 - 提供给 `getExternalScripts` 处理后得到带有 `contentPromise` 的 `scriptResult` [[查看](#getexternalscripts加载-script-资源)]
-- 将 `scriptResult` 提供给 `scriptOptions`，会结合 `onload` 提供给 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 将 `scriptResult` 提供给 `execScript`，会结合 `onload` 提供给 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 通过 `getExternalScripts` 加载 `script`，参数和动态加载外联样式一样，不同在于：
 
@@ -5195,7 +5195,8 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 提取加载的 `script` 不会立即注入沙箱，而是：插入 `execQueue` 队列中执行
 
-- 插入队列前需确保，应用实例中存在 `execQueue`（只有实例注销后才会销毁）
+- 插入队列前需确保应用实例中存在 `execQueue`（只有实例注销后才会销毁）
+- 队列方法中不会直接调用 `insertScriptToIframe`，而是通过 `execScript` 发起注入
 
 从注入 `script` 的过程也能够看出集合中没有 `asyc` 的原因：
 
