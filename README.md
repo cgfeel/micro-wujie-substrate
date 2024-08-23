@@ -5130,11 +5130,7 @@ window.onfocus = () => {
 - 通过 `handleStylesheetElementPatch` 为动态添加的内联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - 添加元素并返回
 
-在 `React` 中样式会通过动态的方式添加：
-
-- 先添加空的内联样式元素，然后根据情况设置元素样式内容
-
-所以：
+在 `React` 中先添加空的内联样式元素，然后根据情况设置元素样式内容：
 
 - `getCssLoader` 不会处理 `React` 内应用动态添加的样式（添加元素时内容为空） [[查看](#通过配置替换资源)]
 - 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
