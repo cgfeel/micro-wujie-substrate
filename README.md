@@ -5271,10 +5271,24 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 删除静态 `script` 的问题：
 
-- 当 `script` 提取自应用中静态 `script`，注入沙箱 `iframe` 是不会打上任何标记的
-- 使用 `rewriteRemoveChild` 删除元素时，发现元素是 `script` 但没有标签，返回 `null` 不做任何操作
+- 当注入的 `script` 提取自应用中静态 `script`，是不会打上任何标记的
+- 删除元素时发现元素是 `script` 但没有标签，返回 `null` 不做任何操作
 
 > 这个问题也存在手动添加 `script`，但是这种情况不存在通过子应用删除的场景，可以忽略
+
+如何解决：
+
+- 为静态 `script` 手动加上 `data-wujie-script-id` 属性，属性值建议唯一的非纯数字
+- 当删除元素时，发现类型为 `script` 且存在标签，在沙箱 `head` 中找到并删除
+
+> 属性值唯一能够准确找到元素，非数字是为了和 `setTagToScript` 默认打标签区分开来 [[查看](#为动态添加的-script-打标记)]
+
+缺点是手动，且有侵入性：
+
+- 在 `processTpl` 提供了参数 `postProcessTemplate` 用来更新提取的资源 [[查看](#processtpl-提取资源)]
+- 但目前没有用到，且又不是 `plugin` 所以暂且还不能
+
+> `postProcessTemplate` 可能是工作人员你为后续更新留下的一个口子
 
 #### `rewriteContains`：重写 `contains`
 
