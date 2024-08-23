@@ -5154,7 +5154,7 @@ window.onfocus = () => {
 
 关于 `insertScriptToIframe` 注入 `script`：
 
-- 会将动态添加的 `script` 作为第三个参考对象，用于提取元素中的标签值
+- 会将动态添加的 `script` 作为第三个参数，用于提取元素中的标签值
 
 > 这样动态添加的 `script` 和注入沙箱 `script` 就关联起来了，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
