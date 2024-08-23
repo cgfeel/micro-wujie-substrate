@@ -5235,6 +5235,36 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 > 也可以将 `iframe` 添加到容器 `head`，但是没有意义
 
+#### `rewriteRemoveChild`：重写 `removeChild`
+
+目录：`effect.ts` - `rewriteRemoveChild` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L367)]
+
+接受一个 `opt` 对象，包含 2 个属性：
+
+- `rawElementRemoveChild`：原生删除 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+- `wujieId`：应用名，用于透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
+> `patchRenderEffect` 提供 `rawElementRemoveChild` 时需要通过 `bind` 将上下文指向容器 `head`
+
+返回一个方法用于重写 `removeChild`，方法需要的参数：
+
+- `child`：删除的节点元素
+
+重写方法返回：
+
+- `findScriptElementFromIframe` 匹配到 `targetScript`：找到删除并返回，否则返回 `null`
+- 通过原生方法 `rawElementRemoveChild` 并返回
+
+> `rawElementRemoveChild` 原生方法删除元素前需要确保存在于 `head` 下
+
+设计初衷：和原生方法 `rawElementRemoveChild` 目的一样删除 `head` 下的元素
+
+- 而应用中动态添加的 `script` 会通过 `insertScriptToIframe` 重建 `script` 注入沙箱
+- 没有特殊属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
+- 通过 `findScriptElementFromIframe`，提供动态添加的 `script` 匹配沙箱中对应的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+
+> 如果删除的 `script` 来自浏览器加载，而并非 `fetch`，这样就没有办法匹配到对应的 `script`，而是直接通过原生方法 `rawElementRemoveChild` 删除
+
 #### `manualInvokeElementEvent`：手动触发事件回调
 
 目录：`effect.ts` - `manualInvokeElementEvent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L51)]
@@ -5261,12 +5291,12 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 参数：
 
 - `rawElement`：应用中需要动态添加的 `script`
-- `wujieId`：应用名
+- `wujieId`：应用名，用于获取实例沙箱 `iframe`
 
 返回一个对象包含 2 个属性：
 
-- `targetScript`：拦截动态添加的 `script`，根据加载内容注入沙箱的 `script`
-- `iframe`：沙箱 `iframe`
+- `targetScript`：拦截动态添加的 `script`，匹配注入沙箱的 `script`
+- `iframe`：沙箱 `iframe`，作为 `script` 的容器，用于查找、删除 `script` 时使用
 
 调用场景：
 
