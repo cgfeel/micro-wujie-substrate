@@ -5307,14 +5307,16 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 重写方法返回：
 
-- 和原生 `rawElementContains` 一样，上下文找到 `script` 得到 `true` 否则 `false`
+- 和原生 `rawElementContains` 一样，上下文找到元素为 `true` 否则 `false`
 
-流程和设计初衷和 `rewriteRemoveChild` 一样 [[查看](#rewriteremovechild重写-removechild)]：
+流程和设计初衷、查找方式、存在问题和 `rewriteRemoveChild` 一样 [[查看](#rewriteremovechild重写-removechild)]：
 
-- 通过 `findScriptElementFromIframe` 匹配 `script`，找到返回 `true` 否则 `false`
-- 不是 `script` 则通过原生方法 `rawElementContains` 去判断
+区别在于：
 
-这里粗在一个问题
+| 分类   | `rewriteRemoveChild`        | `rewriteContains` |
+| ------ | --------------------------- | ----------------- |
+| 用途   | 删除元素                    | 检查是否包含元素  |
+| 返回值 | 删除的元素，找不到为 `null` | `boolean`         |
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
