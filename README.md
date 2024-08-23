@@ -5119,7 +5119,7 @@ window.onfocus = () => {
 - 将内联样式插入集合 `styleSheetElements`，以便 `umd` 模式恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
 - 通过 `setAttrsToElement` 将属性键值对 `rawAttrs` 还原到内联样式
 - 通过 `rawDOMAppendOrInsertBefore` 将内联样式添加到容器
-- 通过 `handleStylesheetElementPatch` 为动态添加的外联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
+- 通过 `handleStylesheetElementPatch` 为加载后的内联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - 通过 `manualInvokeElementEvent` 发起 `load` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
 
 **3. `style`：内联样式**
