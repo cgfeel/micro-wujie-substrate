@@ -5309,7 +5309,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - 和原生 `rawElementContains` 一样，上下文找到元素为 `true` 否则 `false`
 
-流程和设计初衷、查找方式、存在问题和 `rewriteRemoveChild` 一样 [[查看](#rewriteremovechild重写-removechild)]：
+流程和设计初衷、查找方式、存在问题和 `rewriteRemoveChild` 一样 [[查看](#rewriteremovechild重写-removechild)]
 
 区别在于：
 
