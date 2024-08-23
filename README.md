@@ -5127,6 +5127,7 @@ window.onfocus = () => {
 - 将内联样式插入集合 `styleSheetElements`，以便 `umd` 模式恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
 - 从实例获取插件 `getCssLoader`，只有内联样式内容不为空时才执行替换 [[查看](#通过配置替换资源)]
 - 通过 `patchStylesheetElement` 劫持处理样式元素的属性 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
+- 通过 `handleStylesheetElementPatch` 为动态添加的内联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - 添加元素并返回
 
 在 `React` 中样式会通过动态的方式添加：
