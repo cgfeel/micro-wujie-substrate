@@ -3797,11 +3797,7 @@ return (cache[key] = Promise.resolve());
 - `id`：应用名称，用于透传给重写方法用于获取实例
 - `degrade`：主动降级，非降级模式记录事件
 
-非降级情况下，通过 `patchEventListener` 记录事件：
-
-- 提供 `body`
-
-劫持对象重写方法：
+必做：劫持对象重写方法
 
 | 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                                                                                           |
 | -------------- | -------- | ------------- | ------------- | -------------------------------------------------------------------------------------------------- |
@@ -3810,19 +3806,45 @@ return (cache[key] = Promise.resolve());
 | `removeChild`  | ❎       | ✅            | ❎            | `rewriteRemoveChild` [[查看](#rewriteremovechild重写-removechild)]                                 |
 | `contains`     | ✅       | ✅            | ❎            | `rewriteContains` [[查看](#rewritecontains重写-contains)]                                          |
 
-做的事情（部分）：
+选做：非降级情况下，通过 `patchEventListener` 记录容器 `body`、`head` 事件
 
-- 用于子应用中动态操作 `Dom`，比如：`appendChild` 和 `insertBefore`
-- 在子应用动态添加 `script` 时，会通过 `insertScriptToIframe` 添加到沙箱的 `iframe` 中
-- 在子应用动态添加内联或外联样式同时，会通过 `styleSheetElements.push` 收集添加的样式，以便 `umd` 切换应用时通过 `rebuildStyleSheets` 恢复样式
-- 非主动降级情况下，记录子应用 `head` 和 `body` 所有监听的事件，集合在 `_cacheListeners`
+- 事件会记录在监听对象的属性 `_cacheListeners` 上，目的和意义见：容器事件 [[查看](#shadowrootbodyhead_cachelisteners容器事件)]
 
-> 主动降级不需要记录：降级场景 `dom` 渲染在 `iframe` 中，`iframe` 移动后事件自动销毁，不需要记录
->
-> 关于 `_cacheListeners` 的用途就有点不明所以了：
->
-> - 可以在子应用中通过 `[body|head]._cacheListeners` 获取所有监听的实例，但是需要获取吗？
-> - 可以在卸载应用时通过 `removeEventListener` 清空所有记录，意义是？
+**记录、删除容器事件**
+
+提供两个方法：
+
+- `patchEventListener`：记录容器 `head`、`body` 事件，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L385)]
+- `removeEventListener`：删除容器 `head`、`body` 事件，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L416)]
+
+都接受 1 个参数：
+
+- `element`：容器的 `head` 或 `body`
+
+要求：
+
+- `umd` 模式，且非 `degrapde` 降级，原因见：容器事件 [[查看](#shadowrootbodyhead_cachelisteners容器事件)]
+
+重写 `[body|head].addEventListener`：
+
+- 将事件和回调方法记录在映射表 `listenerMap`，之后添加 `element` 监听事件
+- 记录名称为事件类型，记录的值是回调集合的数组
+
+> 监听事件中的参数 `options` 仅用于发起监听，不在记录中缓存，因为记录事件的目的最终是为了注销容器前删除对应事件
+
+重写 `[body|head].removeEventListener`：
+
+- 通过事件和回调方法从映射表 `listenerMap` 中删除对应的事件，之后删除 `element` 监听事件
+- 如果删除事件后，记录事件类型对应的集合为空数组，将其从映射表中删除
+
+将 `listenerMap` 绑定在 `element` 对象属性 `_cacheListeners`：
+
+- `unmount` 时会通过 `removeEventListener` 删除绑定在容器 `head`、`body` 上的事件
+- `umd` 模式切换应用时，在注入资源通过初次记录在实例中的 `head`、`body` 重新渲染，并再次记录事件
+
+`removeEventListener` 删除事件：
+
+- 遍历映射表 `listenerMap`，拿到 `type` 和回调方法集合，依次从 `element` 中取消事件
 
 #### `patchElementEffect`：为元素打补丁
 
