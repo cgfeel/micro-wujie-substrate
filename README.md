@@ -5856,7 +5856,7 @@ proxyWindow.addEventListener;
 
 总结记录事件的目的和意义
 
-#### `shadowRoot.[body|head]._cacheListeners` 容器事件
+#### `shadowRoot.[body|head]._cacheListeners`：容器事件
 
 目的：`umd` 下卸载应用时清空 `head`、`body` 下的事件
 
@@ -5882,7 +5882,7 @@ proxyWindow.addEventListener;
 
 - `shadowRoot` 卸载应用时会清空容器、实例 `head`、实例 `body` 下所有的元素，见：`unmount` [[查看](#-unmount-卸载应用)]
 
-#### `elementEventCacheMap` 降级容器事件
+#### `elementEventCacheMap`：降级容器事件
 
 和 `shadowRoot.[body|head]._cacheListeners` 正好相反：
 
@@ -5909,7 +5909,7 @@ proxyWindow.addEventListener;
 | `alive` | 重建容器，需要恢复所有事件                                 | 需要将 `shadowRoot` 重新挂载到 `el` 节点，不重建也不需要恢复事件 |
 | `umd`   | 重建容器，需要为 `React 16` 及以下版本恢复 `document` 事件 | 根节点 `shadowRoot` 没变，不需要恢复事件                         |
 
-#### `__WUJIE_EVENTLISTENER__` 转发 `window` 事件
+#### `__WUJIE_EVENTLISTENER__`：转发 `window` 事件
 
 子应用中对 `window` 上监听的事件，需转发到基座 `window`：
 
