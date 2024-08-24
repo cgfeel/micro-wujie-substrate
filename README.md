@@ -3795,9 +3795,13 @@ return (cache[key] = Promise.resolve());
 
 - `render`：`shadowRoot` 或 `document`
 - `id`：应用名称，用于透传给重写方法用于获取实例
-- `degrade`：是否主动降级，决定是否记录事件
+- `degrade`：主动降级，非降级模式记录事件
 
-劫持对象：
+非降级情况下，通过 `patchEventListener` 记录事件：
+
+- 提供 `body`
+
+劫持对象重写方法：
 
 | 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                                                                                           |
 | -------------- | -------- | ------------- | ------------- | -------------------------------------------------------------------------------------------------- |
@@ -5847,6 +5851,65 @@ proxyWindow.addEventListener;
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
 - 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+
+### `wujie` 中记录的事件
+
+总结记录事件的目的和意义
+
+#### `shadowRoot.[body|head]._cacheListeners` 容器事件
+
+目的：`umd` 下卸载应用时清空 `head`、`body` 下的事件
+
+- 记录：`patchEventListener`，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+- 清除：`unmount` [[查看](#-unmount-卸载应用)]
+- 条件：`shadowRoot` 容器、`umd` 模式
+
+为什么记录清空事件：
+
+- `renderTemplateToHtml` 将资源转换为 `html` 时会将`head` 和 `body` 记录在实例 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+- 切换应用时会还原实例中的记录，如果卸载时不清空事件会导致重复监听
+
+为啥其他模式不需要：
+
+- `alive`模式：不销毁资源、不记录事假、再次切换应用不重新注入资源、也不需要 `start`
+- 重建模式：每次都重建容器、重启应用，虽也记录和清理事件，但最终都会通过 `destroy` 彻底销毁
+
+为什么 `iframe` 容器不需要记录和清除：
+
+- `degrade` 每次激活都会重建 `iframe` 容器，`iframe` 移除后事件自动销毁（来自备注）
+
+为什么只记录和消除 `head` 和 `body`：
+
+- `shadowRoot` 卸载应用时会清空容器、实例 `head`、实例 `body` 下所有的元素，见：`unmount` [[查看](#-unmount-卸载应用)]
+
+#### `elementEventCacheMap` 降级容器事件
+
+和 `shadowRoot.[body|head]._cacheListeners` 正好相反：
+
+| 模式                   | 容器         | 记录事件用途                                       |
+| ---------------------- | ------------ | -------------------------------------------------- |
+| `cacheListeners`       | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
+| `elementEventCacheMap` | `iframe`     | 切换应用 `active` 时恢复记录，以便重新监听         |
+
+流程参考：
+
+- `active` 激活应用，见：`degrade` 主动降级渲染 [[查看](#41-degrade-主动降级渲染)]
+
+切换应用恢复容器事件，是因为：`iframe` 移除后事件自动销毁（来自备注）
+
+- 事件记录和恢复、适用模式，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+- 事件清除：每次激活时将使用新的容器代替老的的容器
+
+> 重加模式每次启动应用都是重建容器，不需要用到 `elementEventCacheMap`
+
+为什么 `shadowRoot` 不需要记录和恢复：
+
+| 模式    | `iframe` 容器                                              | `shadowRoot` 容器                                                |
+| ------- | ---------------------------------------------------------- | ---------------------------------------------------------------- |
+| `alive` | 重建容器，需要恢复所有事件                                 | 需要将 `shadowRoot` 重新挂载到 `el` 节点，不重建也不需要恢复事件 |
+| `umd`   | 重建容器，需要为 `React 16` 及以下版本恢复 `document` 事件 | 根节点 `shadowRoot` 没变，不需要恢复事件                         |
+
+#### `elementEventCacheMap` 降级容器事件
 
 ### 引入 `wujie` 包时默认就执行
 
