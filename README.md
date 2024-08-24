@@ -5877,6 +5877,7 @@ proxyWindow.addEventListener;
 为什么 `iframe` 容器不需要记录和清除：
 
 - `degrade` 每次激活都会重建 `iframe` 容器，`iframe` 移除后事件自动销毁（来自备注）
+- 相反 `iframe` 容器在 `alive` 模式或 `umd` 模式下需要记录并恢复事件，往下继续看
 
 为什么只记录和消除 `head` 和 `body`：
 
