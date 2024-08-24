@@ -5873,6 +5873,7 @@ proxyWindow.addEventListener;
 #### 3. `elementEventCacheMap` 记录降级容器事件
 
 - 记录方法见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+- 原理见：降级容器事件 [[查看](#elementeventcachemap降级容器事件)]
 
 ### `wujie` 中记录的事件
 
