@@ -5915,6 +5915,7 @@ proxyWindow.addEventListener;
 
 - 记录：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
 - 清除：`destroy` 注销应用实例 [[查看](#-destroy-销毁实例)]
+- 条件：所有模式、也不受渲染容器限制
 - 容器：沙箱 `iframe`
 
 原因：
