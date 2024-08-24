@@ -3830,7 +3830,7 @@ return (cache[key] = Promise.resolve());
 - 将事件和回调方法记录在映射表 `listenerMap`，之后添加 `element` 监听事件
 - 记录名称为事件类型，记录的值是回调集合的数组
 
-> 监听事件中的参数 `options` 仅用于发起监听，不在记录中缓存，因为记录事件的目的最终是为了注销容器前删除对应事件
+> 监听事件中的参数 `options` 仅用于发起监听，不在记录中缓存，因为记录事件的目的是为了注销容器前删除对应事件
 
 重写 `[body|head].removeEventListener`：
 
