@@ -5881,7 +5881,7 @@ proxyWindow.addEventListener;
 
 为什么只记录和消除 `head` 和 `body`：
 
-- `shadowRoot` 卸载应用时会清空容器、实例 `head`、实例 `body` 下所有的元素，见：`unmount` [[查看](#-unmount-卸载应用)]
+- `shadowRoot` 在 `unmount` 时会清空容器、实例 `head`、实例 `body` 下所有的元素 [[查看](#-unmount-卸载应用)]
 
 #### `elementEventCacheMap`：降级容器事件
 
