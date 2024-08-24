@@ -5909,7 +5909,18 @@ proxyWindow.addEventListener;
 | `alive` | 重建容器，需要恢复所有事件                                 | 需要将 `shadowRoot` 重新挂载到 `el` 节点，不重建也不需要恢复事件 |
 | `umd`   | 重建容器，需要为 `React 16` 及以下版本恢复 `document` 事件 | 根节点 `shadowRoot` 没变，不需要恢复事件                         |
 
-#### `elementEventCacheMap` 降级容器事件
+#### `__WUJIE_EVENTLISTENER__` 转发 `window` 事件
+
+子应用中对 `window` 上监听的事件，需转发到基座 `window`：
+
+- 记录：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
+- 清除：`destroy` 注销应用实例 [[查看](#-destroy-销毁实例)]
+- 容器：沙箱 `iframe`
+
+原因：
+
+- 应用中 `script` 挂在在沙箱 `iframe` 中，对 `window` 的监听会作为沙箱 `window` 事件
+- 而用户是在基座上进行浏览和操作，因此需要将沙箱 `window` 上的事件转发给基座
 
 ### 引入 `wujie` 包时默认就执行
 
