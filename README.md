@@ -3915,7 +3915,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于：① 获取 `history`；② 纠正链接
 - `appHostPath`：子应用的 `host`
 - `mainHostPath`：基座的 `host`
 
@@ -3923,7 +3923,7 @@ return (cache[key] = Promise.resolve());
 
 - `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
-在此之前需要明白一个概念：
+设计初衷：
 
 - 在劫持 `history` 之前，会通过 `initBase` [[查看](#base标签操作)] 为子应用中所有相对路径的资源链接，指定为子应用 `host` 的基础链接
 - 当点击链接时需要拦截这部分的链接，替换为基座 `host` 然后更新沙箱 `iframe` 的 `url`
