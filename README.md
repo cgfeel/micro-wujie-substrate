@@ -637,7 +637,7 @@
 #### 3. 创建沙箱 `iframe`
 
 - 通过 `appRouteParse` 提取 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
-- 获取基座的 `host`：`mainHostPath` 即 `origin`
+- 获取基座的 `origin`：`mainHostPath`
 - 通过 `iframeGenerator` 初始化沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
 
 #### 4. 创建代理
@@ -2213,20 +2213,20 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 获取 `href`：
 
-- 获取沙箱 `iframe` 的 `location.href`，返回之前要将主应用的 `host` 替换为子应用的 `host`
-- 因为 `iframe` 的 `host` 和基座同域，而应用中资源的 `url` 是和子应用的 `host` 对齐
+- 获取沙箱 `iframe` 的 `location.href`，返回之前要将主应用的 `origin` 替换为子应用的 `origin`
+- 因为沙箱 `iframe` 和基座同域，而应用中资源的 `url` 是基于子应用的 `origin`
 
 屏蔽 `reload` 的 `bug`：
 
 - 初衷：毕竟辛苦加载的 `script`，不能因为 `replad` 清空了
-- 原因：子应 `reload` 用会因为自身的 `src` 是基座的 `host`，重新加载基座造成错误
+- 原因：子应 `reload` 用会因为自身的 `src` 是基座的 `origin`，重新加载基座造成错误
 - 问题：但同时也阉割子应用 `location.reload` 功能
 - 修复：正确的做法应该是转发自全局 `window.location.reload`
 
 处理 `replace` 的 `bug`，先解读流程：
 
 - 代理沙箱的 `location.replace` 在 `apply` 中将更新 `replace` 操作的 `url`
-- 更新 `url` 的方式：将子应用的 `host` 替换为基座 `host`
+- 更新 `url` 的方式：将子应用的 `origin` 替换为基座 `origin`
 - 目的：保持沙箱 `iframe` 和基座同源
 
 `replace` 的条件：
@@ -2372,7 +2372,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 和 `proxyGenerator` 相同，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
 
 - 从子应用入口链接获取信息：`host`、`hostname`、`protocol`、`port`、`origin`
-- 获取 `href`：用主应用的 `host` 替换为子应用的 `host`
+- 获取 `href`：用主应用的 `origin` 替换为子应用的 `origin`
 - 设置 `href`：会通过 `locationHrefSet` 创建一个新的 `iframe` 代替应用容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 屏蔽 `reload`，当然屏蔽导致的问题也一样，见：`proxyGenerator` - `proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
 - 遍历 `location` 属性绑定在 `proxyLocation`，如果是 `isCallable` 方法 [[查看](#iscallable判断对象是一个函数)]，绑定 `this` 为沙箱的 `location`
@@ -3905,7 +3905,7 @@ return (cache[key] = Promise.resolve());
 添加的属性：
 
 - `__WUJIE`：指向应用实例 `wujie`
-- `__WUJIE_PUBLIC_PATH__`：子应用的 `host` + `/`
+- `__WUJIE_PUBLIC_PATH__`：子应用的 `origin` + `/`
 - `$wujie`：子应用的 `provide`，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - `__WUJIE_RAW_WINDOW__`：指向沙箱 `window`
 
@@ -4465,7 +4465,7 @@ window.onfocus = () => {
 **第一步：创建 `iframe`**
 
 - 创建一个 `iframe` 元素，并设置属性
-- 属性包含：`src` 为基座 `host`，样式不可见，自定义属性，`id` 为应用名以及 `wujie` 特有的 `flag`
+- 属性包含：`src` 为基座 `origin`，样式不可见，自定义属性，`id` 为应用名以及 `wujie` 特有的 `flag`
 - 将 `iframe` 添加到 `body` 末尾
 - 通过 `patchIframeVariable` 为 `iframeWindow` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 
@@ -4503,7 +4503,7 @@ window.onfocus = () => {
 - 通过 `initIframeDom` 初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 - 从当前网页的 `url` 查找出是否存在当前应用名的 `query`，如果查到先更新 `iframe` 的 `history`
 
-> 通过 `iframeWindow.history.replaceState` 更新 `history`，采用：基座 `host` + 子应用 `pathname`
+> 通过 `iframeWindow.history.replaceState` 更新 `history`，采用：基座 `origin` + 子应用 `pathname`
 
 #### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
 
@@ -4525,7 +4525,7 @@ window.onfocus = () => {
 为什么要创建一个新的 `html`：
 
 - 因为 `initIframeDom` 之前通过 `stopIframeLoading` 检测了 `document` 改变 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
-- `document` 因配置了 `src` 实例化后加载基座 `host` 完成变更
+- `document` 因配置了 `src` 实例化后加载基座 `origin` 完成变更
 - 因此执行 `initIframeDom` 时要使用一个空白的 ` html` 去替换原先加载的页面
 
 **第二步：注入 `iframeWindow` 全局属性**
@@ -4573,13 +4573,13 @@ window.onfocus = () => {
 流程：
 
 - 通过 `iframeWindow` 拿到沙箱的 `iframeDocument` 并创建一个 `base` 元素
-- 将 `iframe` 的 `href`（即基座的 `host`），和应用的入口链接通过 `anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)] 创建 2 个 `HTMLAnchorElement` 对象
-- 使用子应用的 `host` + 基座的 `pathname` 作为 `base` 元素的 `href`
+- 将 `iframe` 的 `href`，和应用的入口链接通过 `anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)] 创建 2 个 `HTMLAnchorElement` 对象
+- 使用子应用的 `origin` + 基座的 `pathname` 作为 `base` 元素的 `href`
 - 将 `base` 元素插入沙箱 `iframe` 中
 
 注意：
 
-- 沙箱 `iframe` 的 `src` 为基座应用的 `host`，而 `initBase` 是在初始化 `iframe` 时创建
+- 沙箱 `iframe` 的 `src` 为基座 `origin`，而 `initBase` 是在初始化 `iframe` 时创建
 - 所以无论如何 `pathname` 始终拿到的是 `/`
 
 **`updateBase` 动态更新 `base` 标签**
@@ -4594,7 +4594,7 @@ window.onfocus = () => {
 
 流程：
 
-- 将 `iframe` 的 `host` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
+- 将 `iframe` 的 `origin` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
 
 #### `stopIframeLoading`：实现一个纯净的沙箱 `iframe`
@@ -4919,23 +4919,23 @@ window.onfocus = () => {
 
 #### 子应用中的链接指向
 
-| 位置          | 分类                        | 描述                                                             | 说明                                                |
-| ------------- | --------------------------- | ---------------------------------------------------------------- | --------------------------------------------------- |
-| 基座          | `window`                    | 基座所在作用域                                                   | 基座在 `window` 下运行                              |
-| 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `host`                                                      | 沙箱能直接和基座通信                                |
-| 沙箱 `iframe` | `url`                       | 初始化：基座 `host`，随路由变更：基座 `host` + 子应用 `pathname` | 沙箱能直接和基座通信                                |
-| 沙箱 `iframe` | `base` 元素                 | 子应用 `host` + `iframe pathname`                                | 修正子应用内中所有相对路径，例如：资源链接、`fetch` |
+| 位置          | 分类                        | 描述                                                                 | 说明                                                |
+| ------------- | --------------------------- | -------------------------------------------------------------------- | --------------------------------------------------- |
+| 基座          | `window`                    | 基座所在作用域                                                       | 基座在 `window` 下运行                              |
+| 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `origi`                                                         | 沙箱能直接和基座通信                                |
+| 沙箱 `iframe` | `url`                       | 初始化：基座 `origin`，随路由变更：基座 `origin` + 子应用 `pathname` | 沙箱能直接和基座通信                                |
+| 沙箱 `iframe` | `base` 元素                 | 子应用 `host` + `iframe pathname`                                    | 修正子应用内中所有相对路径，例如：资源链接、`fetch` |
 
-`iframe pathname` 的变化：
+沙箱 `pathname` 变化：
 
-- 初始化：基座 `host`，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
-- 通过 `patchIframeHistory` 劫持 `history` 将 `host` 替换成基座 `host` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- 初始化：基座 `origin`，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
+- 通过 `patchIframeHistory` 劫持 `history` 将 `origin` 替换成基座 `origin` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 - 然后通过 `updateBase` 修正子应用的 `base` 元素 [[查看](#base标签操作)]
 
 `location` 的指向按照沙箱 `iframe` 的 `url` 来，但这就有问题了：
 
 - 假定 `localhost:8080` 的子应用通过 `location` 获取 `href`
-- 因为 `iframe` 的 `url` 同基座 `host`，如：`localhost:3000`
+- 因为 `iframe` 的 `url` 同基座 `origin`，如：`localhost:3000`
 - 那么就得到了错误的结果：`localhost:3000/pathname`
 
 于是在 `proxyLocation` 中做了一次拦截，修正取值：
@@ -4944,14 +4944,14 @@ window.onfocus = () => {
 
 `degrade` 下的 `location` 和 `proxyLocation` 的区别：
 
-| 属性                                             | `proxyLocation`                                                                    | 沙箱 `iframe`                         |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------- | ------------------------------------- |
-| `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                                             | 按照基座来                            |
-| `href`                                           | 通过 `relace` 将基座 `host` 替换成子应用                                           | 按照基座来                            |
-| `replace`                                        | 通过 `relace` 将子应用 `host` 替换成基座，因为这个操作会修改沙箱 `iframe` 的 `url` | 按照基座来                            |
-| 默认 `fetch`                                     | 相对路径按照 `base` 元素来补全                                                     | 相对路径按照 `base` 元素来补全        |
-| 配置重写 `fetch`                                 | 相对路径将通过 `proxyLocation` 来补全                                              | 相对路径将通过 `proxyLocation` 来补全 |
-| 其他属性                                         | 从沙箱 `location` 中取                                                             | 从沙箱 `location` 中取                |
+| 属性                                             | `proxyLocation`                                                                      | 沙箱 `iframe`                         |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------- |
+| `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                                               | 按照基座来                            |
+| `href`                                           | 通过 `relace` 将基座 `origin` 替换成子应用                                           | 按照基座来                            |
+| `replace`                                        | 通过 `relace` 将子应用 `origin` 替换成基座，因为这个操作会修改沙箱 `iframe` 的 `url` | 按照基座来                            |
+| 默认 `fetch`                                     | 相对路径按照 `base` 元素来补全                                                       | 相对路径按照 `base` 元素来补全        |
+| 配置重写 `fetch`                                 | 相对路径将通过 `proxyLocation` 来补全                                                | 相对路径将通过 `proxyLocation` 来补全 |
+| 其他属性                                         | 从沙箱 `location` 中取                                                               | 从沙箱 `location` 中取                |
 
 ### 辅助方法 - 应用动态注入 `DOM`
 
@@ -5026,7 +5026,7 @@ window.onfocus = () => {
 - `stylesheetElement`：`style` 元素，带有属性 `_hasPatchStyle` 用于标记是否已劫持
 - `cssLoader`：插件 `cssLoader` 用于替换样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 - `sandbox`：应用实例，用于透传给 `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
-- `curUrl`：子应用的 `host` + 沙箱 `iframe` 的 `pathname`
+- `curUrl`：透传自 `rewriteAppendOrInsertChild`，子应用 `origin` + `pathname` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 由于 `cssLoader` 是通过 `getCssLoader` 柯里化拿到的函数 [[查看](#通过配置替换资源)]：
 
