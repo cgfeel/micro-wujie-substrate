@@ -3945,7 +3945,7 @@ return (cache[key] = Promise.resolve());
 
 - `url`：更新 `history` 记录的链接，链接基于子应用 `origin`
 - `baseUrl`：基座 `origin` + 沙箱的 `pathname` + `search` + `hash`
-- `pathname`：将 `url` 中子应用 `origin` 替换为空，得到：`pathname` + `search` + `hash`
+- `pathname`：将 `url` 中子应用 `origin` 替换为空，得到计划更新的：`pathname` + `search` + `hash`
 - `mainUrl`：通过 `getAbsolutePath` 基于 `pathname` 和 `baseUrl` 获取链接
 
 关于 `rawHistoryPushState.call`：
@@ -4900,14 +4900,14 @@ window.onfocus = () => {
 
 - 配置环境变量，用来区分生成环境和开发环境
 
-返回：`entry` 是非链接、非 `/` 开头的字符，会根据 `location.href` 提供资源链接
+返回：`entry` 是非链接、非 `/` 开头的字符，会根据 `location.pathname` 提供资源链接
 
-| `location.href`        | 返回                                     |
-| ---------------------- | ---------------------------------------- |
-| `pathname`非 `/` 结尾  | `location.origin` + `entry` 上级 + `/`   |
-| `pathname` 以 `/` 结尾 | `location.origin` + `pathname` + `entry` |
+| `location.pathname` | 返回                                     |
+| ------------------- | ---------------------------------------- |
+| 非 `/` 结尾         | `location.origin` + `entry` 上级 + `/`   |
+| 以 `/` 结尾         | `location.origin` + `pathname` + `entry` |
 
-> 得到的资源链接会丢弃 `location` 中的 `search` 和 `hash` 后再去匹配
+> 只要 `entry` 不是链接，也不是非空的字符，计算资源链接时，会丢弃 `location` 中的 `search` 和 `hash` 后再去匹配
 
 获取资源链接总结：
 
