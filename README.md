@@ -3934,12 +3934,13 @@ return (cache[key] = Promise.resolve());
 - `pushState`：插入记录
 - `replaceState`：替换记录
 
-流程都一致：
+流程有 3 步：
 
-- 计算得到 `mainUrl`：
-- 通过 `rawHistoryPushState.call` 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
-- 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base标签操作)]
-- 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+1. 计算得到 `mainUrl`，通过 `rawHistoryPushState` 原生方法更新 `history` 记录
+2. 通过 `updateBase` 更新呢 `base` 元素，用于修正应用中相对路径的基础链接 [[查看](#base标签操作)]
+3. 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+> 若更新 `history` 记录中没有提供 `url`，只执行 `rawHistoryPushState` 更新
 
 `mainUrl` 计算方式：
 
