@@ -4901,7 +4901,7 @@ window.onfocus = () => {
 | `pathname`非 `/` 结尾  | `location.origin` + `entry` 上级 + `/`   |
 | `pathname` 以 `/` 结尾 | `location.origin` + `pathname` + `entry` |
 
-> 得到的资源链接会丢弃 `location.href` 中的 `search` 和 `hash` 后再去匹配
+> 得到的资源链接会丢弃 `location` 中的 `search` 和 `hash` 后再去匹配
 
 获取资源链接总结：
 
