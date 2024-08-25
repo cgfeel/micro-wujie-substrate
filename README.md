@@ -3898,16 +3898,16 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于绑定全局属性
 - `wujie`：应用实例
 - `appHostPath`：子应用的 `host`
 
 添加的属性：
 
 - `__WUJIE`：指向应用实例 `wujie`
-- `__WUJIE_PUBLIC_PATH__`：子应用的 `host`
+- `__WUJIE_PUBLIC_PATH__`：子应用的 `host` + `/`
 - `$wujie`：子应用的 `provide`，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- `__WUJIE_RAW_WINDOW__`：指向 `iframeWindow`
+- `__WUJIE_RAW_WINDOW__`：指向沙箱 `window`
 
 #### `patchIframeHistory` 劫持沙箱 `iframe` 的 `history`
 
