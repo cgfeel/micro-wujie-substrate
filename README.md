@@ -3890,6 +3890,8 @@ return (cache[key] = Promise.resolve());
 
 通过 `execHooks` 提取 `plugins`，提供则使用 `patchElementHook` 为每个元素打补丁，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#patchelementhook)]
 
+> 手动配置的外部补丁可覆盖内部补丁
+
 #### `patchIframeVariable` 为子应用 `window` 添加属性
 
 目录：`iframe.ts` - `patchIframeVariable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L155)]
