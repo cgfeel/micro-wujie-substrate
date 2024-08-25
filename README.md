@@ -3931,16 +3931,22 @@ return (cache[key] = Promise.resolve());
 
 劫持 `history` 的方法：
 
-- `pushState`：插入链接
-- `replaceState`：替换链接
+- `pushState`：插入记录
+- `replaceState`：替换记录
 
 流程都一致：
 
-- 将 `baseUrl` 指定为：基座 `host` + `iframe` 的 `pathname` + `search` + `hash`
-- 在更新的连接中，将子应用的 `host` 替换为空变成一个 `pathname`，通过 `new URL` 使其成为 `baseUrl` 的相对链接
+- 计算得到 `mainUrl`：
 - 通过 `rawHistoryPushState.call` 执行 `history` 的更新，除非当前更新的 `url` 不存在则停止并返回
 - 通过 `updateBase` 更新呢 `base` 元素，以便子应用做的相对路径给予路由的 `pathname` [[查看](#base标签操作)]
 - 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
+
+`mainUrl` 计算方式：
+
+- `url`：更新 `history` 记录的链接，链接基于子应用 `host`
+- `baseUrl`：基座 `host` + 沙箱的 `pathname` + `search` + `hash`
+- `pathname`：将 `url` 中子应用 `host` 替换为空，包含了 `search` 和 `hash`
+- `mainUrl`：通过 `getAbsolutePath` 基于 `pathname` 和 `baseUrl` 获取链接
 
 关于 `rawHistoryPushState.call`：
 
@@ -4859,16 +4865,48 @@ window.onfocus = () => {
 
 目录：`utils.ts` - `defaultGetPublicPath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L253)]
 
-根据参数 `entry` 返回链接的 `path` 有 4 种情况：
+参数：
 
-| 参数类型            | 开头字符    | 返回                                          |
-| ------------------- | ----------- | --------------------------------------------- |
-| `object`            | 没有        | `/`                                           |
-| `pathname`          | `/`         | `location.origin` + `pathname` 上一层级 + `/` |
-| `string` - 非 `url` | 非 `/`      | `location.origin` + `/`                       |
-| `url` - 绝对路径    | `https?://` | 绝对路径上一层级                              |
+- `entry`：类型为 `URL` 对象或 `string`，但目前只能是 `string`
 
-> 作为资源入口时通常为绝对路径的 `url`
+补充说明：
+
+- 因为调用场景只有 `importHTML`，透传参数 `url` 类型为 `string` [[查看](#importhtml-加载资源)]
+- 在源码中有判断参数类型是否为 `object`，通过 `fetch` 分析得出来这个对象只能为 `URL`
+
+返回：根据参数 `entry` 资源链接有 4 种不可变的情况
+
+| `entry` 类型        | `location.href`     | 返回                                     | 使用频率 |
+| ------------------- | ------------------- | ---------------------------------------- | -------- |
+| `URL`               | 不考虑              | `/`                                      | 不使用   |
+| `http` 开头绝对路径 | 不考虑              | `entry` 上级 + `/`                       | 基本是   |
+| 以 `/` 开头的字符   | `http` 开头绝对路径 | `location.origin` `entry` 上级 + `/`     | 极少     |
+| 空字符              | `http` 开头绝对路径 | `location.origin` + `pathame` 上级 + `/` | 有错误   |
+
+> 如果 `entry` 或 `pathname` 不存在上级，返回空字符
+
+`entry` 存在的问题：
+
+- `URL`类型：合理情况应该是返回对象的 `href`，同时保留对 `object` 的判断返回 `/`
+- 提供空字符：函数本身并没有错，但会造成重复加载基座造，见：`startApp` 的 `bug` [[查看](#4-startapp-的-bug)]
+
+通常情况下配置的应用入口链接是完整的绝对路径，但子应用不同环境下链接不一样怎么办？
+
+- 配置环境变量，用来区分生成环境和开发环境
+
+返回：`entry` 是非链接、非 `/` 开头的字符，会根据 `location.href` 提供资源链接
+
+| `location.href` | 返回                                     |
+| --------------- | ---------------------------------------- |
+| 非 `/` 结尾     | `location.origin` + `entry` 上级 + `/`   |
+| 以 `/` 结尾     | `location.origin` + `pathname` + `entry` |
+
+> 得到的资源链接会丢弃 `location.href` 中的 `search` 和 `hash`
+
+获取资源链接总结：
+
+- 通常提供的 `entry` 是 `http` 开头的绝对路径
+- 非绝对路径的通常加载基座的指定的路由为子应用，这种情况建议通过第三方路由库来处理更合适
 
 #### 子应用中的链接指向
 
