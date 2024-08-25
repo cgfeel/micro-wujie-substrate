@@ -3954,7 +3954,7 @@ return (cache[key] = Promise.resolve());
 `rawHistoryPushState.call` 指定的上下文是沙箱的 `history`：
 
 - 这样就为 `syncIframeUrlToWindow` 中监听沙箱的 `popstate` 和 `hashchange` 提供了支持 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
-- 当沙箱路由的改变，或是前进后退时，就会发起同步路由的操作
+- 当沙箱路由的 `hash` 改变，或是前进后退时，就会发起同步路由的操作
 
 #### `patchIframeEvents` 劫持沙箱 `iframe` 的 `EventListener`
 
