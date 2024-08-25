@@ -3898,7 +3898,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱 `window`，用于绑定全局属性
+- `iframeWindow`：沙箱 `window`，用于子应用绑定全局属性
 - `wujie`：应用实例
 - `appHostPath`：子应用的 `host`
 
