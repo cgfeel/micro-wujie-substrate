@@ -4907,7 +4907,7 @@ window.onfocus = () => {
 | 非 `/` 结尾         | `location.origin` + `entry` 上级 + `/`   |
 | 以 `/` 结尾         | `location.origin` + `pathname` + `entry` |
 
-> 只要 `entry` 不是链接，也不是非空的字符，计算资源链接时，会丢弃 `location` 中的 `search` 和 `hash` 后再去匹配
+> 只要 `entry` 不是链接，也不是非空的字符，会丢弃 `location` 中的 `search` 和 `hash` 后计算资源链接
 
 获取资源链接总结：
 
