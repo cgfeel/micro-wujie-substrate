@@ -3948,7 +3948,7 @@ return (cache[key] = Promise.resolve());
 - `entry`：将 `url` 中子应用 `origin` 替换为空，得到计划更新的：`pathname` + `search` + `hash`
 - `mainUrl`：通过 `getAbsolutePath` 基于 `entry` 和 `baseUrl` 获取链接 [[查看](#getabsolutepath获取绝对路径)]
 
-> 只要更新的 `entry` 不为空，`baseUrl` 默认忽略 `search` + `hash`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
+> 只要 `entry` 不为空，`baseUrl` 默认忽略 `search` + `hash`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
 关于 `rawHistoryPushState.call`：
 
