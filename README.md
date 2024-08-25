@@ -3926,8 +3926,8 @@ return (cache[key] = Promise.resolve());
 设计初衷：
 
 - 劫持 `history` 之前会通过 `initBase` 为应用中相对路径的资源链接，指定为子应用的 `host` [[查看](#base标签操作)]
-- 当点击链接时需要拦截这部分的链接，替换为基座 `host` 然后更新沙箱 `iframe` 的 `url`
-- 更新完之后再通过 `updateBase` [[查看](#base标签操作)]，将 `iframe` 的 `url` 中基座的 `host` 替换回子应用的 `host`
+- 当点击链接时需要拦截资源链接，替换为基座 `host` 然后更新沙箱 `iframe` 的 `url`
+- 更新完之后再通过 `updateBase` 将沙箱 `url` 中基座的 `host` 替换回子应用的 `host` [[查看](#base标签操作)]
 
 劫持 `history` 的方法：
 
