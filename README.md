@@ -4853,7 +4853,7 @@ window.onfocus = () => {
 - `base`：参考的 `url`，必须为一个绝对路径，必填项
 - `hash`：提取 `hash`，可选 `boolean` 型
 
-直接返回有 2 个情况：
+直接返回 `url` 有 2 个情况：
 
 - 空字符
 - `hash` 为 `true`，且 `url` 以 `#` 开
