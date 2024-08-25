@@ -605,7 +605,7 @@
 
 - `idToSandboxMap`：`appInstanceMap` 应用实例映射表 [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 - `appEventObjMap`：`EventBus` 事件映射表 [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
-- `mainHostPath` 主应用 `host`
+- `mainHostPath` 主应用 `origin`
 
 这里做了个判断：
 
@@ -637,7 +637,7 @@
 #### 3. 创建沙箱 `iframe`
 
 - 通过 `appRouteParse` 提取 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
-- 获取基座的 `host`：`mainHostPath`
+- 获取基座的 `host`：`mainHostPath` 即 `origin`
 - 通过 `iframeGenerator` 初始化沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
 
 #### 4. 创建代理
@@ -1988,8 +1988,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `iframe`：沙箱 `iframe`
 - `urlElement`：将子应用入口链接通过 `appRouteParse` 转换成 `HTMLAnchorElement` 对象 [[查看](#approuteparse-提取链接)]
-- `mainHostPath`：基座 `host`
-- `appHostPath`：子应用 `host`
+- `mainHostPath`：基座 `origin`
+- `appHostPath`：子应用 `origin`
 
 返回 1 对象，包含 3 个属性：
 
@@ -2322,8 +2322,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `iframe`：沙箱 `iframe`
 - `urlElement`：将子应用入口链接通过 `appRouteParse` 转换成 `HTMLAnchorElement` 对象 [[查看](#approuteparse-提取链接)]
-- `mainHostPath`：基座 `host`
-- `appHostPath`：子应用 `host`
+- `mainHostPath`：基座 `origin`
+- `appHostPath`：子应用 `origin`
 
 返回 1 对象，包含 2 个属性：
 
@@ -2503,7 +2503,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 - `iframe`：沙箱 `iframe`
 - `value`：拦截 `location.href` 更新的链接，无论相对链接还是绝对链接，也可以是第三方链接
-- `appHostPath`：子应用 `host`
+- `appHostPath`：子应用 `origin`
 
 目的：
 
@@ -2521,7 +2521,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 转换相对路径：
 
 - 通过 `anchorElementGenerator` 将链接转换成 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- 提取 `appHostPath` 子应用 `host` + 提供链接的 `pathname` + `search` + `hash` 作为 `url`
+- 提取 `appHostPath` 子应用 `origin` + 提供链接的 `pathname` + `search` + `hash` 作为 `url`
 
 执行替换有 3 步：
 
@@ -3900,7 +3900,7 @@ return (cache[key] = Promise.resolve());
 
 - `iframeWindow`：沙箱 `window`，用于子应用绑定全局属性
 - `wujie`：应用实例
-- `appHostPath`：子应用的 `host`
+- `appHostPath`：子应用的 `origin`
 
 添加的属性：
 
@@ -3916,8 +3916,8 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `iframeWindow`：沙箱 `window`，用于 ① 获取 `history`；② 纠正链接
-- `appHostPath`：子应用的 `host`
-- `mainHostPath`：基座的 `host`
+- `appHostPath`：子应用的 `origin`
+- `mainHostPath`：基座的 `origin`
 
 调用场景：
 
@@ -4455,9 +4455,9 @@ window.onfocus = () => {
 
 - `sandbox`：应用实例
 - `attrs`：配置 `iframe`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#attrs)]
-- `mainHostPath`：基座 `host`
-- `appHostPath`：子应用 `host`
-- `appRoutePath`：子应用的 `pathname`
+- `mainHostPath`：基座 `origin`
+- `appHostPath`：子应用的 `origin`
+- `appRoutePath`：子应用的 `pathname` + `search` + `hash`
 
 **第一步：创建 `iframe`**
 
@@ -4510,8 +4510,8 @@ window.onfocus = () => {
 
 - `iframeWindow`：沙箱的 `window` 对象
 - `wujie`：应用实例
-- `mainHostPath`：基座 `host`
-- `appHostPath`：子应用 `host`
+- `mainHostPath`：基座 `origin`
+- `appHostPath`：子应用 `origin`
 
 **第一步：创建新的 `html`**
 
@@ -4586,8 +4586,8 @@ window.onfocus = () => {
 参数：
 
 - `iframeWindow`：沙箱的 `window` 对象
-- `appHostPath`：子应用的 `host`
-- `mainHostPath`：基座的 `host`
+- `appHostPath`：子应用的 `origin`
+- `mainHostPath`：基座的 `origin`
 
 流程：
 
@@ -4607,7 +4607,7 @@ window.onfocus = () => {
 原因：
 
 - 子应用的 `script` 运行在一个和主应用同域的 `iframe` 沙箱中
-- 设置 `src` 为 `mainHostPath`（主域名 `host`），会主动加载主应用
+- 设置 `src` 为 `mainHostPath`（即全局 `origin`），会主动加载主应用
 - 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时中断加载，防止污染子应用
 
 `iframe` 实例化之前 `stop` 可以吗？
@@ -4779,7 +4779,7 @@ window.onfocus = () => {
 根据传入的链接提取 3 个对象：
 
 - `urlElement`：通过 `anchorElementGenerator` 转换 `url` 为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- `appHostPath`：根据提供的 `url` 提取 `host`
+- `appHostPath`：根据提供的 `url` 提取 `origin`
 - `appRoutePath`：包含了 `pathname` + `search` + `hash`
 
 调用场景有 2 个：
