@@ -3862,7 +3862,7 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `element`：要打补丁的 `html` 元素、`Node` 节点、`ShadowRoot`
-- `iframeWindow`：沙箱的 `window`
+- `iframeWindow`：沙箱 `window`
 
 **内部补丁 1：`baseURI`**
 
@@ -3875,17 +3875,16 @@ return (cache[key] = Promise.resolve());
 
 **内部补丁 2：`ownerDocument`**
 
-- 指向当前沙箱 `iframeWindow.document`
+- 指向当前沙箱 `iframe.contentDocument`
 
 用途：
 
-- 纠正子应用中动态创建 `style` 时 `document` 对象
-- 纠正子应用中动态创建 `iframe` 时 `querySelector` 上下文指向
-- 让渲染容器所有的元素 `document` 都指向沙箱 `iframeWindow.document`
+- 让渲染容器所有的元素根节点都指向沙箱 `document`，容器中创建的元素都需要通过沙箱 `document`
+- 通过 `ownerDocument` 可以从容器元素直接获取沙箱 `documennt` 用来创建元素
 
 **内部补丁 3：`_hasPatch`**
 
-- 表明已给元素打过补丁，不用再打补丁
+表明已给元素打过补丁，不用再打补丁
 
 **外部补丁：`patchElementHook`**
 
