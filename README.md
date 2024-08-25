@@ -3847,7 +3847,9 @@ return (cache[key] = Promise.resolve());
 将 `listenerMap` 绑定在 `element` 对象属性 `_cacheListeners`：
 
 - `unmount` 时会通过 `removeEventListener` 删除绑定在容器 `head`、`body` 上的事件
-- `umd` 模式切换应用时，在注入资源通过初次记录在实例中的 `head`、`body` 重新渲染，并再次记录事件
+- 切换应用时，在注入资源通过初次记录在实例中的 `head`、`body` 重新渲染，并再次记录事件
+
+> 清理和重新记录仅限 `umd` 模式，原因见：容器事件 [[查看](#shadowrootbodyhead_cachelisteners容器事件)]
 
 `removeEventListener` 删除事件：
 
