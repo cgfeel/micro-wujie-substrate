@@ -3943,9 +3943,9 @@ return (cache[key] = Promise.resolve());
 
 `mainUrl` 计算方式：
 
-- `url`：更新 `history` 记录的链接，链接基于子应用 `host`
-- `baseUrl`：基座 `host` + 沙箱的 `pathname` + `search` + `hash`
-- `pathname`：将 `url` 中子应用 `host` 替换为空，包含了 `search` 和 `hash`
+- `url`：更新 `history` 记录的链接，链接基于子应用 `origin`
+- `baseUrl`：基座 `origin` + 沙箱的 `pathname` + `search` + `hash`
+- `pathname`：将 `url` 中子应用 `origin` 替换为空，得到：`pathname` + `search` + `hash`
 - `mainUrl`：通过 `getAbsolutePath` 基于 `pathname` 和 `baseUrl` 获取链接
 
 关于 `rawHistoryPushState.call`：
@@ -4849,17 +4849,23 @@ window.onfocus = () => {
 
 参数：
 
-- `url`：可以是 `url`、`pathname`、`search`、`hash`、空字符
-- `base`：参考的 `url` 或 `host`
-- `hash`：提取 `hash`，可选 `boolean` 值
+- `url`：任意字符，包括 `url`、`pathname`、`search`、`hash`、空字符
+- `base`：参考的 `url`，必须为一个绝对路径，必填项
+- `hash`：提取 `hash`，可选 `boolean` 型
 
-返回有 3 个情况：
+直接返回有 2 个情况：
 
-- `url` 是 `pathname`、`search`、`hash`，通过 `new URL` 按照 `base` 返回绝对路径的链接
-- `url` 是一个绝对路径的链接，通过 `new URL` 会忽视 `base`，原样返回 `url`
-- 其他情况直接返回 `url`，包括 `hash` 模式
+- 空字符
+- `hash` 为 `true`，且 `url` 以 `#` 开
 
-> 参数 `hash` 存在的意义在于 `url` 是 `hash` 时直接返回而不用合并 `base`
+其余返回，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]：
+
+- `url` 作为 `entry`，且一定是字符型
+- `base` 作为 `location.href`
+
+错误的情况：
+
+- 提供的参数 `url` 和 `base`，没有一个是 `http` 开头的绝对路径链接
 
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
