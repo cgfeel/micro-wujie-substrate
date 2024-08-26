@@ -4146,18 +4146,24 @@ window.onfocus = () => {
 
 `handlerCallbackMap`：记录监听的方法
 
-- 使用 `handle` 从集合中获取
+- 使用 `handle` 从集合中获取回调对象 `callback`，不存在则修正并记录 `handle`
+- 删除：通过 `handle` 查找对应的 `callback`，将其删除
 
-- `handlerTypeMap`：根据 `handle` 将所有监听的类型集合成一个数组
+> 如果 `handle` 是函数，通过 `bind` 将上下文指向沙箱 `document`，否则直接记录 `handle`
 
-处理 `callbabck`：
+`handlerTypeMap`：记录监听的事件
 
-- 首次添加：如果 `handle` 是函数，`bind` 沙箱的 `document` 为 `this`，否则直接采用 `handle`
-- 再次添加：直接使用首次缓存的 `callback`
-- 删除：只删除已缓存的记录，将记录从 `handlerTypeMap` 中剔出指定类型
-- 如果剔出类型后 `handle` 为空，将 `handle` 从 `handlerCallbackMap` 和 `handlerTypeMap` 都删除
+- 用 `handle` 获取事件类型集合 `typeList`，不存在将事件类型保存在数组中记录到集合
+- 否则判断集合中是否包含事件类型，不包含责插入后更新记录，包含则不做任何操作
+- 删除记录则是从集合中删除事件类型，若删除后集合为空，将其从映射表中删除
 
-通过 `execHooks` 提取并执行插件函数：
+记录中只有 `callback` 是有必要的：
+
+- 用于转发事件时作为回调对象，可以是函数也可以是一个包含 `handleEvent` 的对象
+
+> `handlerTypeMap` 目前除了记录外，没有其他用途，见：记录沙箱 `document` 上的事件 [[查看](#记录沙箱-document-上的事件)]
+
+**1.2. 通过 `execHooks` 提取并执行插件函数**
 
 - `addEventListener`：`documentAddEventListenerHook`
 - `removeEventListener`：`documentRemoveEventListenerHook`
