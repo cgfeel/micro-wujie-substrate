@@ -4149,7 +4149,7 @@ window.onfocus = () => {
 - 使用 `handle` 从集合中获取回调对象 `callback`，不存在则修正并记录 `handle`
 - 删除：通过 `handle` 查找对应的 `callback`，将其删除
 
-> 如果 `handle` 是函数，通过 `bind` 将上下文指向沙箱 `document`，否则直接记录 `handle`
+> 修正上下文：若 `handle` 是函数通过 `bind` 指向沙箱 `document`，否则直接记录 `handle`
 
 `handlerTypeMap`：记录监听的事件
 
