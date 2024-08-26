@@ -4138,9 +4138,16 @@ window.onfocus = () => {
 
 **1. 处理 `addEventListener` 和 `removeEventListener`**
 
-声明 2 个 `WeakMap` 类型的映射表：
+沙箱运行 `script`，渲染是在容器、操作在基座，需劫持沙箱 `document`，按情况分别指向容器和基座。
 
-- `handlerCallbackMap`：根据 `handle` 记录 `callback`
+**1.1. 记录事件**
+
+声明 2 个 `WeakMap` 类型的映射表，见：记录沙箱 `document` 上的事件 [[查看](#记录沙箱-document-上的事件)]
+
+`handlerCallbackMap`：记录监听的方法
+
+- 使用 `handle` 从集合中获取
+
 - `handlerTypeMap`：根据 `handle` 将所有监听的类型集合成一个数组
 
 处理 `callbabck`：
@@ -6063,9 +6070,13 @@ proxyWindow.addEventListener;
 
 > 如果没有清理手动监听在 `document` 上的事件，可能会造成内存泄露
 
-无论是自动清理还是手动清理，2 个记录事件的对象存在的意义就没有那么必要了：
+无论是自动清理还是手动清理，`handlerTypeMap` 存在的意义就没那么必要了：
 
 - 毕竟所有的清理方法都不是来自事件记录的对象
+
+`handlerCallbackMap` 存在的意义：
+
+- 记录已修正的回调对象 `handle`，使用相同的回调函数，不用重复判断是否要修正上下文
 
 ### 引入 `wujie` 包时默认就执行
 
