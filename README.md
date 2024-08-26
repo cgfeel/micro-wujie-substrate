@@ -1768,7 +1768,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `__WUJIE_EVENTLISTENER__` 清除事件：
 
 - 由于在 `patchIframeEvents` 中重写了沙箱 `window` 的 `removeEventListener` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
-- 当向沙箱发起删除事件时，会先清空记录然后 `removeEventListener` 全局 `window` 上的事件
+- 当向沙箱发起删除事件时，会先清空记录然后执行 `removeEventListener` 删除事件
 
 > 原因见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
 
