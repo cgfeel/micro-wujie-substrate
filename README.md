@@ -4067,12 +4067,13 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 方法：
 
-- 通过 ` Object.getOwnPropertyNames` 遍历 `iframeWindow` 获取属性名去绑定
+- 通过 `Object.getOwnPropertyNames` 遍历沙箱 `window` 匹配属性名执行绑定
 
-`getSelection` 属规则：
+匹配 ①：`getSelection`：
 
-- 劫持属性，`get` 时指向 `iframeWindow.document`
-- 因为应用是渲染在容器里的，而容器所有的元素通过 `patchElementEffect` 指向 `iframeWindow.document` [[查看](#patchelementeffect为元素打补丁)]
+- 通过 `Object.defineProperty` 指向沙箱 `document.getSelection`
+- 用处：修正应用中文本范围或光标的当前位置
+- 原理：容器负责渲染，沙箱负责执行 `script`，容器所有元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
 
 单独属性属规则：
 
