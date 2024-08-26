@@ -4126,10 +4126,11 @@ window.onfocus = () => {
 - 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
 - 子应用中只需为 `window` 绑定事件方法，不用关心 `window` 指向，和单独执行一样处理
 
-**通过插件打补丁**
+**通过插件 `windowPropertyOverride` 打补丁**
 
-- `windowPropertyOverride` 文档居然没提，好在当前总结已多次罗列插件系统
-- 会将 `iframeWindow` 作为参数直接传过去，直接进行覆盖
+官方文档遗漏了这个插件，原理和其他插件一样，通过 `execHooks` 提取并执行：
+
+- 执行时会将沙箱 `window` 传过去，用于手动打补丁
 
 #### `patchDocumentEffect`：修正沙箱 `document` 的 `effect`
 
