@@ -4073,7 +4073,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 - 通过 `Object.defineProperty` 指向沙箱 `document.getSelection`
 - 用处：修正应用中文本范围或光标的当前位置
-- 原理：容器负责渲染，沙箱负责执行 `script`，容器所有元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
+- 原理：容器负责渲染，沙箱负责执行 `script`，元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
 
 单独属性属规则：
 
