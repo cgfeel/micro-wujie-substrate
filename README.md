@@ -3987,7 +3987,7 @@ return (cache[key] = Promise.resolve());
 
 目的：
 
-- 转发子应用 `window` 事件挂载到基座 `window`，见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
+- 转发子应用 `proxyWindow` 事件指向沙箱 `window`，见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
 - 于是需要将转发的事件记录一个集合，以便 `destroy` 时能够卸载事件 [[查看](#-destroy-销毁实例)]
 
 记录和删除方法：
@@ -6023,6 +6023,11 @@ proxyWindow.addEventListener;
 - 执行事件回调时，需要将上下文指向沙箱 `window`
 
 > 关于代理关系，见：`wujie` 中的代理的图谱 [[查看](#wujie-中的代理)]
+
+降级下子应用的 `window`：
+
+- `degrade` 时子应用 `widnow` 指向沙箱 `window`，这种情况也会记录和转发事件中 `this` 指向
+- 因为存在通过 `options.targetWindow` 指向特定的上下文
 
 ### 引入 `wujie` 包时默认就执行
 
