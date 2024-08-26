@@ -4030,7 +4030,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 存在重复监听但不影响使用，例如 `resize`：
 
 - 通过 `execHooks` 转发给全局 `window` 处理事件
-- 沙箱 `iframe` 同样也会 `addEventListener`，但由于沙箱 `iframe` 不可见，所以除了 `removeEventListenner` 之外不会有沙箱不会执行任何 `resize` 事件
+- 沙箱 `iframe` 同样也会 `addEventListener`，但由于沙箱 `iframe` 不可见，所以除了 `removeEventListenner` 之外沙箱不会执行任何 `resize` 事件
 
 不存在重复监听，例如：`DOMContentLoaded`：
 
