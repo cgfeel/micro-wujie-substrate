@@ -3995,7 +3995,7 @@ return (cache[key] = Promise.resolve());
 - 通过 `set` 记录一个对象，包含：`type`、`listener`、`options`，确保每一条记录唯一性
 - 删除事件时遍历集合，对照：`type`、`listener`、`options` 将其删除
 
-**3. 执行方法**
+**3. 执行回调方法**
 
 无论事件怎么转发、记录最终都会通过原生方法执行操作：
 
