@@ -4134,7 +4134,7 @@ window.onfocus = () => {
 
 #### `patchDocumentEffect`：修正沙箱 `document` 的 `effect`
 
-目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
+目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L384)]
 
 做了 6 件事：
 
