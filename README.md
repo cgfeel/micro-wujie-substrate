@@ -6045,7 +6045,9 @@ proxyWindow.addEventListener;
 
 记录和清理：
 
-- `patchDocumentEffect`：重写记录和清理方法，不支持 `documennt` 销毁前批量清理 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- `patchDocumentEffect`：重写记录和清理方法，不支持 `documennt` 销毁前批量清理
+
+> 记录事件的流程，见：`patchDocumentEffect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
 记录中包含 2 个 `WeakMap` 类型对象，键名是回调方法 `handle`，键值不同：
 
