@@ -4047,22 +4047,23 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 做了 3 件事：
 
-1. 将 `window` 上的属性绑定到 `iframe` 上
-2. 将 `window` 上的事件用 `iframe` 做劫持
-3. 通过插件 `windowPropertyOverride` 自定义给 `iframeWindow` 打补丁
+1. 将 `window` 上的属性绑定到沙箱 `window`
+2. 将 `window` 上的事件用沙箱 `window` 做劫持
+3. 通过插件 `windowPropertyOverride` 给 `iframeWindow` 打补丁
 
 **绑定 `window` 上的属性**
 
-内部定义的函数 `processWindowProperty` 用处：
+内部定义函数 `processWindowProperty`：
 
-- 是将 `window` 上的属性绑定到 `iframeWindow`
-- 需要通过 `isConstructable` 来判断提供的属性是否可以实例化 [[查看](#isconstructable判断函数是否可以-new)]
+- 从沙箱提取指定的属性 `key`，然后从全局 `window` 上获取值，绑定到沙箱 `window` 上
 
-有 3 种情况：
+判定前需要通过 `isConstructable` 来判断，提供的属性是否可以实例化 [[查看](#isconstructable判断函数是否可以-new)]：
 
-- 允许通过 `new` 声明实例的构造方法，直接绑定到 `iframeWindow`，`this` 默认指向 `window`
-- 不允许通过 `new` 声明实例的函数，通过 `bind` 将方法绑定到 `iframe`，并将 `this` 指向 `window`
-- 不是函数的 `window` 属性，直接绑定覆盖 `iframeWindow` 默认的属性
+| 条件                     | 绑定方式               | 上下文         |
+| ------------------------ | ---------------------- | -------------- |
+| 可实例化的构造函数       | 直接绑定               | 实例化后的对象 |
+| 不能实例化的函数         | 通过 `bind` 指定上下文 | 全局 `window`  |
+| 非函数，包括 `undefined` | 直接绑定               | 沙箱 `window`  |
 
 方法：
 
