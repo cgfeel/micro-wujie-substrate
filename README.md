@@ -4037,7 +4037,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 - 沙箱 `iframe` 中用于监听沙箱 `window` 对象
 - 若使用 `execHooks` 转发事件，相当于在全局 `window` 上手动监听，选择权在使用者
 
-存在歧义则么办，比如 `message` 父子通信，既可以是全局 `window`，也可以是沙箱 `window`：
+存在歧义怎么办，比如 `message` 父子通信，既可以是全局 `window`，也可以是沙箱 `window`：
 
 - 这个时候 `targetWindow` 就能够很好的解决问题了
 
