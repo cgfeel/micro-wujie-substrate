@@ -4047,9 +4047,9 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 做了 3 件事：
 
-1. 将 `window` 上的属性绑定到沙箱 `window`
-2. 将 `window` 上的事件用沙箱 `window` 做劫持
-3. 通过插件 `windowPropertyOverride` 给 `iframeWindow` 打补丁
+1. 将全局 `window` 上的属性绑定到沙箱 `window`
+2. 将全局 `window` 上的事件用沙箱 `window` 做劫持
+3. 通过插件 `windowPropertyOverride` 给沙箱 `window` 打补丁
 
 **绑定 `window` 上的属性**
 
