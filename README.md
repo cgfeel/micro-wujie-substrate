@@ -4075,16 +4075,13 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 - 用处：修正应用中文本范围或光标的当前位置
 - 原理：容器负责渲染，沙箱负责执行 `script`，元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
 
-单独属性属规则：
+匹配 ②：`windowProxyProperties` 集合包含的属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L192)]
 
-- `windowProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L192)]
-- 这这部分属性通过 `processWindowProperty` 从 `window` 提取出来绑定到 `iframeWinndow`
+- 集合中包含的属性通过 `processWindowProperty` 绑定到沙箱 `window`
 
-正则匹配属性规则：
+匹配 ③：`windowRegWhiteList` 正则匹配属性规则，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L195)]
 
-- `windowRegWhiteList`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L195)]
-- 规则方式和“单独属性”一样，通过 `processWindowProperty` 绑定
-- 但是在执行前需要先确保 `iframeWindow.parent` 存在这个属性
+- 通过 `processWindowProperty` 绑定到沙箱 `window`，执行前需确保全局 `window` 属性存在
 
 这里存在一个 `bug`：
 
