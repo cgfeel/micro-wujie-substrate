@@ -3987,8 +3987,8 @@ return (cache[key] = Promise.resolve());
 
 目的：
 
-- 转发子应用 `proxyWindow` 事件指向沙箱 `window`，见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
-- 于是需要将转发的事件记录一个集合，以便 `destroy` 时能够卸载事件 [[查看](#-destroy-销毁实例)]
+- 转发子应用事件指向沙箱 `window`，见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
+- 转发同时需要将事件记录在集合中，以便 `destroy` 时能够卸载事件 [[查看](#-destroy-销毁实例)]
 
 记录和删除方法：
 
@@ -4011,17 +4011,19 @@ return (cache[key] = Promise.resolve());
 | `__WUJIE_RAW_WINDOW__` 存在，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用-window-添加属性)]                                                                        | 沙箱 `window`                                            |
 | 其他情况                                                                                                                                                                              | 全局 `window`                                            |
 
-简单概括即：有指定 `targetWindow` 时优先使用，否则使用沙箱 `window`，若沙箱 `window` 也
+> 优先权：`targetWindow` > 沙箱 `window` > 全局 `window`
 
-**3. 执行添加或删除事件监听**
+`targetWindow` 从哪来的：
 
-使用劫持的方法执行添加或删除，调用方法时会将劫持的 `type`、`listener` 和 `options` 透传过去，不同的是上下文中 `this` 指向，分别如下：
+- 手动配置，在 `mdn` 的描述中 `EventTarget` 的 `options` 并不包含 `targetWindow`
 
-- `appWindowAddEventListenerEvents` 包含的 `type`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)]，`this` 优先指向 `targetWindow`，不存在使用 `iframeWindow`
-- `options` 提供 `targetWindow`，`this` 指向 `targetWindow`
-- 以上情况都不是的情况优先使用 `iframeWindow` 否则使用基座 `window`
+例如需要在子应用中监听全局 `window` 的 `popstate`：
 
-> 对于最后一点，子应用中 `__WUJIE_RAW_WINDOW__` 指向都是 `iframeWindow`，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用添加-window-属性)]
+```
+window.addEventListener('popstate', () => {}, { target: window.parent });
+```
+
+> 当然也包含注入 `message` 等方法，用于父子应用相互通信
 
 #### `patchWindowEffect`：修正 `iframeWindow` 的 `effect`
 
