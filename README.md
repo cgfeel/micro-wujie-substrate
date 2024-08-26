@@ -4048,7 +4048,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 做了 3 件事：
 
 1. 将全局 `window` 上的属性绑定到沙箱 `window`
-2. 将全局 `window` 上的事件用沙箱 `window` 做劫持
+2. 将全局 `window` 上的事件回调用沙箱 `window` 做劫持
 3. 通过插件 `windowPropertyOverride` 给沙箱 `window` 打补丁
 
 **绑定 `window` 上的属性**
@@ -4083,32 +4083,26 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 - 通过 `processWindowProperty` 绑定到沙箱 `window`，执行前需确保全局 `window` 属性存在
 
-这里存在一个 `bug`：
+**绑定全局 `window` 上所有的 `on` 开头的事件**
 
-- 通常来说 `iframeWindow.parent` 指的是基座的 `window`
-- 但是有一种情况是应用的基座也是子应用，那么 `iframeWindow.parent` 依然是 `iframeWindow`
-- 当我在作为子应用的基座 `window` 上定义了最顶层 `window` 不存在的属性，被正则匹配到了
-- 通过 `processWindowProperty` 去 `window` 拿对应的属性得到的可能是 `undefinde`
-
-**绑定 `window` 上所有的 `onEvent`**
-
-- 监听除了 `onload`、`onbeforeunload`、`onunload` 之外所有 `on` 开头的方法
-- 通过 `Object.getOwnPropertyNames` 遍历 `window` 筛选存在的事件
+- 监听除了 `onload`、`onbeforeunload`、`onunload` 之外所有 `on` 开头的事件
+- 通过 `Object.getOwnPropertyNames` 遍历 `window` 筛选匹配的事件
 
 流程：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow` 监听事件的描述信息
-- 通过 `Object.defineProperty` 劫持 `iframeWindow` 上的监听事件
-- 通过 `set` 将 `iframeWindow` 监听的事件绑定到 `window`
-- 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向 `iframe`
-- 在 `get` 中直接返回返回绑定在 `window` 上的监听事件
+- 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `window` 上获取事件描述信息
+- 通过 `Object.defineProperty` 劫持沙箱 `window` 上的监听事件
+- 通过 `set` 将沙箱 `window` 监听的事件绑定到全局 `window`
+- 通过 `get` 中直接返回返回绑定在全局 `window` 上的监听事件
 
-获取描述信息的目的：
+> 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向 `iframe`
+
+获取描述事件信息用处：
 
 - `enumerable`：判断是否可枚举
-- `set`：重写前判断属性是否可写或存在 `set`，不满足设为 `undefined`
+- `set`：重写方法前判断事件是否可写或描述中存在 `set`，不满足设为 `undefined`
 
-举个例子：
+重写方法的意义，举个例子：
 
 ```
 // 子应用内
@@ -4125,12 +4119,12 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 // 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
 window.onfocus = () => {
-  this; // 但是 this 指向 iframeWindow
+  this; // 但是 this 指向沙箱  window
 }
-
-// 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
-// 因为子应用那个中一开始监听事件的目的就是奔着 `window` 来的，而不是 `iframeWindow`
 ```
+
+- 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
+- 子应用中只需为 `window` 绑定事件方法，不用关心 `window` 指向，和单独执行一样处理
 
 **通过插件打补丁**
 
