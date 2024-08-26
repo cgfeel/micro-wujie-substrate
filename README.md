@@ -4004,12 +4004,12 @@ return (cache[key] = Promise.resolve());
 
 执行的方法都会提供 `type`、`listener`、`options`，不同的是上下文 `window` 指向：
 
-| 参考条件                                                                                                                                                                              | `window` 指向                                            |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `options.targetWindow` 存在                                                                                                                                                           | `options.targetWindow`                                   |
-| 包含在 `appWindowAddEventListenerEvents` 中，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)] | 优先采用 `options.targetWindow`，不存在采用沙箱 `window` |
-| `__WUJIE_RAW_WINDOW__` 存在，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用-window-添加属性)]                                                                        | 沙箱 `window`                                            |
-| 其他情况                                                                                                                                                                              | 全局 `window`                                            |
+| 参考条件                                                                                                                                                                                  | `window` 指向                                            |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `options.targetWindow` 存在                                                                                                                                                               | `options.targetWindow`                                   |
+| 事件包含在 `appWindowAddEventListenerEvents` 中，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)] | 优先采用 `options.targetWindow`，不存在采用沙箱 `window` |
+| `__WUJIE_RAW_WINDOW__` 存在，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用-window-添加属性)]                                                                            | 沙箱 `window`                                            |
+| 其他情况                                                                                                                                                                                  | 全局 `window`                                            |
 
 > 优先权：`targetWindow` > 沙箱 `window` > 全局 `window`
 
