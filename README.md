@@ -4117,7 +4117,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
   window.__WUJIE.proxyLocation,
 );
 
-// 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
+// 通过 `Object.getOwnPropertyDescriptor` 相当于将事件绑定在基座 `window`
 window.onfocus = () => {
   this; // 但是 this 指向沙箱  window
 }
