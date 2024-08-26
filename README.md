@@ -3968,7 +3968,7 @@ return (cache[key] = Promise.resolve());
 
 - `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
-重写的方法：
+重写的沙箱 `window` 方法：
 
 - `addEventListener`：添加监听事件
 - `removeEventListener`：删除监听事件
