@@ -6044,8 +6044,8 @@ proxyWindow.addEventListener;
 
 降级下子应用的 `window`：
 
-- `degrade` 时子应用 `widnow` 指向沙箱 `window`，这种情况也会记录和转发事件中 `this` 指向
-- 因为存在通过 `options.targetWindow` 指向特定的上下文
+- `degrade` 时子应用 `widnow` 就是沙箱 `window`，这种情况也会记录事件并修正上下文
+- 因为：① 原生方法只能通过 `call` 来调用；② 存在通过 `options.targetWindow` 指定上下文的情况
 
 ### 引入 `wujie` 包时默认就执行
 
