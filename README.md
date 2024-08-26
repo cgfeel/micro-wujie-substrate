@@ -6050,7 +6050,7 @@ proxyWindow.addEventListener;
 记录中包含 2 个 `WeakMap` 类型对象，键名是回调方法 `handle`，键值不同：
 
 - `handlerCallbackMap`：如果是函数通过 `bind` 指向沙箱 `document`，否则等同 `handle`
-- `handlerTypeMap`：事件类型集合，如：`click` 和 `mouseup` 相同回调，则为 `['click', 'mouse']`
+- `handlerTypeMap`：事件类型集合，如：`click` 和 `mouseup` 回调相同，则为 `['click', 'mouseup']`
 
 > `handle` 的类型可以是函数、也可以是包含 `handleEvent` 方法的对象
 
