@@ -4015,7 +4015,7 @@ return (cache[key] = Promise.resolve());
 
 `targetWindow` 从哪来的：
 
-- 手动配置，在 `mdn` 的描述中 `EventTarget` 的 `options` 并不包含 `targetWindow`
+- 手动配置，在 `mdn` 文档中 `EventTarget` 的 `options` 并不包含 `targetWindow` [[查看](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)]
 
 例如需要在子应用中监听全局 `window` 的 `popstate`：
 
