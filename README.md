@@ -6020,7 +6020,7 @@ proxyWindow.addEventListener;
 原因：
 
 - 应用中 `script` 包裹在模块中执行，`window` 指向 `proxyWindow`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 执行事件回调时，需要将上下文指向沙箱 `iframe`
+- 执行事件回调时，需要将上下文指向沙箱 `window`
 
 > 关于代理关系，见：`wujie` 中的代理的图谱 [[查看](#wujie-中的代理)]
 
