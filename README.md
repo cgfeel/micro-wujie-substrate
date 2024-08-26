@@ -4136,11 +4136,9 @@ window.onfocus = () => {
 
 目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L384)]
 
-做了 6 件事：
-
 **1. 处理 `addEventListener` 和 `removeEventListener`**
 
-声明 2 个 `WeakMap` 映射表：
+声明 2 个 `WeakMap` 类型的映射表：
 
 - `handlerCallbackMap`：根据 `handle` 记录 `callback`
 - `handlerTypeMap`：根据 `handle` 将所有监听的类型集合成一个数组
@@ -6040,6 +6038,32 @@ proxyWindow.addEventListener;
 
 - `degrade` 时子应用 `widnow` 就是沙箱 `window`，这种情况也会记录事件并修正上下文
 - 因为：① 原生方法只能通过 `call` 来调用；② 存在通过 `options.targetWindow` 指定上下文的情况
+
+#### 记录沙箱 `document` 上的事件
+
+因为沙箱运行 `script`，而渲染在容器，同时有部分方法需要转发给基座，所以需要转发和记录关联的事件。
+
+记录中包含 2 个 `WeakMap` 类型对象，键名是回调方法 `handle`，键值不同：
+
+- `handlerCallbackMap`：如果是函数通过 `bind` 指向沙箱 `document`，否则等同 `handle`
+- `handlerTypeMap`：事件类型集合，如：`click` 和 `mouseup` 相同回调，则为 `['click', 'mouse']`
+
+> `handle` 的类型可以是函数、也可以是包含 `handleEvent` 方法的对象
+
+记录和清理：
+
+- `patchDocumentEffect`：重写记录和清理方法，不支持 `documennt` 销毁前批量清理 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+
+如何清理：
+
+- 来自框架自动清理，如：`React 16` 会自动在 `document` 挂载、清理合成事件
+- 手动清理自定义在 `document` 上的监听事件
+
+> 如果没有清理手动监听在 `document` 上的事件，可能会造成内存泄露
+
+无论是自动清理也好还是手动清理，2 个记录事件的对象存在的意义就没有那么必要了：
+
+- 毕竟所有的清理方法都不是来自事件记录的对象
 
 ### 引入 `wujie` 包时默认就执行
 
