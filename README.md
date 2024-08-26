@@ -4025,6 +4025,22 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 > 当然也包含注入 `message` 等方法，用于父子应用相互通信
 
+**4. 会造成事件重复监听吗**
+
+存在重复监听但不影响使用，例如 `resize`：
+
+- 通过 `execHooks` 转发给全局 `window` 处理事件
+- 沙箱 `iframe` 同样也会 `addEventListener`，但由于沙箱 `iframe` 不可见，所以除了 `removeEventListenner` 之外不会有沙箱不会执行任何 `resize` 事件
+
+不存在重复监听，例如：`DOMContentLoaded`：
+
+- 沙箱 `iframe` 中用于监听沙箱 `window` 对象
+- 若使用 `execHooks` 转发事件，相当于在全局 `window` 上手动监听，选择权在使用者
+
+存在歧义则么办，比如 `message` 父子通信，既可以是全局 `window`，也可以是沙箱 `window`：
+
+- 这个时候 `targetWindow` 就能够很好的解决问题了
+
 #### `patchWindowEffect`：修正 `iframeWindow` 的 `effect`
 
 目录：`iframe.ts` - `patchWindowEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L215)]
