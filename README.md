@@ -4165,15 +4165,14 @@ window.onfocus = () => {
 
 **1.2. 通过 `execHooks` 提取并执行插件函数**
 
-- `addEventListener`：`documentAddEventListenerHook`
-- `removeEventListener`：`documentRemoveEventListenerHook`
-- 插件函数的意义和 `windowAddEventListenerHook` 一样，见：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
+用于转发沙箱 `document` 上的事件到基座，因为部分操作来自基座，而不是沙箱 `iframe`
 
-执行添加或删除事件监听：
+- `documentAddEventListenerHook`：添加事件，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#documentaddeventlistenerhook)]
+- `documentRemoveEventListenerHook`：删除事件，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#documentremoveeventlistenerhook)]
 
-- 无论添加还是删除，参数都一样：`type`、`callback`、`options`，不同的是上下文中 `this` 对象
+**1.3. 执行添加或删除事件监听**
 
-`this` 对象的不同场景：
+无论添加还是删除事件，都要提供参数：`type`、`callback`、`options`，不同的发起事件对象：
 
 - 类型在 `appDocumentAddEventListenerEvents` 中：`iframeWindow`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]
 - `degrade` 主动降级：`sandbox.document` 沙箱 `iframe` 渲染容器
