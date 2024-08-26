@@ -3962,7 +3962,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`
 
 调用场景：
 
@@ -3973,28 +3973,45 @@ return (cache[key] = Promise.resolve());
 - `addEventListener`：添加监听事件
 - `removeEventListener`：删除监听事件
 
-流程都一致：
-
 **1. 通过 `execHooks` 提取并执行插件函数**
 
 - `addEventListener`：`windowAddEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowaddeventlistenerhook)]
 - `removeEventListener`：`windowRemoveEventListenerHook` 见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#windowremoveeventlistenerhook)]
 
-`windowAddEventListenerHook` 的意义在于：
+目的：
 
-- 无界子应用的 `dom` 渲染在 `webcomponent` 中，`js` 在 `iframe` 中运行
-- 当子应用需要通过 `window.addEventListener` 监听滚动时需要通过插件从基座添加监听对象
+- 子应用的 `Dom` 渲染在容器中，`script` 在 沙箱 `iframe` 中运行
+- 当子应用需要监听 `window` 事件时，可以通过插件从基座添加全局监听对象
 
-**2. 设置 `__WUJIE_EVENTLISTENER__`**
+**2. `__WUJIE_EVENTLISTENER__` 记录转发事件**
 
-- `addEventListener` 中添加，`removeEventListener` 中删除
-- 删除监听项需要 `type`、`listener`、`optionns` 全部都匹配
+目的：
 
-对于 `__WUJIE_EVENTLISTENER__` 不理解存在的意义：
+- 转发子应用 `window` 事件挂载到基座 `window`，见：转发 `window` 事件 [[查看](#__wujie_eventlistener__转发-window-事件)]
+- 于是需要将转发的事件记录一个集合，以便 `destroy` 时能够卸载事件 [[查看](#-destroy-销毁实例)]
 
-- 在源码中 `__WUJIE_EVENTLISTENER__` 只存在添加和删除，没有获取和调用
-- 那有个可能是留给子应用内部使用？但子应用内部用 `window` 事件监听集合做设么呢？
-- 那只剩下恢复事件监听，但是目前只有主动降级需要恢复事件，且通过 `recoverEventListeners` 执行 [[查看](https://github.com/cgfeel/micro-wujie-substrate?tab=readme-ov-file#%E8%AE%B0%E5%BD%95%E6%81%A2%E5%A4%8D-iframe-%E5%AE%B9%E5%99%A8%E4%BA%8B%E4%BB%B6)]
+记录和删除方法：
+
+- 通过 `set` 记录一个对象，包含：`type`、`listener`、`options`，确保每一条记录唯一性
+- 删除事件时遍历集合，对照：`type`、`listener`、`options` 将其删除
+
+**3. 执行方法**
+
+无论事件怎么转发、记录最终都会通过原生方法执行操作：
+
+- `rawWindowAddEventListener`：原生添加事件
+- `rawWindowRemoveEventListener`：原生删除事件
+
+执行的方法都会提供 `type`、`listener`、`options`，不同的是上下文 `window` 指向：
+
+| 参考条件                                                                                                                                                                              | `window` 指向                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `options.targetWindow` 存在                                                                                                                                                           | `options.targetWindow`                                   |
+| 包含在 `appWindowAddEventListenerEvents` 中，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)] | 优先采用 `options.targetWindow`，不存在采用沙箱 `window` |
+| `__WUJIE_RAW_WINDOW__` 存在，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用-window-添加属性)]                                                                        | 沙箱 `window`                                            |
+| 其他情况                                                                                                                                                                              | 全局 `window`                                            |
+
+简单概括即：有指定 `targetWindow` 时优先使用，否则使用沙箱 `window`，若沙箱 `window` 也
 
 **3. 执行添加或删除事件监听**
 
@@ -4053,7 +4070,7 @@ return (cache[key] = Promise.resolve());
 
 - 通常来说 `iframeWindow.parent` 指的是基座的 `window`
 - 但是有一种情况是应用的基座也是子应用，那么 `iframeWindow.parent` 依然是 `iframeWindow`
-- 当我在作为子应用的基座 `widnow` 上定义了最顶层 `window` 不存在的属性，被正则匹配到了
+- 当我在作为子应用的基座 `window` 上定义了最顶层 `window` 不存在的属性，被正则匹配到了
 - 通过 `processWindowProperty` 去 `window` 拿对应的属性得到的可能是 `undefinde`
 
 **绑定 `window` 上所有的 `onEvent`**
@@ -5147,7 +5164,7 @@ window.onfocus = () => {
 对于非外联样式和非 `script` 的元素，会执行以下操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
-- `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `widnow`
+- `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `window`
 - 按照条件返回添加的元素
 
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
@@ -5994,17 +6011,18 @@ proxyWindow.addEventListener;
 
 #### `__WUJIE_EVENTLISTENER__`：转发 `window` 事件
 
-子应用中对 `window` 上监听的事件，需转发到基座 `window`：
+子应用中对 `window` 上监听的事件，需转发到沙箱 `window`：
 
 - 记录：`patchIframeEvents` [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
 - 清除：`destroy` 注销应用实例 [[查看](#-destroy-销毁实例)]
 - 条件：所有模式、也不受渲染容器限制
-- 容器：沙箱 `iframe`
 
 原因：
 
-- 应用中 `script` 挂在在沙箱 `iframe` 中，对 `window` 的监听会作为沙箱 `window` 事件
-- 而用户是在基座上进行浏览和操作，因此需要将沙箱 `window` 上的事件转发给基座
+- 应用中 `script` 包裹在模块中执行，`window` 指向 `proxyWindow`，见：`insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 执行事件回调时，需要将上下文指向沙箱 `iframe`
+
+> 关于代理关系，见：`wujie` 中的代理的图谱 [[查看](#wujie-中的代理)]
 
 ### 引入 `wujie` 包时默认就执行
 
