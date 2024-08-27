@@ -4136,6 +4136,10 @@ window.onfocus = () => {
 
 目录：`iframe.ts` - `patchDocumentEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L384)]
 
+参数：
+
+- `iframeWindow`：沙箱的 `window`，用于 ① 获取沙箱及插件，② 提取接口和对象用于重写属性
+
 **1. 处理 `addEventListener` 和 `removeEventListener`**
 
 沙箱运行 `script`，渲染是在容器、操作在基座，需劫持沙箱 `document`，按情况分别指向容器和基座。
