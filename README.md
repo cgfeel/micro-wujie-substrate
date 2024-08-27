@@ -4045,6 +4045,10 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 目录：`iframe.ts` - `patchWindowEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L215)]
 
+参数：
+
+- `iframeWindow`：沙箱的 `window`，用于绑定、重写属性和事件
+
 做了 3 件事：
 
 1. 将全局 `window` 上的属性绑定到沙箱 `window`
