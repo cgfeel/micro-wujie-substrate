@@ -4311,7 +4311,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 覆盖了 3 个方法：
 
-- `getRootNode`：获取 `document`、`appendChild`：追加元素、`insertBefore`：在内部元素之前插入元素
+- `getRootNode`：获取 `document` 根节点
+- `appendChild`：在元素内追加子元素
+- `insertBefore`：在内部元素之前插入元素
 
 `appendChild`、`insertBefore` 的目的：
 
