@@ -4232,7 +4232,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 为了兼容不同的容器节点，取 2 个属性集合的交集：
 
-- 排除的事件，监听对象不变，仍旧为沙箱 `document`
+- 排除的事件继续往下看，见：4. 处理 ·· 专属事件
 
 流程和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]：
 
