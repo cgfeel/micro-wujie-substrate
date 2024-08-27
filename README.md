@@ -4093,7 +4093,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 - 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `window` 上获取事件描述信息
 - 通过 `Object.defineProperty` 劫持沙箱 `window` 上的监听事件
 - 通过 `set` 将沙箱 `window` 监听的事件绑定到全局 `window`
-- 通过 `get` 直接返回返回绑定在全局 `window` 上的监听事件
+- 通过 `get` 直接返回绑定在全局 `window` 上的监听事件
 
 > 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `window`
 
@@ -4239,7 +4239,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `Document` 获取事件描述信息
 - 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的监听事件
 - 通过 `set` 将沙箱 `Document` 监听的事件绑定到容器指定节点
-- 通过 `get` 直接返回返回绑定在容器节点上的监听事件
+- 通过 `get` 直接返回绑定在容器节点上的监听事件
 
 > 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `document`
 
@@ -4248,20 +4248,27 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `enumerable`：判断是否可枚举
 - `set`：重写方法前判断事件是否可写或描述中存在 `set`，不满足设为 `undefined`
 
-**3. 处理属性 `get` 时指向沙箱 `proxyDocument`**
+**3. 获取沙箱 `document` 属性时，指向沙箱 `proxyDocument`**
+
+可以通过流程图了解沙箱 `document` 和 `proxyDocument` 的关系 [[查看](#wujie-中的代理)]
 
 属性来自：
 
 - `documentProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
 
-方法和处理 `onEvent` 一样：
+流程 `onEvent` 基本一样：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 属性的描述信息
-- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的属性
+- 通过 `Object.getOwnPropertyDescriptor` 拿到沙箱 `Document` 属性的描述信息
+- 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的属性
+- 通过 `get` 直接从 `proxyDocument` 返回对应属性值
+- 通用描述信息，决定 `enumerable` 是否可枚举
 
-不同在于：
+> 不同在于：不能通过 `set` 重写属性值
 
-- 不可 `set`，`get` 操作指向 `proxyDocument`
+`proxyDocument` 会根据容器不同略有差异：
+
+- `shadowRoot` [[查看](#2-代理空对象作为-proxydocument)]
+- `iframe` 容器 [[查看](#1-劫持空对象作为-proxydocument)]
 
 **4. 处理 `document` 专属事件**
 
