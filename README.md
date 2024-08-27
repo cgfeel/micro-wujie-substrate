@@ -4427,7 +4427,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `rewriteAppendOrInsertChild`：拦截应用中动态添加 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - `start` 启动应用：提取应用中静态 `script`，手动配置 `jsLoader` [[查看](#-start-启动应用)]
 
-> `rewriteAppendOrInsertChild` 来自：激活应用时，通过渲染资源到容器，调用 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
+> `rewriteAppendOrInsertChild` 来自：激活应用时，通过渲染资源到容器调用 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 **第一步：获取配置**
 
