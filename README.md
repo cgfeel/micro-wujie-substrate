@@ -4203,12 +4203,25 @@ window.onfocus = () => {
 
 **2. 处理 `onEvent`**
 
-重写渲染容器事件绑定的对象
+重新定义沙箱 `document` 中 `on` 开头的事件，将其绑定在容器指定对象中
 
-- 降级 `iframe`：`document`
-- `shadowRoot`：`html` 跟元素
+| 子应用绑定对象  | 容器          | 监听对象         |
+| --------------- | ------------- | ---------------- |
+| 沙箱 `document` | 降级 `iframe` | 容器 `document`  |
+| 沙箱 `document` | `shadowRoot`  | 容器 `html` 元素 |
 
-> `shadowRoot` 绑定在 `firstElementChild`，在沙箱
+举例：
+
+```
+// 在子应用中绑定事件到 `document`
+document.onscroll = function() {};
+
+// `degrade` 中相当于挂载事件到 `iframe` 容器的 `document` 上
+sandbox.document.onscroll = function() {};
+
+// 非 `degrade` 相当于挂载到 `shadowRoot` 的 `html` 元素上
+sandbox.shadowRoot = function() {};
+```
 
 提取 2 个集合：
 
