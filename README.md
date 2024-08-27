@@ -4420,7 +4420,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 整个函数围绕 2 个对象展开：
 
 - `scriptResult`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
-- `nextScriptElement`：执行完毕后插入到沙箱中，用于提取执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
+- `nextScriptElement`：执行完毕后插入到沙箱中，用于提取并执行下个队列，见：`start` [[查看](#-start-启动应用)]
 
 调用场景有 2 个：
 
