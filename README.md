@@ -4333,8 +4333,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 流程：
 
-- 通过 `fixElementCtrSrcOrHref` 重写 `setAttribute`，`Object.defineProperty` 劫持资源属性 [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
-- 从而对动态设置相对路径的资源修复为绝对路径
+- 通过 `fixElementCtrSrcOrHref` 拦截元素资源属性设置，修正相对路径为绝对路径 [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
 
 修复的元素：
 
@@ -4638,7 +4637,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `syncIframeUrlToWindow`：监听沙箱前进后退 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 - `patchWindowEffect`：修正 `iframeWindow` 的 `effect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 - `patchDocumentEffect`：修正沙箱 `document` 的 `effect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
-- `patchNodeEffect`：修正 `node` 的 `effect` [[查看](#patchnodeeffect修正-node-的-effect)]
+- `patchNodeEffect`：修正 `node` 的 `effect` [[查看](#patchnodeeffect修正容器节点的-effect)]
 - `patchRelativeUrlEffect`：修复动态添加元素资源 [[查看](#patchrelativeurleffect修复动态添加元素资源)]
 
 #### `base`：标签操作
