@@ -4174,10 +4174,18 @@ window.onfocus = () => {
 
 无论添加还是删除事件，都要提供参数：`type`、`callback`、`options`，不同的发起事件对象：
 
-- 类型在 `appDocumentAddEventListenerEvents` 中：`iframeWindow`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]
-- `degrade` 主动降级：`sandbox.document` 沙箱 `iframe` 渲染容器
-- 类型在 `mainAndAppAddEventListenerEvents` 中，需要同时监听基座和子应用，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)]
-- 其他情况：`sandbox.shadowRoot` 渲染容器
+| 条件                                                                                                                                                                                  | 上下文                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `appDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]         | 沙箱 `document`                         |
+| `degrade` 降级，见：提取配置初始化属性 [[查看](#2-提取配置初始化属性)]                                                                                                                | 降级容器 `document`                     |
+| `mainDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L154)]        | 基座 `document`                         |
+| `mainAndAppAddEventListenerEvents` 事件互斥，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)] | 分别调用：基座 `document`、`shadowRoot` |
+| 其他                                                                                                                                                                                  | `shadowRoot`                            |
+
+如果基座也是子应用会怎样：
+
+- 上下文是：沙箱 `iframe`、降级 `document`、`shadowRoot`，保持不变
+- 上下文是基座 `window`，监听或删除事件时会再次被重写，继续向上调用直至最顶层
 
 **2. 处理 `onEvent`**
 
