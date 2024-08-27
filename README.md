@@ -4243,15 +4243,10 @@ sandbox.shadowRoot = function() {};
 
 > 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `document`
 
-获取描述信息的目的：
+获取描述信息的用处：
 
 - `enumerable`：判断是否可枚举
-- `set`：重写前判断属性是否可写或存在 `set`，不满足设为 `undefined`
-
-为什么要劫持：
-
-- 因为子应用是渲染在容器里，而 `script` 是存放在沙箱 `iframe` 里
-- 通过劫持事件，让沙箱 `document` 触发由于渲染容器添加的事件
+- `set`：重写方法前判断事件是否可写或描述中存在 `set`，不满足设为 `undefined`
 
 **3. 处理属性 `get` 时指向沙箱 `proxyDocument`**
 
