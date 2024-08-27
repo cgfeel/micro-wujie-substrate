@@ -4248,7 +4248,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `enumerable`：判断是否可枚举
 - `set`：重写方法前判断事件是否可写或描述中存在 `set`，不满足设为 `undefined`
 
-**3. 获取沙箱 `document` 属性时，指向沙箱 `proxyDocument`**
+**3. 获取沙箱 `document` 属性时指向 `proxyDocument`**
 
 可以通过流程图了解沙箱 `document` 和 `proxyDocument` 的关系 [[查看](#wujie-中的代理)]
 
