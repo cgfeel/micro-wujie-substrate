@@ -4415,10 +4415,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `ScriptObject`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L45)]    | 静态提取、动态添加的 | `callback`         |
 | `ScriptObjectLoader`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)] | 手动配置 `jsLoader`  | `ignore`、`module` |
 
-整个哈数围绕 2 个对象展开：
+> 其中 `ignore` 在这里不需要用到
 
-- `scriptResult`：插入沙箱 `iframe` 的 `script`
-- `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
+整个函数围绕 2 个对象展开：
+
+- `scriptResult`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
+- `nextScriptElement`：执行完毕后插入到沙箱中，用于提取执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
 
 调用场景有 2 个：
 
