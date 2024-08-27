@@ -4427,15 +4427,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `rewriteAppendOrInsertChild`：拦截应用中动态添加 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - `start` 启动应用：提取应用中静态 `script`，手动配置 `jsLoader` [[查看](#-start-启动应用)]
 
-> `rewriteAppendOrInsertChild` 有 2 种情况，且都来自 `active` 激活应用，见：`active` [[查看](#-active-激活应用)]：
->
-> - `degrade` 降级处理：优化 `iframe` 容器
-> - 非 `dagrade`：优化 `shadowDom` 容器
->
-> 它们的目的只有全都满足以下 2 个条件才可以：
->
-> - 通过 `patchRenderEffect` 重写子应用 `node` 操作 [[查看](#patchrendereffect-为容器打补丁)]
-> - 操作的节点元素为 `script`，让其添加到沙箱的 `iframe` 中
+> `rewriteAppendOrInsertChild` 来自：激活应用时，通过渲染资源到容器，调用 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
 **第一步：获取配置**
 
