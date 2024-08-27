@@ -4199,6 +4199,8 @@ window.onfocus = () => {
 - 沙箱 `iframe`：通过 `bind` 修正上下文
 - 和监听对象相同：包含 `handleEvent` 方法的回调对象
 
+> 为此写了一个简单的演示，见：`codepen` [[查看](https://codepen.io/levi0001/pen/rNEKrdg)]
+
 **2. 处理 `onEvent`**
 
 提取 2 个集合：
