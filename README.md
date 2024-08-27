@@ -4305,33 +4305,24 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 通过 `execHooks` 提取并执行插件 `documentPropertyOverride`，将沙箱 `window` 作为参数传过去打补丁
 
-#### `patchNodeEffect`：修正 `node` 的 `effect`
+#### `patchNodeEffect`：修正容器节点的 `effect`
+
+为容器中每个元素重写 3 个方法
 
 目录：`iframe.ts` - `patchNodeEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L563)]
 
-覆盖了 3 个方法：
+`getRootNode` 获取元素根节点 `document`：
 
-- `getRootNode`：获取 `document` 根节点
-- `appendChild`：在元素内追加子元素
-- `insertBefore`：在内部元素之前插入元素
+| 容器          | `options`                       | 根节点          |
+| ------------- | ------------------------------- | --------------- |
+| `shadowRoot`  | `composed` 为 `true`            | 全局 `document` |
+| `shadowRoot`  | 不设置 `composed`，或为 `false` | 沙箱 `document` |
+| 沙箱 `iframe` | 忽略                            | 沙箱 `document` |
+| 降级 `iframe` | 忽略                            | 降级 `document` |
 
-`appendChild`、`insertBefore` 的目的：
+`appendChild` 在元素内追加子元素、`insertBefore` 在元素之前插入元素：
 
-- 为每一个添加的 `node` 通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
-- 由于子应用的 `Dom` 来自渲染容器，渲染时已通过 `patchElementEffect` 打补丁
-- 在渲染容器通过 `appendChild`、`insertBefore` 插入元素会被劫持重写
-- 重写的方法中为新增的元素通过 `patchElementEffect` 再次打补丁，使其具有和子应用中其他 `Dom` 元素拥有一样的操作方法
-
-`getRootNode` 这里做了一个很“奇妙”的操作：
-
-- 渲染容器里每个元素都重写了 `ownerDocument` 指向 `iframeWindow.document`
-- 当通过 `getRootNode` 拿到的是渲染容器 `shadowRoot`，说明出现了异常情况
-- 于是将沙箱降级容器 `iframe` 的 `document` 返回，这个时候 `iframeWindow.document` 是 `undefinned`，也就什么也拿不到
-- 其他情况正常返回，也就是 `iframeWindow.document`
-
-那降级容器 `ifram` 为什么不做处理：
-
-- 可能还是要考虑用户在容器里跳转到第三方页面的情况
+- 为动态添加的元素通过 `patchElementEffect` 打补丁 [[查看](#patchelementeffect为元素打补丁)]
 
 #### `patchRelativeUrlEffect`：修复动态添加元素资源
 
