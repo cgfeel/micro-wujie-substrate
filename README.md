@@ -4368,10 +4368,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `elementCtr`：资源元素接口
 - `attr`：资源属性，如：`src`
 
-做了 2 件事：
-
-- 重写 `setAttribute`、劫持资源属性赋值
-
 目的：
 
 - 来自子应用动态设置资源链接，通过 `getAbsolutePath` 重新配置最终的链接 [[查看](#getabsolutepath获取绝对路径)]
@@ -4386,6 +4382,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 调用场景：
 
 - `patchRelativeUrlEffect`：修复动态添加元素资源 [[查看](#patchrelativeurleffect修复动态添加元素资源)]
+
+重写 `setAttribute`：
+
+- 要求设置的属性和 `attr` 一致，获取绝对路径后通过原生方法更新属性
+
+赋值更新时通过 `defineProperty` 劫持资源属性：
+
+- 通过 `getOwnPropertyDescriptor` 获取资源属性描述信息
+- `set` 时通过 `getAbsolutePath` 转换资源路径、`get` 时通过原生方法获取
 
 ### 辅助方法 - 沙箱 `iframe`
 
