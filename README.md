@@ -4093,9 +4093,9 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 - 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `window` 上获取事件描述信息
 - 通过 `Object.defineProperty` 劫持沙箱 `window` 上的监听事件
 - 通过 `set` 将沙箱 `window` 监听的事件绑定到全局 `window`
-- 通过 `get` 中直接返回返回绑定在全局 `window` 上的监听事件
+- 通过 `get` 直接返回返回绑定在全局 `window` 上的监听事件
 
-> 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向 `iframe`
+> 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `window`
 
 获取描述事件信息用处：
 
@@ -4223,19 +4223,25 @@ sandbox.document.onscroll = function() {};
 sandbox.shadowRoot = function() {};
 ```
 
-提取 2 个集合：
+由于要绑定事件到监听对象上，所以必须从指定对象提取 2 个集合：
 
-- `elementOnEvents`：提取 `iframeWindow.HTMLElement.prototype` 所有 `on` 开头的事件
-- `documentOnEvent`：提取 `iframeWindow.Document.prototype` 所有 `on` 开头的事件，但不包含 `onreadystatechange`
+- `elementOnEvents`：沙箱 `html` 元素上所有 `on` 开头的事件
+- `documentOnEvent`：沙箱 `document` 元素上所有 `on` 开头的事件，但要排除 `onreadystatechange`
 
-取他们的交集进行处理，处理的方法和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]：
+> 取沙箱 `iframe` 指定对象的 `property` 绑定到容器相同对象上，类型相同的元素包含的 `property` 也相同
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
-- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
-- 在 `set` 将监听的事件绑定到渲染容器上，渲染容器由 `degrade` 决定是 `iframe` 还是 `shadowRoot`
-- 在 `get` 中直接返回返回绑定在渲染容器上的监听事件
+为了兼容不同的容器对象，取 2 个属性集合的交集：
 
-> 注意：如果渲染容器是 `shadowDom`，那么劫持的事件会绑定到 `shadowDom` 的 `html` 元素上，而如果渲染容器是 `iframe` 则会绑定到容器的 `document` 上
+- 排除的事件，监听对象不变，仍旧为沙箱 `document`
+
+流程和 `patchWindowEffect` 中处理 `onEvent` 一样 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]：
+
+- 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `Document` 获取事件描述信息
+- 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的监听事件
+- 通过 `set` 将沙箱 `Document` 监听的事件绑定到容器指定节点
+- 通过 `get` 直接返回返回绑定在容器节点上的监听事件
+
+> 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `document`
 
 获取描述信息的目的：
 
