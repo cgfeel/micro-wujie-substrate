@@ -4119,7 +4119,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 // 通过 `Object.getOwnPropertyDescriptor` 相当于将事件绑定在基座 `window`
 window.onfocus = () => {
-  this; // 但是 this 指向沙箱  window
+  this; // 这里 this 指向沙箱  window
 }
 ```
 
