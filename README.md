@@ -4256,9 +4256,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `documentProxyProperties`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L42)]
 
-流程 `onEvent` 基本一样：
+流程和 `onEvent` 基本一样：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到沙箱 `Document` 属性的描述信息
+- 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `Document` 获取属性描述信息
 - 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的属性
 - 通过 `get` 直接从 `proxyDocument` 返回对应属性值
 - 通用描述信息，决定 `enumerable` 是否可枚举
@@ -4272,25 +4272,32 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **4. 处理 `document` 专属事件**
 
+根据渲染的方式，将沙箱 `document` 转发给容器或基座 `document`：
+
+| 渲染方式      | 转发对象            |
+| ------------- | ------------------- |
+| `shadowRoot`  | 基座 `document`     |
+| 降级 `iframe` | 降级容器 `document` |
+
 属性来自：
 
 - `documentEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L131)]
 
-方法和处理 `onEvent` 一样：
+流程和 `onEvent` 一样：
 
-- 通过 `Object.getOwnPropertyDescriptor` 拿到 `iframeWindow.Document.prototype` 监听事件的描述信息
-- 通过 `Object.defineProperty ` 劫持 `iframeWindow.Document.prototype` 上的监听事件
-- 对于类型为函数的 `handle` 将 `this` 指向 `iframeWindow`
+- 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `Document` 获取事件描述信息
+- 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的监听事件
+- 通过 `set` 将沙箱 `Document` 转发监听事件到指定 `document` 对象
+- 通过 `get` 直接从转发的 `document` 对象上获取获取监听事件
 
-不同在于：
-
-- 方法根据 `degrade` 决定绑定对象是渲染容器 `iframe`，还是最顶层基座的 `window`
-- 在当定对象的 `document` 中绑定监听事件的方法，同理获取也是从指定对象的 `document` 中获取
+> 在 `set` 中对于类型为函数的 `handle` 通过 `bind` 将上下文 `this` 指向沙箱 `document`
 
 **5. 处理 `head` 和 `body`**
 
-- 遍历 `ownerProperties` 集合进行劫持
-- 从 `iframeWindow.document` 中劫持对象，`get` 时指向 `proxyDocument`
+流程和：3. 获取沙箱 `document` 属性时指向 `proxyDocument`，基本一样：
+
+- 遍历 `ownerProperties` 集合劫持 `head` 和 `body`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L147)]
+- 从沙箱 `document` 中劫持对象设置为不可重写，`get` 时指向 `proxyDocument`
 
 **6. 运行插件钩子函数**
 
