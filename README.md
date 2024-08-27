@@ -4172,6 +4172,13 @@ window.onfocus = () => {
 
 **1.3. 执行添加或删除事件监听**
 
+重写方法：
+
+- `iframeWindow.Document.prototype.addEventListener`：沙箱 `document` 监听事件
+- `iframeWindow.Document.prototype.removeEventListener`：沙箱 `document` 删除事件
+
+> 应用中 `script` 运行在沙箱，`document` 也指向沙箱 `document`
+
 无论添加还是删除事件，都要提供参数：`type`、`callback`、`options`，不同的是监听对象：
 
 | 条件                                                                                                                                                                                  | 监听对象                                |
