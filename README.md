@@ -4311,7 +4311,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 目录：`iframe.ts` - `patchNodeEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L563)]
 
-`getRootNode` 使用原生方法获取 `document`，之后根据容器返回根节点：
+`getRootNode`：使用原生方法获取 `document`，之后根据容器返回根节点
 
 | 容器          | `options`                       | 根节点          |
 | ------------- | ------------------------------- | --------------- |
@@ -4320,7 +4320,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 沙箱 `iframe` | 忽略                            | 沙箱 `document` |
 | 降级 `iframe` | 忽略                            | 降级 `document` |
 
-`appendChild` 在元素内追加子元素、`insertBefore` 在元素之前插入元素：
+`appendChild`：在元素内追加子元素、`insertBefore`：在元素之前插入元素
 
 - 通过原生方法动态添加元素，然后使用 `patchElementEffect` 为元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 返回添加的元素
