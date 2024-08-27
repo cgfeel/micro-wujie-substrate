@@ -7,7 +7,6 @@ export default function ReactPage() {
       name="react-project"
       url="http://localhost:10000"
       activated={() => console.log("activated")}
-      degrade
     />
   );
 }

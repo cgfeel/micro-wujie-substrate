@@ -3529,7 +3529,7 @@ return (cache[key] = Promise.resolve());
 
 遮罩层 `shade`：
 
-- 在容器中看不见，用途是为了撑开容器中的弹窗和浮层
+- 在容器中不可见，为了撑开容器用来展示应用中的弹窗和浮层，将作为 `html` 节点下第 1 个元素
 - 由于在 `iframe` 容器中无法撑开容器区域，所以仅限 `shadowRoot`
 
 #### `renderTemplateToHtml`：渲染 `template` 为 `html` 元素
@@ -4202,6 +4202,13 @@ window.onfocus = () => {
 > 为此写了一个简单的演示，见：`codepen` [[查看](https://codepen.io/levi0001/pen/rNEKrdg)]
 
 **2. 处理 `onEvent`**
+
+重写渲染容器事件绑定的对象
+
+- 降级 `iframe`：`document`
+- `shadowRoot`：`html` 跟元素
+
+> `shadowRoot` 绑定在 `firstElementChild`，在沙箱
 
 提取 2 个集合：
 
