@@ -4364,13 +4364,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window`
-- `elementCtr`：资源元素
-- `attr`：资源属性，例如：`src`
+- `iframeWindow`：沙箱 `window`，用于获取沙箱 `Element` 原生属性 `setAttribute`
+- `elementCtr`：资源元素接口
+- `attr`：资源属性，如：`src`
 
 做了 2 件事：
 
-- 重写 `setAttribute`、劫持 `elementCtr.prototype`
+- 重写 `setAttribute`、劫持资源属性赋值
 
 目的：
 
