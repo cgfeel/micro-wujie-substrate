@@ -3962,7 +3962,7 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `iframeWindow`：沙箱 `window`
+- `iframeWindow`：沙箱 `window`，用于重写事件监听
 
 调用场景：
 
@@ -6052,7 +6052,7 @@ proxyWindow.addEventListener;
 
 为啥其他模式不需要：
 
-- `alive`模式：不销毁资源、不记录事假、再次切换应用不重新注入资源、也不需要 `start`
+- `alive`模式：不销毁资源、不记录事件、再次切换应用不重新注入资源、也不需要 `start`
 - 重建模式：每次都重建容器、重启应用，虽也记录和清理事件，但最终都会通过 `destroy` 彻底销毁
 
 > 除了 `umd` 模式外，只记录事件，记录的事件清理随同 `destroy` 销毁应用一同清理
