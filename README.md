@@ -4322,7 +4322,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `appendChild` 在元素内追加子元素、`insertBefore` 在元素之前插入元素：
 
-- 通过原生方法动态添加元素后，使用 `patchElementEffect` 为元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 通过原生方法动态添加元素，然后使用 `patchElementEffect` 为元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
 - 返回添加的元素
 
 #### `patchRelativeUrlEffect`：修复动态添加元素资源
