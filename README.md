@@ -4331,6 +4331,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 目录：`iframe.ts` - `patchRelativeUrlEffect` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L588)]
 
+参数：
+
+- `iframeWindow`：沙箱的 `window`，用于 ① 透传给 `fixElementCtrSrcOrHref`，② 提取资源接口
+
 流程：
 
 - 通过 `fixElementCtrSrcOrHref` 拦截元素资源属性设置，修正相对路径为绝对路径 [[查看](#fixelementctrsrcorhref对元素资源打补丁)]
