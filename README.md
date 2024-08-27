@@ -4404,11 +4404,18 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `scriptResult`：需要插入的 `script` 对象，类型：`ScriptObject | ScriptObjectLoader`
-- `iframeWindow`：沙箱的 `window`
-- `rawElement`：传递动态添加应用 `script` 用于通过 `setTagToScript` 打标记
+- `scriptResult`：需要插入的 `script` 对象
+- `iframeWindow`：沙箱 `window`
+- `rawElement`：动态添加的 `script` 元素，用于 `setTagToScript` 打标记，可选参数
 
-不需要返回，这个函数围绕 2 个对象展开：
+`scriptResult` 有 2 个类型：
+
+| 类型                                                                                                                                                         | 来自                 | 缺少属性           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------ |
+| `ScriptObject`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L45)]    | 静态提取、动态添加的 | `callback`         |
+| `ScriptObjectLoader`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)] | 手动配置 `jsLoader`  | `ignore`、`module` |
+
+整个哈数围绕 2 个对象展开：
 
 - `scriptResult`：插入沙箱 `iframe` 的 `script`
 - `nextScriptElement`：需要插入到沙箱中，提取执行下一个 `execQueue`，见：`start 启动应用` [[查看](#-start-启动应用)]
