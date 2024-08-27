@@ -4301,9 +4301,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **6. 运行插件钩子函数**
 
-文档没提 `documentPropertyOverride`，和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
+文档没提，流程和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 
-- 将 `iframeWindow` 作为参数直接传过去，在基座中通过 `plugin` 的方式劫持特定属性或事件
+- 通过 `execHooks` 提取并执行插件 `documentPropertyOverride`，将沙箱 `window` 作为参数传过去打补丁
 
 #### `patchNodeEffect`：修正 `node` 的 `effect`
 
