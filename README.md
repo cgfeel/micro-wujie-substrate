@@ -3862,7 +3862,7 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `element`：要打补丁的 `html` 元素、`Node` 节点、`ShadowRoot`
-- `iframeWindow`：沙箱 `window`
+- `iframeWindow`：沙箱 `window`，用于获取实例和沙箱中指定对象
 
 **内部补丁 1：`baseURI`**
 
