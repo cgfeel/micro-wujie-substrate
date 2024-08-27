@@ -4398,7 +4398,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `insertScriptToIframe`：为沙箱插入 `script`
 
-向沙箱 `iframe` 中插入 `script`，而并非 `shadowDom`
+向沙箱 `iframe` 中插入 `script`，包含静态提取和动态添加
 
 目录：`iframe.ts` - `insertScriptToIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L710)]
 
