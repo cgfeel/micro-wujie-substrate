@@ -4220,7 +4220,7 @@ document.onscroll = function() {};
 sandbox.document.onscroll = function() {};
 
 // 非 `degrade` 相当于挂载到 `shadowRoot` 的 `html` 元素上
-sandbox.shadowRoot = function() {};
+sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 ```
 
 由于要绑定事件到监听对象上，所以必须从指定对象提取 2 个集合：
