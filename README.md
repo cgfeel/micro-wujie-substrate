@@ -4346,7 +4346,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `fixElementCtrSrcOrHref`：对元素资源打补丁
 
-劫持元素原型对相对地址的赋值转绝对地址
+通过重写方法、劫持元素原型，对资源属性中相对路径转化为绝对地址
 
 目录：`utils.ts` - `fixElementCtrSrcOrHref` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L167)]
 
