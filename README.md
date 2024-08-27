@@ -4140,6 +4140,13 @@ window.onfocus = () => {
 
 沙箱运行 `script`，渲染是在容器、操作在基座，需劫持沙箱 `document`，按情况分别指向容器和基座。
 
+重写方法：
+
+- `iframeWindow.Document.prototype.addEventListener`：沙箱 `document` 监听事件
+- `iframeWindow.Document.prototype.removeEventListener`：沙箱 `document` 删除事件
+
+> 应用中 `script` 运行在沙箱，`document` 也指向沙箱 `document`
+
 **1.1. 记录事件**
 
 声明 2 个 `WeakMap` 类型的映射表，见：记录沙箱 `document` 上的事件 [[查看](#记录沙箱-document-上的事件)]
@@ -4171,13 +4178,6 @@ window.onfocus = () => {
 - `documentRemoveEventListenerHook`：删除事件，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#documentremoveeventlistenerhook)]
 
 **1.3. 执行添加或删除事件监听**
-
-重写方法：
-
-- `iframeWindow.Document.prototype.addEventListener`：沙箱 `document` 监听事件
-- `iframeWindow.Document.prototype.removeEventListener`：沙箱 `document` 删除事件
-
-> 应用中 `script` 运行在沙箱，`document` 也指向沙箱 `document`
 
 无论添加还是删除事件，都要提供参数：`type`、`callback`、`options`，不同的是监听对象：
 
