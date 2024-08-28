@@ -4492,7 +4492,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 2.2. `content` 存在且不为空，作为内联 `script`：
 
-- 要求：非降级 `degrade` 不是 `esModule`
+要求：非降级 `degrade` 不是 `esModule`，见：流程图 [[查看](#wujie-中的代理)]
 
 将整个 `script` 内容包裹在一个函数模块里：
 
