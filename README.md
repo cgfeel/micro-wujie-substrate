@@ -4417,11 +4417,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 其中 `defer`、`ignore` 在这里用不到，函数中会强制断言为 `ScriptObjectLoader`。。。
 
-整个函数围绕 2 个对象展开：
-
-- `scriptResult`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
-- `nextScriptElement`：执行完毕后插入到沙箱，用于提取并执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
-
 调用场景有 2 个：
 
 - `rewriteAppendOrInsertChild`：拦截应用中动态添加 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
@@ -4429,19 +4424,24 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > `rewriteAppendOrInsertChild` 来自：激活应用时，通过渲染资源到容器调用 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
 
+整个函数围绕 2 个对象展开：
+
+- `scriptResult`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
+- `nextScriptElement`：执行完毕后插入到沙箱，用于提取并执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
+
 **第一步：获取配置**
 
 从 `scriptResult` 提取配置，详细见：`processTpl` 提取资源 - 4.提取或替换 `script` [[查看](#processtpl-提取资源)]
 
-- `src`：`script` 的 `url`，可选类型：`string`
-- `module`：是否为 `ES` 模块，可选类型：`boolean`
-- `content`：`script` 的内容，可选类型：`string`
-- `crossorigin`：是否为跨域类型的 `script`，可选类型：`boolean`
-- `crossoriginType`：跨域类型，可选类型：`"" | "anonymous" | "use-credentials"`
-- `async`：是否为异步加载的 `script`，可选类型：`boolean`
-- `attrs`：`script` 带有 `=` 属性的键值对象
-- `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
-- `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
+- `src`：`script` 链接
+- `module`：是否为 `esModule` 模块
+- `content`：`script` 内容
+- `crossorigin`：是否跨域
+- `crossoriginType`：跨域类型，包含 `"" | "anonymous" | "use-credentials"`
+- `async`：是否为异步加载，在这里只有一个用途，异步情况下不提取并执行下一个队列
+- `attrs`：`script` 元素中的属性键值对象
+- `callback`：手动设置，会在注入 `script` 后调用，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `onload`：外联 `script` 完成加载或加载失败时调用
 
 以上配置全部为可选类型，按照 `content` 划分如下：
 
@@ -4452,10 +4452,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 不存在或为空 | 不存在或为空 | `script` 不加载 | 空字符         |
 
 > `degrade` 降级或类型为 `module` 不包裹在模块内执行，其余情况代码均在 `proxy` 模块内执行
-
-创建两个 `script` 对象：
-
-- `scriptElement`、`nextScriptElement`
 
 从沙箱对象中提取 3 个配置：
 
