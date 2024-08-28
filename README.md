@@ -4410,12 +4410,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `scriptResult` 有 2 个类型：
 
-| 类型                                                                                                                                                         | 来自                 | 缺少属性           |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------ |
-| `ScriptObject`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L45)]    | 静态提取、动态添加的 | `callback`         |
-| `ScriptObjectLoader`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)] | 手动配置 `jsLoader`  | `ignore`、`module` |
+| 类型                                                                                                                                                         | 来自                 | 缺少属性          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ----------------- |
+| `ScriptObject`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L45)]    | 静态提取、动态添加的 | `callback`        |
+| `ScriptObjectLoader`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L22)] | 手动配置 `jsLoader`  | `defer`、`ignore` |
 
-> 其中 `ignore` 在这里不需要用到
+> 其中 ``defer`、`ignore` 在这里用不到，函数中会强制断言为 `ScriptObjectLoader`。。。
 
 整个函数围绕 2 个对象展开：
 
