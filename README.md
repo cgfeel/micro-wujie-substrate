@@ -4517,7 +4517,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 设置 `textContent`，外联 `script` 也会设置，但 `script` 会优先采用 `src`
 - 设置 `nextScriptElement` 的代码，用于 `script` 插入完成后，提取并执行下一个队列
 
-**第三步：声明方法并注入 `script`**
+**第三步：声明注入 `script` 的方法**
 
 声明函数 `execNextScript`，用于注入 `scriptElement` 到容器：
 
