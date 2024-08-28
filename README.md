@@ -4535,7 +4535,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `jsLoader` 手动添加，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
 - 应用中动态添加 `script`，用于触发 `onload` 事件，见：`rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-> 存在的问题：外联 `script` 注入沙箱加载失败后，触发的也是 `onload`，在函数和参数上没有做区分
+> 问题：外联 `script` 注入沙箱加载失败后，触发的也是 `onload`，回调函数和参数没做区分
 
 错误的情况：注入 `script` 代码是 `html` 格式，说明加载失败了
 
