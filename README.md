@@ -4453,11 +4453,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > `degrade` 降级或类型为 `module` 不包裹在模块内执行，其余情况代码均在 `proxy` 模块内执行
 
-从沙箱对象中提取 3 个配置：
+通过沙箱 `iframe` 获取应用实例，用于提取对象：`replace`、`plugins`、`proxyLocation`：
 
-- `replace`：替换 `script` 内容的函数，见：1. 更新配置应用信息 [[查看](#1-更新配置应用信息)]
-- `plugins`：提桶的 `plugins`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
-- `proxyLocation`：根据引用入库链接提取的 `location` 对象
+- 用于获取 `jsLoader` 替换 `content`，见：通过配置替换资源 [[查看](#1-更新配置应用信息)]
+- `proxyLocation` 会通过 `getCurUrl` 透传链接为子应用：`origin` + `pathname`
+
+> 除此之外 `proxyLocation` 还用于作为 `proxy` 模块中的 `location`
 
 通过 `getJsLoader` 提取要插入 `script` 最终的代码：
 
