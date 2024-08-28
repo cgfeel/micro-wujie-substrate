@@ -4611,6 +4611,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 提供 `html` 资源        | 通过 `getEmbedHTML` 加载静态样式 | 已完成                                 |
 | 提供 `html` 资源        | 没有静态样式，或已被 `ignore`    | 通过 `await this.iframeReady` 确保完成 |
 
+> 执行顺序从左到右
+
 原因：
 
 - `stopIframeLoading` 通过 `Promise` 同步函数内部通过 `setTimeout` 发起 `resolve`
