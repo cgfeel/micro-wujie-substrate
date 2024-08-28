@@ -4464,32 +4464,17 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 除此之外 `proxyLocation` 还用于作为 `proxy` 模块中的 `location`
 
-通过 `getJsLoader` 提取要插入 `script` 最终的代码：
+`script` 注入类型：
 
-- `getJsLoader` 是一个柯里化函数，接受两个参数：`plugins`、`replace`
-- 返回一个执行函数，函数接受 3 个参数：
-  - `code` 替换前的 `script` 内容
-  - `src` 脚本 `url`
-  - `base`：子应用入口链接，包括 `protocol`、`host`、`pathname`
-- 返回的函数内部通过 `compose`，遍历 `plugins` 提取 `jsLoader` 作为参数，并将上面收到的 3 个参数传过去作为参数
-
-`compose` 也是一个柯里化函数：
-
-- 返回一个函数，接受上面提供的 3 个参数
-- 在函数内部通过 `array.redus` 将 `plugins` 拍平
-- 存在 `js-loader` 函数交由函数处理，否则将处理过的 `code` 交给下一个 `js-loader`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
-
-最终返回：
-
-- `js-loader` 过滤后的代码，如果 `js-loader` 没有提供，则将传入的 `code` 原封不动返回
-- 如果提取的是带有 `src` 的 `script`，脚本的 `code` 内容是空，且没有提供 `js-loader`，那么返回的是一个空字符
-
-从上面知道：
-
-- 上面的处理过程围绕 `js-loader` 展开，`js-loader` 只能作为过滤替换，不是加载资源的函数
-- `js-loader` 是通过柯里化延迟处理，在函数内部通过 `map` 过滤，通过 `redus` 拍平
-- 都是在同一个宏任务中进行，即便 `script` 只提供了 `src` 链接，也不可以通过 `fetch` 这样的方式用微任务获取脚本
-- 加载脚本在此之前通过 `importHTML` [[查看](#importhtml-加载资源)] 加载
+| 来源                                                                 | 元素类型      |
+| -------------------------------------------------------------------- | ------------- |
+| `jsLoader` 手动提供的外联 `script`                                   | 外联 `script` |
+| `jsIgnores` 屏蔽 `fetch` 加载的外联 `script`                         | 外联 `script` |
+| 类型为 `module` 的外联 `script`                                      | 外联 `script` |
+| 带有 `ignore` 属性的静态 `script`                                    | 注释元素      |
+| 不允许的 `esModule`，见：`processTpl` [[查看](#processtpl-提取资源)] | 注释元素      |
+| `jsExcludes` 屏蔽 `script`                                           | 排除不注入    |
+| 其他类型的 `script`                                                  | 内联 `script` |
 
 为 `scriptElement` 添加属性：
 
