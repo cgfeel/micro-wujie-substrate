@@ -4496,8 +4496,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 将整个 `script` 内容包裹在一个函数模块里：
 
-- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`
-- 使用 `proxyLocation` 作为模块的 `location`
+- 使用 `proxy` 作为模块的：`this`、`window`、`self`、`global` [[查看](#1-代理沙箱-window-作为-proxywindow)]
+- 使用 `proxyLocation` 作为模块的 `location` [[查看](#3-代理空对象作为-proxylocation)]
 
 修复 `webpack` 当 `publicPath` 为 `auto` 无法加载资源的问题：
 
