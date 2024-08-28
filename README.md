@@ -4430,7 +4430,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 整个函数围绕 2 个对象展开：
 
-- `scriptResult`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
+- `scriptElement`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
 - `nextScriptElement`：执行完毕后插入到沙箱，用于提取并执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
 
 **第一步：获取配置**
@@ -4479,7 +4479,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 为 `scriptElement` 添加属性：
 
-- 将 `attrs` 提取排除和上述 `scriptResult` 提取的配置同名的属性添加到 `scriptElement`
+| 属性                           | 条件                                                     |
+| ------------------------------ | -------------------------------------------------------- |
+| 注入 `script` 的键值对 `attrs` | 键名不和 `ScriptObject`、`ScriptObjectLoader` 的属性同名 |
+| `src`                          | 链接不为空的外联 `script`                                |
+| `crossorigin`                  | 跨域，属性值为 `crossoriginType`                         |
+| `type`                         | 注入的 `script` 类型为 `module`                          |
+| `async`                        | 丢弃                                                     |
+| `defer`                        | 丢弃                                                     |
 
 **第二步：配置 `script`**
 
