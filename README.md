@@ -4624,11 +4624,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **`iframeReady` 都做了什么：**
 
-微任务 1：检测并停止加载 `iframe`
+发起宏任务：检测并停止加载 `iframe`
 
-- 通过 `stopIframeLoading` 观察 `document` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+- 在 `stopIframeLoading` 中通过 `setTimeout` 观察 `document` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
 
-微任务 2：给 `iframe` 打补丁
+由宏任务发起 `resolve` 添加微任务：给 `iframe` 打补丁
 
 - 若因 `iframe` 加载导致注入的全局属性丢失，通过 `patchIframeVariable` 重新注入 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - 通过 `initIframeDom` 初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
