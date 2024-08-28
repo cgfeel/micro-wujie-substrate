@@ -4563,8 +4563,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 注入操作：
 
-- 在容器 `container` 中添加 `scriptElement`
-- 调用 `callback` 并将沙箱 `window` 作为参数
+- 在容器中添加 `scriptElement`，使用沙箱 `window` 调用 `callback` 通知完成注入
 - 通过 `execHooks` 提取并执行 `appendOrInsertElementHook`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
 - 对于内联 `script` 元素无法触发 `onload`，直接调用 `afterExecScript`
 
