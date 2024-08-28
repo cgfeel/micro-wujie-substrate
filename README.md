@@ -4600,18 +4600,25 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第二步：发起微任务**
 
-- 发起微任务 `stopIframeLoading` 并挂在到实例属性 `iframeReady` 上
+- 发起微任务 `stopIframeLoading` 并挂在到实例属性 `iframeReady` 上 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
 - 返回创建的沙箱 `iframe`
 
-`iframeReady` 用于确保 `iframe` 完成初始化：
+`iframeReady` 用于确保 `iframe` 完成初始化，因此会在下个 `fetch` 拿到结果前执行完毕：
 
-- 在 `active` 激活任务前会先通过 `await this.iframeReady` 确保完成
-- 在 `active` 之前还会发起 2 轮微队列：`importHTML` [[查看](#importhtml-加载资源)]、`processCssLoader` [[查看](#processcssloader处理-css-loader)]
+| `importHTML`            | `processCssLoader`               | `active`                               |
+| ----------------------- | -------------------------------- | -------------------------------------- |
+| 通过 `src` 加载应用资源 | 已完成                           | 已完成                                 |
+| 提供 `html` 资源        | 通过 `getEmbedHTML` 加载静态样式 | 已完成                                 |
+| 提供 `html` 资源        | 没有静态样式，或已被 `ignore`    | 通过 `await this.iframeReady` 确保完成 |
 
-如果加载顺利的话 `iframeReady`：
+原因：
 
-- 会在 `importHTML` 之前完成 `stopIframeLoading` [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
-- 会在 `processCssLoader` 之前完成 `stopIframeLoading().then()` [[查看](#processcssloader处理-css-loader)]
+- `stopIframeLoading` 通过 `Promise` 同步函数内部通过 `setTimeout` 发起 `resolve`
+- 而 `setTimeout` 由沙箱加载状态进行递归，因此会在下一个 `fetch` 之前完成初始化
+
+沙箱 `iframe` 的加载变化：
+
+- `src` 从 `about:blank` 到基座 `origin`，会在 `document` 变更的第一时间 `resolve`
 
 **`iframeReady` 都做了什么：**
 
