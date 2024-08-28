@@ -4443,7 +4443,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `callback`：`plugins` 项中设置 `callback`，会在 `insertScriptToIframe` 执行最后调用，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
 - `onload`：和 `callback` 一样，不同的是 `onload` 是对于带有 `src` 的 `script`，在加载完毕后或加载失败后调用
 
-> 这里吐槽一下，既然强制作为 `ScriptObjectLoader` 又何必传入联合类型呢，难道不是应该分开提取吗？
+以上配置全部为可选类型，按照 `content` 划分如下：
+
+- 当 `content` 存在且不为空时，作为内联 `script`
+- 当 `content` 不存在或为空时，作为外联 `script`，同样会设置 `textContent`
+- 当 `content` 和 `src` 都不存在或都为空，不加载 `script`
 
 创建两个 `script` 对象：
 
