@@ -4477,6 +4477,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `jsExcludes` 屏蔽 `script`                                           | 排除不注入    |
 | 其他类型的 `script`                                                  | 内联 `script` |
 
+**第二步：配置 `script`**
+
 为 `scriptElement` 添加属性：
 
 | 属性                           | 条件                                                     |
@@ -4487,8 +4489,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `type`                         | 注入的 `script` 类型为 `module`                          |
 | `async`                        | 丢弃                                                     |
 | `defer`                        | 丢弃                                                     |
-
-**第二步：配置 `script`**
 
 内联 `script`：
 
