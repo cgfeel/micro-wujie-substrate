@@ -4575,7 +4575,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `js` 沙箱，来自备注：
 
-- 创建和主应用同源的 `iframe`，路径携带了子路由的路由信息，`iframe` 必须禁止加载 `html`，防止进入主应用的路由逻辑
+- 创建和主应用同源的 `iframe`，路径携带了子路由的路由信息
+- `iframe` 必须禁止加载 `html`，防止进入主应用的路由逻辑
 
 参数：
 
