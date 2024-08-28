@@ -4519,7 +4519,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第三步：声明监听方法并处理 `script`**
 
-声明 `script` 完成后要执行的函数：
+声明 `script` 插入沙箱后要执行的函数：
 
 - 将沙箱的 `iframe` 的 `head` 作为容器 `container`
 - 声明一个函数 `execNextScript`，只要 `async` 不存在就会将 `nextScriptElement` 添加到容器并执行
