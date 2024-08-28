@@ -4588,10 +4588,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：创建 `iframe`**
 
-- 创建一个 `iframe` 元素，并设置属性
-- 属性包含：`src` 为基座 `origin`，样式不可见，自定义属性，`id` 为应用名以及 `wujie` 特有的 `flag`
-- 将 `iframe` 添加到 `body` 末尾
-- 通过 `patchIframeVariable` 为 `iframeWindow` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
+创建一个 `iframe` 元素作为沙箱，并设置属性：
+
+| `src`          | `style`         | 属性集合 | `name` | 标记              |
+| -------------- | --------------- | -------- | ------ | ----------------- |
+| `mainHostPath` | `display: none` | `attrs`  | 应用名 | `WUJIE_DATA_FLAG` |
+
+- 将 `iframe` 添加到 `body` 末尾，通过 `patchIframeVariable` 为沙箱 `window` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 
 关于 `patchIframeVariable`
 
