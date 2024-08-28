@@ -4431,7 +4431,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：获取配置**
 
-将 `scriptResult` 强制作为 `ScriptObjectLoader` 分别提取配置，详细见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)] - 4.提取或替换 `script`：
+从 `scriptResult` 提取配置，详细见：`processTpl` 提取资源 - 4.提取或替换 `script` [[查看](#processtpl-提取资源)]
 
 - `src`：`script` 的 `url`，可选类型：`string`
 - `module`：是否为 `ES` 模块，可选类型：`boolean`
