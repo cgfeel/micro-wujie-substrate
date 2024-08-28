@@ -4537,11 +4537,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 存在的问题：外联 `script` 注入沙箱加载失败后，触发的也是 `onload`，在函数和参数上没有做区分
 
-检查错误：如果插入的 `script` 内容是 `html`
+错误的情况：注入 `script` 代码是 `html` 格式，说明加载失败了
 
-- 通过 `error` 输出错误，调用 `execNextScript` 以便执行下个队列
+- 错误条件：① 内联 `script`；② `degrade` 降级或是 `esModule`
+- 处理方法：输出 `error`，调用 `execNextScript` 以便执行下个队列
 
-> 理论上说这里的逻辑在非 `fiber` 下是会有问题的，导致 `start` 启动应用中断，但由于捕获的情况本身就是错误的，那逻辑错误又如何呢？
+> 这里存在个问题：非 `degrade` 且不是 `esModule` 难道就不会存在加载错误的情况了吗？
 
 打标记：
 
