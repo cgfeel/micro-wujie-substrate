@@ -4433,7 +4433,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `scriptElement`：根据提供的对象，创建 `script` 元素插入沙箱 `iframe`
 - `nextScriptElement`：执行完毕后插入到沙箱，用于提取并执行下个队列，见：`start` 启动应用 [[查看](#-start-启动应用)]
 
-**第一步：获取配置**
+**1. 获取配置**
 
 从 `scriptResult` 提取配置，详细见：`processTpl` 提取资源 - 4.提取或替换 `script` [[查看](#processtpl-提取资源)]
 
@@ -4477,7 +4477,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `jsExcludes` 屏蔽 `script`                                           | 排除不注入    |
 | 其他类型的 `script`                                                  | 内联 `script` |
 
-**第二步：配置 `script`**
+**2. 配置 `script`**
 
 2.1. 为 `scriptElement` 添加属性：
 
@@ -4517,7 +4517,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 设置 `textContent`，外联 `script` 也会设置，但 `script` 会优先采用 `src`
 - 设置 `nextScriptElement` 的代码，用于 `script` 插入完成后，提取并执行下一个队列
 
-**第三步：声明注入 `script` 的方法**
+**3. 声明注入 `script` 的方法**
 
 声明函数 `execNextScript`，用于注入 `scriptElement` 到容器：
 
@@ -4549,26 +4549,26 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `setTagToScript` 为注入沙箱的 `script` 打标记 [[查看](#为动态添加的-script-打标记)]
 - 仅限通过 `rewriteAppendOrInsertChild` 动态添加的 `script` 才需要打标记 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-> 注入沙箱的 `script` 都是重新创建的，而应用中动态添加的 `script` 仅作为拦截的对象不做渲染
+原因：
 
-外联脚本执行后的处理：
+- 注入沙箱的 `script` 都是重建的，通过打标记的方式和动态创建的 `script` 关联起来
+- 否则注入 `script` 之后，在应用内继续操作创建的元素，沙箱中 `script` 没有任何效果
 
-- 要求：`script` 带有 `src`，内容为空
+**4. 注入 `script` 到沙箱**
+
+为外联 `script` 添加回调函数：
+
+- 要求：`script` 带有 `src`， `contennt` 为空
 - 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
 
-**第四步：插入 `script`**
+注入操作：
 
 - 在容器 `container` 中添加 `scriptElement`
-- 调用 `callback` 并将沙箱的 `iframeWindow` 作为参数
-- 提取并执行 `appendOrInsertElementHook`，见文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
+- 调用 `callback` 并将沙箱 `window` 作为参数
+- 通过 `execHooks` 提取并执行 `appendOrInsertElementHook`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#appendorinsertelementhook)]
 - 对于内联 `script` 元素无法触发 `onload`，直接调用 `afterExecScript`
 
-**总结：**
-
-- `insertScriptToIframe`：用处是将 `script` 添加到沙箱 `iframe` 中
-- 包含：子应用的 `script`、启动应用时手动配置的、在应用中通过节点操作添加的
-- 对于内联 `script` 会包裹一个模块，通过 `proxy` 更改 `window` 等对象的指向，避免全局污染
-- 这个函数存在逻辑问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+> `callback` 只能通过 `jsLoader` 配置
 
 #### `iframeGenerator`：创建沙箱 `iframe`
 
