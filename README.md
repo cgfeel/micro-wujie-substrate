@@ -4444,7 +4444,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `crossoriginType`：跨域类型，包含 `"" | "anonymous" | "use-credentials"`
 - `async`：是否为异步加载，在这里只有一个用途，异步情况下不提取并执行下一个队列
 - `attrs`：`script` 元素中的属性键值对象
-- `callback`：手动设置，会在注入 `script` 后调用，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html)]
+- `callback`：手动设置，会在注入 `script` 后调用，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
 - `onload`：外联 `script` 完成加载或加载失败时调用
 
 以上配置全部为可选类型，按照 `content` 划分如下：
