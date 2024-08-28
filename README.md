@@ -4519,15 +4519,23 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第三步：声明监听方法并处理 `script`**
 
-声明 `script` 插入沙箱后要执行的函数：
+声明函数 `execNextScript`，用于注入 `scriptElement` 到容器：
 
-- 将沙箱的 `iframe` 的 `head` 作为容器 `container`
-- 声明一个函数 `execNextScript`，只要 `async` 不存在就会将 `nextScriptElement` 添加到容器并执行
-- 声明一个 `afterExecScript`，用于在 `scriptElement` 添加到容器后执行，函数做 2 件事：
-  - 触发 `onload`：通过 `jsBeforeLoaders` 或 `jsAfterLoaders` 添加
-  - 触发 `execNextScript`：以便执行下一个队列 `window.__WUJIE.execQueue.shift()()`
+- 指定沙箱 `head` 作为容器，只要 `async` 不存在，就会执行 `appendChild`
 
-> 这里的逻辑是有问题的，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+> 这里判断 `async` 是存在问题的，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+
+声明函数 `afterExecScript`，用于完成注入后执行：
+
+- 触发 `onload`：用于通知 `script` 已完成加载
+- 触发 `execNextScript`：提取执行下一个队列，见：执行队列 [[查看](#2-执行队列)]
+
+`onload` 添加方式：
+
+- 通过 `jsLoader` 手动添加，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-before-loaders)]
+- 来自应用中动态添加 `script`，用于触发 `onload` 事件，见：`rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+
+> 存在的问题：外联 `script` 注入沙箱加载失败后，触发的也是 `onload`，在函数和参数上没有做区分
 
 检查错误：如果插入的 `script` 内容是 `html`
 
