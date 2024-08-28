@@ -3332,7 +3332,11 @@ return (cache[key] = Promise.resolve());
 
 `getCssLoader` 柯里化处理运行时的样式：
 
-- 返回一个函数，参数有：`code` 样式内容、`src` 样式链接、`base` 基座链接
+- 接受 2 个参数，全部来自手动配置：`plugins` 插件集合、`replace` 用于替换资源
+- 返回函数，参数有：`code` 样式内容、`src` 资源链接、`base` 子应用 `origin` + `pathname`
+
+处理方式：
+
 - 先通过 `replace` 替换 `code` 样式，然后将参数透传给 `compose` 返回的函数
 - `compose` 也是柯里化函数，通过 `reduce` 依次调用 `css-loader` 替换样式 [[查看](#compose-用柯里化的方式拍平一组函数)]
 
@@ -3357,8 +3361,8 @@ return (cache[key] = Promise.resolve());
 
 `getJsLoader` 柯里化处理运行时的 `script`：
 
-- 执行方式和 `getCssLoader` 是一样的
-- 都是柯里化后传递 `replace` 替换的资源，通过 `compose` 将拿到的资源依次调用 `jsLoader` [[查看](#compose-用柯里化的方式拍平一组函数)]
+- 执行方式和 `getCssLoader` 是一样的，唯一的不同是提取 `plugins` 的属性名
+- 柯里化后传递 `replace` 替换的资源，通过 `compose` 将拿到的资源依次调用 `jsLoader` [[查看](#compose-用柯里化的方式拍平一组函数)]
 
 > 在这里 `replace` 会优先于 `js-loader` 执行替换
 
