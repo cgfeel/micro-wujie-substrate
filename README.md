@@ -4455,7 +4455,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 通过沙箱 `iframe` 获取应用实例，用于提取对象：`replace`、`plugins`、`proxyLocation`：
 
-- 用于获取 `jsLoader` 替换 `content`，见：通过配置替换资源 [[查看](#1-更新配置应用信息)]
+- 用于获取 `jsLoader` 替换 `content`，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 - `proxyLocation` 会通过 `getCurUrl` 透传链接为子应用：`origin` + `pathname`
 
 > 除此之外 `proxyLocation` 还用于作为 `proxy` 模块中的 `location`
