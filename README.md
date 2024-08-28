@@ -4594,14 +4594,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | -------------- | --------------- | -------- | ------ | ----------------- |
 | `mainHostPath` | `display: none` | `attrs`  | 应用名 | `WUJIE_DATA_FLAG` |
 
-- 将 `iframe` 添加到 `body` 末尾，通过 `patchIframeVariable` 为沙箱 `window` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
+将 `iframe` 添加到 `body` 末尾，通过 `patchIframeVariable` 为沙箱 `window` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 
-关于 `patchIframeVariable`
-
-- 备注是这样的：变量需要提前注入，在入口函数通过变量防止死循环。
-- 但在入口函数倒是没有找到需要用到注入 `iframeWindow` 属性的地方
-- 倒是在 `localGenerator` 主动降级的代理方法中需要用到 `iframe.contentWindow.__WUJIE`
-- 而 `localGenerator` 对于 `iframeGenerator` 来说是上下文关系，优先于微任务先执行
+- 来自备注：变量需要提前注入，在入口函数通过变量防止死循环。
 
 **第二步：发起微任务**
 
