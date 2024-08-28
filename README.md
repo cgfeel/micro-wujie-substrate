@@ -1978,7 +1978,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 ![wujie-proxy](https://github.com/user-attachments/assets/4b0d5c00-253d-4316-a53f-f0a34920adf0)
 
-
 #### 📝 `proxyGenerator` 非降级情况下的代理
 
 非降级 `degrade` 情况下代理：`window`、`document`、`location`
@@ -4446,9 +4445,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 以上配置全部为可选类型，按照 `content` 划分如下：
 
-- 当 `content` 存在且不为空时，作为内联 `script`
-- 当 `content` 不存在或为空时，作为外联 `script`，同样会设置 `textContent`
-- 当 `content` 和 `src` 都不存在或都为空，不加载 `script`
+| `content`    | `src`        | 类型            | `textContent`  |
+| ------------ | ------------ | --------------- | -------------- |
+| 存在且不为空 | 不设置       | 内联 `script`   | 按条件包装代码 |
+| 不存在或为空 | 存在且不为空 | 外联 `script`   | 空字符         |
+| 不存在或为空 | 不存在或为空 | `script` 不加载 | 空字符         |
+
+> `degrade` 降级或类型为 `module` 不包裹在模块内执行，其余情况代码均在 `proxy` 模块内执行
 
 创建两个 `script` 对象：
 
