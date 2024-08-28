@@ -4479,7 +4479,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第二步：配置 `script`**
 
-为 `scriptElement` 添加属性：
+2.1. 为 `scriptElement` 添加属性：
 
 | 属性                           | 条件                                                     |
 | ------------------------------ | -------------------------------------------------------- |
@@ -4490,28 +4490,32 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `async`                        | 丢弃                                                     |
 | `defer`                        | 丢弃                                                     |
 
-内联 `script`：
+2.2. `content` 存在且不为空，作为内联 `script`：
 
-- 在非降级 `degrade` 状态下并且不是 `es` 模块的情况下，将整个 `script` 内容包裹在一个函数模块里
-- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`，使用 `proxyLocation` 作为模块的 `location`
+- 要求：非降级 `degrade` 不是 `esModule`
 
-提取内联 `script` 的 `src` 属性：
+将整个 `script` 内容包裹在一个函数模块里：
 
-- 但凡是个正规浏览器，通过 `Object.getOwnPropertyDescriptor` 拿 `script` 的 `src` 都是 `undefined`
-- 因为 `src` 属性是从 `HTMLScriptElement` 接口继承的，而不是直接定义在特定的 `scriptElement` 对象上，见演示 [[查看](https://codepen.io/levi0001/pen/abgvWQj)]
+- 使用沙箱的 `proxy` 作为模块的：`this`、`window`、`self`、`global`
+- 使用 `proxyLocation` 作为模块的 `location`
 
-> 那这里的意义是啥呢？我猜可能和注释一样：解决 `webpack publicPath` 为 `auto` 无法加载资源的问题，在 `node` 环境下可能不一样，待指正
+修复 `webpack` 当 `publicPath` 为 `auto` 无法加载资源的问题：
 
-外联 `script`：
+- 通过 `Object.getOwnPropertyDescriptor` 获取 `scriptElement` 属性 `src` 的描述信息
+- 当描述信息不存在时，或描述信息的类型不可以更改时需要修复问题
+- 修复方式：通过 `defineProperty` 定义 `scriptElement` 属性 `src`
 
-- 设置 `src`，如果存在的话
-- 设置 `crossorigin`，如果存在的话
+> 仅限内联 `script` 需要根据情况修复，外联 `script` 本身拥有 `src` 属性
 
-`script` 补充操作：
+2.3. `content` 不存在或为空，作为外联 `script`：
 
-- 如果 `module` 成立，设置 `scriptElement` 为 `es` 模块，
-- 设置 `textContent`，外联 `script` 也会设置脚本内容，但是同时存在 `src` 和 `textContent`，会采用属性 `src`
-- 设置 `nextScriptElement` 的脚本内容，用于插入 `script` 完成后，调用下一个队列
+设置属性：`src`，`crossorigin` 为 `crossoriginType`，如果属性存在的话
+
+2.4. `script` 补充操作：
+
+- 根据 `module` 决定是否添加 `type` 属性为 `module`
+- 设置 `textContent`，外联 `script` 也会设置，但 `script` 会优先采用 `src`
+- 设置 `nextScriptElement` 的代码，用于 `script` 插入完成后，提取并执行下一个队列
 
 **第三步：声明监听方法并处理 `script`**
 
