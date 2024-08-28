@@ -4542,7 +4542,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 错误条件：① 内联 `script`；② `degrade` 降级或是 `esModule`
 - 处理方法：输出 `error`，调用 `execNextScript` 以便执行下个队列
 
-> 这里存在问题：非 `degrade` 且不是 `esModule` 的内联 `script` 难道就不会加载失败了吗？
+> 问题：非 `degrade` 且不是 `esModule` 的内联 `script` 难道就不会加载失败了吗？
 
 打标记：
 
