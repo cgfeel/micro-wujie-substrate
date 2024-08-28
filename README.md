@@ -4580,8 +4580,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `sandbox`：应用实例
-- `attrs`：配置 `iframe`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#attrs)]
+- `sandbox`：应用实例，用于打补丁、绑定 `iframeReady` 用于确保沙箱初始化
+- `attrs`：手动配置 `iframe` 元素属性，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#attrs)]
 - `mainHostPath`：基座 `origin`
 - `appHostPath`：子应用的 `origin`
 - `appRoutePath`：子应用的 `pathname` + `search` + `hash`
