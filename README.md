@@ -4632,9 +4632,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 若因 `iframe` 加载导致注入的全局属性丢失，需要通过 `patchIframeVariable` 重新注入 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - 通过 `initIframeDom` 初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
-- 从当前网页的 `url` 查找出是否存在当前应用名的 `query`，如果查到先更新 `iframe` 的 `history`
+- 从当前 `url` 查找出是否存在应用名的 `query`，如果没找到先更新 `iframe` 的 `history`
 
-> 通过 `iframeWindow.history.replaceState` 更新 `history`，采用：基座 `origin` + 子应用 `pathname`
+> 通过基座 `origin` + 子应用 `pathname` 更新 `history`
 
 #### `initIframeDom`：初始化 `iframe` 的 `dom` 结构
 
