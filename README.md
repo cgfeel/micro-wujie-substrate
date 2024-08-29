@@ -4815,17 +4815,17 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`
 
 调用场景：
 
 - `active` 激活应用时同步路由，包含：预加载、初次启动应用、切换应用 [[查看](#-active-激活应用)]
-- `syncIframeUrlToWindow`：监听 `iframeWindow` 后退和前进 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
-- `patchIframeHistory`：劫持 `iframeWindow。history` 对象的 `pushState` 和 `replaceState` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- `syncIframeUrlToWindow`：监听沙箱 `window`：`popstate`、`hashchange` [[查看](#synciframeurltowindow-监听沙箱前进后退)]
+- `patchIframeHistory`：劫持沙箱 `history`：`pushState`、`replaceState` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
 不做处理的情况：
 
-- 没有配置 `sync` 同步路由，并且基座 `url.search` 找不到当前应用名匹配的值
+- 没有配置 `sync` 同步路由并且在基座链接 `search` 中找不到当前应用名
 
 **第一步：提取配置**
 
