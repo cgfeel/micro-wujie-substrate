@@ -4879,7 +4879,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 计算应用的链接：
 
 - 同步路由应当以资源入口链接作为参考：基座 `origin` + 资源入口 `pathname` + `search` + `hash`
-- 但同步路由到基座时，有可能通过 `prefix` 转换连接，这就要通过 `getSyncUrl` 获取资源链接 [[查看](#getsyncurl获取需要同步的-url)]
+- 但同步路由到基座有可能会通过 `prefix` 转换连接，这就要通过 `getSyncUrl` 获取资源链接 [[查看](#getsyncurl获取需要同步的-url)]
 
 > `getSyncUrl` 会根据当前浏览的链接，提取应用对应的路由
 
