@@ -4766,22 +4766,19 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `syncIframeUrlToWindow` 监听沙箱前进后退
 
-子应用沙箱 `iframe` 中监听 `popstate` 的 `hashchange`，同步路由到主应用
+子应用沙箱 `iframe` 中监听 `popstate` 前进后退、`hashchange` 监听 `hash` 变化，同步路由到主应用
 
 目录：`iframe.ts` - `syncIframeUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L697)]
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于添加监听事件
 
-监听的事件：
+当沙箱路由发生改变通过 `syncUrlToWindow` 同步到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
 
-- `hashchange`：监听 `hash` 变化
-- `popstate`：监听前进后退
+- 调用场景：子应用路由更新，由 `patchIframeHistory` 拦截并更新沙箱 `history` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
-要做的事：
-
-- 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
+> 而浏览器的前进后退，以及 `url` 的变更，会导致基座重新渲染，根据情况重新启动子应用
 
 #### `renderIframeReplaceApp`：加载 `iframe` 替换子应用
 
