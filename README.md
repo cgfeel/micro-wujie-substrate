@@ -4649,8 +4649,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
-- `wujie`：应用实例
+- `iframeWindow`：沙箱 `window`，用于：① 打补丁；② 存原生方法
+- `wujie`：应用实例，用于：获取资源链接和 `degrade`
 - `mainHostPath`：基座 `origin`
 - `appHostPath`：子应用 `origin`
 
