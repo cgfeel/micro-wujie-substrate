@@ -4740,7 +4740,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于：① 获取沙箱 `document`，② 停止加载
 
 原因：
 
