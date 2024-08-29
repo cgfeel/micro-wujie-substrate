@@ -4924,12 +4924,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 清理子应用过期的同步参数：
 
-- 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
-- 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 通过 `anchorElementGenerator` 将当前的链接转换为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
+- 通过 `getAnchorElementQueryMap` 将链接对象的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 
-遍历 `search` 对象所有的 `key`，作为 `name` 提取并筛选应用：
+遍历 `search` 对象所有的 `key`，作为应用名提取并筛选应用，要求：
 
-- 应用必须存在，且已经 `start` 启动、存在 `sync` 同步路由、路由全部来自基座、且应用已激活
+| 应用实例 | `execFlag` | `activeFlag`                                         | `sync`   | `hrefFlag`                                     |
+| -------- | ---------- | ---------------------------------------------------- | -------- | ---------------------------------------------- |
+| 存在     | 已启动     | 通过 `unmount` 失活 [[查看](#1-卸载应用---所有模式)] | 同步路由 | 并非 `hrefFlag` 劫持链接 [[查看](#2-特殊属性)] |
 
 将条件匹配的 `searchkey` 全部删除，组合新的链接：
 
