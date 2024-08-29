@@ -4799,7 +4799,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `locationHrefSet` 拦截子应用 `location.href` 跳转 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 通过 `processAppForHrefJump` 拦截前进的链接来自第三方网页 [[查看](#processappforhrefjump-监听前进和后端)]
 
-流程：
+劫持容器和降级的 `iframe` 容器创建方式是一样的 [[查看](#创建-iframe-容器)]：
 
 - 创建 `iframe` 元素，定义一个宽高 `100%` 的样式
 - 通过 `setAttrsToElement` 为 `iframe` 添加样式、`src`、`degradeAttrs`
