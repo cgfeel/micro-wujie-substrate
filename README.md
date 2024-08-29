@@ -4715,11 +4715,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 初始化时沙箱 `iframe` 的链接为 `mainHostPath`：基座 `origin`，而 `pathname` 为空
 
-注意：
-
-- 沙箱 `iframe` 的 `src` 为基座 `origin`，而 `initBase` 是在初始化 `iframe` 时创建
-- 所以无论如何 `pathname` 始终拿到的是 `/`
-
 **`updateBase` 动态更新 `base` 标签**
 
 目录：`iframe.ts` - `updateBase` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L204)]
