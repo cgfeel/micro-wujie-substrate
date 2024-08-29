@@ -4618,7 +4618,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 提供 `html` 资源                            | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)]       | 已完成                                 |
 | 提供 `html` 资源                            | 没有静态样式，或被 `ignore`                                   | `await this.iframeReady` 确保完成      |
 
-> 执行顺序从左到右，因为 `fetch` 既不是微任务也不是宏任务，在拿到 `result` 之前会执行已挂载的宏任务
+> 执行顺序从左到右，因为 `fetch` 既不是微任务也不是宏任务，在拿到结果前会执行已挂载的宏任务
 
 原因：
 
