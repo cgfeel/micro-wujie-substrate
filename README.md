@@ -4893,7 +4893,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `preAppRoutePath`：首次加载沙箱 `location` 为基座 `origin`，计算的到的路由为 `/`
 - `appRoutePath`：根据资源入口链接，得到 `pathname` + `search` + `hash`
 
-> 一旦更新沙箱的 `history`，下次切换应用时 2 个路由相同，无需再同步路由到子应用
+> `appRoutePath` 将作为计划同步的路由，一旦同步，下次切换应用无需在更新路由
 
 只有 `umd` 模式需要区分首次加载：
 
