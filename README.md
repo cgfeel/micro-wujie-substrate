@@ -4736,7 +4736,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 防止运行主应用的 `js` 代码，给子应用带来很多副作用（来自备注）
 
-目录：`iframe.ts` - `stopIframeLoading` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L9)]
+目录：`iframe.ts` - `stopIframeLoading` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L644)]
 
 参数：
 
