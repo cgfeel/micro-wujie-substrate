@@ -4612,11 +4612,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `iframeReady` 用于确保 `iframe` 完成初始化，因此会在下个 `fetch` 拿到结果前执行完毕：
 
-| `importHTML`            | `processCssLoader`                                      | `active`                          |
-| ----------------------- | ------------------------------------------------------- | --------------------------------- |
-| 通过 `src` 加载应用资源 | 已完成                                                  | 已完成                            |
-| 提供 `html` 资源        | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)] | 已完成                            |
-| 提供 `html` 资源        | 没有静态样式，或已被 `ignore`                           | 通过 `await iframeReady` 确保完成 |
+| `importHTML` [[查看](#importhtml-加载资源)] | `processCssLoader` [[查看](#processcssloader处理-css-loader)] | `active` [[查看](#1-更新配置应用信息)] |
+| ------------------------------------------- | ------------------------------------------------------------- | -------------------------------------- |
+| 通过 `src` 加载应用资源                     | 已完成                                                        | 已完成                                 |
+| 提供 `html` 资源                            | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)]       | 已完成                                 |
+| 提供 `html` 资源                            | 没有静态样式，或已被 `ignore`                                 | 通过 `await iframeReady` 确保完成      |
 
 > 执行顺序从左到右，因为 `fetch` 既不是微任务也不是宏任务，在拿到 `result` 之前会执行已挂载的宏任务
 
