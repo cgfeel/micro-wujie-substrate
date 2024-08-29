@@ -4937,7 +4937,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 筛选后转换为 `search` 更新 `HTMLAnchorElement` 对象，之后比较全局 `location.href`：
 
-- 如果不一致 `replace` 替换当前网站链接
+- 如果不一致 `replace` 替换 `history` 链接
 
 调用场景：
 
