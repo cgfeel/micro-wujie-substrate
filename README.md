@@ -4656,9 +4656,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：创建新的 `html`**
 
-- 通过 `iframeWindow` 拿到 `iframeDocument`
+- 通过 `iframeWindow` 拿到沙箱 `document`
 - 通过 `window.document.implementation.createHTMLDocument` 创建一个新的空白 `html` 元素
-- 如果沙箱的 `iframe` 的 `html` 元素存在就是用新的 `html` 替换，否则添加到 `iframeDocument`
+- 如果沙箱 `iframe` 中 `html` 元素存在就是用新的 `html` 替换，否则添加到沙箱 `document`
 
 为什么要创建一个新的 `html`：
 
