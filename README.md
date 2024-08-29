@@ -4755,12 +4755,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 流程：
 
-- 记录一个还未完成加载的 `iframeWindow.document` 作为 `oldDoc`，此时的 `location.origin` 是 `about:blank`
-- 返回一个微任务，微任务中创建一个 `loop` 函数作为 `document` 检测
-- 在 `loop` 中再创建一个微任务，由于 `appendChild` 是同步操作，所以执行微任务前会优先挂载 `iframe` 避免死循环
-- 在 `loop` 微任务中获取当前 `iframe.document` 和 `oldDoc` 进行比较
-- 如果 `iframe` 没有完成实例化导致 `document` 不变，将重新发起一轮 `loop` 微任务
-- 直到 `iframe` 实例化完毕 `document` 发生改变，立即 `stop` 停止 `iframe` 加载后释放微任务
+- 记录沙箱 `document` 初始化时作为 `oldDoc`，此时链接是 `about:blank`
+- 发起并返回微任务，`Promise` 同步函数中创建并执行函数 `loop` 作为 `document` 检测
+- 在 `loop` 中发起宏任务，由于 `appendChild` 沙箱是同步操作，所以在宏任务执行前会加载沙箱 `iframe`
+- 在宏任务中获取沙箱当前 `document` 和 `oldDoc` 进行比较
+- 如果沙箱 `iframe` 没有完成实例化导致 `document` 不变，将重新发起一轮 `loop` 宏任务
+- 直到 `iframe` 完成实例化，`document` 发生改变，停止加载并通过 `resolve` 在返回的微任务中添加队列
 
 > 由于沙箱 `iframe` 在初始化之前已经设置不可见，所以加载过程也全程不可见
 
