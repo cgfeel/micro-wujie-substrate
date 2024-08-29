@@ -4935,7 +4935,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 将条件匹配的应用从路由中删除
 
-筛选后转换为 `search` 更新 `HTMLAnchorElement` 对象，之后比较全局 `location.href` 比较：
+筛选后转换为 `search` 更新 `HTMLAnchorElement` 对象，之后比较全局 `location.href`：
 
 - 如果不一致 `replace` 替换当前网站链接
 
