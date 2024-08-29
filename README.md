@@ -4815,7 +4815,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱 `window`
+- `iframeWindow`：沙箱 `window`，用于获取：应用实例、沙箱 `location`
 
 调用场景：
 
@@ -4862,7 +4862,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于获取：应用实例、沙箱 `location`、沙箱 `history`
 
 调用场景：
 
