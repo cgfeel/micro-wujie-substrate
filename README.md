@@ -4939,6 +4939,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 如果不一致 `replace` 替换当前网站链接
 
+调用场景：
+
+- 仅限 `unmount` 卸载应用 [[查看](#-unmount-卸载应用)]
+
 #### `appRouteParse` 提取链接
 
 目录：`utils.ts` - `appRouteParse` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L122)]
