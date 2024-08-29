@@ -4796,8 +4796,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景：
 
-- 子应用通过 `locationHrefSet` 拦截 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
-- 基座监听 `popstate`，前进的链接 `search` 是来自 `pushUrlToWindow` 推送的链接 [[查看](#pushurltowindow推送-url-到基座路由)]
+- 通过 `locationHrefSet` 拦截子应用 `location.href` 跳转 [[查看](#locationhrefset拦截子应用-locationhref)]
+- 通过 `processAppForHrefJump` 拦截前进的链接来自第三方网页 [[查看](#processappforhrefjump-监听前进和后端)]
 
 流程：
 
