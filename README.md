@@ -4878,8 +4878,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 计算应用的链接：
 
-- 如果 `sync` 同步路由，且初次启动或预加载 `active`，通过 `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)] 获取子应用路由
-- 否则没有配置同步路由，或者 `umd` 切换应用，都会使用子应用入口链接作为路由
+- 只有配置 `sync` 同步路由，且应用还未启动过，将通过 `getSyncUrl` 获取完整链接 [[查看](#getsyncurl获取需要同步的-url)]
+- 其他情况全部为应用入口链接
 
 **第二步：比较路由**
 
