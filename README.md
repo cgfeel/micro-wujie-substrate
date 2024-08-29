@@ -4899,7 +4899,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `alive` 只有首次加载才需要同步路由到子应用，重建模式每次都是首次加载
 
-通过 `getSyncUrl` 获取完整的链接，有可能来自 `locationHrefSet` 路由劫持 [[查看](#locationhrefset拦截子应用-locationhref)]：
+通过 `getSyncUrl` 获取资源链接，有可能来自 `locationHrefSet` 路由劫持 [[查看](#locationhrefset拦截子应用-locationhref)]：
 
 - 劫持路由会记录完整的 `url`，例如：`project={https://example.com}`
 - 对于 `http` 开头的链接全部以资源入口作为链接
