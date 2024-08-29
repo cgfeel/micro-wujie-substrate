@@ -4911,7 +4911,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 **第二步：比较路由进行同步**
 
 - `appRoutePath` 需要通过 `appRouteParse` 计算得到 [[查看](#approuteparse-提取链接)]
-- 比较 `preAppRoutePath` 和 `appRoutePath`，若不相等需要通过沙箱 `replaceState` 更新路由
+- 比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新路由
+
+子应用路由和资源入口提取的路由一致的情况下，不需要更新路由：
+
+- 首次加载沙箱的路由是 `/`，应用入口链接虽然和基座不同，但路由也有可能是 `/`
+- 再次加载，沙箱链接更新为 `origin` + `appRoutePath`，此时路由都是 `appRoutePath`
 
 #### `clearInactiveAppUrl`：清理路由
 
