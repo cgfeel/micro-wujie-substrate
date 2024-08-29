@@ -4837,7 +4837,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第二步：处理短路径**
 
-遍历 `prefix` 拿到短链名的 `shortPath` 和对应的长链接 `longPath`：
+遍历 `prefix` 拿到短链名 `shortPath` 和对应的长链接 `longPath`：
 
 - 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
 - 更新会取最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
@@ -4847,11 +4847,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 `sync` 已配置：
 
 - 通过 `encodeURIComponent` 更新 `queryMap[id]` 的值为 `curUrl`
-- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中匹配短链对应的 `url` 为 `{短链名}`
+- 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中 `longPath` 部分为 `{短链名}`
 
-`sync` 未配置：
-
-- 从 `queryMap` 中删除应用对应的值
+> `sync` 未配置：从 `queryMap` 中删除应用对应的值
 
 **第四步：更新路由**
 
