@@ -4744,8 +4744,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 原因：
 
-- 子应用的 `script` 运行在一个和主应用同域的 `iframe` 沙箱中
-- 设置 `src` 为 `mainHostPath`（即全局 `origin`），会主动加载主应用
+- 子应用的 `script` 运行在一个和基座同域的 `iframe` 沙箱中
+- 设置 `src` 为 `mainHostPath`，即基座 `origin` 会主动加载基座
 - 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时中断加载，防止污染子应用
 
 `iframe` 实例化之前 `stop` 可以吗？
