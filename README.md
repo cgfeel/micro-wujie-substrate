@@ -4766,7 +4766,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `syncIframeUrlToWindow` 监听沙箱前进后退
 
-子应用前进后退，同步路由到主应用
+子应用沙箱 `iframe` 中监听 `popstate` 的 `hashchange`，同步路由到主应用
 
 目录：`iframe.ts` - `syncIframeUrlToWindow` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L697)]
 
