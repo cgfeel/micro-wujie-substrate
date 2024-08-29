@@ -4911,7 +4911,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 **第二步：比较路由进行同步**
 
 - `appRoutePath` 需要通过 `appRouteParse` 计算得到 [[查看](#approuteparse-提取链接)]
-- 比较 `preAppRoutePath` 和 `appRoutePath`，只有不相等的情况需要通过沙箱 `replaceState` 更新路由
+- 比较 `preAppRoutePath` 和 `appRoutePath`，若不相等需要通过沙箱 `replaceState` 更新路由
 
 #### `clearInactiveAppUrl`：清理路由
 
