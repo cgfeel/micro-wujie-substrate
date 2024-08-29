@@ -4710,9 +4710,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 流程：
 
 - 通过 `iframeWindow` 拿到沙箱的 `document` 并创建 `base` 元素
-- 将 `iframe` 的 `href`，和应用的入口链接通过 `anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)] 创建 2 个 `HTMLAnchorElement` 对象
-- 使用子应用的 `origin` + 基座的 `pathname` 作为 `base` 元素的 `href`
-- 将 `base` 元素插入沙箱 `iframe` 中
+- 通过 `anchorElementGenerator` 创建 2 个链接元素：基基座 `origin`，子应用入口链接 [[查看](#anchorelementgenerator转换-url)]
+- 使用子应用 `origin` + 基座 `pathname` 作为 `base` 元素的 `href`，之后插入沙箱 `head` 中
+
+> 初始化时沙箱 `iframe` 的链接为 `mainHostPath`，为基座 `origin`，`pathname` 为空
 
 注意：
 
