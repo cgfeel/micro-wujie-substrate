@@ -4870,8 +4870,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：拿到配置**
 
-- 从沙箱 `iframe` 的 `location` 中提取： `pathname`、`search`、`hash`
-- 从应用实例中拿到必要的属性，见源码
+- 从沙箱 `location` 中提取：`pathname`、`search`、`hash`，从应用实例中获取属性（继续往下看）
 
 计算子应用的路由：
 
