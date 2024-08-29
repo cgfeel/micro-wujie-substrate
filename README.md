@@ -4866,7 +4866,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景：
 
-- `active` 激活应用，见：同步路由 [[查看](#3-同步路由)]
+- `active` 激活应用时同步路由，见：同步路由 [[查看](#3-同步路由)]
 
 **第一步：拿到配置**
 
