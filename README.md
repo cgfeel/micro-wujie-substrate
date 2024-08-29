@@ -4868,13 +4868,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `active` 激活应用时同步路由，见：同步路由 [[查看](#3-同步路由)]
 
+> 需要基座和应用都同步路由时，一定会先执行 `syncUrlToIframe` 同步路由到子应用
+
 **第一步：拿到配置**
 
 - 从沙箱 `location` 中提取：`pathname`、`search`、`hash`
 - 从应用实例中获取：`id`、`url`、`sync`，`execFlag`、`prefix`，用于计算应用的链接
 - 从应用实例中获取：`inject` 得到基座 `origin` 为沙箱 `iframe` 更新 `history`
 
-计算子应用的路由：
+计算应用的链接：
 
 - 如果 `sync` 同步路由，且初次启动或预加载 `active`，通过 `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)] 获取子应用路由
 - 否则没有配置同步路由，或者 `umd` 切换应用，都会使用子应用入口链接作为路由
