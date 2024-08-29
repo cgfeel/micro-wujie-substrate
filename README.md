@@ -4778,9 +4778,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `iframeWindow`：沙箱 `window`，用于添加监听事件
 
-当沙箱路由发生改变通过 `syncUrlToWindow` 同步到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
+流程：当沙箱路由发生改变通过 `syncUrlToWindow` 同步到基座 [[查看](#syncurltowindow同步子应用路由到主应用)]
 
-- 调用场景：子应用路由更新，由 `patchIframeHistory` 拦截后同步更新沙箱 `history` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+调用场景：
+
+- `patchIframeHistory`：拦截子应用路由更新，同步更新沙箱 `history` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+- `iframeGenerator`：沙箱初始化最后一步同步路由 [[查看](#iframegenerator创建沙箱-iframe)]
+- `syncUrlToIframe`：同步路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 > 而浏览器的前进后退，以及 `url` 的变更，会导致基座重新渲染，根据情况重新启动子应用
 
