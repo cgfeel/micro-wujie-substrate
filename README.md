@@ -4748,13 +4748,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 设置 `src` 为 `mainHostPath`，即基座 `origin` 会主动加载基座
 - 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时中断加载，防止污染子应用
 
-`iframe` 实例化之前 `stop` 可以吗？
+来自文档的提醒 [[查看](https://wujie-micro.github.io/doc/guide/information.html#%E7%BB%86%E8%8A%82)]：
 
-- 不行，此时沙箱 `iframe` 的链接还是 `about:blank`，会导致沙箱 `location` 不正确
-
-那 `iframe` 实例化后通过 `document.write` 擦除可以吗？
-
-- 不行，路由的同步功能将失败
+- 若沙箱没有完成实例化就 `stop`，此时链接为 `about:blank` 会导致子应用路由无法运行
+- 如果沙箱实例化时采用 `document.write` 擦除，路由的同步功能将失败
 
 流程：
 
