@@ -4662,8 +4662,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 为什么要创建一个新的 `html`：
 
-- 因为 `initIframeDom` 之前通过 `stopIframeLoading` 检测了 `document` 改变 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
-- `document` 因配置了 `src` 实例化后加载基座 `origin` 完成变更
+- 因为 `initIframeDom` 之前通过 `stopIframeLoading` 检测沙箱 `document` 改变 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+- 沙箱 `document` 因配置了 `src`，实例化后加载基座 `origin` 完成变更
 - 因此执行 `initIframeDom` 时要使用一个空白的 ` html` 去替换原先加载的页面
 
 **第二步：注入 `iframeWindow` 全局属性**
