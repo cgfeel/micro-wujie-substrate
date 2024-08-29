@@ -4904,7 +4904,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 劫持路由会记录完整的 `url`，例如：`project={https://example.com}`
 - 对于 `http` 开头的链接全部以资源入口作为链接
 
-**第二步：比较路由**
+**第二步：比较路由进行同步**
 
 - 将拿到的路由通过 `appRouteParse` [[查看](#approuteparse-提取链接)]，计算得到 `appRoutePath` 作为最终预期的子应用路由
 - 比较 `appRoutePath` 和最初从沙箱 `iframe` 中拿到的 `pathname` + `search` + `hash` 进行比较
@@ -4944,7 +4944,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 调用场景有 2 个：
 
 - `WuJie` 实例初始化
-- `syncUrlToIframe` 同步主应用路由到子应用
+- `syncUrlToIframe` 同步主应用路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 #### `anchorElementGenerator`：转换 `url`
 
@@ -4959,6 +4959,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 返回：
 
 - `HTMLAnchorElement` 对象
+
+`syncUrlToIframe` 同步路由时可能会通过 `appRouteParse` 透传相对路径作为 `url` [[查看](#syncurltoiframe同步主应用路由到子应用)]：
+
+- 这时创建的资源会根据沙箱中 `base` 元素决定 `href` [[查看](#base标签操作)]
 
 #### `getAnchorElementQueryMap` 转化 `url.search` 为键值对象
 
