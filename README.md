@@ -4819,7 +4819,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景：
 
-- `active` 激活应用时同步路由，包含：预加载、初次启动应用、切换应用 [[查看](#-active-激活应用)]
+- `active` 激活应用时同步路由，见：同步路由 [[查看](#3-同步路由)]
 - `syncIframeUrlToWindow`：监听沙箱 `window`：`popstate`、`hashchange` [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 - `patchIframeHistory`：劫持沙箱 `history`：`pushState`、`replaceState` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
@@ -4866,8 +4866,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景：
 
-- 只有 `alive` 模式切换路由不会调用
-- 其他所有场景，无论是预加载、初次启动、切换应用都会显同步主应用路由，再从子应用同步路由到主应用
+- `active` 激活应用，见：同步路由 [[查看](#3-同步路由)]
 
 **第一步：拿到配置**
 
