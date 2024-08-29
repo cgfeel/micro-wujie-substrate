@@ -4840,7 +4840,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 遍历 `prefix` 拿到短链名的 `shortPath` 和对应的长链接 `longPath`：
 
 - 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
-- 更新会去最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
+- 更新会取最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
 
 **第三步：同步路由**
 
