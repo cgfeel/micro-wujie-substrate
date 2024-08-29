@@ -4870,7 +4870,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：拿到配置**
 
-- 从沙箱 `location` 中提取：`pathname`、`search`、`hash`，从应用实例中获取属性（继续往下看）
+- 从沙箱 `location` 中提取：`pathname`、`search`、`hash`
+- 从应用实例中获取：`id`、`url`、`sync`，`execFlag`、`prefix`，用于计算应用的链接
+- 从应用实例中获取：`inject` 得到基座 `origin` 为沙箱 `iframe` 更新 `history`
 
 计算子应用的路由：
 
