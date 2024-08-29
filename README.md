@@ -4727,8 +4727,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 流程：
 
-- 将 `iframe` 的 `origin` 取出 `mainHostPath` 变成相对路径，通过 `new URL` 使其作为 `appHostPath` 的 `pathname`
+- 通过 `new URL` 将沙箱当前的 `url` 中基座的 `origin` 替换成子应用 `origin`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
+
+> 源码中 `baseUrl.href` 即是 `appHostPath + baseUrl.pathname`，没必要算 2 次
 
 #### `stopIframeLoading`：实现一个纯净的沙箱 `iframe`
 
