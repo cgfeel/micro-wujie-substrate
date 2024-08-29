@@ -4832,14 +4832,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 - 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]
 - 通过 `HTMLAnchorElement` 拿到 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
-- 拿到 `iframeWindow.location` 中的 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
+- 从沙箱 `location` 中提取 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
 - 声明一个变量 `validShortPath` 用于记录匹配的短链接名
 
 **第二步：处理短路径**
 
-遍历 `prefix` 拿到短链名和对应的 `url`，匹配并更新 `validShortPath`，要求：
+遍历 `prefix` 拿到短链名的 `shortPath` 和对应的长链接 `longPath`：
 
-- `curUrl` 必须是用遍历的 `url` 开头，且 `url` 尽可能匹配 `curUrl`
+- 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
+- 更新会去最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
 
 **第三步：同步路由**
 
