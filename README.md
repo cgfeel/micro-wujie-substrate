@@ -4786,14 +4786,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `src`：新疆 `iframe` 的 `src`
+- `src`：计划创建 `iframe` 的链接
 - `element`：要替换的渲染容器的父级挂载点
-- `degradeAttrs`：新疆 `iframe` 的属性，由配置入口提供
+- `degradeAttrs`：创建 `iframe` 的属性，由配置提供，见：`degrade` [[查看](#41-degrade-主动降级渲染)]
 
 调用场景：
 
 - 子应用通过 `locationHrefSet` 拦截 `location.href` [[查看](#locationhrefset拦截子应用-locationhref)]
-- 监听 `popstate`，前进的链接 `search` 是来自 `pushUrlToWindow` 推送的链接 [[查看](#pushurltowindow推送-url-到基座路由)]
+- 基座监听 `popstate`，前进的链接 `search` 是来自 `pushUrlToWindow` 推送的链接 [[查看](#pushurltowindow推送-url-到基座路由)]
 
 流程：
 
