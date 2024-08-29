@@ -4922,7 +4922,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
 
-清理非激活态的子应用同步参数：
+清理子应用过期的同步参数：
 
 - 通过 `anchorElementGenerator` 将当前的链接转换为一个 `HTMLAnchorElement` 对象
 - 通过 `getAnchorElementQueryMap` 将链接的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
