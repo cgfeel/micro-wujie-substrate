@@ -4750,12 +4750,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `iframe` 实例化之前 `stop` 可以吗？
 
-- 不行，此时 `iframe` 的 `location.origin` 还是 `about:blank`
-- 会导致后续获取 `iframeWindow.location` 无效
+- 不行，此时沙箱 `iframe` 的链接还是 `about:blank`，会导致沙箱 `location` 不正确
 
 那 `iframe` 实例化后通过 `document.write` 擦除可以吗？
 
-- 不行，路由器的同步功能将失败
+- 不行，路由的同步功能将失败
 
 流程：
 
