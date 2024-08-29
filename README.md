@@ -4872,30 +4872,34 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第一步：获取配置**
 
-- 从沙箱 `location` 中提取：`pathname`、`search`、`hash`
+- 从沙箱 `location` 中提取：`pathname`、`search`、`hash`，决定是否更新路由
 - 从应用实例中获取：`id`、`url`、`sync`，`execFlag`、`prefix`，用于计算应用的链接
 - 从应用实例中获取：`inject` 得到基座 `origin` 为沙箱 `iframe` 更新 `history`
 
 计算应用的链接：
 
 - 同步路由应当以资源入口链接作为参考：基座 `origin` + 资源入口 `pathname` + `search` + `hash`
-- 但存在同步路由时通过 `prefix` 转换为短连接的情况，这时就要通过 `getSyncUrl` 获取完整链接 [[查看](#getsyncurl获取需要同步的-url)]
+- 但存在同步路由到基座时，通过 `prefix` 转换连接的情况，这就要通过 `getSyncUrl` 获取资源链接 [[查看](#getsyncurl获取需要同步的-url)]
+
+> `getSyncUrl` 会根据当前浏览的链接，提取应用对应的路由
 
 因此对于配置 `sync` 同步路由，且 `execFlag` 应用还未启动才需要转换：
 
 - `sync` 决定了 `syncUrlToWindow` 要不要通过 `prefix` 转换为短连接 [[查看](#syncurltowindow同步子应用路由到主应用)]
 - `execFlag` 决定了当前是否为首次加载，再次加载沙箱 `iframe` 的路由已完成了转换
 
-首次加载包括：刷新页面、切换未加载过的应用，转换后得到完整的路由
+首次加载包括：刷新页面、切换未加载过的应用，这样得到 2 个路由：
 
-- 下次切换应用，沙箱的 `pathname` + `search` + `hash` 和资源入口链接相同，无需再同步路由
+- `preAppRoutePath`：首次加载沙箱 `location` 为基座 `origin`，计算的到的路由为 `/`
+- `appRoutePath`：根据资源入口链接，得到 `pathname` + `search` + `hash`
+
+> 一旦更新沙箱的 `history`，下次切换应用时 2 个路由相同，无需再同步路由到子应用
 
 只有 `umd` 模式需要区分首次加载：
 
-- `alive` 只有首次加载才需要同步路由到子应用
-- 重建模式每次都是首次加载
+- `alive` 只有首次加载才需要同步路由到子应用，重建模式每次都是首次加载
 
-通过 `getSyncUrl` 获取完整的链接，有可能来自 `locationHrefSet` 路由劫持：
+通过 `getSyncUrl` 获取完整的链接，有可能来自 `locationHrefSet` 路由劫持 [[查看](#locationhrefset拦截子应用-locationhref)]：
 
 - 劫持路由会记录完整的 `url`，例如：`project={https://example.com}`
 - 对于 `http` 开头的链接全部以资源入口作为链接
