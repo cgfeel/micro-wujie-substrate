@@ -4943,7 +4943,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景有 2 个：
 
-- `WuJie` 实例初始化
+- 应用实例初始化，用于拆解资源入口链接用于创建沙箱和代理，见：创建沙箱 `iframe` [[查看](#3-创建沙箱-iframe)]
 - `syncUrlToIframe` 同步主应用路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 #### `anchorElementGenerator`：转换 `url`
