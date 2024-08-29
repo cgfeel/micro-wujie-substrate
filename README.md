@@ -2713,8 +2713,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **6. 从 `fetch` 看兼容性**
 
-- `fetch` 是不兼容 `IE` 的，在文档描述通过 `degrade` 实现容器和 `proxy` 兼容，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#degrade)]。
-- 为了解决请求兼容的问题，可以自行配置 `fetch` 通过 `ajax` 请求资源，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#fetch)]。
+- `fetch` 是不兼容 `IE` 的，在文档描述通过 `degrade` 实现容器和 `proxy` 兼容，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#degrade)]
+- 为了解决请求兼容的问题，可以自行配置 `fetch` 通过 `ajax` 请求资源，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#fetch)]
 
 > 有 2 个场景需要手动配置 `fetch`：① 兼容 `IE`，② 统一 `authentication`
 
