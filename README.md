@@ -4910,9 +4910,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第二步：比较路由进行同步**
 
-- 将拿到的路由通过 `appRouteParse` [[查看](#approuteparse-提取链接)]，计算得到 `appRoutePath` 作为最终预期的子应用路由
-- 比较 `appRoutePath` 和最初从沙箱 `iframe` 中拿到的 `pathname` + `search` + `hash` 进行比较
-- 如果不同则通过 `iframeWindow.history.replaceState` 进行替换跳转
+- `appRoutePath` 需要通过 `appRouteParse` 计算得到 [[查看](#approuteparse-提取链接)]
+- 比较 `preAppRoutePath` 和 `appRoutePath`，只有不相等的情况需要通过沙箱 `replaceState` 更新路由
 
 #### `clearInactiveAppUrl`：清理路由
 
