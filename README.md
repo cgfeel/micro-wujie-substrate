@@ -4704,7 +4704,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `iframeWindow`：沙箱的 `window` 对象
+- `iframeWindow`：沙箱 `window`，用于获取沙箱 `document` 和初始化的 `href`
 - `url`：子应用的入口链接
 
 流程：
