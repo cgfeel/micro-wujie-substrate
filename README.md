@@ -5009,7 +5009,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `id`：应用名，用于从 `search` 键值对中取出路由
 - `prefix`：配置的短链接集合，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
 
-返回字符类型的子应用路由：
+返回字符类型的子应用路由，有 3 种情况：
 
 - `pathname`：匹配到子应用路由
 - 绝对路径的 `url`：劫持 `href` 实现的拦截路由，见：`pushUrlToWindow` [[查看](#pushurltowindow推送-url-到基座路由)]
