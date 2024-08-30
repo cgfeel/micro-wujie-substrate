@@ -5374,7 +5374,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 除了上述罗列的操作方式外，均可以通过给元素添加特定属性，来查找并操作元素
 
-对于非外联样式和非 `script` 的元素，会执行以下操作：
+添加过程中，元素不变的情况都会执行以下操作：
 
 - `rawDOMAppendOrInsertBefore`：调用原生方法添加元素
 - `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `window`
