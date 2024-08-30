@@ -5052,7 +5052,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 除非手动提供错误的链接，还是上面的例子：
 
-- 手动访问路由：`/react?project={test}` 会因 `prefix` 找不到，返回字符类型的路由：`undefined`
+- 手动访问路由 `/react?project={test}`，会因 `prefix` 找不到返回字符类型的路由：`undefined`
 
 #### `getAbsolutePath`：获取绝对路径
 
