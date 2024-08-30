@@ -5407,7 +5407,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > `link` 是外联样式，将创建一个注释元素并返回
 
-外联样式 `href` 为空或不在 `cssExcludes` 列表，添加注释前需要：
+外联样式 `href` 为空或不在 `cssExcludes` 列表，返回注释前需要：
 
 - 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
