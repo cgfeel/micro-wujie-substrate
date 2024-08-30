@@ -5382,9 +5382,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
 
-动态添加的 `newChild` 如何处理：
+动态添加的 `newChild` 将引用为新的对象 `element`：
 
-- 引用声明新的对象 `element`，对于外联元素加载成功或失败，在触发加载事件后都会更新为 `null`
+- 对于外联元素加载成功或失败，在触发加载事件后都会更新为 `null`
 - 对于非外联的元素，通过 `rawDOMAppendOrInsertBefore` 添加到容器后，返回元素
 
 加载外联资源失败怎么处理：
