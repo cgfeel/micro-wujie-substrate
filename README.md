@@ -5128,18 +5128,20 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### 子应用中的链接指向
 
-| 位置          | 分类                        | 链接指向                                                      | 补充说明                                                                                     |
-| ------------- | --------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| 基座          | `window`                    | 基座所在作用域                                                | 按照全局 `window` 决定链接                                                                   |
-| 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `origin`                                                 | 沙箱和基座同域以便相互通信                                                                   |
-| 沙箱 `iframe` | `location`                  | 初始化：基座 `origin`，随路由变更：基座 `origin` + 子应用路由 | 同步基座路由到子应用，见：`syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] |
-| 沙箱 `iframe` | `base` 元素                 | 子应用 `origin` + 沙箱路由                                    | 修正子应用中所有相对路径的资源链接                                                           |
+| 位置          | 分类                        | 链接指向                                                      | 补充说明                           |
+| ------------- | --------------------------- | ------------------------------------------------------------- | ---------------------------------- |
+| 基座          | `window`                    | 基座所在作用域                                                | 按照全局 `window` 决定链接         |
+| 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `origin`                                                 | 沙箱和基座同域以便相互通信         |
+| 沙箱 `iframe` | `location`                  | 初始化：基座 `origin`，随路由变更：基座 `origin` + 子应用路由 | 随子应用路由变化                   |
+| 沙箱 `iframe` | `base` 元素                 | 子应用 `origin` + 沙箱路由                                    | 修正子应用中所有相对路径的资源链接 |
 
-沙箱 `pathname` 变化：
+沙箱 `location` 随路由变化：
 
-- 初始化：基座 `origin`，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
-- 通过 `patchIframeHistory` 劫持 `history` 将 `origin` 替换成基座 `origin` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
-- 然后通过 `updateBase` 修正子应用的 `base` 元素 [[查看](#base标签操作)]
+| 执行函数                                                                      | 阶段                          | `location`                 |
+| ----------------------------------------------------------------------------- | ----------------------------- | -------------------------- |
+| `iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]                   | 初始化                        | 基座 `origin`              |
+| `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)]            | 同步路由到子应用              | 基座 `origin` + 子应用路由 |
+| `patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)] | 劫持子应用 `history` 状态更新 | 基座 `origin` + 子应用路由 |
 
 `location` 的指向按照沙箱 `iframe` 的 `url` 来，但这就有问题了：
 
