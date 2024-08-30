@@ -5152,7 +5152,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
-`degrade` 下沙箱 `location` 和 `proxyLocation` 的区别：
+`degrade` 下沙箱 `location` 和 `proxyLocation` 取值的区别：
 
 | 相关属性和对象                                   | `proxyLocation`                                                 | 沙箱 `location`                       |
 | ------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------- |
