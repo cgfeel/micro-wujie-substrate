@@ -4951,11 +4951,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `url`：字符类型的链接
 
-根据传入的链接提取 3 个对象：
+返回：根据传入的链接提取对象包含 3 个属性
 
-- `urlElement`：通过 `anchorElementGenerator` 转换 `url` 为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- `appHostPath`：根据提供的 `url` 提取 `origin`
-- `appRoutePath`：包含了 `pathname` + `search` + `hash`
+- `urlElement`：通过 `anchorElementGenerator` 转换链接为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
+- `appHostPath`：提取链接 `origin`
+- `appRoutePath`：包含链接的 `pathname` + `search` + `hash`
 
 调用场景有 2 个：
 
