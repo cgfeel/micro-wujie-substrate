@@ -5414,7 +5414,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 否则添加注释并返回不做任何处理
 
-加载样式提供的参数：
+提供给 `getExternalStyleSheets` 参数：
 
 - 样式集合，每个对象包含：`src` 链接、`ignore` 是否通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 - `fetch`：来自应用实例 `active` 打补丁后的 `fetch` [[查看](#2-动态修改-fetch)]
