@@ -5184,7 +5184,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 配置 `cssIgnores` 作为外联加载的样式：只提取内联样式打补丁
 - 内联样式是个空对象：待注入样式后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
-> `React` 中动态添加样式，通常是创建空的 `style` 元素插入容器中，然后再向元素中注入样式
+> `React` 中动态添加样式，通常创建空的 `style` 元素插入容器，然后再向元素注入样式
 
 用途：
 
