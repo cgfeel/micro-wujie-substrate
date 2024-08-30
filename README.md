@@ -5145,7 +5145,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 问题：沙箱中获取 `location`
 
-- 假定应用入口链接为 `http://localhost:8080/pathname`，基座为 `http://localhost:3080`
+- 假定应用入口链接为 `http://localhost:8080/pathname`，基座为 `http://localhost:3000`
 - 因为沙箱和基座同域，得到结果为：`http://localhost:3000/pathname`
 
 于是在 `proxyLocation` 中做了一次拦截，用来修正取值 [[查看](#3-代理空对象作为-proxylocation)]：
