@@ -5199,7 +5199,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 若元素存在 `_patcher` 属性，通过 `clearTimeout` 取消绑定的宏任务避免重复执行
 - 通过 `setTimeout` 将宏任务绑定在元素的 `_patcher` 属性上
 
-`patcher` 做了什么：
+`patcher` 和 `patchCssRules` 打补丁的流程一样 [[查看](#-patchcssrules-子应用样式打补丁)]：
 
 - 通过 `getPatchStyleElements` 从提供的 `stylesheet` 中提取指定的样式
 - 若存在 `hostStyleSheetElement`：`:host` 样式元素，将其插入 `shadowRoot.head`
