@@ -5061,8 +5061,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 参数：
 
 - `url`：任意字符，包括 `url`、`pathname`、`search`、`hash`、空字符
-- `base`：参考的 `url`，必须为一个绝对路径，必填项
+- `base`：参考的 `url`，必须为 `http` 开头的绝对路径，必填项
 - `hash`：提取 `hash`，可选 `boolean` 型
+
+`base` 提供非 `http` 开头的路径有两种情况：
+
+- 无效：参数 `url` 是 `http` 开头的绝对路径将忽略 `base`
+- 报错：参数 `url` 是相对路径
 
 直接返回 `url` 有 2 个情况：
 
@@ -5073,10 +5078,6 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `url` 作为 `entry`，且一定是字符型
 - `base` 作为 `location.href`
-
-错误的情况：
-
-- 提供的参数 `url` 和 `base`，没有一个是 `http` 开头的绝对路径链接
 
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
