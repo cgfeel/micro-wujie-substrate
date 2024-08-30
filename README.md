@@ -5227,7 +5227,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 内联样式 | 由单页应用创建空的动态样式                  | `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)] |
 | 内联样式 | 开发人员动态添加的内联样式                  | `handleStylesheetElementPatch`                                                   |
 
-> 静态样式的提取通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
+> 应用中静态样式的提取通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 从上面可以知道动态添加样式来源 `start`，因此：
 
