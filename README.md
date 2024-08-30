@@ -1684,7 +1684,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 不会执行操作的情况：
 
-- `degrade` 降级不处理，没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
+- `degrade` 降级：没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
+- 配置 `cssIgnores` 作为外联加载的样式：只提取内联样式打补丁
+- 入口资源中包含 `ignore` 属性的样式：将被注释代替
 - `WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
 为什么处理过不再处理：
