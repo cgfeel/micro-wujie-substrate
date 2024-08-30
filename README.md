@@ -5191,7 +5191,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 不同之处：
 
 - `patchCssRules`：获取整个容器 `shadowRoot` 下所有的 `style` 元素进行匹配 [[查看](#-patchcssrules-子应用样式打补丁)]
-- `handleStylesheetElementPatch`：只处理通过 `patchRenderEffect` 添加的动态样式 [[查看](#patchrendereffect-为容器打补丁)]
+- `handleStylesheetElementPatch`：只处理通过 `rewriteAppendOrInsertChild` 动态添加的样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 流程：
 
