@@ -5133,7 +5133,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 基座          | `window`                    | 基座所在作用域                                                | 按照全局 `window` 决定链接                                                                   |
 | 基座          | 沙箱 `iframe` 的 `src` 属性 | 基座 `origin`                                                 | 沙箱和基座同域以便相互通信                                                                   |
 | 沙箱 `iframe` | `location`                  | 初始化：基座 `origin`，随路由变更：基座 `origin` + 子应用路由 | 同步基座路由到子应用，见：`syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] |
-| 沙箱 `iframe` | `base` 元素                 | 子应用 `origin` + 沙箱路由                                    | 修正子应用内中所有相对路径的资源链接                                                         |
+| 沙箱 `iframe` | `base` 元素                 | 子应用 `origin` + 沙箱路由                                    | 修正子应用中所有相对路径的资源链接                                                           |
 
 沙箱 `pathname` 变化：
 
