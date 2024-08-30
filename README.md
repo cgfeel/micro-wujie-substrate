@@ -5050,10 +5050,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 上面的例子中 `{home}` 应该通过 `endecodeURIComponent` 编译，这里为了演示直接展示了
 
-除非手动提供错误的链接：
+除非手动提供错误的链接，还是上面的例子：
 
-- 还是上面的例子，例如提供的 `search` 是：`/react?project={test}`
-- 会因找不到，返回字符类型的路由：`undefined`
+- 若手动打开路由：`/react?project={test}` 会因找不到，返回字符类型的路由：`undefined`
 
 #### `getAbsolutePath`：获取绝对路径
 
