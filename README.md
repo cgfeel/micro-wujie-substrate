@@ -5038,7 +5038,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 | 流程                           | 执行方法                                                           | 操作                                                                                    |
 | ------------------------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| 初次加载，同步路由到子应用     | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 假定为：`/react`                                                                        |
+| 初次加载，同步路由到子应用     | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 假定基座路由为 `/react`                                                                  |
 | 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 找不到 `search`，返回空字符                                                             |
 | 回到同步路由到子应用           | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 因拿到空字符，采用资源入口链接作为沙箱路由                                              |
 | 同步路由到基座                 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 假定子应用路由是 `/home/path`，短连接对应 `home`，基座路由更新为：`/react?project=home` |
