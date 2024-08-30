@@ -5154,14 +5154,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `degrade` 下沙箱 `location` 和 `proxyLocation` 的区别：
 
-| 相关属性和对象                                   | `proxyLocation`                                                                      | 沙箱 `location`                       |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------- |
-| `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                                               | 按照基座来                            |
-| `href`                                           | 通过 `relace` 将基座 `origin` 替换成子应用                                           | 按照基座来                            |
-| `replace`                                        | 通过 `relace` 将子应用 `origin` 替换成基座，因为这个操作会修改沙箱 `iframe` 的 `url` | 按照基座来                            |
-| 其他属性                                         | 从沙箱 `location` 中取                                                               | 从沙箱 `location` 中取                |
-| `fetch` 请求                                     | 相对路径按照 `base` 元素来补全                                                       | 相对路径按照 `base` 元素来补全        |
-| 配置并重写 `fetch`                               | 相对路径将通过 `proxyLocation` 来补全                                                | 相对路径将通过 `proxyLocation` 来补全 |
+| 相关属性和对象                                   | `proxyLocation`                                                 | 沙箱 `location`                       |
+| ------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------- |
+| `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                          | 按照基座来                            |
+| `href`                                           | 通过 `relace` 替换成子应用 `origin`                             | 按照基座来                            |
+| `replace`                                        | 通过 `relace` 替换成基座 `origin`，因为沙箱 `iframe` 和基座同域 | 按照基座来                            |
+| 其他属性                                         | 从沙箱 `location` 中取                                          | 从沙箱 `location` 中取                |
+| `fetch` 请求                                     | 相对路径按照 `base` 元素来补全                                  | 相对路径按照 `base` 元素来补全        |
+| 配置并重写 `fetch`                               | 相对路径将通过 `proxyLocation` 来补全                           | 相对路径将通过 `proxyLocation` 来补全 |
 
 > `fetch` 无论是通过 `base` 元素还是 `proxyLocation`，相对路径都以子应用 `origin` 来补全
 
