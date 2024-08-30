@@ -5178,10 +5178,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 不处理的情况：
 
-- `style` 元素是个空对象
-- 应用实例采用主动降级渲染，不存在 `shadowRoot`
+- `style` 元素是个空对象，或者 `degrade` 主动降级渲染，不存在 `shadowRoot`
 
-> 在 `React` 中动态添加样式的操作是先将一个空的 `style` 对象插入 `Dom`，然后再向 `style` 元素中注入样式
+> `React` 中动态添加样式，通常是创建空的 `style` 元素插入 `Dom`，然后再向元素中注入样式
 
 用途：
 
