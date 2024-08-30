@@ -5456,7 +5456,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 加载 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 创建一个注释并返回
 
-无论 `script` 是外联还是内联，都会插入到实例队列 `execQueue` 中执行：
+无论 `script` 是外联还是内联，都会插入到应用实例队列 `execQueue` 中执行：
 
 - 提取队列长度，用于判断插入队列后是否要立即执行
 - 队列中添加一个函数，将 `script` 注入沙箱，开启 `fiber` 下会包裹在 `requestIdleCallback` 执行
