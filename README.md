@@ -4880,9 +4880,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 从应用实例中获取：`id`、`url`、`sync`，`execFlag`、`prefix`，用于计算应用路由
 - 从应用实例中获取：`inject` 得到基座 `origin` 为沙箱 `iframe` 更新 `history`
 
-计算应用的链接：
+同步路由到子应用最终目的：
 
-- 同步路由应当以资源入口链接作为参考：基座 `origin` + 资源入口 `pathname` + `search` + `hash`
+- 以资源入口链接作为初始路由：基座 `origin` + 资源入口 `pathname` + `search` + `hash`
 - 但同步路由到基座有可能会通过 `prefix` 转换连接，这就要通过 `getSyncUrl` 获取资源链接 [[查看](#getsyncurl获取需要同步的-url)]
 
 > `getSyncUrl` 会根据当前浏览的链接，提取应用对应的路由
