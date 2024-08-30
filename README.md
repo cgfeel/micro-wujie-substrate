@@ -5366,7 +5366,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 动态添加            | `ignore` | 添加方式            | 注入后如何操作                                                                            |
 | ------------------- | -------- | ------------------- | ----------------------------------------------------------------------------------------- |
 | 外联和内联 `script` | 不匹配   | 加载为内联 `script` | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] |
-| 外联 `script`       | 匹配     | 创建外联 `script`   | 无法关联                                                                                  |
+| 外联 `script`       | 匹配     | 创建外联 `script`   | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] |
 | 外联样式            | 匹配     | 元素不变            | 直接操作                                                                                  |
 | 内联样式            | 不匹配   | 元素不变            | 直接操作                                                                                  |
 | 外联样式            | 不匹配   | 加载为内联样式      | 无法关联                                                                                  |
