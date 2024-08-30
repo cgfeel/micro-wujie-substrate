@@ -5446,7 +5446,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 在 `React` 中先添加空的内联样式元素，然后根据情况设置元素样式内容：
 
 - `getCssLoader` 不会处理 `React` 内应用动态添加的样式（添加元素时内容为空） [[查看](#通过配置替换资源)]
-- 而是通过 `patchStylesheetElement` 完成拦截样式属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
+- 而是通过 `patchStylesheetElement` 拦截元素属性添加样式 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
 > 拦截样式内容变更的主要目，是为了使用 `handleStylesheetElementPatch` 打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
