@@ -5227,12 +5227,12 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 内联样式 | 由单页应用创建空的动态样式                  | `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)] |
 | 内联样式 | 开发人员动态添加的内联样式                  | `handleStylesheetElementPatch`                                                   |
 
-> 应用中静态样式的提取通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
+> 应用中提取的静态样式通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 从上面可以知道动态添加样式来源 `start`，因此：
 
 - `alive` 模式：只有首次 `start` 会动态加载样式
-- `umd` 模式：理论上和 `alive` 一样，但是存在 `bug`，见：`patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]
+- `umd` 模式：理论上和 `alive` 一样，但是存在问题，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
 - 重建模式：每一次加载就是一次动态获取样式
 
 #### `patchStylesheetElement`：劫持处理样式元素的属性
