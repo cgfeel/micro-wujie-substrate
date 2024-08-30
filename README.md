@@ -5288,7 +5288,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `set` 操作：
   - 用原生方法获取对应的属性执行更新
   - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
-  - 通过 `nextTick` 发起一个微任务：通过 `handleStylesheetElementPatch` 提取当前元素打补丁
+  - 通过 `nextTick` 发起一个微任务：通过 `handleStylesheetElementPatch` 打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
 为什么 `cssLoader` 不提供样式的 `url`：
 
