@@ -5184,7 +5184,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 配置 `cssIgnores` 作为外联加载的样式：只提取内联样式打补丁
 - 内联样式是个空对象：待注入样式后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
-> `React` 中动态添加样式，通常创建空的 `style` 元素插入容器，然后再向元素注入样式
+动态添加样式不同的处理方式：
+
+| 分类     | 加载方式                                    | 如何打补丁                                                                       |
+| -------- | ------------------------------------------- | -------------------------------------------------------------------------------- |
+| 外联样式 | 加载后作为内联样式添加到容器                | `handleStylesheetElementPatch`                                                   |
+| 外联样式 | 配置 `cssIgnores`，作为浏览器加载的外联样式 | 不打补丁                                                                         |
+| 内联样式 | 由单页应用创建空的动态样式                  | `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)] |
+| 内联样式 | 有开发人员动态添加的内联样式                | `handleStylesheetElementPatch`                                                   |
 
 用途：
 
@@ -5218,8 +5225,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 单页应用动态添加样式的步骤：
 
 1. 通过 `active` 将 `template` 注入容器后通过 `patchRenderEffect` 重写注入方法 [[查看](#patchrendereffect-为容器打补丁)]
-2. 通过 `start` 将应用中入口 `script` 添加到沙箱 `iframe`，开始渲染
-3. 通过 `rewriteAppendOrInsertChild` 拦截空的样式元素写入，并对属性做拦截
+2. 通过 `start` 将应用中入口 `script` 添加到沙箱 `iframe`，开始渲染 [[查看](#-start-启动应用)]
+3. 通过 `rewriteAppendOrInsertChild` 拦截动态添加的内联样式元素 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 4. 通过 `patchStylesheetElement` 拦截样式写入元素，提取指定样式打补丁
 
 > 静态样式的提取通过 `patchCssRules` 打补丁，不会按照动态样式操作 [[查看](#-patchcssrules-子应用样式打补丁)]
