@@ -5215,9 +5215,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `rewriteAppendOrInsertChild`：动态添加内联和外联样式 2 处 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - `patchStylesheetElement`：拦截样式操作有 4 处 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-> 在 `rewriteAppendOrInsertChild` 中动态添加的外联样式会先下载，然后作为内联样式进行处理
-
-`SPA` 应用调用场景：
+单页应用动态添加样式的步骤：
 
 1. 通过 `active` 将 `template` 注入容器后通过 `patchRenderEffect` 重写注入方法 [[查看](#patchrendereffect-为容器打补丁)]
 2. 通过 `start` 将入口文件添加到沙箱 `iframe`，执行动态渲染
