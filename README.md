@@ -5352,7 +5352,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 执行函数返回对象：
 
 - 按照原生方法：`appendChild`、`insertBefore` 一样，返回添加的元素
-- 只有当添加的元素是 `script` 或是允许加载的外联样式时，会在沙箱 `iframe` 创建注释并返回
+- 但是当添加的元素是 `script` 或是外联样式时，会在沙箱 `iframe` 创建注释并返回
 
 原因在于添加元素属于上下文同步操作：
 
