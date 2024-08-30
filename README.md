@@ -5269,13 +5269,16 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 为什么重写 `insertRule`：
 
 - 添加 `CSSRule` 同时，将样式通过 `innerHTML` 或 `innerText` 写入 `style` 元素
-- 因为 `umd` 模式切换应用后不会重复动态添加样式，解决办法是把动态添加的样式写入样式元素
-- 而动态添加的样式元素会记录在 `styleSheetElements` 集合 [[查看](#2-stylesheetelements-收集样式表)]
+
+因为 `umd` 模式切换应用后不会重复动态添加样式，解决办法是把样式写入元素：
+
+- 动态添加的样式元素会记录在 `styleSheetElements` 集合 [[查看](#2-stylesheetelements-收集样式表)]
 - 当切换 `umd` 模式的应用时，会通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
-兼容性：
+`insertRule` 兼容性：
 
 - 现代浏览器都支持、`IE` 支持到 9，而这正是 `wujie` 理论上最低兼容版本
+- 对于不兼容的浏览器将忽略操作
 
 **第二步：劫持属性读取和写入**
 
