@@ -5032,7 +5032,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 存在一个语意上的 `bug`：
 
-- 正则匹配的短连接如果在 `prefix` 集合中找不到怎么办？
+- 正则匹配得到短连接，如果在 `prefix` 集合中找不到对应路由怎么办？
 
 正常加载的情况下不会出现问题，先看同步路由的流程：
 
