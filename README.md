@@ -5409,7 +5409,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 外联样式 `href` 为空或不在 `cssExcludes` 列表，返回注释前需要：
 
-- 通过 `getExternalStyleSheets` 加载样式 [[查看](#getexternalstylesheets加载样式资源)]：
+- 通过 `getExternalStyleSheets` 处理样式 [[查看](#getexternalstylesheets加载样式资源)]：
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
 
 > 否则添加注释并返回不做任何处理，添加注释后不接受样式上的任何处理
