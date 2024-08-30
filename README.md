@@ -1686,7 +1686,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `degrade` 降级：没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
 - 配置 `cssIgnores` 作为外联加载的样式：只提取内联样式打补丁
-- 入口资源中包含 `ignore` 属性的样式：将被注释代替
+- 入口资源中包含 `ignore` 属性的静态样式：将被注释代替
 - `WUJIE_DATA_ATTACH_CSS_FLAG` 已处理过不处理
 
 为什么处理过不再处理：
@@ -5180,7 +5180,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 不处理的情况：
 
-- `style` 元素是个空对象，或者 `degrade` 主动降级渲染，不存在 `shadowRoot`
+- `degrade` 降级：没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
+- 配置 `cssIgnores` 作为外联加载的样式：只提取内联样式打补丁
+- 内联样式是个空对象：待注入样式后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 
 > `React` 中动态添加样式，通常是创建空的 `style` 元素插入容器中，然后再向元素中注入样式
 
