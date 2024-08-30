@@ -5264,7 +5264,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 **第一步：提取原生属性**
 
 - 提取属性：`innerHTML`、`innerText`、`textContent`
-- 通过 `patchSheetInsertRule` 重写 `insertRule`
+- 通过 `patchSheetInsertRule` 重写 `stylesheetElement.sheet.insertRule`
 
 为什么重写 `insertRule`：
 
