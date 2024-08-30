@@ -5212,7 +5212,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 调用场景有 6 处：
 
-- `rewriteAppendOrInsertChild`：动态添加内联和外联样式 2 处
+- `rewriteAppendOrInsertChild`：动态添加内联和外联样式 2 处 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - `patchStylesheetElement`：拦截样式操作有 4 处 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
 > 在 `rewriteAppendOrInsertChild` 中动态添加的外联样式会先下载，然后作为内联样式进行处理
