@@ -5190,7 +5190,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 外联样式 | 加载后作为内联样式添加到容器                | `handleStylesheetElementPatch`                                                   |
 | 外联样式 | 配置 `cssIgnores`，作为浏览器加载的外联样式 | 不打补丁                                                                         |
 | 内联样式 | 由单页应用创建空的动态样式                  | `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)] |
-| 内联样式 | 有开发人员动态添加的内联样式                | `handleStylesheetElementPatch`                                                   |
+| 内联样式 | 开发人员动态添加的内联样式                  | `handleStylesheetElementPatch`                                                   |
 
 用途：
 
