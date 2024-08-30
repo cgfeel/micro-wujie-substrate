@@ -5025,14 +5025,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 处理路由的前提，是路由通过 `prefix` 替换了短连接为 `{short-name}`：
 
-- 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的 `pathname`
-- 将 `pathname` 从 `prefix` 找到对应的完整路径，替换后返回
+- 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的短连接
+- 将短连接从 `prefix` 找到对应的完整路径，替换后返回 `pathname`
 
-> 如果因为匹配不到得到空字符是无法通过正则匹配，仍旧是空字符
+> 如果因为匹配不到得到空字符，是无法通过正则匹配，仍旧是空字符
 
 存在一个语意上的 `bug`：
 
-- 正则匹配的 `pathname` 如果在 `prefix` 集合中找不到怎么办？
+- 正则匹配的短连接如果在 `prefix` 集合中找不到怎么办？
 
 但正常加载的情况下不会出现问题，先看同步路由的流程：
 
