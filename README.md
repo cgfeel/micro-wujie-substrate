@@ -5305,7 +5305,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
 - 将更新后的样式插入 `style` 元素后，再次通过 `patchSheetInsertRule` 重写 `insertRule`
-- 无论插入的元素是什么类型，最终都要将新增的元素返回
+
+> 无论插入的元素是什么类型，最终都要将新增的元素返回
 
 需要说明的是：
 
