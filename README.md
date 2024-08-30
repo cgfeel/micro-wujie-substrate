@@ -5363,8 +5363,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 由此得出：
 
-- 加载动态外联样式，以内联样式注入容器，之后各自操作不会产生任何关联
-- 动态添加的 `script` 可以通过 `findScriptElementFromIframe` 查找注入的 `script` 进行操作 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+| 动态添加            | `ignore` | 添加方式            | 注入后如何操作                                                                            |
+| ------------------- | -------- | ------------------- | ----------------------------------------------------------------------------------------- |
+| 外联和内联 `script` | 不匹配   | 加载为内联 `script` | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] |
+| 外联 `script`       | 匹配     | 创建外联 `script`   | 无法关联                                                                                  |
+| 外联样式            | 匹配     | 元素不变            | 直接操作                                                                                  |
+| 内联样式            | 不匹配   | 元素不变            | 直接操作                                                                                  |
+| 外联样式            | 不匹配   | 加载为内联样式      | 无法关联                                                                                  |
+
+> 除了上述罗列的操作方式外，均可以通过给元素添加特定属性，来查找并操作元素
 
 对于非外联样式和非 `script` 的元素，会执行以下操作：
 
