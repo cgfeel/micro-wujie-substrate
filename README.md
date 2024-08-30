@@ -5233,7 +5233,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `alive` 模式：只有首次启动会动态加载样式
 - `umd` 模式：理论上和 `alive` 一样，但是存在问题，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
-- 重建模式：每次启动都会重新获取动态样式
+- 重建模式：每次启动都会重新动态获取样式
 
 #### `patchStylesheetElement`：劫持处理样式元素的属性
 
@@ -5248,7 +5248,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 由于 `cssLoader` 是通过 `getCssLoader` 柯里化拿到的函数 [[查看](#通过配置替换资源)]：
 
-- 所以会因没有提供插件而没有任何执行，但 `cssLoader` 一定会是一个可执行的函数
+- 所以会因没有提供插件而不做处理，但 `cssLoader` 一定是可执行的函数
 
 不处理的情况：
 
