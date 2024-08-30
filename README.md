@@ -5336,7 +5336,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 `rawDOMAppendOrInsertBefore` 的类型：
 
 - `<T extends Node>(newChild: T, refChild?: Node | null) => T;`，其中 `refChild` 为可选参数
-- 这样 `refChild` 在 `appendChild` 中是无效参数，在 `insertBefore` 中是替换元素
+- 这样 `refChild` 在 `appendChild` 中是无效参数，在 `insertBefore` 中是参考元素
 
 返回函数：
 
