@@ -4988,9 +4988,13 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - `anchorElement`：`HTMLAnchorElement` 类型的对象
 
+返回：
+
+- `search` 键值对象：类型 `{ [key: string]: string }`
+
 流程：
 
-- 将 `url.search` 按照 `&` 拆分成数组，遍历并根据 `=` 拆分成 `key` 和 `value`
+- 将链接中 `search` 按照 `&` 拆分成数组，遍历并根据 `=` 拆分成 `key` 和 `value`
 - 如果 `key` 和 `value` 都存在责作为键值对添加到对象
 - 最后将添加的对象返回，如果没有任何匹配的键值对，返回一个空对象
 
