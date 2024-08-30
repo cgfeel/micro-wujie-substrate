@@ -5000,7 +5000,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `getSyncUrl`：获取需要同步的 `url`
 
-从基座浏览链接中提取 `search`，匹配并处理返回当前应用路由
+从基座浏览链接中提取 `search`，匹配并处理后返回当前应用路由
 
 目录：`utils.ts` - `getSyncUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L221)]
 
@@ -5009,22 +5009,42 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `id`：应用名，用于从 `search` 键值对中取出路由
 - `prefix`：配置的短链接集合，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
 
-返回：
+返回字符类型的子应用路由：
 
-- 子应用路由：`string`
+- `pathname`：匹配到子应用路由
+- 绝对路径的 `url`：劫持 `href` 实现的拦截路由，见：`pushUrlToWindow` [[查看](#pushurltowindow推送-url-到基座路由)]
+- 空字符：没有匹配到子应用路由
 
-流程：
+提取路由：
 
-- 拿到 `url.search` 键值对 `queryMap`，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]、`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
-- 使用应用名提取 `queryMap` 使用 `decodeURIComponent` 解析路由，如果不存在则使用空值
-- 提取路由中的短链 `validShortPath`，见：`syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)]
-- 如果提供短链集合，并且提取出短链名，通过提取的值返回子路由
-- 否则将解析的路由 `syncUrl` 直接返回
+- 通过 `anchorElementGenerator` 转换基座链接为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
+- 通过 `getAnchorElementQueryMap` 转换基座链接 `search` 拿到键值对 `queryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 使用应用名提取 `queryMap` 拿到子应用路由，通过 `decodeURIComponent` 解析路由
 
-存在的 `bug`：
+> 如果应用名不存在 `queryMap` 的键名中，拿到的是空字符
 
-- 即便提供了短链集合，也即便从路由中提取到了短链名，但是未必短链集合中就存在提取的短链名
-- 有可能因为在集合中找不到短链名 `replace` 为一个 `undefined` 字符
+处理路由的前提，是路由通过 `prefix` 替换了短连接为 `{short-name}`：
+
+- 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的 `pathname`
+- 将 `pathname` 从 `prefix` 找到对应的完整路径，替换后返回
+
+> 如果因为匹配不到得到空字符是无法通过正则匹配，仍旧是空字符
+
+存在一个语意上的 `bug`：
+
+- 正则匹配的 `pathname` 如果在 `prefix` 集合中找不到怎么办？
+
+但似乎这个问题不会永远都不会发生，先看同步路由的流程：
+
+| 流程                           | 执行方法                                                           | 操作                                                                                    |
+| ------------------------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| 初次加载，同步路由到子应用     | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 假定为：`/react`                                                                        |
+| 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 找不到 `search`，返回空字符                                                             |
+| 回到同步路由到子应用           | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 因拿到空字符，采用资源入口链接作为沙箱路由                                              |
+| 同步路由到基座                 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 假定子应用路由是 `/home/path`，短连接对应 `home`，基座路由更新为：`/react?project=home` |
+| 刷新页面，再次同步路由到子应用 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 路由为：`/react?project=home`                                                           |
+| 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 匹配返回 `/home/path` 作为沙箱路由                                                      |
+| 再次同步路由到基座             | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 基座路由 `search` 没有变化，不做更新                                                    |
 
 #### `getAbsolutePath`：获取绝对路径
 
