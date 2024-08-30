@@ -5482,7 +5482,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 声明一个 `script` 属性集合 `scriptOptions`：
 
 - 集合中的属性和 `processTpl` 提取外联 `script` 一样，但不包含：`async`、`defer` [[查看](#processtpl-提取资源)]
-- 除此之外通过 `jsIgnores` 添加属性 `ignore` 用于浏览器加载
+- 除此之外通过 `jsIgnores` 按条件添加属性 `ignore` 用于浏览器加载
 
 `scriptOptions` 的使用流程：
 
