@@ -5174,7 +5174,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 参数：
 
 - `stylesheetElement`：`style` 元素，带有属性 `_patcher` 用于存放宏任务
-- `sandbox`：应用实例，用于判断应用容器，获取 `shadowRoot`
+- `sandbox`：应用实例，用于获取 `degrade`、`shadowRoot`
 
 不处理的情况：
 
