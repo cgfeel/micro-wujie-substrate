@@ -5023,7 +5023,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 如果应用名不存在 `queryMap` 的键名中，拿到的是空字符
 
-处理路由的前提，是路由通过 `prefix` 替换了短连接为 `{short-name}`：
+处理路由的前提是路由通过 `prefix` 替换了短连接为 `{short-name}`：
 
 - 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的短连接
 - 将短连接从 `prefix` 找到对应的完整路径，替换后返回 `pathname`
