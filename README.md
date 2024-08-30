@@ -5034,7 +5034,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 正则匹配的 `pathname` 如果在 `prefix` 集合中找不到怎么办？
 
-但似乎这个问题不会永远都不会发生，先看同步路由的流程：
+但正常加载的情况下不会出现问题，先看同步路由的流程：
 
 | 流程                           | 执行方法                                                           | 操作                                                                                      |
 | ------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
@@ -5045,6 +5045,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 刷新页面，再次同步路由到子应用 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 路由为：`/react?project={home}`                                                           |
 | 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 匹配返回 `/home/path` 作为沙箱路由                                                        |
 | 再次同步路由到基座             | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 基座路由 `search` 没有变化，不做更新                                                      |
+
+由此可以看出路由中的短连接都来自 `syncUrlToWindow` 更新到基座，更新前已通过 `prefix` 匹配并提取
+
+> 上面的例子中 `{home}` 应该通过 `endecodeURIComponent` 编译，这里为了演示直接展示了
+
+除非手动提供错误的链接：
+
+- 还是上面的例子，例如提供的 `search` 是：`/react?project={test}`
+- 会因找不到，返回字符类型的路由：`undefined`
 
 #### `getAbsolutePath`：获取绝对路径
 
