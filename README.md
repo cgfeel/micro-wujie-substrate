@@ -5487,7 +5487,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 `scriptOptions` 的使用流程：
 
 - 提供给 `getExternalScripts` 处理后得到带有 `contentPromise` 的 `scriptResult` [[查看](#getexternalscripts加载-script-资源)]
-- 将 `scriptResult` 提供给 `execScript`，会结合 `onload` 提供给 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- 将 `scriptResult` 提供给 `execScript`，会结合 `onload` 透传给 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 通过 `getExternalScripts` 加载 `script`，参数和动态加载外联样式一样，不同在于：
 
