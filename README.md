@@ -5150,7 +5150,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 于是在 `proxyLocation` 中做了一次拦截，用来修正取值 [[查看](#3-代理空对象作为-proxylocation)]：
 
-- 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，并不走代理，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+- 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 `degrade` 下的 `location` 和 `proxyLocation` 的区别：
 
