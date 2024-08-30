@@ -5181,7 +5181,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 不处理的情况：
 
 - `degrade` 降级：没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
-- 动态添加的外联样式不打补丁
+- 通过 `cssIgnores` 动态添加的外联样式
 
 用途：
 
