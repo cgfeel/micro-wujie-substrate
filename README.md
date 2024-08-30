@@ -5252,7 +5252,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 不处理的情况：
 
-- `_hasPatchStyle` 已标记 `style` 元素已劫持过了
+- `_hasPatchStyle` 已标记，说明 `style` 元素已劫持过了
 - `patchStylesheetElement` 只处理来自应用内动态添加的内联样式，除此之外的样式都不处理
 
 劫持的属性：
