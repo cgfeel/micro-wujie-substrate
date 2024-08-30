@@ -5000,7 +5000,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 #### `getSyncUrl`：获取需要同步的 `url`
 
-从提取 `url.search` 中通过应用名，提取应用路由
+从基座浏览链接中提取 `search`，匹配并处理返回当前应用路由
 
 目录：`utils.ts` - `getSyncUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L221)]
 
