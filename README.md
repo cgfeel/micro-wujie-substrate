@@ -5006,8 +5006,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 参数：
 
-- `id`：应用名
-- `prefix`：短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
+- `id`：应用名，用于从 `search` 键值对中取出路由
+- `prefix`：配置的短链接集合，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
 
 返回：
 
