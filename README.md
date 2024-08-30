@@ -5143,15 +5143,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)]            | 同步路由到子应用              | 基座 `origin` + 子应用路由 |
 | `patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)] | 劫持子应用 `history` 状态更新 | 基座 `origin` + 子应用路由 |
 
-`location` 的指向按照沙箱 `iframe` 的 `url` 来，但这就有问题了：
+问题：沙箱中获取 `location`
 
-- 假定 `localhost:8080` 的子应用通过 `location` 获取 `href`
-- 因为 `iframe` 的 `url` 同基座 `origin`，如：`localhost:3000`
-- 那么就得到了错误的结果：`localhost:3000/pathname`
+- 假定应用入口链接为 `http://localhost:8080/pathname`，基座为 `http://localhost:3080`
+- 因为沙箱和基座同域，得到结果为：`http://localhost:3000/pathname`
 
-于是在 `proxyLocation` 中做了一次拦截，修正取值：
+于是在 `proxyLocation` 中做了一次拦截，用来修正取值 [[查看](#3-代理空对象作为-proxylocation)]：
 
-- 不巧的是 `degrade` 下沙箱的 `location` 是 `iframeWindow` 的属性，而不是 `proxyLocation`
+- 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，并不走代理，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 `degrade` 下的 `location` 和 `proxyLocation` 的区别：
 
