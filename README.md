@@ -5412,7 +5412,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `getExternalStyleSheets` 处理样式 [[查看](#getexternalstylesheets加载样式资源)]：
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
 
-> 否则添加注释并返回不做任何处理，添加注释后不接受样式上的任何处理
+> 否则添加注释并返回不做任何处理
 
 加载样式提供的参数：
 
