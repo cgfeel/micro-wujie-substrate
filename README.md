@@ -5231,9 +5231,9 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 从上面可以知道动态添加样式来源 `start`，因此：
 
-- `alive` 模式：只有首次 `start` 会动态加载样式
+- `alive` 模式：只有首次启动会动态加载样式
 - `umd` 模式：理论上和 `alive` 一样，但是存在问题，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
-- 重建模式：每一次加载就是一次动态获取样式
+- 重建模式：每次启动都会重新获取动态样式
 
 #### `patchStylesheetElement`：劫持处理样式元素的属性
 
