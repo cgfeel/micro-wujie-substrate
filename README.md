@@ -5430,7 +5430,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 用沙箱 `document` 创建一个内联样式元素
 - 从实例获取插件 `getCssLoader` 处理加载后的样式，将其作为内联样式的内容 [[查看](#通过配置替换资源)]
 - 将内联样式插入集合 `styleSheetElements`，以便 `umd` 模式恢复样式 [[查看](#2-stylesheetelements-收集样式表)]
-- 通过 `setAttrsToElement` 将属性键值对 `rawAttrs` 还原到内联样式
+- 通过 `setAttrsToElement` 将属性键值对 `rawAttrs` 添加到创建的元素
 - 通过 `rawDOMAppendOrInsertBefore` 将内联样式添加到容器
 - 通过 `handleStylesheetElementPatch` 为加载后的内联样式打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - 通过 `manualInvokeElementEvent` 发起 `load` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
