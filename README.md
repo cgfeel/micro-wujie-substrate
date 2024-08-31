@@ -1172,6 +1172,8 @@
 
 - 会在 `execQueue` 队列中第 1 个微任务或宏任务之前完成所有异步代码注入
 
+> 因为异步代码属于微任务，上下文必然会优先执行
+
 `fiber` 模式，第 1 任务：
 
 - `beforeScriptResultList` 存在的话，第 1 个队列是宏任务，否则继续往下看
@@ -1184,18 +1186,14 @@
 - `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
+`React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
+
 > 执行顺序从上至下，有 1 条满足后面的就不用再看
 
-补充说明：
-
-- 无论是不是 `fiber` 模式都不包含上下文同步任务，因为对于微任务来说，上下文你必然会优先执行
-- `React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
-
-为什么外联 `script` 存在宏任务：
+为什么外联 `script` 是宏任务：
 
 - 队列中无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
-- 只有通过 `src` 加载的 `script` 会通过 `onload` 回调执行 `execQueue.shift()()`
-- 而 `onload` 是宏任务，执行前，会优先完成上一个宏任务中的微任务
+- 只有通过 `src` 加载的 `script` 会通过宏任务 `onload` 回调执行 `execQueue.shift()()`
 
 如果 `execQueue` 在返回 `Promise` 之前，队列中只有同步执行的方法，会存在一个 `bug`，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
