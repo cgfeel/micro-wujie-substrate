@@ -5664,7 +5664,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 外联 `script`：无论是否 `ignore`，注入到沙箱后会通过 `loade` 调用 `manualInvokeElementEvent`
 - 内联 `script`：忽略通知
 - 外联样式 - `ignore`：直接将动态添加的样式添加到容器，加载事件不变
-- 外俩样式 - 非 `ignore`：注入容器后调用 `manualInvokeElementEvent`
+- 外联样式 - 非 `ignore`：注入容器后调用 `manualInvokeElementEvent`
 - 其他元素：忽略通知
 
 流程：
