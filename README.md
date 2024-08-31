@@ -5659,7 +5659,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - 最终注入的元素可能和动态添加的不一样，因此需要从注入的元素转发事件给动态添加的元素
 
-> 作为子应用，正常监听 `onload` 和 `onerror` 即可，无需做任何改变
+> 作为子应用内部，正常监听 `onload` 和 `onerror` 即可，无需做任何改变
 
 对于添加的元素不同，事件通知方式略有差异：
 
