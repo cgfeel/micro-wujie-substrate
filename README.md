@@ -5716,7 +5716,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 ### 辅助方法 - 实用工具
 
-#### `isConstructable`：判断函数是否可以 `new`
+#### `isConstructable`：判断函数是否可以实例化
 
 目录：`utils.ts` - `isConstructable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L60)]
 
