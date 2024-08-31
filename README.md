@@ -5746,7 +5746,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 缓存并返回结果：
 
-- 将获取的结果存储在 `fnRegexCheckCacheMap`，并返回
+- 将获取的结果存储在 `fnRegexCheckCacheMap` 然后返回
 
 #### `isCallable`：判断对象是一个函数
 
