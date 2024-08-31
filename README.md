@@ -5676,7 +5676,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 `patchCustomEvent` 通过 ` Object.defineProperties` 劫持事件：
 
-- 添加 2 个 属性：`srcElement`、`target`，全部返回动态添加的元素 `element` 本身
+- 添加 2 个 属性：`srcElement`、`target`，全部返回动态添加的元素 `element`
 
 #### `findScriptElementFromIframe`：查找动态添加的 `iframe`
 
