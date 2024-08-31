@@ -4527,6 +4527,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 设置属性：`src`，`crossorigin` 为 `crossoriginType`，如果属性存在的话
 
+> 所有外联的 `script` 和 `esModule` 一样，不会包裹在 `proxy module` 中
+
 2.4. `script` 补充操作：
 
 - 根据 `module` 决定是否添加 `type` 属性为 `module`
