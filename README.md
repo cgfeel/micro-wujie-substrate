@@ -5572,7 +5572,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 重写方法返回：
 
-| 参数类型    | 处理方式                                                                                                               | 否则        |
+| 参数类型    | 处理方式                                                                                                               | 元素不存在  |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] | 返回 `null` |
 | 非 `script` | `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
