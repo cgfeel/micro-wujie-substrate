@@ -5608,7 +5608,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 缺点是手动，且有侵入性：
 
 - 在 `processTpl` 提供了参数 `postProcessTemplate` 用来更新提取的资源 [[查看](#processtpl-提取资源)]
-- 但目前没有用到，且又不是 `plugin` 所以暂且还不能
+- 但目前没有用到，且又不是 `plugin` 所以暂且还不能通过配置为静态提取的资源打标签
 
 > `postProcessTemplate` 可能是工作人员你为后续更新留下的一个口子
 
