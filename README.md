@@ -5701,10 +5701,12 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 设计初衷：
 
-- 子应用动态添加 `script` 将会被 `rewriteAppendOrInsertChild` 拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-- 然后通过 `insertScriptToIframe` 重创 `script` 加载动态添加的 `js` [[查看](#insertscripttoiframe为沙箱插入-script)]
-- 这时注入沙箱的 `script` 和应用中动态添加的元素无关了，并且应用中也不能直接获取
-- 如果需要 `contains` 检查和 `remove` 删除就需要通过 `findScriptElementFromIframe` 来进行匹配
+- 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+- 最终注入的 `script` 和动态添加的不一样，因此需要有个方法，能够查找最终注入沙箱的 `script`
+
+原理：
+
+- 通过 `setTagToScript` 为动态添加的 `script` 和最终注入的 `script` 打相同标记 [[查看](#为动态添加的-script-打标记)]
 
 流程：
 
