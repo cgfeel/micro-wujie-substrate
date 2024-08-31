@@ -5538,9 +5538,9 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 `insertScriptToIframe` 参数：
 
-- `src`：`null`
-- `content`：内联 `script` 代码
-- `attrs`：通过 `parseTagAttributes` 提取动态添加 `script` 的属性键值对
+- `script` 信息：`src` 为 `null`，`content` 内联代码，`attrs` 通过 `parseTagAttributes` 提取属性键值对
+- 沙箱 `window`
+- 将动态添加的 `element` 作为第 3 个参数，用于关联动态添加和注入的 `script`
 
 > `React` 这样的单页应用，通常是入口 `script` 为静态的，注入沙箱后动态添加内联 `chunk script`
 
