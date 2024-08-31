@@ -5534,9 +5534,9 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 不同在于：
 
 - 插入队列的方法会直接通过 `insertScriptToIframe` 注入 `script`，而不需要加载
-- 注入方法 `insertScriptToIframe` 提供的参数不同
+- 注入方法 `insertScriptToIframe` 提供的参数不同 [[查看](#insertscripttoiframe为沙箱插入-script)]
 
-`insertScriptToIframe` 参数 [[查看](#insertscripttoiframe为沙箱插入-script)]：
+`insertScriptToIframe` 参数：
 
 - `src`：`null`
 - `content`：内联 `script` 代码
