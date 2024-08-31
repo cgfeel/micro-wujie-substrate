@@ -5572,8 +5572,10 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 重写方法返回：
 
-- `findScriptElementFromIframe`：找到删除并返回沙箱中的 `script`，否则返回 `null` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
-- 不是 `script` 通过原生方法 `rawElementRemoveChild` 删除渲染容器中的元素并返回
+| 类型        | 处理方式                                                                                                                    | 否则        |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `script`    | 通过 `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] | 返回 `null` |
+| 非 `script` | 通过 `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
 
 > `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
 
