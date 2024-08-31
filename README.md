@@ -5370,8 +5370,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 | 动态添加            | `ignore` | 添加方式            | 注入后如何操作                                                                            |
 | ------------------- | -------- | ------------------- | ----------------------------------------------------------------------------------------- |
-| 外联和内联 `script` | 不匹配   | 加载为内联 `script` | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] |
-| 外联 `script`       | 匹配     | 创建外联 `script`   | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] |
+| 外联和内联 `script` | 不匹配   | 加载为内联 `script` | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-script)] |
+| 外联 `script`       | 匹配     | 创建外联 `script`   | `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-script)] |
 | 外联样式            | 匹配     | 元素不变            | 直接操作                                                                                  |
 | 内联样式            | 不匹配   | 元素不变            | 直接操作                                                                                  |
 | 外联样式            | 不匹配   | 加载为内联样式      | 无法关联                                                                                  |
@@ -5472,7 +5472,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 还会将动态添加的 `script` 作为第三个参数，用于提取元素中的标签值
 
-> 用于关联动态添加的 `script` 和注入沙箱的 `script`，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+> 用于关联动态添加的 `script` 和注入沙箱的 `script`，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-script)]
 
 4.1 加载外联 `script`
 
@@ -5562,7 +5562,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 接受一个 `opts` 对象，包含 2 个属性：
 
 - `rawElementRemoveChild`：原生删除 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` 和 `script` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` 和 `script` [[查看](#findscriptelementfromiframe查找动态添加的-script)]
 
 > `patchRenderEffect` 提供 `rawElementRemoveChild` 时需要通过 `bind` 将上下文指向容器 `head`
 
@@ -5574,7 +5574,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 | 参数类型    | 处理方式                                                                                                               | 元素不存在  |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] | 返回 `null` |
+| `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-script)] | 返回 `null` |
 | 非 `script` | `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
 
 > `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
@@ -5587,7 +5587,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - 没有特定属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
-- 于是需要 `findScriptElementFromIframe` 根据提供的元素，找出注入沙箱的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+- 于是需要 `findScriptElementFromIframe` 根据提供的元素，找出注入沙箱的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-script)]
 
 > 删除动态添加的 `script` 无论是内联还是外联，都会同时为动态添加的 `script` 和注入沙箱的 `script` 打上相同的标记，见：为动态添加的 `script` 打标记 [[查看](#为动态添加的-script-打标记)]
 
@@ -5619,7 +5619,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 接受一个 `opts` 对象，包含 2 个属性：
 
 - `rawElementContains`：原生查找 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取 `script` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取 `script` [[查看](#findscriptelementfromiframe查找动态添加的-script)]
 
 > `patchRenderEffect` 提供 `rawElementContains` 时，通过 `bind` 将上下文根据重写方法来自容器 `head` 还是容器，纠正 `this` 的指向
 
@@ -5908,7 +5908,7 @@ proxyWindow.addEventListener;
 - 需要先通过 `rewriteAppendOrInsertChild` 为动态添加的 `script` 打标记
 - 然后用打了标记的 `script` 通过 `insertScriptToIframe` 为注入的 `script` 打标记
 
-由此知道分别打的标签编号是一致的，原因见： `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+由此知道分别打的标签编号是一致的，原因见： `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-script)]
 
 > `insertScriptToIframe` 对于静态提取的 `script`，手动添加的 `script`，不会打标记
 
