@@ -4081,7 +4081,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 - 从沙箱提取指定的属性 `key`，然后从全局 `window` 上获取值，绑定到沙箱 `window` 上
 
-判定前需要通过 `isConstructable` 来判断，提供的属性是否可以实例化 [[查看](#isconstructable判断函数是否可以-new)]：
+判定前需要通过 `isConstructable` 来判断，提供的属性是否可以实例化 [[查看](#isconstructable判断函数是否可以实例化)]：
 
 | 条件                     | 绑定方式               | 上下文         |
 | ------------------------ | ---------------------- | -------------- |
@@ -6051,7 +6051,7 @@ proxyWindow.addEventListener;
 
 - 必须是一个函数，见：`isCallable` [[查看](#iscallable判断对象是一个函数)]
 - 不能是 `bound` 开头的剪头函，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
-- 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以-new)]
+- 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以实例化)]
 
 存储类型为 `WeakMap` 的对象：
 
