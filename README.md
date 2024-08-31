@@ -5737,7 +5737,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - 从映射表 `fnRegexCheckCacheMap` 中获取结果，若映射表中没有继续往下看
 
-> `fnRegexCheckCacheMap` 用于缓存计算结果，类型为：`WeakMap<any | FunctionConstructor, boolean>`
+> `fnRegexCheckCacheMap` 缓存结果，类型为：`WeakMap<any | FunctionConstructor, boolean>`
 
 通过正则表达式检查函数字符串：
 
