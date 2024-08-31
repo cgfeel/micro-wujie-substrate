@@ -5472,7 +5472,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 还会将动态添加的 `script` 作为第三个参数，用于提取元素中的标签值
 
-> 这样动态添加的 `script` 和注入沙箱 `script` 就关联起来了，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
+> 用于关联动态添加的 `script` 和注入沙箱的 `script`，见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
 
 4.1 加载外联 `script`
 
@@ -5584,7 +5584,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 而应用中存在 2 个容器：存放 `script` 的沙箱容器，除了 `script` 的应用渲染容器
 - 因此需要根据删除的元素，分开查找并删除
 
-但沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]：
+沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - 没有特定属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
 - 于是需要 `findScriptElementFromIframe` 根据提供的元素，找出注入沙箱的 `script` 并删除 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)]
