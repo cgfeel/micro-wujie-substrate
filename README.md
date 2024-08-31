@@ -5656,8 +5656,8 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 设计初衷：
 
 - 在应用中监听 `script` 和样式加载情况时，会通过 `onload` 和 `onerror`
-- 应用中动态添加元素时，会通过 `rewriteAppendOrInsertChild` 拦截，然后重新注入新的元素
-- 因此需要通过 `manualInvokeElementEvent` 转发动态添加的元素的事件
+- 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+- 最终注入的元素可能和动态添加元素不一样，因此需要通过 `manualInvokeElementEvent` 转发事件
 
 和 `rewriteAppendOrInsertChild` 一样，对于不同情况事件通知略有差异：
 
