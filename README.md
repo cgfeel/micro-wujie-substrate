@@ -5728,7 +5728,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `true`：可以实例化，否则 `false`
 
-检查函数是否有原型方法：
+检查构造函数和原型：
 
 - 函数 `prototype` 存在并且属性 `constructor` 指向自身，除了 `constructor` 外还有其他属性
 - 如果以上条件都满足返回 `true`，否则继续往下看
