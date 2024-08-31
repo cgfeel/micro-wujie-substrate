@@ -5724,10 +5724,14 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `fn`：任意函数，包括构造函数
 
+返回：
+
+- `true`：可以实例化，否则 `false`
+
 **第一步：检查函数是否有原型方法**
 
-- 存在 `prototype` 且 `prototype.constructor` 指向自身，`prototype` 上的属性除了 `constructor` 还有其他属性
-- 如果以上条件都存在返回 `true`
+- 函数 `prototype` 存在并且属性 `constructor` 指向自身，除了 `constructor` 外还有其他属性
+- 如果以上条件都满足返回 `true`
 
 **第二步：从缓存中获取**
 
