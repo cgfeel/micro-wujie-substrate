@@ -5728,9 +5728,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `true`：可以实例化，否则 `false`
 
-目的：
-
-- 判断函数是否可实例化，若不行则通过 `call` 绑定上下文
+> 判断对于不可实例化的函数，通过 `call` 绑定上下文
 
 检查构造函数和原型：
 
