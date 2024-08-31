@@ -1186,8 +1186,6 @@
 - `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
-`React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
-
 > 执行顺序从上至下，有 1 条满足后面的就不用再看
 
 为什么外联 `script` 是宏任务：
@@ -1383,6 +1381,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 4. `start` 应用时调用 `importHTML` 提供的包装方法 `getExternalScripts` 提取 `script` [[查看](#getexternalscripts加载-script-资源)]
 5. 将提取的 `script` 分为同步代码或异步代码分别处理，同步代码加上手动注入的 `script` 一同添加到队列
 6. 通过 `insertScriptToIframe` 将队列中提供的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+
+> `React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
 
 `iframeWindow` 提取沙箱的 `window`，用于注入 `script`
 
