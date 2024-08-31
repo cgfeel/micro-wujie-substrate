@@ -5702,7 +5702,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 设计初衷：
 
 - 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-- 最终注入的 `script` 和动态添加的不一样，因此需要有个方法，能够查找最终注入沙箱的 `script`
+- 注入的 `script` 和动态添加的不一样，因此需要有个方法，能够查找注入沙箱的 `script`
 
 原理：
 
