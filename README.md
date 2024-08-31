@@ -5484,6 +5484,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 创建 `onload` 方法，用于通过 `manualInvokeElementEvent` 发起 `load` 事件 [[查看](#manualinvokeelementevent手动触发事件回调)]
 - 通过 `insertScriptToIframe` 注入 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
+> 问题：注入外联 `script` 即便加载失败，也会触发 `onload`，见：3. 声明注入 `script` 的方法 [[查看](#insertscripttoiframe为沙箱插入-script)]
+
 声明一个 `script` 属性集合 `scriptOptions`：
 
 - 集合中的属性和 `processTpl` 提取外联 `script` 一样，但不包含：`async`、`defer` [[查看](#processtpl-提取资源)]
