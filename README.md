@@ -5649,6 +5649,8 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - `element`：触发事件的元素，只接受 `HTMLLinkElement` 和 `HTMLScriptElement`
 - `event`：事件名，目前提供的事件只有 `load` 和 `error`
 
+> 传过来的 `element` 必须是子应用中动态添加的元素，不然就失去转发事件的意义了
+
 调用场景：
 
 - `rewriteAppendOrInsertChild`：动态添加元素 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
