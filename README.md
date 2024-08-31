@@ -5680,7 +5680,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - 添加 2 个 属性：`srcElement`、`target`，全部返回动态添加的元素 `element`
 
-#### `findScriptElementFromIframe`：查找动态添加的 `script`
+#### `findScriptElementFromIframe`：查找注入沙箱的 `script`
 
 目录：`effect.ts` - `findScriptElementFromIframe` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L342)]
 
