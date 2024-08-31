@@ -5687,7 +5687,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 参数：
 
 - `rawElement`：应用中动态添加的 `script`
-- `wujieId`：应用名，用于获取实例沙箱 `iframe`
+- `wujieId`：应用名，用于获取应用实例中的沙箱 `iframe`
 
 返回一个对象包含 2 个属性：
 
