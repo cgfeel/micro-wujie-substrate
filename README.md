@@ -5696,8 +5696,8 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 调用场景：
 
-- `rewriteContains`：查找应用中是否存在元素
-- `rewriteRemoveChild`：从应用中删除元素
+- `rewriteContains`：查找应用中是否存在元素 [[查看](#rewritecontains重写-contains)]
+- `rewriteRemoveChild`：从应用中删除元素 [[查看](#rewriteremovechild重写-removechild)]
 
 设计初衷：
 
