@@ -5542,7 +5542,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - `content`：内联 `script` 代码
 - `attrs`：通过 `parseTagAttributes` 提取动态添加 `script` 的属性键值对
 
-> `React` 这样的 `spa` 应用，通常是入口 `script` 为静态的，注入沙箱后动态添加内联 `script`
+> `React` 这样的单页应用，通常是入口 `script` 为静态的，注入沙箱后动态添加内联 `chunk script`
 
 **5. `iframe`：动态添加**
 
