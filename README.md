@@ -1179,12 +1179,16 @@
 
 非 `fiber` 模式，第 1 个任务：
 
-- `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
+- `beforeScriptResultList` 存在外联 `script` 通过 `onload`，第 1 个队列是宏任务
 - 同步代码存在的话，第 1 个队列是微任务
 - `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
-> 执行顺序从上至下，有 1 条满足后面的就不用再看；以上无论是不是 `fiber` 模式都不包含同步任务，因为对于微任务来说，同步任务必然会优先执行
+> 执行顺序从上至下，有 1 条满足后面的就不用再看，以上无论是不是 `fiber` 模式都不包含上下文同步任务，因为对于微任务来说，上下文你必然会优先执行
+
+`React` 中入口 `script` 作为同步代码，在微任务注入沙箱
+
+- 然后通过微任务动态加载 `chunk script`
 
 为什么外联 `script` 存在宏任务：
 
