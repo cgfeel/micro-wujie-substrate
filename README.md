@@ -5746,9 +5746,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - `/^function\b\s[A-Z].*/`：以大写开头的函数，`/^class\b/`：以 `class` 开头的类
 - 以上任意条件存在即可实例化
 
-缓存并返回结果：
-
-- 将获取的结果存储在 `fnRegexCheckCacheMap` 然后返回
+将获取的结果存储在 `fnRegexCheckCacheMap` 然后返回
 
 #### `isCallable`：判断对象是一个函数
 
