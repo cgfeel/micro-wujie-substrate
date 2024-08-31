@@ -5523,6 +5523,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 应用中动态添加的外联 `script` 有 2 种情况会使用浏览器加载：
 
 - `jsIgnores` 手动匹配，以及 `module` 类型的 `script`
+- 外联 `script` 将不会包裹在 `proxy module` 中执行，见：流程图 [[查看](#wujie-中的代理)]
 
 > 通过 `jsExcludes` 排除的外联 `script` 会作为内联 `script` 加载，但是由于没有脚本内容，导致插入的沙箱的 `script` 是一个空元素。
 
