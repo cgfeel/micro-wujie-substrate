@@ -5659,7 +5659,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - 最终注入的元素可能和动态添加元素不一样，因此需要通过 `manualInvokeElementEvent` 转发事件
 
-和 `rewriteAppendOrInsertChild` 一样，对于不同情况事件通知略有差异：
+对于添加的元素不同，事件通知方式略有差异：
 
 - 外联 `script`：无论是否 `ignore`，注入到沙箱后会通过 `loade` 调用 `manualInvokeElementEvent`
 - 内联 `script`：忽略通知
