@@ -5730,7 +5730,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 目的：
 
-- 判断函数是否可实例化，若不行则通过 `call` 绑定上下文或记录相关映射表
+- 判断函数是否可实例化，若不行则通过 `call` 绑定上下文
 
 检查构造函数和原型：
 
