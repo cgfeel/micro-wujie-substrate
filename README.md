@@ -5728,6 +5728,10 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `true`：可以实例化，否则 `false`
 
+目的：
+
+- 通过判断函数是否可实例化，若不行则通过 `call` 绑定上下文或记录相关映射表
+
 检查构造函数和原型：
 
 - 函数 `prototype` 存在并且属性 `constructor` 指向自身，除了 `constructor` 外还有其他属性
@@ -5756,10 +5760,14 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `fn`：任意对象
 
+返回：
+
+- `true`：是函数，否则 `false`
+
 流程：
 
 - 判断 `fn` 是一个函数，会优先从映射表 `callableFnCacheMap` 获取
-- 不存在则判断，是函数记录到映射表，最终返回判断结果
+- 不存在则判断，是函数记录到映射表，然后返回判断结果
 
 #### `isBoundedFunction`：判断 `bound` 函数
 
