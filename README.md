@@ -5728,23 +5728,25 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `true`：可以实例化，否则 `false`
 
-**第一步：检查函数是否有原型方法**
+检查函数是否有原型方法：
 
 - 函数 `prototype` 存在并且属性 `constructor` 指向自身，除了 `constructor` 外还有其他属性
-- 如果以上条件都满足返回 `true`
+- 如果以上条件都满足返回 `true`，否则继续往下看
 
-**第二步：从缓存中获取**
+从缓存中获取：
 
-- 之前计算过的会存在在映射表 `fnRegexCheckCacheMap` 中，存在直接返回
+- 从映射表 `fnRegexCheckCacheMap` 中获取结果，若映射表中没有继续往下看
 
-**第三步：通过正则表达式检查函数字符串**
+> `fnRegexCheckCacheMap` 用于缓存计算结果，类型为：`WeakMap<any | FunctionConstructor, boolean>`
 
-- `constructableFunctionRegex`：检查大写开头的函数，`classRegex`：检查以 `class` 开头的类
-- 以上任意条件存在即可
+通过正则表达式检查函数字符串：
 
-**第四步：缓存并返回结果**
+- `/^function\b\s[A-Z].*/`：以大写开头的函数，`/^class\b/`：以 `class` 开头的类
+- 以上任意条件存在即可实例化
 
-- 将获取的结果 `constructable` 存储在 `fnRegexCheckCacheMap`，并返回
+缓存并返回结果：
+
+- 将获取的结果存储在 `fnRegexCheckCacheMap`，并返回
 
 #### `isCallable`：判断对象是一个函数
 
