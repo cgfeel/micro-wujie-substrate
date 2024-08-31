@@ -5515,7 +5515,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - 插入队列前需确保应用实例中存在 `execQueue`（只有实例注销后才会销毁）
 - 队列方法中不会直接调用 `insertScriptToIframe`，而是通过 `execScript` 发起注入
-- 如果注入队列前 `execQueue` 已经为空了，需要手动提取并执行队列
+- 如果注入队列前 `execQueue` 已为空，需要手动提取并执行队列
 
 从注入 `script` 的过程也能够看出集合中没有 `asyc` 的原因：
 
