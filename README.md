@@ -5646,7 +5646,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 参数：
 
-- `element`：触发事件的元素，只接受两类元素 `HTMLLinkElement` 和 `HTMLScriptElement`
+- `element`：触发事件的元素，只接受 `HTMLLinkElement` 和 `HTMLScriptElement`
 - `event`：事件名，目前提供的事件只有 `load` 和 `error`
 
 调用场景：
@@ -5657,7 +5657,9 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - 在应用中监听 `script` 和样式加载情况时，会通过 `onload` 和 `onerror`
 - 对于动态添加的元素会通过 `rewriteAppendOrInsertChild` 进行拦截 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-- 最终注入的元素可能和动态添加元素不一样，因此需要通过 `manualInvokeElementEvent` 转发事件
+- 最终注入的元素可能和动态添加的不一样，因此需要从注入的元素转发事件给动态添加的元素
+
+> 作为子应用，正常监听 `onload` 和 `onerror` 即可，无需做任何改变
 
 对于添加的元素不同，事件通知方式略有差异：
 
@@ -5669,9 +5671,12 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 流程：
 
-- 通过 `CustomEvent` 定义事件
-- 通过 `patchCustomEvent` 劫持事件，添加函数类型属性 `srcElement`、`target`，全部返回 `element`
-- 回调方法通过 `on` 绑定在元素上时优先执行，否则通过 `dispatchEvent` 派发事件
+- 通过 `CustomEvent` 定义事件，并使用 `patchCustomEvent` 劫持事件对象添加属性
+- 如果动态添加的元素通过 `on` 绑定的事件，执行回调函数，否则通过 `dispatchEvent` 派发事件
+
+`patchCustomEvent` 通过 ` Object.defineProperties` 劫持事件：
+
+- 添加 2 个 属性：`srcElement`、`target`，全部返回动态添加的元素 `element` 本身
 
 #### `findScriptElementFromIframe`：查找动态添加的 `iframe`
 
