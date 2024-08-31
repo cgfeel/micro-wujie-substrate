@@ -1985,7 +1985,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 ### `wujie` 中的代理
 
-![wujie-proxy](https://github.com/user-attachments/assets/4b0d5c00-253d-4316-a53f-f0a34920adf0)
+![wujie-proxy](https://github.com/user-attachments/assets/89638fd2-2355-4308-b3bf-0d4a4d383658)
 
 #### 📝 `proxyGenerator` 非降级情况下的代理
 
