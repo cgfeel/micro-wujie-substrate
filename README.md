@@ -5653,6 +5653,20 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 - `rewriteAppendOrInsertChild`：动态添加元素 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
+设计初衷：
+
+- 在应用中监听 `script` 和样式加载情况时，会通过 `onload` 和 `onerror`
+- 应用中动态添加元素时，会通过 `rewriteAppendOrInsertChild` 拦截，然后重新注入新的元素
+- 因此需要通过 `manualInvokeElementEvent` 转发动态添加的元素的事件
+
+和 `rewriteAppendOrInsertChild` 一样，对于不同情况事件通知略有差异：
+
+- 外联 `script`：无论是否 `ignore`，注入到沙箱后会通过 `loade` 调用 `manualInvokeElementEvent`
+- 内联 `script`：忽略通知
+- 外联样式 - `ignore`：直接将动态添加的样式添加到容器，加载事件不变
+- 外俩样式 - 非 `ignore`：注入容器后调用 `manualInvokeElementEvent`
+- 其他元素：忽略通知
+
 流程：
 
 - 通过 `CustomEvent` 定义事件
