@@ -5691,7 +5691,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 返回一个对象包含 2 个属性：
 
-- `targetScript`：拦截动态添加的 `script`，匹配注入沙箱的 `script`
+- `targetScript`：注入沙箱的 `script`，没有找到返回 `null`
 - `iframe`：沙箱 `iframe`，作为 `script` 的容器，用于查找、删除 `script` 时使用
 
 调用场景：
