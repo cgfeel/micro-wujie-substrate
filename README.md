@@ -5572,10 +5572,10 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 重写方法返回：
 
-| 类型        | 处理方式                                                                                                                    | 否则        |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `script`    | 通过 `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] | 返回 `null` |
-| 非 `script` | 通过 `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
+| `child` 类型 | 处理方式                                                                                                               | 否则        |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `script`     | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找动态添加的-iframe)] | 返回 `null` |
+| 非 `script`  | `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
 
 > `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
 
