@@ -6066,7 +6066,7 @@ proxyWindow.addEventListener;
 以下要求必须全部都满足：
 
 - 必须是一个函数，见：`isCallable` [[查看](#iscallable判断对象是一个函数)]
-- 不能是 `bound` 开头的剪头函，见：`isBoundedFunction` [[查看](#isboundedfunction判断-bound-函数)]
+- 不能是 `bound` 开头的剪头函，见：`isBoundedFunction` [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以实例化)]
 
 存储类型为 `WeakMap` 的对象：
