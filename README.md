@@ -5785,7 +5785,7 @@ const naughtySafari = typeof document.all === "function" && typeof document.all 
 
 - 通过 `bind` 绑定的函数返回 `true`，否则 `false`
 
-通过 `bind` 返回的函数特征：函数名称以 `bound` 开头，没有 `prototype`
+通过 `bind` 返回的函数：函数名称以 `bound ` 开头（注意有个空格），没有 `prototype`
 
 ```
 function originalFunction() {}
@@ -5829,12 +5829,35 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 | 不存在          | 绑定上下文后保存在映射表并返回 | 不考虑                                 |
 | 不存在          | 不符合                         | 直接返回，若属性不存在返回 `undefined` |
 
-符合条件如何绑定上下文：
+符合的条件：
 
-- 通过 `Function.prototype.bind.call` 绑定上下文得到新的方法 `boundValue`
-- 将原始的方法和 `boundValue` 通过键值的方式保存在 `setFnCacheMap`
-- 将原始方法上的属性绑定到 `boundValue`
-- 劫持 `boundValue` 的 `prototype` 指向原始方法的 `prototype`
+- `isCallable`：只有类型为函数的属性才能通过 `bind` 绑定上下文 [[查看](#iscallable判断对象是一个函数)]
+- `!isBoundedFunction`：确保函数没有绑定过上下文 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
+- `!isConstructable`：确保函数不可实例化，因为实例化的函数有自己的上下文 [[查看](#isconstructable判断函数是否可以实例化)]
+
+为符合条件的属性绑定上下文：
+
+- 通过 `Function.prototype.bind.call` 绑定 `target` 为函数上下文
+- 将绑定后的函数保存在映射表 `setFnCacheMap`，以便下次获取
+- 将原函数浅拷贝属性到绑定的方法中
+- 通过 `Object.defineProperty` 为绑定的方法添加 `prototype` 指向原函数的 `prototype`
+
+由此得知符合条件有两类情况：
+
+| 分类     | `bind`   | 实例化 | 绑定后上下文      |
+| -------- | -------- | ------ | ----------------- |
+| 剪头函数 | 已绑定过 | 不可以 | 所在作用域 `this` |
+| 普通函数 | 未绑定过 | 不可以 | 提供的对象        |
+
+添加 `property` 意义：
+
+- 添加原型链，见：`qiankun` 开发人员的总结 [[查看](https://github.com/kuitos/kuitos.github.io/issues/47)]
+- 绑定后将不再被 `isBoundedFunction` 认为是可以绑定的方法 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
+
+那对于剪头函数类型的属性，不是可以重复绑定？
+
+- 映射表 `setFnCacheMap` 发挥作用了，至少不会重复通过 `getTargetValue` 绑定上下文
+- 其他地方则可以通过判断：函数名以 `bound` 开头，带有
 
 > 关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
 >
