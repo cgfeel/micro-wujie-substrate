@@ -5942,7 +5942,7 @@ proxyWindow.addEventListener;
 | `getCssLoader` [[查看](#通过配置替换资源)]                    | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换注入容器的内联样式      |
 | `getJsLoader` [[查看](#通过配置替换资源)]                     | `jsLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]     | 替换注入沙箱的内联 `script` |
 
-> 对于注入沙箱的外联样式和外联 `script` 也可以返回 `code`，但没有意义，因为优先使用 `src` 加载资源
+> 对于注入的外联样式和外联 `script` 也可以返回 `code`，但没有意义，因为优先使用 `src` 加载资源
 
 操作原理：
 
