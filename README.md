@@ -5779,6 +5779,21 @@ const naughtySafari = typeof document.all === "function" && typeof document.all 
 
 - `fn`：`CallableFunction`
 
+> 目的：判断函数是否来自 `Function.prototype.bind`，避免重复 `bind`
+
+通过 `bind` 返回的函数特征：函数名称以 `bound` 开头，没有 `prototype`
+
+```
+function originalFunction() {}
+const boundFunction = originalFunction.bind(this);
+
+console.log(originalFunction.name);    // originalFunction
+console.log(boundFunction.name);    // bound originalFunction
+
+console.log(originalFunction.prototype);    // {}
+console.log(boundFunction.prototype);    // undefined
+```
+
 流程：
 
 - 判断 `fn` 是一个以 `bound` 开头的剪头函数，，会优先从映射表 `boundedMap` 获取
