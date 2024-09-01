@@ -5781,6 +5781,10 @@ const naughtySafari = typeof document.all === "function" && typeof document.all 
 
 > 目的：判断函数是否来自 `Function.prototype.bind`，避免重复 `bind`
 
+返回：
+
+- 通过 `bind` 绑定的函数返回 `true`，否则 `false`
+
 通过 `bind` 返回的函数特征：函数名称以 `bound` 开头，没有 `prototype`
 
 ```
@@ -5796,8 +5800,13 @@ console.log(boundFunction.prototype);    // undefined
 
 流程：
 
-- 判断 `fn` 是一个以 `bound` 开头的剪头函数，，会优先从映射表 `boundedMap` 获取
-- 不存在则判断，匹配记录到映射表，最终返回判断结果
+- 优先从映射表 `boundedMap` 获取，不存在则判断，将结果记录到映射表并返回
+
+判断方法：
+
+```
+const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype");
+```
 
 #### `getTargetValue` 从对象中获取属性
 
