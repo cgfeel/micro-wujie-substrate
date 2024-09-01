@@ -5991,18 +5991,19 @@ proxyWindow.addEventListener;
 - `getTagFromScript`：提取 `script` 中的标签，见下方详细说明
 - `findScriptElementFromIframe`：查找注入沙箱的 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
-调用场景：
+调用场景，执行过程从上至下：
 
 | 执行方法                                                                                           | 操作方式                   | 如何打标记                   |
 | -------------------------------------------------------------------------------------------------- | -------------------------- | ---------------------------- |
 | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 拦截动态添加的 `script`    | 自增编号                     |
 | `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]                            | 创建并注入 `script` 到沙箱 | 根据动态添加的 `script` 编号 |
 
-> 执行过程从上至下
+> 动态添加和注入沙箱的 `script` 标签编号是一致的，原因见：`findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
 
-由此知道分别打的标签编号是一致的，原因见： `findScriptElementFromIframe` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
+不需要打标记的情况：
 
-> `insertScriptToIframe` 对于静态提取的 `script`，手动添加的 `script`，不会打标记
+- 通过 `processTpl` 静态提取的 `script` [[查看](#processtpl-提取资源)]
+- `start` 启动应用中，手动添加的 `script`，见：收集队列 [[查看](#1-收集队列)]
 
 **2. `getTagFromScript` 提取 `script` 中标记值**
 
