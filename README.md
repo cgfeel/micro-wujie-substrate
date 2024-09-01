@@ -5979,6 +5979,8 @@ proxyWindow.addEventListener;
 - `element`：`HTMLScriptElement` 元素
 - `tag`：设置标记名，选填
 
+> 对于动态添加的 `script` 不提供 `tag`，采用自增编号；而注入 `script` 时将采用动态注入时相同的标记，这样也就关联上了
+
 流程：
 
 - 判断 `element` 是否为 `script` 元素，是则打上标记 `WUJIE_SCRIPT_ID`
