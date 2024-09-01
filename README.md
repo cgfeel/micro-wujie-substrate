@@ -5935,14 +5935,25 @@ proxyWindow.addEventListener;
 
 调用场景：
 
-| 调用函数                                                      | 提取 `plugin`                                                                                    | 用处                             |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------- |
-| `processCssLoader` [[查看](#processcssloader处理-css-loader)] | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换应用中提取的静态样式         |
-| `importHTML` [[查看](#importhtml-加载资源)]                   | `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)] | 替换应用入口资源                 |
-| `getCssLoader` [[查看](#通过配置替换资源)]                    | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换手动注入和动态添加的内联样式 |
-| `getJsLoader` [[查看](#通过配置替换资源)]                     | `jsLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]     | 替换注入沙箱的内联 `script`      |
+| 调用函数                                                      | 提取 `plugin`                                                                                    | 用处                         |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------- |
+| `processCssLoader` [[查看](#processcssloader处理-css-loader)] | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换应用中提取的静态样式     |
+| `importHTML` [[查看](#importhtml-加载资源)]                   | `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)] | 替换应用入口资源             |
+| `getCssLoader` [[查看](#通过配置替换资源)]                    | `cssLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]   | 替换手动注入和动态添加的样式 |
+| `getJsLoader` [[查看](#通过配置替换资源)]                     | `jsLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]     | 替换注入沙箱的 `script`      |
 
-> 对于注入的外联样式和外联 `script` 也可以返回 `code`，但没有意义，因为优先使用 `src` 加载资源
+替换的样式和 `script` 必须是内联的：
+
+- 外联资源也可以返回 `code`，但没有意义，因为优先使用 `src` 加载资源
+- 应用中的外联资源仅限手动配置 `ignore` 资源集合，默认情况外联资源会加载后作为内联资源注入
+
+执行返回的方法将返回 `string`，提供的参数是一组 `string`：
+
+- `htmlLoader`：仅提供提取的资源 `html` 作为参数
+- 其余的 `plugins` 将提供 3 个参数：
+  - `code`：资源内容，根据 `plugin` 提供样式或 `script`
+  - `src`：资源链接，如果不存在提供为空，例如：内联资源
+  - `base`：子应用 `origin` + `pathname`
 
 操作原理：
 
