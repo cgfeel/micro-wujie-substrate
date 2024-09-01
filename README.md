@@ -5857,26 +5857,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 > 需要注意的是剪头函数是没有 `prototype`，所以也不需要添加原型链
 
-那这样无论是剪头函数还是普通函数，不是都可以重复执行绑定了吗？
-
-- 这时候映射表 `setFnCacheMap` 发挥作用了
-
-关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
-
-- `call`：立即执行提供的的方法，第一个参数指向 `this`，后面参数透传给执行方法
-- `apply`：和 `call` 一样，不同的是透传的参数是以数组形式
-- `bind`：可以看做将 `call` 柯里化之后返回新的函数
-
-`Function.prototype.bind.call` 和 `bind` 一样，不同处：
-
-- 绑定的函数为第 1 个参数，其余参数顺延依次是上下文和透传的参数
-- `bind.call` 作为 `prototype` 适用于绑定不明确的函数，`bind` 适用于绑定已明确的函数
-
-同理 `Function.prototype.bind.apply` 和 `Function.prototype.bind.call` 是一样的：
-
-- 绑定的函数为第 1 个参数，不同在于其余的参数全部集合在一个数组中透传过去
-
-绑定原型是让当前方法和绑定的方法原型链一致，遍历属性的目的见下方演示：
+绑定原型是让绑定的方法和原来的方法原型链一致，见下方演示：
 
 ```
 function exampleFunc() {
@@ -5898,11 +5879,31 @@ console.log(boundExampleFunc.customProperty); // "I am a custom property"
 boundExampleFunc.customMethod(); // "I am a custom method"
 ```
 
+无论是剪头函数还是普通函数，不是都可以重复执行绑定了吗？
+
+- 这时候映射表 `setFnCacheMap` 发挥作用了
+
+关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
+
+- `call`：立即执行提供的的方法，第一个参数指向 `this`，后面参数透传给执行方法
+- `apply`：和 `call` 一样，不同的是透传的参数是以数组形式
+- `bind`：可以看做将 `call` 柯里化之后返回新的函数
+
+`Function.prototype.bind.call` 和 `bind` 一样，不同处：
+
+- 绑定的函数为第 1 个参数，其余参数顺延依次是上下文和透传的参数
+- `bind.call` 作为 `prototype` 适用于绑定不明确的函数，`bind` 适用于绑定已明确的函数
+
+同理 `Function.prototype.bind.apply` 和 `Function.prototype.bind.call` 是一样的：
+
+- 绑定的函数为第 1 个参数，不同在于其余的参数全部集合在一个数组中透传过去
+
 为什么要用 `getTargetValue`：
 
-- `getTargetValue` 用于 `Proxy` 劫持对象需要 `get` 属性时
-- 如果不提供 `get` 或 `get` 中直接返回对象方法会报错，见下方演示：
-- 正确的做法是从对象中找到对应的方法，并且绑定 `this` 为指定对象
+- 此函数用于 `Proxy` 代理对象 `get` 操作时，若不提供 `get` 或 `get` 中直接返回属性会报错
+- 正确的做法是从代理的原始对象中找到对应的属性并返回
+
+错误演示：
 
 ```
 // 代理不提供 `get` 方法，调用方法时报错
