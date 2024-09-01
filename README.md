@@ -5989,7 +5989,7 @@ proxyWindow.addEventListener;
 通过打标记 `WUJIE_SCRIPT_ID`，方便通过：
 
 - `getTagFromScript`：提取 `script` 中的标签，见下方详细说明
-- `findScriptElementFromIframe`：查找动态添加的 `script`
+- `findScriptElementFromIframe`：查找注入沙箱的 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 调用场景：
 
