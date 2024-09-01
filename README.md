@@ -5947,7 +5947,7 @@ proxyWindow.addEventListener;
 - 外联资源也可以返回 `code`，但没有意义，因为优先使用 `src` 加载资源
 - 应用中的外联资源仅限手动配置 `ignore` 资源集合，默认情况外联资源会加载后作为内联资源注入
 
-执行返回的方法将返回 `string`，提供的参数是一组 `string`：
+执行返回的方法将返回 `string`，提供的参数全部是 `string`：
 
 - `htmlLoader`：仅提供提取的资源 `html` 作为参数
 - 其余的 `plugins` 将提供 3 个参数：
