@@ -6016,11 +6016,12 @@ proxyWindow.addEventListener;
 流程：
 
 - 判断 `element` 是否为 `script` 元素，是则提取标记 `WUJIE_SCRIPT_ID`
+- 不是 `script` 或属性不存在都返回 `null`
 
 调用场景：
 
-- `findScriptElementFromIframe`：查找动态添加的 `script`
-- `insertScriptToIframe`：动态注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- `findScriptElementFromIframe`：查找动态添加的 `script` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
+- `insertScriptToIframe`：注入 `script` 到沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 ### 映射表和队列
 
