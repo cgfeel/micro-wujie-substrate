@@ -5863,11 +5863,18 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
 
-- `call`：立即执行提供的的方法，第一个参数指向 `this`，后面参数传递给执行方法
-- `apply`：和 `call` 一样，不同的是传递的参数是以数组形式
+- `call`：立即执行提供的的方法，第一个参数指向 `this`，后面参数透传给执行方法
+- `apply`：和 `call` 一样，不同的是透传的参数是以数组形式
 - `bind`：可以看做将 `call` 柯里化之后返回新的函数
 
-> `Function.bind.call`和 `bind` 一样，不同的是：绑定的函数作为第一个参数，其余参数顺延依次是上下文和参数
+`Function.prototype.bind.call` 和 `bind` 一样，不同处：
+
+- 绑定的函数为第 1 个参数，其余参数顺延依次是上下文和透传的参数
+- `bind.call` 作为 `prototype` 适用于绑定不明确的函数，`bind` 适用于绑定已明确的函数
+
+同理 `Function.prototype.bind.apply` 和 `Function.prototype.bind.call` 是一样的：
+
+- 绑定的函数为第 1 个参数，不同在于其余的参数全部集合在一个数组中透传过去
 
 绑定原型是让当前方法和绑定的方法原型链一致，遍历属性的目的见下方演示：
 
