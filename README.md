@@ -5835,6 +5835,8 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 - `!isBoundedFunction`：确保函数没有绑定过上下文 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - `!isConstructable`：确保函数不可实例化，因为实例化的函数有自己的上下文 [[查看](#isconstructable判断函数是否可以实例化)]
 
+> 补充：当函数通过 `bind` 绑定过上下文，再次 `bind` 采用首次绑定的上下文
+
 为符合条件的属性绑定上下文：
 
 - 通过 `Function.prototype.bind.call` 绑定 `target` 为函数上下文
