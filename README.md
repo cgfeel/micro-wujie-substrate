@@ -5968,6 +5968,8 @@ proxyWindow.addEventListener;
 
 #### 为动态添加的 `script` 打标记
 
+在应用中动态添加的 `script`，会被 `rewriteAppendOrInsertChild` 劫持，因此最终注入沙箱的 `script` 不是同一个对象。在 `wujie` 中通过给动态注入的 `script` 和对应注入沙箱的 `script` 分别打标记，以便注入 `script` 后需要继续操作能够找到。
+
 **1. `setTagToScript` 添加标记**
 
 目录：`utils.ts` - `setTagToScript` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L300)]
