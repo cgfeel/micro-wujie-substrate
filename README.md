@@ -5765,13 +5765,13 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 判断 `fn` 是一个函数，会优先从映射表 `callableFnCacheMap` 获取
 - 不存在缓存则判断，是函数记录到映射表，然后返回判断结果
 
-判断中对于老的浏览器做了兼容
+判断中对于老的浏览器做了兼容：
 
 ```
 const naughtySafari = typeof document.all === "function" && typeof document.all === "undefined";
 ```
 
-#### `isBoundedFunction`：判断 `bound` 函数
+#### `isBoundedFunction`：判断通过 `Function.prototype.bind` 返回的函数
 
 目录：`utils.ts` - `isBoundedFunction` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L50)]
 
