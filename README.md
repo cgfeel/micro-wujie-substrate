@@ -5961,7 +5961,7 @@ proxyWindow.addEventListener;
 - 这样即便 `fnList` 数组没有任何函数，也能够将原始的 `code` 返回
 - 如果 `fnList` 中提供了函数，将 `code` 及其他参数传过去，返回新的值依次执行并返回最终替换结果
 
-由于调用时，传递过来的数组仅仅是通过 `map` 过滤了资源：
+由于调用时，传递过来的数组仅仅是通过 `map` 过滤了 `plugins`：
 
 - 所以 `compose` 通过 `reduce` 遍历数组时，有可能能拿到的是 `udefined`
 - 对于这种情况直接返回 `code` 为下一个 `loader` 替换资源
