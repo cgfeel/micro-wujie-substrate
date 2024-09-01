@@ -5968,7 +5968,7 @@ proxyWindow.addEventListener;
 
 #### 为动态添加的 `script` 打标记
 
-在应用中动态添加的 `script`，会被 `rewriteAppendOrInsertChild` 劫持，因此最终注入沙箱的 `script` 不是同一个对象。在 `wujie` 中通过给动态注入的 `script` 和对应注入沙箱的 `script` 分别打标记，以便注入 `script` 后需要继续操作能够找到。
+应用中动态添加的 `script` 会被 `rewriteAppendOrInsertChild` 劫持，因此最终注入沙箱的 `script` 不是同一个对象。在 `wujie` 中通过打标记的方式相互关联。
 
 **1. `setTagToScript` 添加标记**
 
@@ -5979,7 +5979,7 @@ proxyWindow.addEventListener;
 - `element`：`HTMLScriptElement` 元素
 - `tag`：设置标记名，选填
 
-> 对于动态添加的 `script` 不提供 `tag`，采用自增编号；而注入 `script` 时将采用动态注入时相同的标记，这样也就关联上了
+> 使用相同的 `tag` 打标记，能够关联两个不同的 `script` 元素
 
 流程：
 
