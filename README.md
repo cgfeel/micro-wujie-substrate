@@ -5808,6 +5808,10 @@ console.log(boundFunction.prototype);    // undefined
 const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype");
 ```
 
+只要 `bind` 过的函数都返回 `true`，包括：箭头函数、普通函数
+
+- 但不能通过 `bind` 指定箭头函数上下文，因为剪头函数上下文取决于所在作用域的 `this`
+
 #### `getTargetValue` 从对象中获取属性
 
 目录：`utils.ts` - `getTargetValue` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L91)]
