@@ -5858,7 +5858,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 > 需要注意的是箭头函数是没有 `prototype`，所以也不需要添加原型链
 
-绑定原型是让绑定的方法和原来的方法原型链一致，见下方演示：
+浅拷贝属性是让绑定的方法和原来的方法属性一致，见下方演示：
 
 ```
 function exampleFunc() {
@@ -5879,10 +5879,6 @@ for (const key in exampleFunc) {
 console.log(boundExampleFunc.customProperty); // "I am a custom property"
 boundExampleFunc.customMethod(); // "I am a custom method"
 ```
-
-无论是箭头函数还是普通函数，不是都可以重复执行绑定了吗？
-
-- 这时候映射表 `setFnCacheMap` 发挥作用了
 
 关于 `bind.call` 速记方法，全部以 `call` 作为记忆点：
 
