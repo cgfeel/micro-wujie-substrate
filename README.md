@@ -6201,7 +6201,7 @@ proxyWindow.addEventListener;
 
 - `processTpl`：提取应用内静态样式 [[查看](#processtpl-提取资源)]
 - `processCssLoaderForTemplate`：手动配置应用样式 [[查看](#processcssloaderfortemplate手动添加样式)]
-- `rewriteAppendOrInsertChild`：应用中动态添加样式
+- `rewriteAppendOrInsertChild`：应用中动态添加样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 如何收集缓存：
 
