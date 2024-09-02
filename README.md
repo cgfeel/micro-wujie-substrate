@@ -5836,13 +5836,6 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 > 补充：当函数通过 `bind` 绑定过上下文，再次 `bind` 采用首次绑定的上下文
 
-为符合条件的属性绑定上下文：
-
-- 通过 `Function.prototype.bind.call` 绑定 `target` 为函数上下文
-- 将绑定后的函数保存在映射表 `setFnCacheMap`，以便下次获取
-- 将原函数浅拷贝属性到绑定的方法中
-- 通过 `Object.defineProperty` 为绑定的方法添加 `prototype` 指向原函数的 `prototype`
-
 由此得知符合条件有 2 类：
 
 | 分类     | 绑定后上下文                    |
@@ -5851,6 +5844,13 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 | 普通函数 | 提供的对象                      |
 
 > 只要函数还未 `bind` 过，且不在 `isConstructable` 实例化条件范围 [[查看](#isconstructable判断函数是否可以实例化)]
+
+为符合条件的属性绑定上下文：
+
+- 通过 `Function.prototype.bind.call` 绑定 `target` 为函数上下文
+- 将绑定后的函数保存在映射表 `setFnCacheMap`，以便下次获取
+- 将原函数浅拷贝属性到绑定的方法中
+- 通过 `Object.defineProperty` 为绑定的方法添加 `prototype` 指向原函数的 `prototype`
 
 添加 `property` 意义：
 
