@@ -6071,7 +6071,7 @@ proxyWindow.addEventListener;
 
 实例映射表在应用中具有唯一性：
 
-- 和 `appEventObjMap` 一样，通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
+- 和 `appEventObjMap` 一样通过 `window.__WUJIE.inject` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
 
 #### 2. `appEventObjMap`：存储 `eventBus` 托管的事件
 
