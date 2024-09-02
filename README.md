@@ -5722,7 +5722,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 参数：
 
-- `fn`：任意函数，包括构造函数
+- `fn`：任意对象，因为参数已经允许 `any` 了
 
 返回：
 
@@ -5730,23 +5730,18 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 > 判断对于不可实例化的函数，通过 `call` 绑定上下文
 
-检查构造函数和原型：
+以下情况都将认为是可实例化的函数：
 
-- 函数 `prototype` 存在并且属性 `constructor` 指向自身，除了 `constructor` 外还有其他属性
-- 如果以上条件都满足返回 `true`，否则继续往下看
+1. 原型 `constructor` 指向自身的普通函数，原型除了 `constructor` 外还有其他属性
+2. 以大写开头的函数：`/^function\b\s[A-Z].*/`
+3. 以 `class` 开头的类
 
-从缓存中获取：
+> 通过 `prototype` 可以排除箭头函数
 
-- 从映射表 `fnRegexCheckCacheMap` 中获取结果，若映射表中没有继续往下看
+返回结果前需要从映射表 `fnRegexCheckCacheMap` 中获取结果：
 
-> `fnRegexCheckCacheMap` 缓存结果，类型为：`WeakMap<any | FunctionConstructor, boolean>`
-
-通过正则表达式检查函数字符串：
-
-- `/^function\b\s[A-Z].*/`：以大写开头的函数，`/^class\b/`：以 `class` 开头的类
-- 以上任意条件存在即可实例化
-
-将获取的结果存储在 `fnRegexCheckCacheMap` 然后返回
+- 查到结果不再正则匹配 `fn`，直接返回结果
+- 否则将计算的结果哦保存到映射表后烦返回
 
 #### `isCallable`：判断对象是一个函数
 
