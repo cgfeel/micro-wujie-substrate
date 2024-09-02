@@ -6034,7 +6034,11 @@ proxyWindow.addEventListener;
 全部无界实例和配置存储 `map`（来自备注）：
 
 - 类型：`new Map<String, SandboxCache>()`，应用名为 `key`，实例为 `SandboxCache`
-- `SandboxCache` 包含 2 个属性：`wujie`：`Wujie` 类的实例，`options`：来自 `setupApp` 存储的配置信息
+
+`SandboxCache` 包含 2 个属性：
+
+- `wujie`：`Wujie` 类的实例 [[查看](#wujie-应用类)]
+- `options`：来自 `setupApp` 存储的配置信息，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
 添加映射表有 2 个方法，分别为：
 
