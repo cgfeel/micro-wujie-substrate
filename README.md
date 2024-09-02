@@ -6085,7 +6085,7 @@ proxyWindow.addEventListener;
 
 事件映射表关联流程图（点开新窗口放大缩小查看细节）：
 
-![eventBus](https://github.com/user-attachments/assets/cd9b9a33-365e-473e-b183-080f6185a680)
+![eventBus](https://github.com/user-attachments/assets/be5e9b09-770f-406d-96d2-5eff0ad549ee)
 
 获取映射表有 3 种方式：
 
