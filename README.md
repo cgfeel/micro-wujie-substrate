@@ -5810,7 +5810,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 只要 `bind` 过的函数都返回 `true`，包括：箭头函数、普通函数
 
-- 但不能通过 `bind` 指定箭头函数上下文，因为剪头函数上下文取决于所在作用域的 `this`
+- 但不能通过 `bind` 指定箭头函数上下文，因为箭头函数上下文取决于所在作用域的 `this`
 
 #### `getTargetValue` 从对象中获取属性
 
@@ -5852,14 +5852,14 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 | 分类     | `bind`   | 实例化 | 绑定后上下文                    |
 | -------- | -------- | ------ | ------------------------------- |
-| 剪头函数 | 已绑定过 | 不可以 | 不受影响，保持所在作用域 `this` |
+| 箭头函数 | 已绑定过 | 不可以 | 不受影响，保持所在作用域 `this` |
 | 普通函数 | 未绑定过 | 不可以 | 提供的对象                      |
 
 添加 `property` 意义：
 
 - 添加原型链，见：`qiankun` 开发人员的总结 [[查看](https://github.com/kuitos/kuitos.github.io/issues/47)]
 
-> 需要注意的是剪头函数是没有 `prototype`，所以也不需要添加原型链
+> 需要注意的是箭头函数是没有 `prototype`，所以也不需要添加原型链
 
 绑定原型是让绑定的方法和原来的方法原型链一致，见下方演示：
 
@@ -5883,7 +5883,7 @@ console.log(boundExampleFunc.customProperty); // "I am a custom property"
 boundExampleFunc.customMethod(); // "I am a custom method"
 ```
 
-无论是剪头函数还是普通函数，不是都可以重复执行绑定了吗？
+无论是箭头函数还是普通函数，不是都可以重复执行绑定了吗？
 
 - 这时候映射表 `setFnCacheMap` 发挥作用了
 
@@ -6163,7 +6163,7 @@ proxyWindow.addEventListener;
 以下要求必须全部都满足：
 
 - 必须是一个函数，见：`isCallable` [[查看](#iscallable判断对象是一个函数)]
-- 不能是 `bound` 开头的剪头函，见：`isBoundedFunction` [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
+- 不能是 `bound` 开头的箭头函数，见：`isBoundedFunction` [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以实例化)]
 
 存储类型为 `WeakMap` 的对象：
