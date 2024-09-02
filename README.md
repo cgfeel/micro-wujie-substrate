@@ -6089,11 +6089,14 @@ proxyWindow.addEventListener;
 
 获取映射表有 3 种方式：
 
-- ① `import { bus } "wujie";`
-- ② `window.$wujie.bus`
-- ③ `window.__WUJIE.inject.appEventObjMap`
+| 获取映射表                             | 可用环境                   | 补充说明       |
+| -------------------------------------- | -------------------------- | -------------- |
+| `import { bus } "wujie";`              | 基座，包括子应用中的基座   | 推荐           |
+| `window.$wujie.bus`                    | 子应用                     | 推荐           |
+| `window.$wujie.bus`                    | 子应用中的基座             | 可以，但不推荐 |
+| `window.__WUJIE.inject.appEventObjMap` | 子应用，包括子应用中的基座 | 不推荐         |
 
-不同环境下的链路：
+> `appEventObjMap` 的作用是映射表不同层级链路引用，作为使用者建议只通过 `bus` 来处理通信
 
 当子应用是嵌套关系的基座时：
 
