@@ -6087,6 +6087,14 @@ proxyWindow.addEventListener;
 
 ![eventBus](https://github.com/user-attachments/assets/cd9b9a33-365e-473e-b183-080f6185a680)
 
+获取映射表有 3 种方式：
+
+- ① `import { bus } "wujie";`
+- ② `window.$wujie.bus`
+- ③ `window.__WUJIE.inject.appEventObjMap`
+
+不同环境下的链路：
+
 当子应用是嵌套关系的基座时：
 
 - 子应用的基座，以及基座下的子应用会通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
