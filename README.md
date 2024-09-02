@@ -6219,7 +6219,7 @@ proxyWindow.addEventListener;
 
 - `processTpl`：提取应用内静态 `script` [[查看](#processtpl-提取资源)]
 - `start`：加载手动配置的 `script` [[查看](#1-收集队列)]
-- `rewriteAppendOrInsertChild`：应用中动态添加 `script`
+- `rewriteAppendOrInsertChild`：应用中动态添加 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 如何收集缓存：
 
