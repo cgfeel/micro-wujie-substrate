@@ -6159,17 +6159,19 @@ proxyWindow.addEventListener;
 - 不能是 `bound` 开头的箭头函数，见：`isBoundedFunction` [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - 不能是可实例化的函数，见：`isConstructable` [[查看](#isconstructable判断函数是否可以实例化)]
 
+> 符合条件的函数：箭头函数、普通函数
+
 存储类型为 `WeakMap` 的对象：
 
 - 键名：从对象中提取的原始方法
-- 键值：上下文 `this` 绑定到属性所附属的对像后的方法
+- 键值：通过 `bind` 绑定上下文的方法
 
-> 劫持 `set` 绑定到对象上的新方法，键值和键名都是新增的方法，不需要额外绑定，默认 `this` 指向属性所在的对象上
+> 通过 `bind` 绑定箭头函数上下文无效，剪头函数的上下文为所在作用域的 `this`
 
 使用场景：
 
-- `checkProxyFunction`：添加到映射表
-- `getTargetValue`：获取映射表 [[查看](#gettargetvalue-从对象中获取属性)]
+- `checkProxyFunction`：添加方法到映射表
+- `getTargetValue`：从对象中获取属性 [[查看](#gettargetvalue-从对象中获取属性)]
 
 #### 2. 资源缓存集合
 
