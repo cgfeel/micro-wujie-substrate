@@ -6085,7 +6085,8 @@ proxyWindow.addEventListener;
 
 事件映射表关联流程图（点开新窗口放大缩小查看细节）：
 
-![事件映射表关联流程图](https://github.com/user-attachments/assets/0139adca-49bb-40e3-bbe3-87838db32be8)
+![eventBus](https://github.com/user-attachments/assets/47494729-db32-4a2e-9035-ed6c7853d3a9)
+
 
 当子应用是嵌套关系的基座时：
 
