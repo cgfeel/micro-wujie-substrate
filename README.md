@@ -6042,29 +6042,21 @@ proxyWindow.addEventListener;
 
 添加映射表有 2 个方法，分别为：
 
-- `addSandboxCacheWithWujie`：收集 `Wujie` 实例对象，收集在每个映射对象的 `wujie` 属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L23)]
-- `addSandboxCacheWithOptions`：收集 `setupApp` 设置应用信息，收集在每个映射对象的 `options` 属性，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
+- `addSandboxCacheWithWujie`：收集 `Wujie` 实例对象，见：将实例添加到映射表 [[查看](#5-将实例添加到映射表)]
+- `addSandboxCacheWithOptions`：通过 `setupApp` 收集应用配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
-使用 `addSandboxCacheWithWujie` 只有 1 处调用；
+通过创建 `Wujie` 实例添加映射表有 2 个处：
 
-- `Wujie` 构造函数，见：源码[[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L532)]
-
-创建 `Wujie` 实例有 2 个地方：
-
-- `preloadApp`：预加载，见：文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
-- `startApp`：启动应用，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
-
-使用 `addSandboxCacheWithOptions` 只有 1 处：
-
-- `setupApp` 缓存子应用配置，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L179)]
+- `preloadApp`：预加载，见：声明一个实例 [[查看](#2-声明一个实例)]
+- `startApp`：启动应用，见：创建新的沙箱实例 [[查看](#3-创建新的沙箱实例)]
 
 从这里可以知道：
 
 - `preloadApp`：预加载可以极大的提升子应用首次打开速度
-- `startApp`：只要应用名和链接没变，通过组件重复渲染应用不会重复创建实例
-- `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供信息
+- `startApp`：根据配置信息和模式来决定在启动应用前是否创建实例
+- `setupApp`：可以预先为 `startApp` 和 `preloadApp` 提供配置信息
 
-> `startApp` 虽然每次都会从映射表拿取实例，但实例只要不是 `alive` 模式或 `umd` 模式，所有实例都会通过 `destroy` 注销后重建
+> `startApp` 每次都会从映射表获取实例，但默认的重建模式下，所有实例都会通过 `destroy` 注销后重建
 
 获取映射表的方法有 2 个：
 
