@@ -6140,6 +6140,14 @@ proxyWindow.addEventListener;
 
 - 用于避免 `EventBus`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
 
+不同的通信方式优缺点：
+
+| 通信方式   | 优点                 | 缺点                         |
+| ---------- | -------------------- | ---------------------------- |
+| `props`    | 简单、高效           | 只能从基座向子应用传递数据   |
+| `window`   | 灵活、高效、无需配置 | 可能会因劫持网页产生安全问题 |
+| `eventBus` | 强大、双向通信       | 不能指定收发对象，效率不高   |
+
 #### 📝 作用域下的映射表
 
 #### 1. `setFnCacheMap` 存储绑定上下文的方法
