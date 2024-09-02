@@ -6081,7 +6081,7 @@ proxyWindow.addEventListener;
 
 - 类型：`new Map<String, EventObj>()`，实例名为 `key`，监听事件为 `EventObj`
 - `key` 分两种情况：基座以时间戳字符命名、子应用以应用名命名
-- `EventObj`：是一个事件集合，`event_name` 是键名，键值是监听函数集合的数组
+- `EventObj`：是一个事件集合，键名是 `event_name`，键值是监听函数集合的数组
 
 事件映射表关联流程图（点开新窗口放大缩小查看细节）：
 
