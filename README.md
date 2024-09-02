@@ -6067,9 +6067,7 @@ proxyWindow.addEventListener;
 
 - `deleteWujieById`：会从映射表 `idToSandboxCacheMap` 中删除实例和缓存实例的配置
 
-调用 `deleteWujieById` 也只有 1 处：
-
-- `destroy`：销毁 `WuJie` 实例 [[查看](#-destroy-销毁实例)]
+> 仅能通过 `destory` 销毁应用实例时才能删除映射表 [[查看](#-destroy-销毁实例)]
 
 实例映射表在应用中具有唯一性：
 
