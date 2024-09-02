@@ -6087,7 +6087,6 @@ proxyWindow.addEventListener;
 
 ![eventBus](https://github.com/user-attachments/assets/47494729-db32-4a2e-9035-ed6c7853d3a9)
 
-
 当子应用是嵌套关系的基座时：
 
 - 子应用的基座，以及基座下的子应用会通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
