@@ -5732,11 +5732,11 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 以下情况都将认为是可实例化的函数：
 
-1. 原型 `constructor` 指向自身的普通函数，原型除了 `constructor` 外还有其他属性
-2. 以大写开头的函数：`/^function\b\s[A-Z].*/`
-3. 以 `class` 开头的类
+- 原型 `constructor` 指向自身的普通函数，原型除了 `constructor` 外还有其他属性
+- 以大写开头的函数：`/^function\b\s[A-Z].*/`
+- 以 `class` 开头的类
 
-> 通过 `prototype` 可以排除箭头函数
+> 以上可以排除箭头函数，因为剪头函数没有 `prototype`，转换字符串为 `() => {}`
 
 返回结果前需要从映射表 `fnRegexCheckCacheMap` 中获取结果：
 
