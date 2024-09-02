@@ -5830,7 +5830,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 符合的条件：
 
-- `isCallable`：只有类型为函数的属性才能通过 `bind` 绑定上下文 [[查看](#iscallable判断对象是一个函数)]
+- `isCallable`：只有函数才能通过 `bind` 绑定上下文 [[查看](#iscallable判断对象是一个函数)]
 - `!isBoundedFunction`：确保函数没有绑定过上下文 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - `!isConstructable`：确保函数不可实例化，因为实例化的函数有自己的上下文 [[查看](#isconstructable判断函数是否可以实例化)]
 
