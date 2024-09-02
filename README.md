@@ -6106,7 +6106,7 @@ proxyWindow.addEventListener;
 
 从通信方面概述原理，使用方法见：文档 [[查看](https://wujie-micro.github.io/doc/api/bus.html)]
 
-通过 `$on` 收集订阅的：
+通过 `$on` 收集订阅的事件：
 
 - 构造函数中使用应用名作为 `key`，从映射表找出事件对象，没有则创建空对象 `{}`
 - 将事件名和方法按照类型 `[event: string]: Array<Function>` 添加到 `eventObj`
