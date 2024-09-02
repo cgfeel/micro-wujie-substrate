@@ -6096,28 +6096,30 @@ proxyWindow.addEventListener;
 | `window.$wujie.bus`                    | 子应用中的基座             | 可以，但不推荐 |
 | `window.__WUJIE.inject.appEventObjMap` | 子应用，包括子应用中的基座 | 不推荐         |
 
-> `appEventObjMap` 的作用是映射表不同层级链路引用，作为使用者建议只通过 `bus` 来处理通信
+> `appEventObjMap` 的作用是映射表不同层级链路引用，作为使用者建议通过 `bus` 来处理通信
 
-当子应用是嵌套关系的基座时：
+通过 `window.__POWERED_BY_WUJIE__` 判定嵌套在子应用中时，将通过 `inject` 向上引用：
 
-- 子应用的基座，以及基座下的子应用会通过 `window.__WUJIE.inject.appEventObjMap` 指向上一级映射表，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
-- 这样就保证了整个映射表呈树状结构
+- 实例中会保存 `inject` 作为链路引用，见：构造函数 `inject` [[查看](#1-inject-注入子应用-3-个对象)]
+- 映射表链最底层是 `Map` 对象
 
-简单理解：
+> 适用于实例初始化，以及获取 `appEventObjMap` 映射表
 
-- `appEventObjMap` 顶层是一个 `Map` 对象
-- 这个对象为顶层的基座和每个应用分配一个 `Map item`
-- 子应用无论是应用还是基座，都通过 `inject` 指向子应用名称对应的 `Map item`
+**`EventBus` 的原理概述**
 
-如何收集订阅的：
+从通信方面概述原理，使用方法见：文档 [[查看](https://wujie-micro.github.io/doc/api/bus.html)]
 
-- `EventBus` 构造函数中使用 `key` 从映射表找出对应的事件对象，没有则创建一个空对象 `{}`
-- 通过 `$on` 将要监听的事件名和方法以 `EventObj` 的方式添加到事件对象中
+通过 `$on` 收集订阅的：
 
-如何派发事件：
+- 构造函数中使用应用名作为 `key`，从映射表找出事件对象，没有则创建空对象 `{}`
+- 将事件名和方法按照类型 `[event: string]: Array<Function>` 添加到 `eventObj`
 
-- 遍历所有的事件对象，从事件对象找到要触发的监听函数集合，添加到队列 `cbs` 数组中
-- 遍历并执行拿到的监听函数集合 `cbs`
+通过 `$emit` 派发事件：
+
+- 遍历整个映射表，收集事件同名的回调函数，以及所有事件都会触发的函数
+- 分别遍历拿到的函数集合，透传提供通信的参数
+
+> 如果没有提供事件名，或没有匹配到符合要求的函数集合，将输出警告
 
 缺点：事件对象只有 1 级
 
@@ -6126,17 +6128,17 @@ proxyWindow.addEventListener;
 
 带来的问题：
 
-- 问题 1：事件重名造成错误订阅，如果子应用很多，可能很难保证事件的唯一性
+- 问题 1：事件重名造成错误订阅，例如：多个应用都有 `start` 这个事件
 - 问题 2：嵌套自身作为子应用，事件订阅会造成重复监听
 
 解决办法：
 
-- 问题 1：自行为每一个监听事件名称加上自身应用名作为前缀，使其成为一个命名空间，如：`{project_name}_{event_name}`
-- 问题 2：这是个无解的问题，最好的办法就是尽量不要层层潜逃，层层嵌套在 `wujie` 不仅仅只是事件通信存在问题
+- 问题 1：监听的事件名加上应用名作为前缀，使其成为命名空间，如：`{project_name}_{event_name}`
+- 问题 2：这是个无解的问题，但通常会用第三方路由做切换，而不是自我嵌套
 
-除此之外：
+除此之外还提供了 `props`、`window` 进行通信：
 
-- `wujie` 还提供了 `props` 通信通信和 `window` 通信，来避免 `EventBus`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
+- 用于避免 `EventBus`承载过多，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html)]
 
 #### 📝 作用域下的映射表
 
