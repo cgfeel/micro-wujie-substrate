@@ -5843,7 +5843,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 | 箭头函数 | 不受影响，保持所在作用域 `this` |
 | 普通函数 | 提供的对象                      |
 
-> 只要函数还未 `bind` 过，且不在 `isConstructable` 实例化条件范围 [[查看](#isconstructable判断函数是否可以实例化)]
+> 只要函数还未 `bind` 过，且不在 `isConstructable` 可实例化范围都符合要求 [[查看](#isconstructable判断函数是否可以实例化)]
 
 为符合条件的属性绑定上下文：
 
