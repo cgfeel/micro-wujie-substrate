@@ -6422,8 +6422,7 @@ proxyWindow.addEventListener;
 | `_cacheListeners`      | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
 | `elementEventCacheMap` | `iframe`     | 切换应用 `active` 时恢复记录，以便重新监听         |
 
-- 记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
-- 条件：`iframe` 容器、非重建模式
+> 条件：`iframe` 容器、非重建模式
 
 流程参考：
 
