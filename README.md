@@ -6504,11 +6504,12 @@ proxyWindow.addEventListener;
 - `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#-start-启动应用)]
 - `stopMainAppRun`：能够执行这个函数必须是基座
 
-由此得出：
+子应用是基座的情况下，`__POWERED_BY_WUJIE__` 还未经过 `start` 启动应用时更新：
 
-- 子应用是基座的情况下，`__POWERED_BY_WUJIE__` 还未经过 `start` 启动应用添加
-- 通常情况下，要执行 `script` 就要先 `start` 启动子应用
-- 而在注入 `script` 之前一定会先定义 `__POWERED_BY_WUJIE__`
+- `start` 启动应用注入 `script` 前一定会先定义 `__POWERED_BY_WUJIE__`
+- 之后再注入 `script`，包括应用入口渲染应用
+
+> 正常情况下 `__WUJIE` 和 `__POWERED_BY_WUJIE__` 一定是同时存在
 
 假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，不阻止会发生什么：
 
