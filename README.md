@@ -6504,9 +6504,13 @@ proxyWindow.addEventListener;
 - `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#-start-启动应用)]
 - `stopMainAppRun`：能够执行这个函数必须是基座
 
+正常情况下子应用是不会检测全局变量的：
+
+- 只有当子应用是基座的时候才会主动检测
+
 `start` 启动应用注入 `script` 前一定会先更新沙箱全局变量 `__POWERED_BY_WUJIE__`：
 
-- 之后再注入 `script`，包括应用入口渲染应用
+- 之后再注入 `script`，包括应用入口渲染应用，
 - 正常启动下，沙箱中 `__WUJIE` 一定是存在的且 `__POWERED_BY_WUJIE__` 一定是 `true`
 
 假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，加载过程中会发生什么：
