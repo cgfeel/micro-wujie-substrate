@@ -6455,7 +6455,7 @@ proxyWindow.addEventListener;
 
 > 关于代理关系，见：`wujie` 中的代理的图谱 [[查看](#wujie-中的代理)]
 
-`degrade` 降级时子应用 `widnow` 就是沙箱 `window`，这种情况也会记录事件并修正上下文，因为：
+`degrade` 降级时子应用 `widnow` 就是沙箱 `window`，同样也会记录事件并修正上下文，因为：
 
 - 原生方法只能通过 `call` 来调用；
 - 存在通过 `options.targetWindow` 指定上下文 [[查看](#patchiframeevents-劫持沙箱-iframe-的-eventlistener)]
