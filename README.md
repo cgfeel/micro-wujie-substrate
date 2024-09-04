@@ -6282,7 +6282,7 @@ proxyWindow.addEventListener;
 - `scriptCache`：缓存所有外联 `script`
 - `execQueue`：仅作为注入 `script` 队列
 
-`scriptCache` 和 `execQueue` 的使用都取决于应用什么时候 `start` [[]]：
+`scriptCache` 和 `execQueue` 的使用都取决于应用什么时候 `start` [[查看](#-start-启动应用)]：
 
 | 场景                  | `scriptCache`          | `execQueue`        |
 | --------------------- | ---------------------- | ------------------ |
