@@ -6354,7 +6354,7 @@ proxyWindow.addEventListener;
 
 #### 2. `styleSheetElements` 收集样式表
 
-收集应用中动态添加的样式，`:host` 以及字体样式，收集的样式以元素类型存储在集合：
+收集应用中动态添加的样式，`:root` 以及字体样式，收集的样式以元素类型存储在集合：
 
 - 目的为了 `umd` 模式切换应用时，通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
@@ -6362,7 +6362,7 @@ proxyWindow.addEventListener;
 
 注入资源到容器后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]：
 
-- 仅收集容器中所有字体和 `:host` 样式
+- 仅收集容器中所有 `:root` 和字体样式
 
 收集的样式来自 `rewriteAppendOrInsertChild` 拦截动态添加的样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]：
 
