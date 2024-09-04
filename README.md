@@ -6356,12 +6356,12 @@ proxyWindow.addEventListener;
 
 注入资源到容器后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]：
 
-- 仅收集容器中所有打补丁的样式 `:host`
+- 仅收集容器中所有字体和 `:host` 样式
 
 收集的样式来自 `rewriteAppendOrInsertChild` 拦截动态添加的样式：
 
 - `link` 外联样式：下载后创建内联元素记录在集合中
-- `style`内联样式：直接记录在集合中
+- `style` 内联样式：直接记录在集合中
 
 **缓存外联样式**
 
