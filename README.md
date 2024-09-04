@@ -6277,7 +6277,7 @@ proxyWindow.addEventListener;
 | 重建模式切换          | 使用缓存的外联样式替换资源   | 重新记录，不参与渲染                 |
 
 - `styleSheetElements` 仅限 `umd` 模式切换时使用，其他情况只保留记录不使用
-- `styleCache` 缓存所有外联样式，包括静态样式和动态添加，一旦缓存下次直接从缓存中获取
+- `styleCache` 缓存所有外联样式，包括静态提取、动态及手动添加，一旦缓存下次直接从缓存中获取
 
 **`scriptCache`：缓存外联 `script` 资源**
 
@@ -6319,7 +6319,7 @@ proxyWindow.addEventListener;
 | 重建模式切换          | 外联 `script` 使用缓存 | 重新收集并执行队列 |
 | 其他模式切换          | 不使用                 | 不使用             |
 
-- `scriptCache`：仅首次加载时收集外联 `script`，包括静态提取和动态添加，再次加载使用缓存
+- `scriptCache`：仅首次加载时收集外联 `script`，包括静态提取、动态及手动添加，再次加载使用缓存
 - `execQueue`：首次启动会执行收集提取队列，再次启动仅重建模式需要重新操作
 
 > 因为 `execQueue` 随沙箱一起，只在重建模式下随应用切换销毁重建
