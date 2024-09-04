@@ -6277,10 +6277,10 @@ proxyWindow.addEventListener;
 - `getExternalScripts` 匹配 `script` 发起请求 [[查看](#getexternalscripts加载-script-资源)]
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-应用实例中通过 `execQueue` 作为注入队列，不缓存 `script` [[查看](#2-stylesheetelements-收集样式表)]：
+应用实例中通过 `execQueue` 作为注入 `script` 队列，不缓存 `script` [[查看](#2-stylesheetelements-收集样式表)]：
 
 - `scriptCache`：缓存所有外联 `script`
-- `execQueue`：仅作为注入 `script` 队列
+- `execQueue`：仅用于收集 `script`，提取并注入沙箱 `iframe`
 
 `scriptCache` 和 `execQueue` 的使用都取决于应用什么时候 `start` [[查看](#-start-启动应用)]：
 
