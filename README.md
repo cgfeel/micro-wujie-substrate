@@ -2712,13 +2712,26 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 **5. 从缓存中提取资源**
 
-重建模式下，每次切换应用就是一次实例初始化，同样的也会重复调用 `importHTML` 提取资源，此时会尽量通过缓存获取资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+重建模式下，每次切换应用就是一次实例初始化，会重复调用 `importHTML` 提取资源，此时会尽量通过缓存获取资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 - `embedHTMLCache`：应用入口资源缓存，仅限没有提供 `htmlLoader`
-- `styleCache`：缓存加载的外联样式，只有加载失败的情况会继续请求
-- `scriptCache`：缓存加载的 `script`，只有加载失败的情况会继续请求
+- `styleCache`：缓存所有外联样式，包括静态提取和动态加载
+- `scriptCache`：缓存所有外联 `script`，包括静态提取和动态加载
 
 > `alive` 和 `umd` 模式再次切换应用时，不会重复调用 `importHTML`
+
+`alive` 模预加载后启动也会重复调用 `importHTML`：
+
+- `preloadApp`：预加载执行 1 次，会提前加载资源 [[查看](#preloadapp-预加载流程)]
+- `startApp`：启动应用执行 1 次，会使用预加载已缓存的资源 [[查看](#startapp-启动流程)]
+
+`umd` 模式预加载后启动也会重复调用 `importHTML`：
+
+- 因为 `umd` 首次加载方法 `__WUJIE_MOUNT` 还没有挂载到沙箱 `window`
+
+重复加载资源可以缓存，但存在重复处理资源的问题，如：`processTpl` [[查看](#processtpl-提取资源)]
+
+- 除了重建模式可以通过预加载配置 `exec` 预执行解决这个问题
 
 **6. 从 `fetch` 看兼容性**
 
@@ -4618,7 +4631,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 **第二步：发起微任务**
 
-- 发起微任务 `stopIframeLoading` 并挂在到实例属性 `iframeReady` 上 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
+- 发起微任务 `stopIframeLoading` 并绑定到实例属性 `iframeReady` 上 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
 - 返回创建的沙箱 `iframe`
 
 `iframeReady` 用于确保 `iframe` 完成初始化，因此会在下个 `fetch` 拿到结果前执行完毕：
@@ -6544,7 +6557,7 @@ proxyWindow.addEventListener;
 
 后退时 `hrefFlag` 存在，`iframe` 容器和 `active` 步骤一样 [[查看](#41-degrade-主动降级渲染)]：
 
-- 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂在到指定节点 [[查看](#创建-iframe-容器)]
+- 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂载到指定节点 [[查看](#创建-iframe-容器)]
 - 通过 `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
 - 绑定 `onunload` 到 `iframe` 容器上用于销毁时主动 `unmount` 应用
 - 将之前迁移到沙箱 `body` 中的 `html` 元素添加到容器 `document` 下
