@@ -1377,10 +1377,13 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 1. 通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
 2. 通过 `processTpl` 提取资源中的样式和 `script`，并替换成注释 [[查看](#processtpl-提取资源)]
-3. 通过 `processCssLoader` 提取样式替换资源中的注释后通过 `active` 注入容器 [[查看](#processcssloader处理-css-loader)]
-4. `start` 应用时调用 `importHTML` 提供的包装方法 `getExternalScripts` 提取 `script` [[查看](#getexternalscripts加载-script-资源)]
-5. 将提取的 `script` 分为同步代码或异步代码分别处理，同步代码加上手动注入的 `script` 一同添加到队列
-6. 通过 `insertScriptToIframe` 将队列中提供的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+3. 通过 `processCssLoader` 加载样式并还原到入口资源 [[查看](#processcssloader处理-css-loader)]
+4. 通过 `active` 将处理的入口资源注入容器 [[查看](#-active-激活应用)]
+5. 通过 `patchRenderEffect` 为容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
+6. 通过 `start` 提取 `script` 加入队列并依次提取，其中包括应用入口 `script` [[查看](#-start-启动应用)]
+7. 通过 `insertScriptToIframe` 将提取的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+8. 由于已打补丁，通过 `rewriteAppendOrInsertChild` 处理动态添加的 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+9. 再次执行 `insertScriptToIframe` 将动态添加的以及后续队列的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 > `React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
 
@@ -6336,12 +6339,12 @@ proxyWindow.addEventListener;
 
 队列收集来自 2 个区域：
 
-| 所在位置                                                                                                                                                                       | 用途                                                                                                                |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `rewriteAppendOrInsertChild` 共 2 处，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)] | 收集来自子应用中动态添加的内联和外联 `script`                                                                       |
-| `start` 共 7 处，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L251)]                     | 收集配置文件手动插入和同步应用中静态 `script`，派发事件，通知 `start` 完成，见：启动应用 [[查看](#-start-启动应用)] |
+| 所在位置                                                                                           | 用途                                             |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 收集应用中动态添加的内联和外联 `script`，共 2 处 |
+| `start` [[查看](#-start-启动应用)]                                                                 | 收集队列注入沙箱的 `script` 以及事件通知共 7 处  |
 
-> 对于像 `React` 或 `Vue` 这样的 `SPA` 应用，`script` 是通过动态添加到应用中的，需要通过 `rewriteAppendOrInsertChild` 来收集
+在单例应用中通常保留一个静态的入口 `script`，注入沙箱后动态加载 `chunk script`
 
 倒推流程：
 
