@@ -6364,7 +6364,7 @@ proxyWindow.addEventListener;
 
 - 仅收集容器中所有字体和 `:host` 样式
 
-收集的样式来自 `rewriteAppendOrInsertChild` 拦截动态添加的样式：
+收集的样式来自 `rewriteAppendOrInsertChild` 拦截动态添加的样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]：
 
 - `link` 外联样式：下载后创建内联元素记录在集合中
 - `style` 内联样式：直接记录在集合中
