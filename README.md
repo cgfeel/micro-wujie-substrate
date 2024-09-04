@@ -2731,7 +2731,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 重复加载资源可以缓存，但存在重复处理资源的问题，如：`processTpl` [[查看](#processtpl-提取资源)]
 
-- 除了重建模式可以通过预加载配置 `exec` 预执行解决这个问题
+- 除了重建模式可以通过预加载配置 `exec` 预执行解决这个问题 [[查看](#5-通过-exec-预执行)]
 
 **6. 从 `fetch` 看兼容性**
 
