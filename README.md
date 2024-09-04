@@ -6312,7 +6312,7 @@ proxyWindow.addEventListener;
 
 `active` 预加载后启动会通过 `importHTML` 重复提取 `getExternalScripts`：
 
-- 原因见：`importHTML` [[查看](#importhtml-加载资源)]
+- 原因见：`importHTML` - 5. 从缓存中提取资源 [[查看](#importhtml-加载资源)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
