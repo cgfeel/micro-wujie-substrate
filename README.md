@@ -6422,8 +6422,6 @@ proxyWindow.addEventListener;
 | `_cacheListeners`      | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
 | `elementEventCacheMap` | `iframe`     | 切换应用 `active` 时恢复记录，以便重新监听         |
 
-> 条件：`iframe` 容器、非重建模式
-
 流程参考：
 
 - `active` 激活应用，见：`degrade` 主动降级渲染 [[查看](#41-degrade-主动降级渲染)]
@@ -6433,7 +6431,7 @@ proxyWindow.addEventListener;
 - 事件记录和恢复、适用模式，见：记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
 - 事件清除：每次激活时将使用新的容器代替老的的容器
 
-> 重建模式每次启动应用都是重建容器，不需要用到 `elementEventCacheMap`
+> 重建模式每次启动应用都重建容器，不需要用到 `elementEventCacheMap`
 
 为什么 `shadowRoot` 不需要记录和恢复：
 
