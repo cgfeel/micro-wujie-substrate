@@ -6510,7 +6510,7 @@ proxyWindow.addEventListener;
 
 `start` 启动应用注入 `script` 前一定会先更新沙箱全局变量 `__POWERED_BY_WUJIE__`：
 
-- 之后再注入 `script`，包括应用入口渲染应用，
+- 更新后再注入 `script`，包括：应用入口 `script` 注入，到动态加载 `script`，到发起检测
 - 正常启动下，沙箱中 `__WUJIE` 一定是存在的且 `__POWERED_BY_WUJIE__` 一定是 `true`
 
 假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，加载过程中会发生什么：
