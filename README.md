@@ -6232,11 +6232,11 @@ proxyWindow.addEventListener;
 
 和 `styleCache` 区别：
 
-| 分类     | `styleCache`                                                   | `styleSheetElements`                                                                               | `styleSheetElements`                                       |
-| -------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 收集方法 | `fetchAssets` [[查看](#fetchassets加载资源缓存后返回-promise)] | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | `patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)] |
-| 用处     | 处理请求，记录缓存                                             | 动态添加样式                                                                                       | 打补丁                                                     |
-| 缓存类型 | 静态样式                                                       | 动态样式                                                                                           | 所有 `:root` 和字体样式                                    |
+| 分类     | `styleCache`                                                        | `styleSheetElements`                                                               | `styleSheetElements`                              |
+| -------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------- |
+| 收集方法 | `getExternalStyleSheets`                                            | `rewriteAppendOrInsertChild`                                                       | `patchCssRules`                                   |
+| 用处     | 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)] | 动态添加样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)] |
+| 缓存类型 | 静态样式                                                            | 动态样式                                                                           | 所有 `:root` 和字体样式                           |
 
 缓存的使用：
 
