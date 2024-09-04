@@ -6511,9 +6511,9 @@ proxyWindow.addEventListener;
 
 > 正常情况下 `__WUJIE` 和 `__POWERED_BY_WUJIE__` 一定是同时存在
 
-假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，不阻止会发生什么：
+假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，加载过程中会发生什么：
 
-- 实例注入的对象链条会被中断，见：`inject` [[查看](#1-inject-注入子应用-3-个对象)]
+- 输出错误、抛出异常，如果加载过程没有捕获错误，异常会抛到最顶层基座
 
 #### `processAppForHrefJump` 监听前进和后端
 
