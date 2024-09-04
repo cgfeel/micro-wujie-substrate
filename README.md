@@ -6419,7 +6419,7 @@ proxyWindow.addEventListener;
 
 | 记录对象               | 容器         | 记录事件用途                                       |
 | ---------------------- | ------------ | -------------------------------------------------- |
-| `cacheListeners`       | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
+| `_cacheListeners`      | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
 | `elementEventCacheMap` | `iframe`     | 切换应用 `active` 时恢复记录，以便重新监听         |
 
 流程参考：
