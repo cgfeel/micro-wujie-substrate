@@ -6256,8 +6256,6 @@ proxyWindow.addEventListener;
 
 - `styleSheetElements` 仅限 `umd` 模式切换时使用，其他情况只保留记录不使用
 - `styleCache` 一旦缓存，下次直接从缓存中获取
-- 应用静态资源中内联样式不缓存，重建模式下每次都要重新提取
-- 其他模式通过缓存容器：`shadowRoot`、`documennt`，以及缓存 `template` 的方式避免你重新提取样式
 
 **`scriptCache`：缓存外联 `script` 资源**
 
