@@ -6184,7 +6184,7 @@ proxyWindow.addEventListener;
 类型为 `Partial<Record<string, Promise<htmlParseResult>>>`：
 
 - 键名为资源入口链接
-- 键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#importhtml-加载资源)]
+- 键值类型为应用静态资源信息，见：`importHTML` [[查看](#importhtml-加载资源)]
 
 如何收集缓存：
 
@@ -6197,7 +6197,7 @@ proxyWindow.addEventListener;
 应用实例中通过 `template` 缓存入口资源：
 
 - 应用通过 `active` 激活时候记录资源，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
-- 一样都来自 `importHTML`，不同的是 `template` 的资源通过 `processCssLoader` 还原样式 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+- 一样都来自 `importHTML`，不同的是 `template` 的资源已通过 `processCssLoader` 还原样式 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 
 不同模式下缓存使用：
 
