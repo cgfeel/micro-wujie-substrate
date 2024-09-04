@@ -6210,7 +6210,7 @@ proxyWindow.addEventListener;
 应用实例中通过 `template` 缓存入口资源：
 
 - 应用通过 `active` 激活时候记录资源，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
-- 一样都来自 `importHTML`，不同的是 `template` 的资源已通过 `processCssLoader` 还原样式 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+- 一样都来自 `importHTML`，不同的是 `template` 的资源已通过 `processCssLoader` 还原样式 [[查看](#processcssloader处理-css-loader)]
 
 不同模式下缓存使用：
 
