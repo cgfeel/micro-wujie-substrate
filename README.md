@@ -6344,7 +6344,13 @@ proxyWindow.addEventListener;
 | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 收集应用中动态添加的内联和外联 `script`，共 2 处 |
 | `start` [[查看](#-start-启动应用)]                                                                 | 收集队列注入沙箱的 `script` 以及事件通知共 7 处  |
 
-在单例应用中通常保留一个静态的入口 `script`，注入沙箱后动态加载 `chunk script` [[查看](#5-队列前的准备)]
+> 在单例应用中通常保留一个静态的入口 `script`，注入沙箱后动态加载 `chunk script` [[查看](#5-队列前的准备)]
+
+**`scriptCache` 缓存外联 `script`**
+
+`execQueue` 和 `scriptCache` 用途不一样：
+
+- 但是他们调用场景都一样来自 `start` 启动你应用，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 #### 2. `styleSheetElements` 收集样式表
 
@@ -6363,11 +6369,10 @@ proxyWindow.addEventListener;
 - `link` 外联样式：下载后创建内联元素记录在集合中
 - `style` 内联样式：直接记录在集合中
 
-**缓存外联样式**
+**`styleCache` 缓存外联样式**
 
-对于应用中外联样式通过 `styleCache` 缓存资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+`styleSheetElements` 和 `styleCache` 存在重叠的情况：
 
-- `styleSheetElements` 和 `styleCache` 存在重叠的情况，都缓存外联样式
 - 但他们用途不一样，调用场景也不相同，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 #### 3. `elementEventCacheMap` 记录降级容器事件
