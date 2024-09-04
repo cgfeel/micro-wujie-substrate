@@ -6186,9 +6186,29 @@ proxyWindow.addEventListener;
 - 键名为资源入口链接
 - 键值类型为：`Promise<htmlParseResult>`，见：`importHTML` [[查看](#importhtml-加载资源)]
 
+如何收集缓存：
+
+- `importHTML`：加载资源 [[查看](#importhtml-加载资源)]
+
 不缓存的情况：
 
 - 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+
+应用实例中通过 `template` 缓存入口资源：
+
+- 应用通过 `active` 激活时候记录资源，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
+- 一样都来自 `importHTML`，不同的是 `template` 的资源通过 `processCssLoader` 还原样式 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+
+不同模式下缓存使用：
+
+| 场景                  | `embedHTMLCache`        | `template`           |
+| --------------------- | ----------------------- | -------------------- |
+| 初次启动应用          | `importHTML` 按条件记录 | 应用 `active` 时记录 |
+| 预加载&预执行         | `importHTML` 按条件记录 | 应用 `active` 时记录 |
+| `active` 预加载后启动 | 存在则使用              | 不使用               |
+| `active` 模式切换     | 不使用                  | 使用但不参与渲染     |
+| `umd` 模式切换        | 不使用                  | 用于恢复容器资源     |
+| 重建模式切换          | 存在则使用              | 重新记录             |
 
 **`styleCache`：缓存外联样式资源**
 
