@@ -6228,6 +6228,19 @@ proxyWindow.addEventListener;
 - `getExternalStyleSheets` 匹配样式发起请求 [[查看](#getexternalstylesheets加载样式资源)]
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
+应用实例中通过 `styleSheetElements` 缓存样式，和 `styleCache` 区别：
+
+| 分类     | `fetchAssets`                                                       | `rewriteAppendOrInsertChild`                                                       | `patchCssRules`                                   |
+| -------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------- |
+| 缓存对象 | `styleCache`                                                        | `styleSheetElements`                                                               | `styleSheetElements`                              |
+| 用处     | 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)] | 动态添加样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)] |
+| 缓存类型 | 静态样式                                                            | 动态样式                                                                           | 所有 `:root` 和字体样式                           |
+
+缓存的使用：
+
+- `styleCache`：通过 `processCssLoader` 记录在实例属性 `template`
+- `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式
+
 **`scriptCache`：缓存外联 `script` 资源**
 
 类型为 `Partial<Record<string, Promise<string>|null>>`：
