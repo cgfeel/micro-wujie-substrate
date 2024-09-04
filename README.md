@@ -6228,7 +6228,9 @@ proxyWindow.addEventListener;
 - `getExternalStyleSheets` 匹配样式发起请求 [[查看](#getexternalstylesheets加载样式资源)]
 - `fetchAssets` 处理请求，记录缓存 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-应用实例中通过 `styleSheetElements` 缓存样式，和 `styleCache` 区别：
+应用实例中通过 `styleSheetElements` 缓存样式 [[查看](#2-stylesheetelements-收集样式表)]
+
+和 `styleCache` 区别：
 
 | 分类     | `styleCache`                                                   | `styleSheetElements`                                                                               | `styleSheetElements`                                       |
 | -------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
@@ -6240,6 +6242,17 @@ proxyWindow.addEventListener;
 
 - `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
 - `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
+
+不同模式下缓存使用：
+
+| 场景                  | `styleCache`                         | `styleSheetElements`                               |
+| --------------------- | ------------------------------------ | -------------------------------------------------- |
+| 初次启动应用          | 缓存外联样式后，替换入口资源参与渲染 | 用于收集样式元素，不参与渲染                       |
+| 预加载&预执行         | 缓存外联样式后，替换入口资源参与渲染 | 预加载收集静态样式，预执行收集动态样式，不参与渲染 |
+| `active` 预加载后启动 | 提取但不加载，也不使用               | 不使用                                             |
+| `active` 模式切换     | 不使用                               | 不使用                                             |
+| `umd` 模式切换        | 不使用                               | 用于恢复容器样式                                   |
+| 重建模式切换          | 使用缓存替换入口资源参与渲染         | 重新记录，不参与渲染                               |
 
 **`scriptCache`：缓存外联 `script` 资源**
 
