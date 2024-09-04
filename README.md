@@ -6344,19 +6344,7 @@ proxyWindow.addEventListener;
 | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 收集应用中动态添加的内联和外联 `script`，共 2 处 |
 | `start` [[查看](#-start-启动应用)]                                                                 | 收集队列注入沙箱的 `script` 以及事件通知共 7 处  |
 
-在单例应用中通常保留一个静态的入口 `script`，注入沙箱后动态加载 `chunk script`
-
-倒推流程：
-
-- `rewriteAppendOrInsertChild` 来自 `patchRenderEffect`
-- `patchRenderEffect` 有 2 处：`renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]、`renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
-- 渲染容器的 2 个方法都来自 `active` 激活应用 [[查看](#-active-激活应用)]
-
-由此得出启动应用过程时：
-
-1.  通过 `active` 激活应用，渲染 `template` 到容器
-2.  通过 `patchRenderEffect` 给容器打补丁收集来自应用中动态添加的 `script`
-3.  启动应用 `start`，收集配置文件手动插入和同步应用中静态 `script`、派发事件等
+在单例应用中通常保留一个静态的入口 `script`，注入沙箱后动态加载 `chunk script` [[查看](#5-队列前的准备)]
 
 #### 2. `styleSheetElements` 收集样式表
 
