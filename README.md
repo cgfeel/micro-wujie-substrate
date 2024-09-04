@@ -6330,7 +6330,7 @@ proxyWindow.addEventListener;
 
 #### 📝 `Wujie` 实例中映射表和队列
 
-所有属性初始和注销状态见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+常见属性初始和注销状态见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
 #### 1. `execQueue` 应用启动执行队列
 
