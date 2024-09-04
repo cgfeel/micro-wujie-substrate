@@ -6350,7 +6350,7 @@ proxyWindow.addEventListener;
 
 `execQueue` 和 `scriptCache` 用途不一样：
 
-- 但是他们调用场景都一样来自 `start` 启动你应用，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+- 但是他们调用场景都一样来自 `start` 启动应用，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
 #### 2. `styleSheetElements` 收集样式表
 
