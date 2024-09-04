@@ -6504,7 +6504,7 @@ proxyWindow.addEventListener;
 - `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#-start-启动应用)]
 - `stopMainAppRun`：能够执行这个函数必须是基座
 
-正常情况下子应用是不会检测全局变量的：
+通常情况下子应用是不会检测全局变量的：
 
 - 只有当子应用是基座的时候才会主动检测
 
