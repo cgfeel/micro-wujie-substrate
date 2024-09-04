@@ -6238,7 +6238,7 @@ proxyWindow.addEventListener;
 
 缓存的使用：
 
-- `styleCache`：通过 `processCssLoader` 记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
+- `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
 - `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
 **`scriptCache`：缓存外联 `script` 资源**
