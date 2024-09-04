@@ -6297,23 +6297,9 @@ proxyWindow.addEventListener;
 
 > 因为 `execQueue` 随沙箱一起，只在重建模式下随应用切换销毁重建
 
-**为 `umd` 模式记录的样式**
+`active` 预加载后启动会通过 `importHTML` 重复提取 `getExternalScripts`：
 
-应用中动态添加的样式，以及打补丁后的 `:host`，存储在 `styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
-
-**不同模式下缓存的使用**
-
-> 表格中 `template` 是指应用实例中，存放注入容器资源的属性，见：常规属性 [[查看](#-wujie-实例中关键属性)]
-
-`scriptCache` 只有初次启动、预加载和重建模式切换会用到：
-
-- `active` 和 `umd` 切换应用都不会销毁沙箱 `iframe`，不需要用到 `scriptCache`
-- 初次加载会缓存外联 `script`，等再次提取资源时，外联 `script` 将从缓存中获取
-
-备注：
-
-- `umd` 预执行后 `startApp` 和 `umd` 切换应用流程一致
-- `active` 预加载后启动会通过 `importHTML` 重复提取 `getExternalScripts`，原因见：`importHTML` [[查看](#importhtml-加载资源)]
+- 原因见：`importHTML` [[查看](#importhtml-加载资源)]
 
 #### 📝 `Wujie` 实例中映射表和队列
 
