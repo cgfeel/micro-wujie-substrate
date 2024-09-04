@@ -6394,8 +6394,8 @@ proxyWindow.addEventListener;
 
 为什么记录清空事件：
 
-- `renderTemplateToHtml` 将资源转换为 `html` 时，会将`head` 和 `body` 记录在应用实例 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
-- `umd` 模式切换应用时会还原实例中的记录，如果卸载时不清空事件会导致重复监听
+- `renderTemplateToHtml` 将资源转换为 `html` 时，会将 `head` 和 `body` 记录在应用实例 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
+- `umd` 模式切换应用时会还原实例中的 `head` 和 `body`，如果卸载时不清空事件会导致重复监听
 
 为啥其他模式不需要：
 
