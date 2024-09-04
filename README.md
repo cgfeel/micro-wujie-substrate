@@ -6210,7 +6210,7 @@ proxyWindow.addEventListener;
 | `umd` 模式切换        | 使用 `template` 恢复，不需要 | 用于恢复容器资源     |
 | 重建模式切换          | 存在则使用                   | 重新记录             |
 
-> `alive` 预加载后资源存储在 `template` 中，启动时渲染；而切换应用时仅需容器挂在，不需要缓存
+> `alive` 预加载后资源存储在 `template` 中，启动时渲染；而切换应用时仅需挂载容器，不需要缓存
 
 **`styleCache`：缓存外联样式资源**
 
