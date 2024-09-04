@@ -6502,7 +6502,8 @@ proxyWindow.addEventListener;
 
 - `window.__WUJIE`：说明为子应用，在沙箱 `iframe` 初始化时通过 `patchIframeVariable` 设置 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#5-队列前的准备)]
-- `stopMainAppRun`：能够执行这个函数必须是基座
+
+> 条件符合的情况下 `stopMainAppRun` 会输出警告，抛出异常
 
 通常情况下子应用是不会检测全局变量的：
 
@@ -6513,9 +6514,9 @@ proxyWindow.addEventListener;
 - 更新后再注入 `script`，包括：应用入口 `script` 注入，到动态加载 `script`，到发起检测
 - 正常启动下，沙箱中 `__WUJIE` 一定是存在的且 `__POWERED_BY_WUJIE__` 一定是 `true`
 
-假设存在 `__POWERED_BY_WUJIE__` 丢失的情况，加载过程中会发生什么：
+假设丢失了 `__POWERED_BY_WUJIE__`，并且加载过程没有捕获错误：
 
-- 输出错误、抛出异常，如果加载过程没有捕获错误，异常会抛到最顶层基座
+- 抛出的异常会直至整个应用最顶层，导致基座异常
 
 #### `processAppForHrefJump` 监听前进和后端
 
