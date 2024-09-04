@@ -6232,6 +6232,13 @@ proxyWindow.addEventListener;
 - 键名是提取的外联样式 `src`
 - 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
+不缓存的情况：
+
+- 配置插件 `cssExcludes` 将彻底忽略外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+- 配置插件 `cssIgnores` 将通过浏览器加载外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+
+> 所有符合要求的外联样式，会加载作为内联样式缓存到 `styleCache`
+
 加载符合要求的外联样式，并缓存加载结果，包含：
 
 - `processTpl`：提取应用内静态样式 [[查看](#processtpl-提取资源)]
@@ -6279,6 +6286,13 @@ proxyWindow.addEventListener;
 - 键名是提取的外联 `script` 的 `src`
 - 如果获取资源成功，键值和 `fetchAssets` 返回类型一致，否则为 `null` [[查看](#fetchassets加载资源缓存后返回-promise)]
 
+不缓存的情况：
+
+- 配置插件 `jsExcludes` 将彻底忽略外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- 配置插件 `jsIgnores` 将通过浏览器加载外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+
+> 所有符合要求的外联 `script`，会加载作为内联 `script` 缓存到 `scriptCache`
+
 加载符合要求的外联 `script`，并缓存加载结果，包含：
 
 - `processTpl`：提取应用内静态 `script` [[查看](#processtpl-提取资源)]
@@ -6305,7 +6319,7 @@ proxyWindow.addEventListener;
 | 重建模式切换          | 外联 `script` 使用缓存 | 重新收集并执行队列 |
 | 其他模式切换          | 不使用                 | 不使用             |
 
-- `scriptCache`：仅首次加载时缓存外联 `script`，包括静态提取和动态添加，再次加载使用缓存
+- `scriptCache`：仅首次加载时收集外联 `script`，包括静态提取和动态添加，再次加载使用缓存
 - `execQueue`：首次启动会执行收集提取队列，再次启动仅重建模式需要重新操作
 
 > 因为 `execQueue` 随沙箱一起，只在重建模式下随应用切换销毁重建
