@@ -6501,7 +6501,7 @@ proxyWindow.addEventListener;
 终止代码运行，前提条件：
 
 - `window.__WUJIE`：说明为子应用，在沙箱 `iframe` 初始化时通过 `patchIframeVariable` 设置 [[查看](#patchiframevariable-为子应用-window-添加属性)]
-- `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#-start-启动应用)]
+- `!window.__POWERED_BY_WUJIE__`：说明此时没有通过 `start` 启动应用 [[查看](#5-队列前的准备)]
 - `stopMainAppRun`：能够执行这个函数必须是基座
 
 通常情况下子应用是不会检测全局变量的：
