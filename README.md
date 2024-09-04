@@ -6389,7 +6389,7 @@ proxyWindow.addEventListener;
 目的：`umd` 下卸载应用时清空 `head`、`body` 下的事件
 
 - 记录：`patchEventListener`，见：`patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-- 清除：`unmount` [[查看](#-unmount-卸载应用)]
+- 清除：`removeEventListener`，由应用 `unmount` 时候触发 [[查看](#-unmount-卸载应用)]
 - 条件：`shadowRoot` 容器、`umd` 模式
 
 为什么记录清空事件：
@@ -6415,12 +6415,15 @@ proxyWindow.addEventListener;
 
 #### `elementEventCacheMap`：降级容器事件
 
-和 `shadowRoot.[body|head]._cacheListeners` 正好相反：
+和 `shadowRoot.[body|head]._cacheListeners` 目的正好相反：
 
 | 记录对象               | 容器         | 记录事件用途                                       |
 | ---------------------- | ------------ | -------------------------------------------------- |
 | `_cacheListeners`      | `shadowRoot` | `unmount` 清理事件，避免 `active` 切换应用重复监听 |
 | `elementEventCacheMap` | `iframe`     | 切换应用 `active` 时恢复记录，以便重新监听         |
+
+- 记录、恢复 `iframe` 容器事件 [[查看](#记录恢复-iframe-容器事件)]
+- 条件：`iframe` 容器、非重建模式
 
 流程参考：
 
