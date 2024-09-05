@@ -6533,15 +6533,15 @@ proxyWindow.addEventListener;
 
 下面提到 `window` 对象的部分将作为 `processAppForHrefJump` 监听的记录：
 
-| 方法                    | 用途                                      | `window`       | 沙箱 `iframe`               |
-| ----------------------- | ----------------------------------------- | -------------- | --------------------------- |
-| `patchIframeHistory`    | 重写应用中路由跳转、同步路由到基座        | `replaceState` | `pushState`、`replaceState` |
-| `syncIframeUrlToWindow` | 通过 `syncUrlToWindow` 同步路由到基座     | `replaceState` | 无                          |
-| `locationHrefSet`       | 通过 `pushUrlToWindow` 同步路由到基座     | `pushState`    | 无                          |
-| `constructor`           | 通过 `iframeGenerator` 更新沙箱 `history` | 无             | `replaceState`              |
-| `active`                | 通过 `syncUrlToIframe` 同步路由到应用     | 无             | `replaceState`              |
-| `active`                | 通过 `syncUrlToWindow` 同步路由到基座     | `replaceState` | 无                          |
-| `unmount`               | 通过 `clearInactiveAppUrl` 还原基座路由   | `replaceState` | 无                          |
+| 方法                                                                          | 用途                                                                                   | `window`       | 沙箱 `iframe`               |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- | --------------------------- |
+| `patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)] | 重写应用中路由跳转、同步路由到基座                                                     | `replaceState` | `pushState`、`replaceState` |
+| `syncIframeUrlToWindow` [[查看](#synciframeurltowindow-监听沙箱前进后退)]     | 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)] | `replaceState` | 无                          |
+| `locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]           | 通过 `pushUrlToWindow` 同步路由到基座 [[查看](#pushurltowindow推送-url-到基座路由)]    | `pushState`    | 无                          |
+| `constructor` [[查看](#3-创建沙箱-iframe)]                                    | 通过 `iframeGenerator` 更新沙箱 `history` [[查看](#iframegenerator创建沙箱-iframe)]    | 无             | `replaceState`              |
+| `active` [[查看](#3-同步路由)]                                                | 通过 `syncUrlToIframe` 同步路由到应用 [[查看](#syncurltoiframe同步主应用路由到子应用)] | 无             | `replaceState`              |
+| `active` [[查看](#3-同步路由)]                                                | 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)] | `replaceState` | 无                          |
+| `unmount` [[查看](#-unmount-卸载应用)]                                        | 通过 `clearInactiveAppUrl` 还原基座路由 [[查看](#clearinactiveappurl清理路由)]         | `replaceState` | 无                          |
 
 前进或后退时做了什么：
 
