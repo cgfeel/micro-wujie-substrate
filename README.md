@@ -6522,7 +6522,7 @@ proxyWindow.addEventListener;
 
 #### `processAppForHrefJump` 监听前进和后端
 
-整个流程围绕 3 个点展开：
+整个流程围绕 3 点展开：
 
 **1. 监听的是 `window` 的 `popstate`**
 
