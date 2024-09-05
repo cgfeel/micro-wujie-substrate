@@ -6529,7 +6529,7 @@ proxyWindow.addEventListener;
 这就意味着监听的对象来自基座：
 
 - 可以是最顶层的基座，也可以是作为子应用的基座，但一定不是沙箱 `iframe`
-- 换个说法，当更新沙箱 `history` 后，前进后退是不会触发 `processAppForHrefJump`
+- 换个说法，当更新沙箱 `history` 后，前进后退是不会由 `processAppForHrefJump` 发起监听回调
 
 下面提到 `window` 对象的部分将作为 `processAppForHrefJump` 监听的记录：
 
