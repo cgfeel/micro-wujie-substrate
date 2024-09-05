@@ -6592,7 +6592,7 @@ proxyWindow.addEventListener;
   const syncUrl = (/^http/.test(idUrl) ? null : idUrl) || url;
 ```
 
-被开发人员排除了：
+被开发人员排除了，使用入口 `url` 作为了 `history`：
 
 - 这点似乎也合理，因为劫持容器除了前进后退是无法还原应用本身的容器
 - 当通过后退还原劫持容器，不明所以的人可能都不知道怎么返回最初的页面
