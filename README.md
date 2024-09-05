@@ -6662,7 +6662,10 @@ proxyWindow.addEventListener;
 
 `shadowRoot` 绑定在应用实例中，`iframe` 容器只有 `documennt` 绑定到实例中
 
-- 一旦容器被销毁，`iframe` 容器只能通过还原 `html` 元素恢复容器
+- 一旦容器被销毁，`iframe` 容器需要通过还原 `html` 元素恢复容器
+- 因此先将 `iframe` 容器下的 `html` 元素转移到沙箱 `body` 中
+
+> 在沙箱 `body` 中除了作为容器 `html` 元素临时存放点以外，其余情况都是空的
 
 后退时 `hrefFlag` 存在，`shadowRoot` 容器怎么做：
 
