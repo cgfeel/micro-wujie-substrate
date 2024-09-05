@@ -6600,7 +6600,7 @@ proxyWindow.addEventListener;
 应用内路由变化时也会因组件重新渲染导致挂载节点销毁：
 
 - 但启动应用时会将新的挂载节点通过配置传过去
-- 而 `processAppForHrefJump` 在恢复劫持容器时使用的挂载节点在上次切换应用时已销毁
+- 而 `processAppForHrefJump` 在恢复劫持容器时使用的挂载节点在切出应用时已销毁
 
 如果使用非 `React` 这样单例应用，路由变更不刷新组件是不是能避免这个问题？
 
