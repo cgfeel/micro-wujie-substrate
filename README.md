@@ -6616,7 +6616,10 @@ proxyWindow.addEventListener;
 
 以下描述将默认以应用内包含劫持路由执行前进后退，包含：
 
-- 前进是劫持容器、后退是渲染容器
+- 渲染容器前进是劫持容器
+- 劫持容器后退是渲染容器
+
+> 关于劫持容器详细说明见：`locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 前进或后退时做了什么：
 
