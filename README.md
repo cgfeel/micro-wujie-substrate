@@ -6492,6 +6492,8 @@ proxyWindow.addEventListener;
 
 ### 引入 `wujie` 包时默认就执行
 
+全部在 `wujie` 入口文件 `index.ts` 中，当引入 `wujie` 即会立即执行，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts)]
+
 #### `EventBus`
 
 提供给基座与子应用通信，导出对象为 `bus`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/bus.html)]
