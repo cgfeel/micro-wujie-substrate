@@ -6585,7 +6585,7 @@ proxyWindow.addEventListener;
 应用内的路由变更不也会重新渲染组件吗？
 
 - 是的，会按照应用名和路由重新启动一遍，条件一致的情况下视觉上没有变化
-- 劫持容器不能还原，从 `syncUrlToIframe` 同步路由到应用，也能看出来 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+- 劫持容器不能还原从 `syncUrlToIframe` 同步路由到应用的源码中也能看出来 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 ```
   // 排除href跳转情况
