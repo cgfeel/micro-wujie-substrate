@@ -6524,7 +6524,7 @@ proxyWindow.addEventListener;
 
 整个流程围绕 3 点展开：
 
-**1. 监听的是 `window` 的 `popstate`**
+**1. 从 `window` 监听 `popstate`**
 
 这就意味着监听的对象来自基座：
 
