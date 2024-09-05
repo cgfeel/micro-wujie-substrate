@@ -6614,12 +6614,9 @@ proxyWindow.addEventListener;
 - 来自应用外的路由变更不触发当前操作
 - 来自应用内的路由变更不在当前操作范围，下面将展开说明
 
-以下描述将默认以应用内包含劫持路由执行前进后退，包含：
+以下描述将默认以，应用内劫持路由执行前进和后退操作：
 
-- 渲染容器前进是劫持容器
-- 劫持容器后退是渲染容器
-
-> 关于劫持容器详细说明见：`locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
+- 关于劫持容器详细说明见：`locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 前进或后退时做了什么：
 
