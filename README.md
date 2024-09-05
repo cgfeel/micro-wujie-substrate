@@ -6671,7 +6671,7 @@ proxyWindow.addEventListener;
 
 - 通过 `renderElementToContainer` 将 `shadowRoot` 重新替换挂载到节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
-后退时 `hrefFlag` 存在，`iframe` 容器和 `active` 步骤一样 [[查看](#41-degrade-主动降级渲染)]：
+后退时 `hrefFlag` 存在，`iframe` 容器和降级渲染时操作一样 [[查看](#41-degrade-主动降级渲染)]：
 
 - 通过 `initRenderIframeAndContainer` 创建 `iframe` 沙箱并挂载到指定节点 [[查看](#创建-iframe-容器)]
 - 通过 `patchEventTimeStamp` 修复 `vue` 的 `event.timeStamp` 问题
