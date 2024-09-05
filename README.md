@@ -6568,7 +6568,7 @@ proxyWindow.addEventListener;
 
 > 那这难道算不算 `bug` 吗？
 
-原因：假定前一个页面来自劫持路由，通过基座跳转了应用
+原因：
 
 - 执行后退操作，促发 `popstate` 检测后退的路由是 `http` 开头
 - 执行 `renderIframeReplaceApp` 加载 `iframe` 替换子应用 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
