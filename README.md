@@ -6522,6 +6522,27 @@ proxyWindow.addEventListener;
 
 #### `processAppForHrefJump` 监听前进和后端
 
+在总结流程前需要先明白两件事：
+
+**1.监听的是 `window` 的 `popstate`**
+
+这就意味着监听的对象来自基座：
+
+- 可以是最顶层的基座，也可以是作为子应用的基座，但一定不是沙箱 `iframe`
+- 换个说法，当更新沙箱 `history` 后，前进后退是不会触发 `processAppForHrefJump`
+
+下面提到 `window` 对象的部分将作为 `processAppForHrefJump` 监听的记录：
+
+| 方法                    | 用途                                      | `window`       | 沙箱 `iframe`               |
+| ----------------------- | ----------------------------------------- | -------------- | --------------------------- |
+| `patchIframeHistory`    | 重写应用中路由跳转、同步路由到基座        | `replaceState` | `pushState`、`replaceState` |
+| `syncIframeUrlToWindow` | 通过 `syncUrlToWindow` 同步路由到基座     | `replaceState` | 无                          |
+| `locationHrefSet`       | 通过 `pushUrlToWindow` 同步路由到基座     | `pushState`    | 无                          |
+| `constructor`           | 通过 `iframeGenerator` 更新沙箱 `history` | 无             | `replaceState`              |
+| `active`                | 通过 `syncUrlToIframe` 同步路由到应用     | 无             | `replaceState`              |
+| `active`                | 通过 `syncUrlToWindow` 同步路由到基座     | `replaceState` | 无                          |
+| `unmount`               | 通过 `clearInactiveAppUrl` 还原基座路由   | `replaceState` | 无                          |
+
 前进或后退时做了什么：
 
 - 通过当前的 `url` 获取 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
@@ -6543,10 +6564,10 @@ proxyWindow.addEventListener;
 
 后退不处理的情况：
 
-| 条件                         | 原因                                                                                                 |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `queryMap` 匹配开头为 `http` | `locationHrefSet` 劫持后在 `iframe` 打开的应用所有操作都视为 `iframe` 内部操作，不会记录在 `history` |
-| `herfFlag` 为 `false`        | 说明来自应用路由的变更，不需要额外处理                                                               |
+| 条件                         | 原因                                                                                                             |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `queryMap` 匹配开头为 `http` | `locationHrefSet` 劫持后在 `iframe` 打开的应用所有操作都视为 `iframe` 内部操作，不会记录在 `history`，不存在后退 |
+| `herfFlag` 为 `false`        | 说明来自应用路由的变更，不需要额外处理                                                                           |
 
 所以：
 
