@@ -6744,7 +6744,7 @@ componentDidUpdate(prevProps) {
 
 > 但文档中并不建议手动注销应用，如果后续还需要使用的话 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-此外还定义了 `startAppQueue`，用于发起微任务但没有使用，若要使用可以这样：
+此外还定义了 `startAppQueue`，用于发起微任务但没有使用，若要使用可以这样修改：
 
 ```
 startApp = async (props) => {
@@ -6769,11 +6769,9 @@ componentDidMount () {
 
 **2. 方法**
 
-`startApp`：
+异步方法 `startApp` 用于启动子应用：
 
-- 异步方法，通过 `startApp` 启动子应用
-
-> 除了透传 `props` 作为配置以外，还需要将 `myRef` 作为应用容器挂载点
+- 除了透传 `props` 作为配置以外，还需要将 `myRef` 作为应用容器挂载点
 
 生命周期方法：
 
