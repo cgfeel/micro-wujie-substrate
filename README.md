@@ -280,7 +280,7 @@
 - 通过 `mergeOptions` 合并参数提供的配置和缓存的配置
 - 解构并提取必要的配置，关于配置见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-#### 2. 存在沙箱实例，运行或销毁应用
+#### 2. 存在应用实例，运行或销毁应用
 
 应用场景：
 
