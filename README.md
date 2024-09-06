@@ -358,7 +358,7 @@
 
 `rebuildStyleSheets` 恢复样式：
 
-- `umd` 模式切换应用后，只促发 `mount` 函数挂载应用
+- `umd` 模式切换应用后，只触发 `mount` 函数挂载应用
 - 应用中动态添加的样式需要通过 `styleSheetElements` 收集并恢复 [[查看](#2-stylesheetelements-收集样式表)]
 - 完整的样式恢复表，见：应用中的 `css` 在哪里加载 [[查看](#5-应用中的-css-在哪里加载)]
 
@@ -6570,7 +6570,7 @@ proxyWindow.addEventListener;
 
 原因：
 
-- 执行后退操作，促发 `popstate` 检测后退的路由是 `http` 开头
+- 执行后退操作，触发 `popstate` 检测后退的路由是 `http` 开头
 - 执行 `renderIframeReplaceApp` 加载 `iframe` 替换子应用 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 - 因提供的第 2 个参数挂载节点为 `null`，导致整个应用空白
 
