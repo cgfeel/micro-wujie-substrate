@@ -123,11 +123,11 @@
 
 在 `script` 添加到 `iframe` 之前：
 
-- 需要劫持 `script` 中的 `Document.prototype.querySelector`，将上下文指向 `shadowRoot`
+- 需要在 `script` 中劫持 `dom` 查询方法，将上下文指向 `shadowRoot`
 
 流程：
 
-- 通过 `Object.defineProperty` 劫持 `iframe` 中的 `document.querySelector`
+- 通过 `Object.defineProperty` 劫持 `iframe.contentWindow.Document.prototype.querySelector`
 - 返回一个 `Proxy` 对象，代理 `sandbox.shadowRoot.querySelector`
 - 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM`
 
