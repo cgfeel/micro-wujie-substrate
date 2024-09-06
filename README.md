@@ -129,7 +129,7 @@
 
 - 通过 `Object.defineProperty` 劫持 `iframe.contentWindow.Document.prototype.querySelector`
 - 返回一个 `Proxy` 对象，代理 `sandbox.shadowRoot.querySelector`
-- 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowDOM`
+- 在 `Proxy` 中通过 `apply` 纠正上下文 `this` 指向 `shadowRoot`
 
 `Object.defineProperty` 劫持对象会执行两次 [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/d89ae52aa0418d9f7e3cec8ff289cd8dd5edbb1e/index.html#L80)]
 
