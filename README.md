@@ -32,7 +32,7 @@
 
 | 分类        | 原理                                                                        |
 | ----------- | --------------------------------------------------------------------------- |
-| `wujie`     | 拉取 `template` 放入 `web component`，将其挂载到指定节点                    |
+| `wujie`     | 拉取 `template` 放入 `shadowRoot`，将容器挂载到指定节点                     |
 | `micro-app` | 创建 `web component` 拉取资源，替换标签为自定义组件，由 `Dom tree` 渲染组件 |
 | `qiankun`   | 基于 `single-spa`，拉取 `template`，劫持 `url` 经过计算将资源渲染到指定容器 |
 
