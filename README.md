@@ -6700,7 +6700,7 @@ proxyWindow.addEventListener;
 
 - `wujieSupport`：浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
 - `setupApp`：缓存配置，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
-- `destroyApp`：删除应用，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
+- `destroyApp`：注销应用，对外提供的包装方法，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
 
 ### `packages` - `wujie-react`
 
