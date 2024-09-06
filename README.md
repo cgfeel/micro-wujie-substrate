@@ -295,8 +295,8 @@
 渲染前的准备：
 
 - 通过 `getPlugins` 更新实例的 `plugins`，见：特殊属性 - `plugins` 插件集合 [[查看](#2-特殊属性)]
-- 获取实例的 `iframeWindow` 对象，用于查看子应用挂载方法 `__WUJIE_MOUNT`
-- 如果是预加载应用，需要等待预加载执行完毕，见：`runPreload` [[查看](#3-预加载微任务-runpreload)]
+- 获取沙箱 `window` 用于获取子应用挂载方法 `__WUJIE_MOUNT`，不存在则为 `undefined`
+- 如果是预加载后 `startApp`，需要等待 `runPreload` 执行完毕 [[查看](#3-预加载微任务-runpreload)]
 
 #### 2.1 `alive` 保活模式运行应用
 
