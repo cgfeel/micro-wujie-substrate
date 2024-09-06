@@ -6531,7 +6531,7 @@ proxyWindow.addEventListener;
 - 可以是最顶层的基座，也可以是作为子应用的基座，但一定不是沙箱 `iframe`
 - 换个说法，当更新沙箱 `history` 后，前进后退是不会由 `processAppForHrefJump` 发起事件监听
 
-表格中所在 `window` 列中，将触发 `processAppForHrefJump` 事件监听：
+表格中所在 `window` 列中，将记录 `processAppForHrefJump` 监听事件：
 
 | 方法                                                                          | 用途                                                                                   | `window`       | 沙箱 `iframe`               |
 | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- | --------------------------- |
@@ -6542,8 +6542,6 @@ proxyWindow.addEventListener;
 | `active` [[查看](#3-同步路由)]                                                | 通过 `syncUrlToIframe` 同步路由到应用 [[查看](#syncurltoiframe同步主应用路由到子应用)] | 无             | `replaceState`              |
 | `active` [[查看](#3-同步路由)]                                                | 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)] | `replaceState` | 无                          |
 | `unmount` [[查看](#-unmount-卸载应用)]                                        | 通过 `clearInactiveAppUrl` 还原基座路由 [[查看](#clearinactiveappurl清理路由)]         | `replaceState` | 无                          |
-
-> 除此之外通过浏览器主动前进、后退也会触发监听事件
 
 如果基座是子应用，本身就在沙箱中，前进后退看 `state` 来自哪里：
 
