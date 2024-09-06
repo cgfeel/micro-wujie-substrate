@@ -79,22 +79,20 @@
 
 ### 搭建子应用
 
-`react` 子应用：
+修改子应用：
 
-- `.env`：需要修改端口号 [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/.env)]
+- `react`：通过 `.env` 修改端口号 [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/.env)]
+- `vue`：配置 `vue.config.js` 允许 `cors` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3/blob/main/vue.config.js)]
 
-`vue` 子应用：
-
-- `vue.config.js`：需要允许 `cors` [[查看](https://github.com/cgfeel/micro-wujie-app-vue3/blob/main/vue.config.js)]
-
-可选：对于 `umd` 应用
+可选：对于 `umd` 模式加载应用
 
 - `global.d.ts`：添加全局类型声明 [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/src/global.d.ts)]
 - 入口文件暴露 `__WUJIE_MOUNT` 和 `__WUJIE_UNMOUNT` [[查看](https://github.com/cgfeel/micro-wujie-app-cra/blob/main/src/index.tsx)]
 
-通过以上了解对 `wujie` 初步印象：
+通过以上了解初步印象是：`Tencent` 对通信非常偏爱
 
-- `Tencent` 对通信非常偏爱，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
+- 比如：应用和基座通信，沙箱 `iframe` 和容器通信、`proxy` 和 `iframe` 通信等等
+- 除此之外在其他产品也能看出来，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
 
 ---- 分割线 ----
 
