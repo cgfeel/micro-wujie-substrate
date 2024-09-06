@@ -161,9 +161,9 @@
 
 > 总结中链接指向相关源码和文档，每条信息都提供了关键名称，可以打开链接复制关键名称，查看上下文对照理解。
 
-先大致看下 `wujie` 提供的包，分别为 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages)]：
+`wujie` 提供了 4 个包，分别为 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages)]：
 
-- `wujie-core`：核心包 [[查看](#定义-web-component)]
+- `wujie-core`：核心代码 [[查看](#定义-web-component)]
 - `wujie-react`：`React` 封装组件 [[查看](#packages---wujie-react)]
 - `wujie-vue2`：`Vue2` 封装组件
 - `wujie-vue3`：`Vue3` 封装组件
