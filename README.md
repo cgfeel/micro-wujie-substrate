@@ -178,8 +178,8 @@
 4. 声明实例，创建沙箱 `iframe`、`proxy` 代理、`EventBus` 通信等 [[查看](#-constructor-构造函数)]
 5. `importHTML` 加载资源 [[查看](#importhtml-加载资源)]
 6. `processCssLoader` 处理 `css-loader` [[查看](#processcssloader处理-css-loader)]
-7. `active` 激活应用：将 `template` 根据 `degrade` 放入 `iframe` 容器或 `shadowRoot` 容器 [[查看](#-active-激活应用)]
-8. `start` 启动应用：将 `script` 放入沙箱 `iframe`，发起通知事件和 `mount` [[查看](#-start-启动应用)]
+7. `active` 激活应用：将 `template` 注入容器 [[查看](#-active-激活应用)]
+8. `start` 启动应用：将 `script` 注入沙箱 `iframe`，发起通知事件和 `mount` [[查看](#-start-启动应用)]
 9. 返回 `destroy` 以便手动销毁 [[查看](#-destroy-销毁实例)]
 
 > 阅读建议，如果你做好准备阅读以下内容，这样可以提高效率：
