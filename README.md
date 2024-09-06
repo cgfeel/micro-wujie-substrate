@@ -6707,9 +6707,9 @@ proxyWindow.addEventListener;
 
 ### `packages` - `wujie-react`
 
-`WujieReact` 是官方提供的封装组件，和基座演示的自定义组件是如出一辙，见：自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
+`WujieReact` 是官方提供的封装组件，和基座演示的自定义组件是一样的，见：自定义组件 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]。
 
-官方提供的只有一个文件 `index.js` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-react/index.js)]
+- 官方提供的只有 1 个文件 `index.js` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-react/index.js)]
 
 静态属性：
 
