@@ -159,7 +159,7 @@
 
 和 `qiankun` 解读一样，为了便于阅读以官方版本 `9733864b0b5e27d41a2dc9fac216e62043273dd3` 为准 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3)]
 
-> 总结中链接指向相关源码和文档，每条信息都提供了关键名称，可以打开链接复制关键名称，查看上下文对照理解。
+> 总结中链接指向相关源码和文档，每条信息都提供了关键词，可以打开链接复制并搜索关键词，查看上下文对照理解。
 
 `wujie` 提供了 4 个包，分别为 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages)]：
 
