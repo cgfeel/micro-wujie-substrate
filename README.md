@@ -6711,6 +6711,8 @@ proxyWindow.addEventListener;
 
 - 官方提供的只有 1 个文件 `index.js` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-react/index.js)]
 
+**1. 属性**
+
 静态属性：
 
 - `propTypes`：定义组件的属性类型，用于类型检查。
@@ -6720,31 +6722,60 @@ proxyWindow.addEventListener;
 
 状态和引用：
 
-- `state`：定义了一个 `myRef`，用于存储对 `DOM` 元素的引用。
-- `destroy` 和 `startAppQueue` 是实例属性，用于存储销毁方法和启动应用的 `Promise` 队列，在组件中只做了定义没有使用。
+- `state`：定义 `myRef` 通过 `ref` 的方式引入 `div` 挂载节点
+- `destroy` 绑定 `startApp` 启动应用后返回的注销方法
 
-**方法：**
+`destroy` 定义了但没有使用，如何自行扩展的话可以这样使用：
+
+```
+// 组件卸载时销毁应用
+componentWillUnmount() {
+  this.destroy();
+}
+
+// 也可以在需要重新启动应用时调用 `destroy`，例如在 `props` 变更时
+componentDidUpdate(prevProps) {
+  if(needRestart) {
+    this.destroy();
+    this.startApp();
+  }
+}
+```
+
+> 但文档中并不建议手动注销应用，如果后续还需要使用的话 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+
+除此之外还定义了一个没有哦使用的属性：
+
+- `startAppQueue` 发起一个微任务不做任何处理
+
+**2. 方法**
 
 `startApp`：
 
-- 异步方法，用于启动子应用。
-- 使用 `startApp` 方法传入组件的属性和引用的 `DOM` 元素。
+- 异步方法，通过 `startApp` 启动子应用
+
+> 除了透传 `props` 作为配置以外，还需要将 `myRef` 作为应用容器挂载点
 
 生命周期方法：
 
-- `componentDidMount`：在组件挂载后调用 `startApp` 方法启动子应用。
-- `componentDidUpdate`：当组件的 `name` 或 `url` 属性发生变化时重新启动子应用。
+- `componentDidMount`：在组件挂载后调用 `startApp` 方法启动子应用
+- `componentDidUpdate`：当组件的 `name` 或 `url` 属性发生变化时重新启动子应用
+
+> 即使不注销应用也可以重启，在应用实例中会清空容器挂载点，然后根据配置重新挂载容器
 
 `render` 方法：
 
-- 渲染一个 `div` 元素，并将组件的宽度和高度设置为属性中的值。
-- 通过 `ref` 属性将 `div` 的引用存储到 `myRef` 中。
+- 定义渲染 `div` 元素，通过 `ref` 绑定在 `myRef` 中，并按照 `props` 设置宽和高
 
 文档：
 
 - `React` 封装组件使用 [[查看](https://wujie-micro.github.io/doc/pack/react.html)]
 - 封装组件的 `props` 参考 `startApp` [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-总结：
+官方 `react` 组件封装总结：
 
-`WujieReact` 组件使用 `wujie` 库来管理子应用的生命周期，通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用。通过静态属性和类型检查确保组件的使用符合预期。
+- `WujieReact` 通过 `react` 组件生命周期来管理 `wujie` 子应用
+- 通过 `startApp` 方法启动子应用，并在组件更新时重新启动子应用
+- 通过静态属性和类型检查确保组件的使用符合预期
+
+> 建议手动定义组件，灵活度更高
