@@ -6545,7 +6545,7 @@ proxyWindow.addEventListener;
 
 如果基座是子应用，本身就在沙箱中，前进后退看 `state` 对象来自哪里：
 
-- 如果来自基座下的沙箱 ` history`，那么不会通过 `processAppForHrefJump` 监听 `popstate`
+- 如果来自基座下的沙箱 ` history`，那么不会通过 `processAppForHrefJump` 负责监听 `popstate`
 - 但应用内的路由更新会通过 `syncIframeUrlToWindow` 同步基座路由 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 
 > 可以查看上述表格中沙箱 `iframe` 那一列，全部来自沙箱 `history`
