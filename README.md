@@ -318,6 +318,10 @@
 - 通过 `importHTML` 提取需要加载的 `script` [[查看](#importhtml-加载资源)]
 - 将提取的方法 `getExternalScripts` 传入 `sandbox.start` 启动应用 [[查看](#-start-启动应用)]
 
+预加载后加载的资源已注入容器，启动时不用重新注入，但 `importHTML` 存在重复调用：
+
+- 但应用中的静态资源已提前加载，无需再次请求，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+
 **第三步：`alive` 加载完成**
 
 - 调用生命周期中的 `activated` 并返回子应用注销函数 `sandbox.destroy`
