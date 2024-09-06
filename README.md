@@ -6701,9 +6701,9 @@ proxyWindow.addEventListener;
 - `setupApp`：缓存配置，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 - `destroyApp`：注销应用，对外提供的包装方法，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
 
-除此之外还有 1 个检测方法：
+除此之外会默认执行 `wujieSupport` 进行检测：
 
-- `wujieSupport`：浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
+- 浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
 
 ### `packages` - `wujie-react`
 
