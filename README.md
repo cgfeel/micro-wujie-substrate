@@ -150,12 +150,10 @@
 
 劫持对象场景发散：
 
-- 浮窗：劫持 `document`，捕获 `Dom` 对象指向 `shadowRoot`
-- `iframe` 中 `history` 对象：实现同步同步
+- 浮窗：劫持 `shadowRoot` 下的 `body`，创建 `Dom` 对象添加到 `body` 下
+- `iframe` 中 `history` 对象：实现同步同步 [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
 > 这部分将通过 `wujie` 源码解读在下方总结
-
----- 分割线 ----
 
 ## `wujie` 原理
 
