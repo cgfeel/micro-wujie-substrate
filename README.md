@@ -10,14 +10,14 @@
 | `script` | 沙箱 `iframe`              | `proxy`、沙箱 `iframe`     | `proxy`、快照中实现 |
 | `css`    | 渲染容器                   | `scopedCSS`、渲染容器      | `scopedCSS`         |
 
-优点，天然隔离：
+优点：天然隔离
 
-- 不需要自定义沙箱，直接使用 `iframe`，不需要遍历 `css` 计算 `scoped`
+- 直接使用 `iframe`，不需要遍历 `css` 计算 `scoped`
 
 亮点：
 
 - 理论上 `wujie` 可以把任何对外提供访问的网页做成子应用
-- 提供 `iframe` 降级方案，对于不支持 `proxy` 和 `shadowDOM` 的情况
+- 对于不支持 `proxy` 和 `shadowDOM` 的情况提供 `iframe` 降级方案
 
 缺点：
 
