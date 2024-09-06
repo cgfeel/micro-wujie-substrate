@@ -64,11 +64,11 @@
 
 > `micro-app` 会将加载的资源注入 `web component`
 
-`wujie` 可以不使用 `start` 启动配置：
+`wujie` 可以不使用 `start` 设置入口配置：
 
 - 创建一个公共的组件 `Wujie.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/components/Wujie.tsx)]
-- 通过 `startApp` 将 `web component` 添加的子应用挂载到指定的 `ref` 节点 [[查看](#startapp-启动流程)]
-- 可以通过调用组件的方式加载子应用，例如: `react` 子应用 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/ReactPage.tsx)]
+- 通过 `startApp` 启动子应用并挂载到指定的 `ref` 节点，见：`startApp` [[查看](#startapp-启动流程)]
+- 通过调用组件的方式加载子应用，例如: `react` 子应用 [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/ReactPage.tsx)]
 
 > `wujie` 不需要通过 `start` 强制配置启动，但提供 `setupApp` 用来缓存配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
