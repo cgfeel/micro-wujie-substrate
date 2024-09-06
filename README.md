@@ -6714,7 +6714,7 @@ proxyWindow.addEventListener;
 静态属性：
 
 - `propTypes`：定义组件的属性类型，用于类型检查。
-- `bus`，`setupApp`，`preloadApp`，`destroyApp`：从 `wujie` 库引入的静态属性和方法，可能用于子应用的管理和控制。
+- `bus`，`setupApp`，`preloadApp`，`destroyApp`：引入的方法，分别用于应用通信、预加载和注销
 
 > 外部可以直接通过 `WujieReact` 这个类获取静态属性
 
