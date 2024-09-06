@@ -142,7 +142,7 @@
 
 第二次：由于 `Proxy` 对象再次调用了 `iframe` 的 `querySelector`，于是再次 `Object.defineProperty`
 
-- 这个时候返回的 `Proxy` 对象 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
+- 此时返回的 `Proxy` 对象方法 `apply` 中 `thisArgs` 指向 `sandbox.shadowRoot`
 - 返回 `thisArgs.querySelector` 相当于：`sandbox.shadowRoot.querySelector.apply(sandbox.shadowRoot, args)`
 - 由于这次是通过 `sandox` 发起 `querySelector`，将不再被 `iframe` 劫持
 
