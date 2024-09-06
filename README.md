@@ -22,13 +22,11 @@
 缺点：
 
 - 对 `React v18` 并不友好，严格模式下会产生协议错误，见：issue [[查看](https://github.com/Tencent/wujie/issues/672)]
-- 路由同步并不友好，子应用路由只能通过 `search` 反应到主应用中，不能使用 `pathname`
-
-> 路由同步看过源码，目前设计只能通过 `search` 来实现，就是这么简单粗暴
+- 路由同步并不友好，子应用路由只能通过 `search` 同步到网页链接中国，不能使用 `pathname`
 
 疑惑：`wujie` 频繁操作 `Dom` 直接影响 `js` 性能
 
-- 比如说非 `alive`模式或 `umd`模式下，`wuijie` 的每次应用切换，就是一次注销和重建
+- 比如说默认的重建模式下，`wuijie` 每次切换应用就是一次注销和重建
 - `wujie` 不需要修正 `css` 的 `scope`，但要为子应用每一个元素打补丁，见 `patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
 
 渲染原理：
