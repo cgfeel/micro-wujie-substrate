@@ -656,7 +656,7 @@
 | `location` | 沙箱 `location`     | `proxyLocation`      |
 
 - 通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]
-- `proxyDocument` 的差别，见：`localGenerator` - `proxyDocumennt` [[查看](#1-劫持空对象作为-proxydocument)]
+- `proxyDocument` 的差别，见：`localGenerator` - `proxyDocument` [[查看](#1-劫持空对象作为-proxydocument)]
 - 代理对象的问题，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 流程：
@@ -965,7 +965,7 @@
 - 沙箱 `iframe` 初始化时通过 `patchDocumentEffect` 劫持了 `iframeWindow.Document.prototype` 属性 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 - 劫持的属性会在 `get` 时指向 `proxyDocument` [[查看](#wujie-中的代理)]
 
-> 而 `proxyDocument` 只有获取 `script` 指向沙箱 `iframe.contentDocumennt`，其余全部指向容器，比如 `iframe` 容器的 `document`，或是 `shadowRoot`
+> 而 `proxyDocument` 只有获取 `script` 指向沙箱 `iframe.contentDocument`，其余全部指向容器，比如 `iframe` 容器的 `document`，或是 `shadowRoot`
 
 为此沙箱 `iframe` 初始化时保留了沙箱 `document` 4 个原始方法：
 
@@ -1707,7 +1707,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `patchCssRules` 只能根据容器 `shadowRoot` 提取所有样式元素打补丁
 - 而对于容器中动态添加的样式，需要通过 `handleStylesheetElementPatch` 来处理 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
-> 准确来说 `patchCssRules` 是通过沙箱的 `iframe.conntentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
+> 准确来说 `patchCssRules` 是通过沙箱的 `iframe.contentDocument` 来获取所有的 `style` 元素，由于容器所有元素的 `ownerDocument` 都指向 `iframe.contentWindow.document`，因此可以从沙箱 `document` 可以获取所有 `style` 元素
 
 流程和 `handleStylesheetElementPatch` 中宏任务的回调函数是一样的 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]：
 
@@ -1802,8 +1802,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `mountFlag`            | `umd` 模式挂载 `true`，卸载 `false`                                                                                                                                 | `undefined`                                                                    | `null`                  |
 | `provide`              | 为子应用提供通信 `bus`、代理的 `location`，可选对象：传递数据 `props`、`shadowRoot` 容器，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)] | 在构造函数里提供 `bus`、`location`，在 `active` 中提供 `props` 和 `shadowRoot` | `null`                  |
 | `styleSheetElements`   | 收集应用中动态添加的样式，`:host` 补丁样式 [[查看](#2-stylesheetelements-收集样式表)]                                                                               | `[]`                                                                           | `null`                  |
-| `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                                           | `unndefined`，只在 `active` 时通过配置文件设置                                 | 不处理                  |
-| `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                                       | `unndefined`，只在 `active` 时候记录                                           | 不处理                  |
+| `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                                           | `udefined`，只在 `active` 时通过配置文件设置                                   | 不处理                  |
+| `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                                       | `undefined`，只在 `active` 时候记录                                            | 不处理                  |
 
 > 像 `degrade` 和 `plugin` 这样在实例化就定义好值，除了销毁后设置 `null`，不能中途更新值。也就是说对于像 `alive` 模式的应用，预加载配置的信息，不会因为 `startApp` 配置不同，而加载应用发生改变
 
@@ -2062,7 +2062,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > `proxyWindow` 和 `proxyLocation` 可以包裹在 `script module` 中，但是 `proxyDocument` 不行，因为 `Dom` 本身是从上至下的树状结构
 
-衍生问题：沙箱 `documennt` 如何指向 `proxyDocument`
+衍生问题：沙箱 `document` 如何指向 `proxyDocument`
 
 - 通过 `patchDocumentEffect` 进行拦截，见：`proxyDocument` 在哪调用 [[查看](#proxydocument-在哪调用)]
 
@@ -2193,20 +2193,20 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 设计初衷：
 
-- 在沙箱 `iframe` 初始化时已将 `src` 设为和基座同域，由此决定了沙箱 `locationn`
+- 在沙箱 `iframe` 初始化时已将 `src` 设为和基座同域，由此决定了沙箱 `location`
 - 而在沙箱中更新链接或 `history`，也需要确保更新的 `url` 和基座同域
 - 但是子应用中通过 `location` 读取属性时，则需要保持和资源入口链接同域
 
 概念名词：
 
 - `proxyLocation`：在沙箱中包裹在 `script module` 中作为代理的 `location`，见：流程图 [[查看](#wujie-中的代理)]
-- 沙箱 `locationn`：沙箱 `iframe` 下的 `location` 对象
+- 沙箱 `location`：沙箱 `iframe` 下的 `location` 对象
 
 这样就意味着：
 
 - 应用中所有的 `script` 的 `location` 操作都指向 `proxyLocation`
 - 应用的 `window` 指向 `prooxyWindow`，而 `proxyWindow` 的 `location` 指向 `proxyLocation`
-- 而沙箱 `iframe` 读取操作的 `location` 对象，不会受到来自 `proxyLocationn` 对象任何污染
+- 而沙箱 `iframe` 读取操作的 `location` 对象，不会受到来自 `proxyLocation` 对象任何污染
 
 拦截的方法：
 
@@ -3916,7 +3916,7 @@ return (cache[key] = Promise.resolve());
 用途：
 
 - 让渲染容器所有的元素根节点都指向沙箱 `document`，容器中创建的元素都需要通过沙箱 `document`
-- 通过 `ownerDocument` 可以从容器元素直接获取沙箱 `documennt` 用来创建元素
+- 通过 `ownerDocument` 可以从容器元素直接获取沙箱 `document` 用来创建元素
 
 **内部补丁 3：`_hasPatch`**
 
@@ -4066,7 +4066,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 存在重复监听但不影响使用，例如 `resize`：
 
 - 通过 `execHooks` 转发给全局 `window` 处理事件
-- 沙箱 `iframe` 同样也会 `addEventListener`，但由于沙箱 `iframe` 不可见，所以除了 `removeEventListenner` 之外沙箱不会执行任何 `resize` 事件
+- 沙箱 `iframe` 同样也会 `addEventListener`，但由于沙箱 `iframe` 不可见，所以除了 `removeEventListener` 之外沙箱不会执行任何 `resize` 事件
 
 不存在重复监听，例如：`DOMContentLoaded`：
 
@@ -4592,7 +4592,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 为外联 `script` 添加回调函数：
 
-- 要求：`script` 带有 `src`， `contennt` 为空
+- 要求：`script` 带有 `src`， `content` 为空
 - 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
 
 注入操作：
@@ -4859,7 +4859,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 - 提取当前的 `url` 转变为 `HTMLAnchorElement` 对象，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]
 - 通过 `HTMLAnchorElement` 拿到 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
-- 从沙箱 `location` 中提取 `pathnname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
+- 从沙箱 `location` 中提取 `pathname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
 - 声明一个变量 `validShortPath` 用于记录匹配的短链接名
 
 **第二步：处理短路径**
@@ -5445,7 +5445,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 通过 `rawDOMAppendOrInsertBefore` 将外联样式添加到容器，用浏览器加载避免跨域问题
 
-非 `ignnore` 外联样式如何加载：
+非 `ignore` 外联样式如何加载：
 
 - 用 `parseTagAttributes` 提取外联样式属性的键值对 `rawAttrs`
 - 用沙箱 `document` 创建一个内联样式元素
@@ -6466,7 +6466,7 @@ proxyWindow.addEventListener;
 
 记录和清理：
 
-- `patchDocumentEffect`：重写记录和清理方法，不支持 `documennt` 销毁前批量清理 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- `patchDocumentEffect`：重写记录和清理方法，不支持 `document` 销毁前批量清理 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
 记录中包含 2 个 `WeakMap` 类型对象，键名是回调方法 `handle`，键值不同：
 
@@ -6662,7 +6662,7 @@ proxyWindow.addEventListener;
 | `renderIframeReplaceApp` 创建 `iframe` 代替当前容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]       | 执行          | 执行              |
 | 标记 `hrefFlag` 以便后退时能够返回应用                                                                            | 执行          | 执行              |
 
-`shadowRoot` 绑定在应用实例中，`iframe` 容器只有 `documennt` 绑定到实例中
+`shadowRoot` 绑定在应用实例中，`iframe` 容器只有 `document` 绑定到实例中
 
 - 一旦容器被销毁，`iframe` 容器需要通过还原 `html` 元素恢复容器
 - 因此先将 `iframe` 容器下的 `html` 元素转移到沙箱 `body` 中
