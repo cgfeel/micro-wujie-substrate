@@ -172,7 +172,7 @@
 
 由于总结会很长，所以我将整个流程总结精简放在前面：
 
-1. `preloadApp` 预加载（非 `alive` 模式和非预执行下的 `umd` 模式不推荐）[[查看](#preloadapp-预加载流程)]
+1. `preloadApp` 预加载（可选）[[查看](#preloadapp-预加载流程)]
 2. `startApp` 根据实例情况决定初始化还是切换应用 [[查看](#startapp-启动流程)]
 3. 首次启动和切换重建模式的应用，会 `destroy` 销毁后重新初始化 [[查看](#-destroy-销毁实例)]
 4. 声明实例，创建沙箱 `iframe`、代理 `proxy`、通信 `EventBus` 等 [[查看](#-constructor-构造函数)]
