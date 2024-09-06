@@ -6692,7 +6692,7 @@ proxyWindow.addEventListener;
 #### `defineWujieWebComponent` 定义自定义组件
 
 - 当引入 `wujie` 的时候通过 `defineWujieWebComponent` 确保已定义了 `web component` 了
-- 而在 `active` 中通过 `createWujieWebComponent` 会自动创建组件，无需手动引入 [[查看](#-active-激活应用)]
+- 而在 `active` 中通过 `createWujieWebComponent` 会自动创建组件，无需手动引入 [[查看](#42-挂载子应用切换初始化预加载)]
 
 > 在 `wujie` 中只能通过 `active` 自动创建 `web component`，不支持手动添加 `wujie-app` 到 `Dom tree`
 
