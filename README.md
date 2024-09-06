@@ -27,7 +27,6 @@
 疑惑：`wujie` 频繁操作 `Dom` 直接影响 `js` 性能
 
 - 比如说默认的重建模式下，`wuijie` 每次切换应用就是一次注销和重建
-- `wujie` 不需要修正 `css` 的 `scope`，但要为子应用每一个元素打补丁，见 `patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
 
 渲染原理：
 
