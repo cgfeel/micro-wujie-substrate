@@ -123,7 +123,7 @@
 
 在 `script` 添加到 `iframe` 之前：
 
-- 需要劫持 `iframe` 内 `script` 的方法，将上下文指向 `shadowRoot`
+- 需要代理 `script` 中的 `querySelector` 方法，将上下文指向 `shadowRoot`
 
 流程：
 
