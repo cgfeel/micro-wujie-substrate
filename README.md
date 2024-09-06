@@ -214,13 +214,9 @@
 
 目录：`shadow.ts` - `defineWujieWebComponent` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L39)]
 
-声明 `WujieApp` 自定义组件：
+声明 `WujieApp` 自定义组件，在入口文件中默认执行 [[查看](#definewujiewebcomponent-定义自定义组件)]
 
-- 在入口文件中默认执行，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/index.ts#L170)]
-
-> 因此，引入 `wujie` 包的时候就已经定义了 `web component`
-
-`WujieApp` 提供了挂载和卸载 2 个方法
+- 因此在项目中引入 `wujie` 的时候就已经定义了 `web component`
 
 #### `connectedCallback`：挂载组件
 
