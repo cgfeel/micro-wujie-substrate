@@ -6725,7 +6725,7 @@ proxyWindow.addEventListener;
 - `state`：定义 `myRef` 通过 `ref` 的方式引入 `div` 挂载节点
 - `destroy` 绑定 `startApp` 启动应用后返回的注销方法
 
-`destroy` 定义了但没有使用，如何自行扩展的话可以这样使用：
+`destroy` 定义了但没有使用，如果自行扩展的话可以这样使用：
 
 ```
 // 组件卸载时销毁应用
