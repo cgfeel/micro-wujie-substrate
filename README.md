@@ -52,7 +52,7 @@
 
 - `react-project`：通过 `create-react-app` 搭建的子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-cra)]
 - `static-project`：自定义静态应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
-- `substrate`：通过 `create-react-app` 搭建的基座主应用 [[查看](https://github.com/cgfeel/micro-qiankun-substrate)]
+- `substrate`：通过 `create-react-app` 搭建的基座主应用 [[查看](https://github.com/cgfeel/micro-wujie-substrate)]
 - `vue-project`：通过 `vue-cli` 搭建的子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-vue3)]
 
 ### 搭建基座主应用
