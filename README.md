@@ -6669,6 +6669,10 @@ proxyWindow.addEventListener;
 
 > 在沙箱 `body` 中除了作为容器 `html` 元素临时存放点以外，其余情况都是空的
 
+如果是从应用外部后退，是无法返回到劫持容器：
+
+- 因为此时提供容器的挂载点已销毁，无法继续挂载，将会切换到应用入口页
+
 后退时 `hrefFlag` 存在，`shadowRoot` 容器怎么做：
 
 - 通过 `renderElementToContainer` 将 `shadowRoot` 重新替换挂载到节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
