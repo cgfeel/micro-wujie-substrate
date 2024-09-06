@@ -6543,7 +6543,7 @@ proxyWindow.addEventListener;
 | `active` [[查看](#3-同步路由)]                                                | 通过 `syncUrlToWindow` 同步路由到基座 [[查看](#syncurltowindow同步子应用路由到主应用)] | `replaceState` | 无                          |
 | `unmount` [[查看](#-unmount-卸载应用)]                                        | 通过 `clearInactiveAppUrl` 还原基座路由 [[查看](#clearinactiveappurl清理路由)]         | `replaceState` | 无                          |
 
-如果基座是子应用，本身就在沙箱中，前进后退看 `state` 来自哪里：
+如果基座是子应用，本身就在沙箱中，前进后退看 `state` 对象来自哪里：
 
 - 如果来自基座下的沙箱 ` history`，那么不会通过 `processAppForHrefJump` 监听 `popstate`
 - 但应用内的路由更新会通过 `syncIframeUrlToWindow` 同步基座路由 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
