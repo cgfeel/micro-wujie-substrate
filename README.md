@@ -94,8 +94,6 @@
 - 比如：应用和基座通信，沙箱 `iframe` 和容器通信、`proxy` 和 `iframe` 通信等等
 - 除此之外在其他产品也能看出来，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
 
----- 分割线 ----
-
 ## `wujie` 复现
 
 简单实现 `iframe` 和 `shadowRoot` 通信，详细见项目中的源码：
