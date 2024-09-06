@@ -157,7 +157,7 @@
 
 ## `wujie` 原理
 
-和 `qiankun` 解读一样，为了便于阅读全部以当前官方版本 `9733864b0b5e27d41a2dc9fac216e62043273dd3` [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3)] 为准
+和 `qiankun` 解读一样，为了便于阅读全部以官方版本 `9733864b0b5e27d41a2dc9fac216e62043273dd3` 为准 [[查看](https://github.com/Tencent/wujie/tree/9733864b0b5e27d41a2dc9fac216e62043273dd3)]
 
 > 这一章节链接指向官方仓库，由于内容比较长，每一条信息我都暴露了关键的对象名，可以打开链接复制关键的对象名，查看上下文对照理解。
 
