@@ -6696,11 +6696,14 @@ proxyWindow.addEventListener;
 
 > 在 `wujie` 中只能通过 `active` 自动创建 `web component`，不支持手动添加 `wujie-app` 到 `Dom tree`
 
-#### 其他
+#### 其他默认提供的方法
 
-- `wujieSupport`：浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
 - `setupApp`：缓存配置，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 - `destroyApp`：注销应用，对外提供的包装方法，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
+
+除此之外还有 1 个检测方法：
+
+- `wujieSupport`：浏览器不支持 `Proxy` 或 `CustomElementRegistry` 输出警告，此时采用 `degrade` 模式
 
 ### `packages` - `wujie-react`
 
