@@ -92,7 +92,7 @@
 通过以上了解初步印象是：`Tencent` 对通信非常偏爱
 
 - 比如：应用和基座通信，沙箱 `iframe` 和容器通信、`proxy` 和 `iframe` 通信等等
-- 除此之外在其他产品也能看出来，比如：`alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]，还有小程序 `postMessage`
+- 除此之外在其他产品也能看出来，比如：小程序 `postMessage`，还有 `alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]
 
 ## `wujie` 复现
 
