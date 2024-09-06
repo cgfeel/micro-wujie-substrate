@@ -2,12 +2,13 @@
 
 一个 `wujie` 基座，完整内容查看微前端主仓库：https://github.com/cgfeel/zf-micro-app
 
-`wujie` 和其他的微前端（`qiankun`、`micro-app`）解决方案不同点：
+`wujie` 和 `qiankun`、`micro-app` 的不同解决方案：
 
-| 对比项   | `wujie`                                    | 其他微前端                                  |
-| -------- | ------------------------------------------ | ------------------------------------------- |
-| `script` | 放到沙箱 `iframe`                          | 放到自己实现的沙箱，如：`proxy`、快照中实现 |
-| `css`    | 通过 `web component` 放到 `shadowDOM` 渲染 | 修改 `css` 作用域 `scopedCSS`               |
+| 对比项   | `wujie`                    | `micro-app`                | `wujie`             |
+| -------- | -------------------------- | -------------------------- | ------------------- |
+| 渲染容器 | `shadowDOM`、`iframe` 容器 | `shadowDOM`、`iframe` 容器 | `single-spa`        |
+| `script` | 沙箱 `iframe`              | `proxy`、沙箱 `iframe`     | `proxy`、快照中实现 |
+| `css`    | 渲染容器                   | `scopedCSS`、渲染容器      | `scopedCSS`         |
 
 优点，天然隔离：
 
