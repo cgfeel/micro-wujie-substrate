@@ -116,9 +116,9 @@
 3. `injectTemplate`：将 `css` 和 `html` 注入 `shadowRoot`
 4. `runScriptInSandbox`：将 `js` 注入 `iframe`
 
-沙箱分 2 个：
+容器分 2 个：
 
-- `shadowRoot`：直接将 `css` 和 `html` 全部打包到一个 `div`，塞入 `shadowRoot`
+- `shadowRoot`：直接将 `css` 和 `html` 全部打包到 `div` 塞入 `shadowRoot`
 - `iframe`：创建一个 `script` 元素，将执行的 `js` 作为元素内容插入 `iframe` 的 `head`
 
 在 `script` 添加到 `iframe` 之前：
