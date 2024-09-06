@@ -6744,9 +6744,28 @@ componentDidUpdate(prevProps) {
 
 > 但文档中并不建议手动注销应用，如果后续还需要使用的话 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 
-除此之外还定义了一个没有哦使用的属性：
+此外还定义了 `startAppQueue`，用于发起微任务但没有使用，若要使用可以这样：
 
-- `startAppQueue` 发起一个微任务不做任何处理
+```
+startApp = async (props) => {
+  try {
+    const { current: el } = this.state.myRef;
+    this.destroy = await startApp({
+      ...props,
+      el,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+componentDidMount () {
+  const list = this.props;
+  list.forEach(props => {
+    this.startAppQueue = this.startAppQueue.then(() => this.startApp(props))
+  });
+}
+```
 
 **2. 方法**
 
