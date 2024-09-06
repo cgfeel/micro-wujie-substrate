@@ -38,9 +38,13 @@
 
 > `micro-app` 也支持 `shadowDom` 和 `iframe` 沙箱，但需要在 `start` 时手动启用
 
-总结分成 3 个部分：`wujie` 使用、复现和原理，项目全部整合在：
+总结分成 3 个部分：
 
-- `/wujie` [[查看](https://github.com/cgfeel/zf-micro-app/tree/main/wujie)]
+- `wujie` 使用 [[查看](#wujie-使用)]
+- `wujie` 复现 [[查看](#wujie-复现)]
+- `wujie` 原理 [[查看](#wujie-原理)]
+
+> 项目全部整合在：`/wujie` [[查看](https://github.com/cgfeel/zf-micro-app/tree/main/wujie)]
 
 ## `wujie` 使用
 
