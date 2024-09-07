@@ -336,21 +336,17 @@
 
 **第一步：重新加载资源**
 
-- 卸载应用实例，见：`unmount` [[查看](#-unmount-卸载应用)]
-- 重新激活应用，见：`active` [[查看](#-active-激活应用)]
-- 恢复动态加载的样式，见 `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]
-
-`unmount` 卸载应用：
+`unmount` 卸载应用 [[查看](#-unmount-卸载应用)]：
 
 - 清空容器、清理路由和事件，将应用还原至初始状态
 - 否则 `active` 时可能会对容器中的元素重复监听事件，见：容器在哪清除 [[查看](#5-容器在哪清除)]
 
-`active` 激活应用：
+`active` 激活应用 [[查看](#-active-激活应用)]：
 
 - 无论是 `preloadApp` 已加载过资源，还是切换应用，容器都会在 `unmount` 时清空
 - 激活应用时会再次同步路由，并重新将资源注入容器
 
-`rebuildStyleSheets` 恢复样式：
+`rebuildStyleSheets` 恢复动态加载和打补丁的样式 [[查看](#-rebuildstylesheets-重新恢复样式)]：
 
 - `umd` 模式切换应用后，只触发 `mount` 函数挂载应用
 - 应用中动态添加的样式需要通过 `styleSheetElements` 收集并恢复 [[查看](#2-stylesheetelements-收集样式表)]
