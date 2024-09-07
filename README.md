@@ -868,7 +868,7 @@
 
 `onunload` 是一个废弃的方法，随时可能被浏览器弃用
 
-- 目的应该用于点击 `iframe` 容器中第三方链接离开子应用时注销应用实例
+- 用于 `iframe` 容器在 `Dom` 中销毁时卸载应用，相当于 `web component` 的 `disconnectedCallback` [[查看](#disconnectedcallback-卸载组件)]
 
 第三步：注入 `template` 到容器中
 
