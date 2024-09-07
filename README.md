@@ -976,17 +976,15 @@
 
 - 通过 `initIframeDom` 绑定在沙箱 `iframe.contentWindow` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
-此外 `document` 下的 `head`、`body` 也会通过 `patchDocumentEffect` 劫持 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+`head` 和 `body`：
 
-- `head` 指向容器的 `head`，`body` 指向容器的 `body`
+- 沙箱下的 `head`、`body` 通过 `patchDocumentEffect` 劫持指向 `proxyDocument` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- 而 `proxyDocument` 中的 `head`、`body` 指向沙箱 `document`
+- 而容器中的 `head`、`body` 通过 `patchRenderEffect` 重写了 `Dom` 操作 [[查看](#patchrendereffect-为容器打补丁)]
 
-而容器的 `head` 和 `body` 又通过 `patchRenderEffect` 重写了指定的操作 [[查看](#patchrendereffect-为容器打补丁)]
+为了方便拿到容器的 `head` 和 `body`
 
-- 通过 `head` 或 `body` 插入 `Dom` 时，会根据元素类型自动分配插入沙箱 `iframe` 还是容器
-
-为了方便拿到 `head` 和 `body`
-
-- `shadowRoot` 容器：通过实例 `shadowRoot['head'|'body']` 获取
+- `shadowRoot`：通过实例 `sandbox.shadowRoot['head'|'body']` 获取
 - `iframe` 容器：通过实例 `sandbox['head'|'body']` 获取
 
 > 子应用中也可以直接从 `document['head'|'body']` 获取
