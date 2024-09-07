@@ -963,7 +963,7 @@
 
 容器中所有元素 `document` 一定是沙箱 `iframe.contentDocument`：
 
-- 因为每个元素的添加都通过 `patchElementEffect` 打了补丁 [[查看](#patchelementeffect为元素打补丁)]
+- 因为每个元素都通过 `patchElementEffect` 打了补丁 [[查看](#patchelementeffect为元素打补丁)]
 
 而在子应用中 `document` 的 `property` 则会指向 `proxyDocument`，因为：
 
