@@ -462,7 +462,7 @@
 
 #### 3. 预加载微任务 `runPreload`
 
-- 使用 `iframeWindow` 调用生命周期 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#beforeload)]
+- 使用沙箱 `window` 调用生命周期 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#beforeload)]
 - 通过 `importHTML` 获取应用资源，此时资源中的样式和 `script` 都替换成注释 [[查看](#importhtml-加载资源)]
 - 通过 `processCssLoader` 处理 `css-loader` 并加载资源中的静态样式替换对应注释 [[查看](#processcssloader处理-css-loader)]
 - 激活应用 `active` [[查看](#-active-激活应用)]
@@ -629,11 +629,11 @@
 
 区别：
 
-| 分类       | `degrade` 降级代理  | `proxyLocation` 代理 |
-| ---------- | ------------------- | -------------------- |
-| `window`   | 沙箱 `iframeWindow` | `proxyWindow`        |
-| `document` | `proxyDocument`     | `proxyDocument`      |
-| `location` | 沙箱 `location`     | `proxyLocation`      |
+| 分类       | `degrade` 降级代理 | `proxyLocation` 代理 |
+| ---------- | ------------------ | -------------------- |
+| `window`   | 沙箱 `window`      | `proxyWindow`        |
+| `document` | `proxyDocument`    | `proxyDocument`      |
+| `location` | 沙箱 `location`    | `proxyLocation`      |
 
 - 通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]
 - `proxyDocument` 的差别，见：`localGenerator` - `proxyDocument` [[查看](#1-劫持空对象作为-proxydocument)]
@@ -737,7 +737,7 @@
 于是：
 
 - 重写 `fetch` 函数通过 `getAbsolutePath` 指向 `proxyLocation` [[查看](#getabsolutepath获取绝对路径)]
-- 将重写的 `fetch` 绑定到 `iframeWindow` 和应用实例中
+- 将重写的 `fetch` 绑定到沙箱 `window` 和应用实例中
 
 但是基座用不到，加载资源通常是绝对路径：
 
@@ -925,7 +925,7 @@
 
 `this.provide` 是子应用中 `window` 全局对象中的 `$wujie`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)]：
 
-- 在实例构造时通过 `patchIframeVariable` 将其注入 `iframeWindow` [[查看](#patchiframevariable-为子应用-window-添加属性)]
+- 在实例构造时通过 `patchIframeVariable` 将其注入沙箱 `window` [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - `shadowRoot` 仅限默认状态下激活时才提供，降级状态下不存在
 
 在子应用中获取跟节点：
@@ -1394,12 +1394,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **2. 触发 `DOMContentLoaded` 事件**
 
-- 创建 `DOMContentLoaded` 自定义事件，分别由沙箱 `iframeWindow.document` 和 `iframeWindow` 触发
+- 创建 `DOMContentLoaded` 自定义事件，分别由沙箱 `document` 和沙箱 `window` 触发
 
 **3. 触发 `loaded` 事件**
 
-- 自定义事件 `readystatechange`，由沙箱 `iframeWindow.document` 触发
-- 自定义事件 `load`，由沙箱 `iframeWindow` 触发
+- 自定义事件 `readystatechange`，由沙箱 `document` 触发
+- 自定义事件 `load`，由沙箱 `window` 触发
 
 **4. 返回 `Promise`**
 
@@ -1426,9 +1426,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 从沙箱 `window` 中检测到 `__WUJIE_MOUNT` 才能执行当前流程
 - 再次关闭挂载节点 `loading` 状态，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
-- 使用 `iframeWindow` 调用生命周期 `beforeMount`
+- 使用沙箱 `window` 调用生命周期 `beforeMount`
 - 调用子应用的 `__WUJIE_MOUNT` 去渲染应用
-- 使用 `iframeWindow` 调用生命周期 `afterMount`
+- 使用沙箱 ` window` 调用生命周期 `afterMount`
 - 设置 `mountFlag` 避免重复挂载
 
 > 删除 `loading` 存在重复执行的情况，见：队列前的准备 - 关闭加载状态 [[查看](#5-队列前的准备)]
@@ -1454,7 +1454,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 2. `alive` 模式
 
-- 使用 `iframeWindow` 调用生命周期 `activated`
+- 使用沙箱 `window` 调用生命周期 `activated`
 - 这里存在 `activated` 调用 2 次的情况，见：预加载中的 `bug` [[查看](#6预加载中的-bug)]
 
 #### 3. 执行下一个队列
@@ -1476,7 +1476,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 2. 卸载 `alive` 模式的应用
 
-- 使用沙箱 `iframeWindow` 触发生命周期 `deactivated`
+- 使用沙箱 `window` 触发生命周期 `deactivated`
 
 #### 3. 卸载 `umd` 模式的应用
 
@@ -1488,9 +1488,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 卸载 `umd` 模式子应用：
 
-- 使用沙箱 `iframeWindow` 触发生命周期 `beforeUnmount`
+- 使用沙箱 `window` 触发生命周期 `beforeUnmount`
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
-- 使用沙箱 `iframeWindow` 触发生命周期 `afterUnmount`
+- 使用沙箱 `window` 触发生命周期 `afterUnmount`
 - `mountFlag` 标记为未挂载
 - `this.bus.$clear`：清空子应用所有监听的事件，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
