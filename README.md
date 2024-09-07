@@ -438,12 +438,12 @@
 
 参数：`preOptions`，见官方文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html)]
 
-`preloadApp` 预加载通过 `requestIdleCallback` 在空闲时间处理，不处理的情况有 2 个：
+`preloadApp` 预加载通过宏任务 `requestIdleCallback` 空闲时处理，不处理的情况有 2 个：
 
-- 应用实例已存在
-- 当前的 `url.search` 能够找到预加载的应用名，此时需要直接加载
+- 应用实例已存在，说明已加载过了
+- 当前网址 `search` 中能够找到预加载的应用名，此时需要直接加载
 
-> 同一个应用不能重复预加载，否则会造成误判，如：`active` 时因为 `shadowRoot` 存在而又找不到 `el` 挂载点
+> 相同应用不能重复预加载，否则会造成误判，如：`active` 时 `shadowRoot` 存在但找不到 `el` 挂载点
 
 预加载分 3 步：
 
