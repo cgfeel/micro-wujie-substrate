@@ -445,8 +445,6 @@
 
 > 相同应用不能重复预加载，否则会造成误判，如：`active` 时 `shadowRoot` 存在但找不到 `el` 挂载点
 
-预加载分 3 步：
-
 #### 1. 获取配置
 
 - 通过 `getOptionsById` 获取配置信息 `cacheOptions`
