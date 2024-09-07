@@ -856,7 +856,8 @@
 | 流程                                                                    | 执行方法                                              | 用途                     |
 | ----------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------ |
 | `active` [[查看](#4-创建容器渲染资源)]                                  | `renderElementToContainer`                            | 将容器添加到挂载点       |
-| `start` [[查看](#-start-启动应用)]                                      | `removeLoading` [[查看](#启动应用时添加删除-loading)] | 删除 `loading` 状态      |
+| `start` [[查看](#5-队列前的准备)]                                       | `removeLoading` [[查看](#启动应用时添加删除-loading)] | 删除 `loading` 状态      |
+| `mount` [[查看](#1-umd-方式启动)]                                       | `removeLoading` [[查看](#启动应用时添加删除-loading)] | 删除 `loading` 状态      |
 | `destroy` [[查看](#-destroy-销毁实例)]                                  | `clearChild`                                          | 清空挂载节点             |
 | `processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)] | `renderElementToContainer`                            | 应用内前进后退时替换容器 |
 
