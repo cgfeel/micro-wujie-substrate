@@ -750,7 +750,7 @@
 - 因为 `fetch` 是在基座的作用域下，拿不到应用的 `base` 元素
 - 如果子应用 `fetch` 是相对路径，需使用 `proxyLocation` 通过 `getAbsolutePath` 补全
 
-比如说：
+比如说在配置 `fetch` 的情况下：
 
 - 通过基座统一获取 `authorization` 作为为每个应用当独 `fetch` 请求鉴权
 - 子应用中通过相对路径获取本地资源，将路径根据不同的应用进行匹配
