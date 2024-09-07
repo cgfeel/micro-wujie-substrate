@@ -961,11 +961,11 @@
 | 容器根节点      | `window.__WUJIE.document`      | `window.__WUJIE.shadowRoot`    |
 | 沙箱 `document` | `Node.prototype.ownerDocument` | `Node.prototype.ownerDocument` |
 
-在子应用中 `document` 一定是沙箱 `iframe.contentDocument`，因为：
+容器中所有元素 `document` 一定是沙箱 `iframe.contentDocument`：
 
-- 子应用所有的 `script` 都运行在沙箱 `iframe`
+- 因为每个元素的添加都通过 `patchElementEffect` 打了补丁 [[查看](#patchelementeffect为元素打补丁)]
 
-而在子应用中 `document` 的指定的 `property` 则会指向 `proxyDocument`，因为：
+而在子应用中 `document` 的 `property` 则会指向 `proxyDocument`，因为：
 
 - 沙箱 `iframe` 初始化时通过 `patchDocumentEffect` 劫持了 `iframeWindow.Document.prototype` 属性 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 - 劫持的属性会在 `get` 时指向 `proxyDocument` [[查看](#wujie-中的代理)]
