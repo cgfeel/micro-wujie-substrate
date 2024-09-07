@@ -853,7 +853,7 @@
 
 `this.el` 挂载节点有啥用：
 
-- `removeLoading` 消除 `loading` [[查看](#启动应用时添加删除-loading)]
+- `start` 应用时 `removeLoading` 消除 `loading` [[查看](#启动应用时添加删除-loading)]
 - 实例 `destroy` 时通过 `clearChild` 清空挂载节点 [[查看](#-destroy-销毁实例)]
 - `popstate` 后退时将渲染容器替换劫持容器挂载到节点，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
