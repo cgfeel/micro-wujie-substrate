@@ -384,7 +384,7 @@
 | `beforeLoad`       | 传递沙箱 `window` 调用生命周期，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#beforeload)] | 需要                           | 需要                                                                     |
 | `importHTML`       | 提取应用资源 [[查看](#importhtml-加载资源)]                                                                          | 需要                           | 需要                                                                     |
 | `processCssLoader` | 处理 `css-loader`，并更新已提取的资源 [[查看](#processcssloader处理-css-loader)]                                     | 需要                           | 需要                                                                     |
-| `alive`            | 激活应用 [[查看](#-active-激活应用)]                                                                                 | 需要                           | 除了预加载提供的参数外，还包括：`sync` 同步路由、`el` 挂载容器           |
+| `active`           | 激活应用 [[查看](#-active-激活应用)]                                                                                 | 需要                           | 除了预加载提供的参数外，还包括：`sync` 同步路由、`el` 挂载容器           |
 | `start`            | 启动应用 [[查看](#-start-启动应用)]                                                                                  | 仅在提供 `exec` 预加载时才执行 | 需要                                                                     |
 | `destroy`          | 返回注销方法 [[查看](#-destroy-销毁实例)]                                                                            | 不返回                         | 仅在 `start` 正常情况下返回，见：`bug` [[查看](#4-start-启动应用的-bug)] |
 
