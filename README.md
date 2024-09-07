@@ -521,14 +521,12 @@
 
 **问题 1：`activated` 重复调用**
 
-- 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在 `startApp` 启动应用的时候生命周期 `activated` 会调用 2 次
-
-哪 2 次：
+预加载 `alive` 模式的应用，默认 `exec` 不预执行，在启动应用的候生命周期 `activated` 会调用 2 次：
 
 - `start` 应用时队列执行 `mount` 调用 1 次
 - `start` 之后返回 `destory` 前调用 1 次
 
-**问题 2：缺失必要的参数判断**
+**问题 2：缺失必要的参数检查**
 
 - 见：`startApp` 的 `bug` [[查看](#4-startapp-的-bug)]
 
