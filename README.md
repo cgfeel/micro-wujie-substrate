@@ -394,10 +394,9 @@
 
 > 虽然在 `ts` 中已却明要求为必填参数，但如果 `ignore` 强制忽略或提供空字符怎么办？
 
-`micro-app` 中的处理方式：
+`micro-app` 中只有都符合要求才开始挂载组件：
 
-- 在 `defineElement` 的 `attributeChangedCallback` 中观察 `name` 和 `url` 两个属性
-- 只有都符合要求才开始挂载组件
+- 在 `defineElement` 的 `attributeChangedCallback` 中检查 `name` 和 `url` 两个属性
 
 #### 5. 应用中的 `css` 在哪里加载
 
