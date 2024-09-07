@@ -853,9 +853,17 @@
 
 `this.el` 挂载节点有啥用：
 
-- `start` 应用时 `removeLoading` 消除 `loading` [[查看](#启动应用时添加删除-loading)]
-- `destroy` 应用时通过 `clearChild` 清空挂载节点 [[查看](#-destroy-销毁实例)]
-- `processAppForHrefJump` 应用内前进后退时替换容器 [[查看](#processappforhrefjump-监听前进和后端)]
+| 流程                                                                    | 执行方法                                              | 用途                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------ |
+| `active` [[查看](#4-创建容器渲染资源)]                                  | `renderElementToContainer`                            | 将容器添加到挂载点       |
+| `start` [[查看](#-start-启动应用)]                                      | `removeLoading` [[查看](#启动应用时添加删除-loading)] | 删除 `loading` 状态      |
+| `destroy` [[查看](#-destroy-销毁实例)]                                  | `clearChild`                                          | 清空挂载节点             |
+| `processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)] | `renderElementToContainer`                            | 应用内前进后退时替换容器 |
+
+`renderElementToContainer` 在以下情况通过第三方调用执行
+
+- `active` 应用：`degrade` 时通过 `initRenderIframeAndContainer` [[查看](#创建-iframe-容器)]
+- `processAppForHrefJump` 前进时通过 `renderIframeReplaceApp` [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
 `onunload` 是一个废弃的方法，随时可能被浏览器弃用
 
