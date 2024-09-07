@@ -899,7 +899,7 @@
 
 第一步：挂载容器用到指定节点
 
-`degrade` 降级状态通过 `this.document` 来区分初次加载还是切换应用，而默认状态通过 `this.shadowRoot` 来区分。
+降级时通过 `this.document` 来区分初次加载还是切换应用，而默认状态通过 `this.shadowRoot` 来区分
 
 注入 `template` 有 3 种情况：
 
