@@ -547,9 +547,11 @@
 | `umd`   | 1      | 1、3、4 |
 | 重建    | 1      | 1       |
 
-- `umd` 和重建模式预加载后 `startApp` 会销毁实例，只能用于提前缓存资源
-- `umd` 预执行后 `startApp` 会清空容器重新注入资源
-- `umd` 模式需要用到 `styleSheetElements`，其他模式不需要
+`umd` 模式预加载补充说明：
+
+- 和重建模式一样，预加载后 `startApp` 会销毁实例，只能用于提前缓存资源
+- 预执行后 `startApp` 会清空容器重新注入资源
+- 只有 `umd` 需要用到 `styleSheetElements` 恢复样式，其他模式只记录不使用
 
 除此之外可以通过 `setupApp` 提前缓存配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
