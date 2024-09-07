@@ -804,7 +804,7 @@
 
 - 在 `wujie` 中所有的 `iframe` 容器只设置了宽高 `100%`，这并不能够适应实际情况
 - 使用这个配置可以通过 `style` 适配容器节点的样式
-- 同样适用于劫持应用的 `location.href` 的 `iframe` 临时容器，见：`locationHrefSet` [[查看](#locationhrefset拦截子应用-locationhref)]
+- 同样适用于 `locationHrefSet` 拦截 `locatio.href` 的劫持容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 
 `degradeAttrs` 是一个固定的配置，如何根据应用配置不同的属性：
 
