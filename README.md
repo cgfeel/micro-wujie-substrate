@@ -412,7 +412,7 @@
 切换应用时如何加载样式：
 
 - `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载样式
-- `umd` 模式：切换应用时通过 `__WUJIE_MOUNT` 渲染，之前加载的样式需要调用 `rebuildStyleSheets` 恢复
+- `umd` 模式：切回应用时通过 `__WUJIE_MOUNT` 渲染，之前加载的样式需要调用 `rebuildStyleSheets` 恢复 [[查看](#-rebuildstylesheets-重新恢复样式)]
 - 重建模式：每次启动都会重新注入样式
 
 > `umd` 不存在初次加载，和重建模式一样都需要实例初始化后激活应用，动态加载样式
@@ -426,11 +426,11 @@
 
 切换应用时如何加载 `script`：
 
-- `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载 `script`
-- `umd` 模式：卸载应用 `unmount` 时，只清空 `shadowRoot` 不清空沙箱，切换应用不需要重复加载 `script`
+- `alive` 模式：切换应用不会销毁实例，切回应用时不用重复加载 `script`
+- `umd` 模式：`unmount` 卸载应用时只清空 `shadowRoot` 不清空沙箱，切回应用时不用重复加载 `script`
 - 重建模式：每次启动都会重新注入 `script`
 
-> 目前：主动降级时 `umd` 模式不清空容器，原因我想可以是因为 `hrefFlag`，要做分支判断
+> `degrade` 降级时 `umd` 模式不清空容器，因为 `iframe` 移动后事件自动销毁（来自备注）
 
 ### `preloadApp` 预加载流程
 
