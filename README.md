@@ -854,8 +854,8 @@
 `this.el` 挂载节点有啥用：
 
 - `start` 应用时 `removeLoading` 消除 `loading` [[查看](#启动应用时添加删除-loading)]
-- 实例 `destroy` 时通过 `clearChild` 清空挂载节点 [[查看](#-destroy-销毁实例)]
-- `popstate` 后退时将渲染容器替换劫持容器挂载到节点，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
+- `destroy` 应用时通过 `clearChild` 清空挂载节点 [[查看](#-destroy-销毁实例)]
+- `processAppForHrefJump` 应用内前进后退时替换容器 [[查看](#processappforhrefjump-监听前进和后端)]
 
 `onunload` 是一个废弃的方法，随时可能被浏览器弃用
 
