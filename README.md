@@ -638,9 +638,11 @@
 | `document` | `proxyDocument`  | `proxyDocument` |
 | `location` | `proxyLocation`  | `proxyLocation` |
 
-- 通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]
+通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]：
+
+- `proxyWindow` 在 `degrade` 降级下不可用 [[查看](#proxywindow-在哪调用)]
+- `proxyLocation` 在 `degrade` 模式下将不完全可用 [[查看](#proxylocation-的问题)]
 - `proxyDocument` 的差别，见：`localGenerator` - `proxyDocument` [[查看](#1-劫持空对象作为-proxydocument)]
-- `proxyLocation` 在 `degrade` 模式下将不可用 [[查看](#proxylocation-的问题)]
 
 流程：
 
