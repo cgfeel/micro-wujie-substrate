@@ -974,7 +974,7 @@
 
 为此沙箱 `iframe` 初始化时保留了沙箱 `document` 4 个原始方法：
 
-- 通过 `initIframeDom` 绑定在 `iframe.contentWindow` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+- 通过 `initIframeDom` 绑定在沙箱 `iframe.contentWindow` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 
 此外 `document` 下的 `head`、`body` 也会通过 `patchDocumentEffect` 劫持 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 
