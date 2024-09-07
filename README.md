@@ -1016,7 +1016,7 @@
 添加标签 `WUJIE_APP_ID` 都来自 `active` 激活应用时创建容器：
 
 - `createIframeContainer`：创建 `iframe` 容器 [[查看](#创建-iframe-容器)]
-- `createWujieWebComponent`：创建 `shadowRoot` 容器
+- `createWujieWebComponent`：创建自定义组件 `wujie-app`
 
 #### 📝 `start` 启动应用
 
