@@ -596,7 +596,7 @@
 | 基座创建应用实例         | 最顶层基座 | 声明最初要注入的对象 `this.inject`                     |
 | 子应用通过 `window` 调用 | 作为子应用 | `window.__WUJIE.inject[name]` 从上一层获取对应的映射表 |
 
-> 这样无论是子应用还是基座，最终拿到的 `inject` 对象都是同一个，见：`appEventObjMap` 流程图 [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
+> 这样无论是子应用还是基座，最终拿到的 `inject` 对象都是同一个，见：`appEventObjMap` [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
 
 #### 2. 提取配置初始化属性
 
