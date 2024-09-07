@@ -800,7 +800,7 @@
 
 用 `iframe` 作为容器，应用中的弹窗由于在 `iframe` 内部将无法覆盖整个页面，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#degrade)]
 
-关联属性 `degradeAttrs`，文档没有说明：
+关联属性 `degradeAttrs`，补充文档没有的说明：
 
 - 在 `wujie` 中所有的 `iframe` 容器只设置了宽高 `100%`，这并不能够适应实际情况
 - 使用这个配置可以通过 `style` 适配容器节点的样式
