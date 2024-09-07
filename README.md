@@ -625,22 +625,22 @@
 
 #### 4. 创建代理
 
-根据 `degrade` 决定创建：
-
-- `localGenerator` 降级代理 [[查看](#-localgenerator-降级情况下的代理)]
-- `proxyLocation` 代理 [[查看](#-proxygenerator-非降级情况下的代理)]
+| 代理                                                          | 说明       | `degrade` |
+| ------------------------------------------------------------- | ---------- | --------- |
+| `localGenerator` [[查看](#-localgenerator-降级情况下的代理)]  | 降级代理   | `true`    |
+| `proxyLocation` [[查看](#-proxygenerator-非降级情况下的代理)] | 非降级代理 | `false`   |
 
 区别：
 
-| 分类       | `degrade` 降级代理 | `proxyLocation` 代理 |
-| ---------- | ------------------ | -------------------- |
-| `window`   | 沙箱 `window`      | `proxyWindow`        |
-| `document` | `proxyDocument`    | `proxyDocument`      |
-| `location` | 沙箱 `location`    | `proxyLocation`      |
+| 分类       | `localGenerator` | `proxyLocation` |
+| ---------- | ---------------- | --------------- |
+| `window`   | 沙箱 `window`    | `proxyWindow`   |
+| `document` | `proxyDocument`  | `proxyDocument` |
+| `location` | `proxyLocation`  | `proxyLocation` |
 
 - 通过流程图了解两个代理的区别 [[查看](#wujie-中的代理)]
 - `proxyDocument` 的差别，见：`localGenerator` - `proxyDocument` [[查看](#1-劫持空对象作为-proxydocument)]
-- 代理对象的问题，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+- `proxyLocation` 在 `degrade` 模式下将不可用 [[查看](#proxylocation-的问题)]
 
 流程：
 
