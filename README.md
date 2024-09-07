@@ -619,7 +619,7 @@
 
 #### 3. 创建沙箱 `iframe`
 
-- 通过 `appRouteParse` 提取子应用 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
+- 通过 `appRouteParse` 提取应用 `urlElement`、`appHostPath`、`appRoutePath` [[查看](#approuteparse-提取链接)]
 - 获取基座的 `origin`：`mainHostPath`
 - 通过 `iframeGenerator` 初始化沙箱 `iframe` [[查看](#iframegenerator创建沙箱-iframe)]
 
