@@ -655,7 +655,7 @@
 - 子应用就可以通过 `window.$wujie.location` 去调用 `proxyLocation`
 - 在 `WuJie` 构造函数中 `provide` 绑定了 `bus` 和 `location`，见：常规属性 [[查看](#1-常规属性)]
 
-最后通过 `addSandboxCacheWithWujie` 将当前实例添加到映射表缓存起来，见：`idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
+最后通过 `addSandboxCacheWithWujie` 缓存当前实例添加到映射表，见：`idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 #### 📝 `active` 激活应用
 
