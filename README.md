@@ -348,13 +348,13 @@
 
 `rebuildStyleSheets` 恢复动态加载和打补丁的样式 [[查看](#-rebuildstylesheets-重新恢复样式)]：
 
-- `umd` 模式切换应用后，只触发 `mount` 函数挂载应用
+- `umd` 模式切换应用后，只触发 `__WUJIE_MOUNT` 函数挂载应用
 - 应用中动态添加以及打补丁的样式需要通过 `styleSheetElements` 收集并恢复 [[查看](#2-stylesheetelements-收集样式表)]
 - 完整的样式恢复表，见：应用中的 `css` 在哪里加载 [[查看](#5-应用中的-css-在哪里加载)]
 
 **第二步：挂载应用**
 
-和 `mount` 挂载 `umd` 模式的应用是一样的，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]
+和 `__WUJIE_MOUNT` 挂载 `umd` 模式的应用是一样的，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]
 
 做了 4 件事：
 
