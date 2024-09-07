@@ -736,10 +736,10 @@
 
 但是基座加载资源时用不到：
 
-- `importHTML`：提取应用资源，用的 `fetch` 还未指向 `proxyLocation`
+- `importHTML`：提取应用资源，`fetch` 还未指向 `proxyLocation`
 - `processCssLoaderForTemplate`：手动加载样式，针对所有应用，通常会指定一个公共资源路径
 
-> 加载资源通常是绝对路径，当配置没有提供 `fetch` 时，会默认从全局对象中获取
+> 加载资源通常是绝对路径；当配置没有提供 `fetch` 时，会默认从全局对象中获取
 
 子应用不需要补全路径：
 
@@ -748,7 +748,7 @@
 只适合通过基座修改 `fetch` 这一场景：
 
 - 因为 `fetch` 是在基座的作用域下，拿不到应用的 `base` 元素
-- 如果子应用发出来的 `fetch` 请求是相对路径，需要通过 `getAbsolutePath` 转换一下路径
+- 如果子应用 `fetch` 是相对路径，需使用 `proxyLocation` 通过 `getAbsolutePath` 补全
 
 比如说：
 
