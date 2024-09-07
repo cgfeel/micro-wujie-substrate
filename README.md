@@ -967,7 +967,7 @@
 
 而在子应用中 `document` 的 `property` 则会指向 `proxyDocument`，因为：
 
-- 沙箱 `iframe` 初始化时通过 `patchDocumentEffect` 劫持了 `iframeWindow.Document.prototype` 属性 [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+- 沙箱初始化时通过 `patchDocumentEffect` 劫持了 `iframeWindow.Document.prototype` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
 - 劫持的属性会在 `get` 时指向 `proxyDocument` [[查看](#wujie-中的代理)]
 
 > 而 `proxyDocument` 只有获取 `script` 指向沙箱 `iframe.contentDocument`，其余全部指向容器，比如 `iframe` 容器的 `document`，或是 `shadowRoot`
