@@ -420,9 +420,9 @@
 #### 6. 应用中的 `script` 在哪里加载
 
 - `start`：通过 `execQueue` 队列加载：`js-loader`、子应用静态 `script` [[查看](#-start-启动应用)]
-- `rewriteAppendOrInsertChild`：动态添加 `script chunk` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+- `rewriteAppendOrInsertChild`：动态添加 `chunk script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-> 顺序从上至下：单例应用入口 `script` 通过 `start` 注入沙箱，然后通过 `rewriteAppendOrInsertChild` 动态加载
+> 加载顺序从上至下：单例应用入口 `script` 通过 `start` 注入沙箱，然后动态加载 `chunk script`
 
 切换应用时如何加载 `script`：
 
