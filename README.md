@@ -906,6 +906,9 @@
 `分支 1`：切换应用
 
 - 通过 `renderElementToContainer` 将 `this.shadowRoot.host` 挂载到指定节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+
+切换应用只有 `umd` 模式需要重新注入资源：
+
 - `alive` 模式：完成切换后直接返回，不再继续执行资源注入容器的流程
 - `umd` 模式：虽然实例存在 `shadowRoot`，但 `active` 前会通过 `unmount` 清空容器 [[查看](#5-容器在哪清除)]
 - 重建模式：`active` 前会随应用一同销毁，不存在 `shadowRoot`，也不走这个分支
