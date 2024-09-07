@@ -938,6 +938,11 @@
 - 由于当前只注入了已注释 `script` 的静态资源，而对于单例应用来说此时还未渲染
 - 需要等到 `start` 启动应用，将入口 `script` 添加到沙箱 `iframe` 后才会渲染应用 [[查看](#-start-启动应用)]
 
+如何撑开节点：
+
+- 降级容器通过 `createIframeContainer` 设置 `iframe` 宽高 [[查看](#创建-iframe-容器)]
+- `shadowRoot` 通过 `renderTemplateToShadowRoot` 添加 `div` 撑开元素 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+
 #### 5. 完成激活应用
 
 - 通过 `patchCssRules` 为子应用样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
