@@ -951,7 +951,7 @@
 `this.provide` 是子应用中 `window` 全局对象中的 `$wujie`，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)]：
 
 - 在实例构造时通过 `patchIframeVariable` 将其注入沙箱 `window` [[查看](#patchiframevariable-为子应用-window-添加属性)]
-- `shadowRoot` 仅限默认状态下激活时才提供，降级状态下不存在
+- `shadowRoot` 仅限非降级状态下才能提供
 
 在子应用中获取跟节点：
 
