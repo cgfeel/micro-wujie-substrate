@@ -734,12 +734,12 @@
 - 重写 `fetch` 函数通过 `getAbsolutePath` 指向 `proxyLocation` [[查看](#getabsolutepath获取绝对路径)]
 - 将重写的 `fetch` 绑定到沙箱 `window` 和应用实例中
 
-但是基座用不到，加载资源通常是绝对路径：
+但是基座加载资源时用不到：
 
 - `importHTML`：提取应用资源，用的 `fetch` 还未指向 `proxyLocation`
-- `processCssLoaderForTemplate`：手动加载样式，这里是针对所有应用的，通常会指定一个公共资源路径
+- `processCssLoaderForTemplate`：手动加载样式，针对所有应用，通常会指定一个公共资源路径
 
-> 当配置没有提供 `fetch` 时，会默认通过 `window.fetch`
+> 加载资源通常是绝对路径，当配置没有提供 `fetch` 时，会默认从全局对象中获取
 
 子应用不需要变更路径：
 
