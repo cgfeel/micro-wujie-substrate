@@ -614,8 +614,8 @@
 
 **`bus` 事件通信**
 
-- 通过 `EventBus` 进行通信，`EventBus` 依赖 `appEventObjMap` 确保父子通信对象唯一性，见：存储 `eventBus` 托管的事件 [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
-- 同时将 `bus` 赋值给 `provide` 对象，使子应用内部可以通过 `window.$wujie?.bus` 进行通信
+- 通过 `EventBus` 进行通信，依赖 `appEventObjMap` 确保父子通信对象唯一性，见：`EventBus` [[查看](#2-appeventobjmap存储-eventbus-托管的事件)]
+- 同时将 `bus` 绑定在实例属性 `provide`，在应用内可以通过 `window.$wujie?.bus` 进行通信，见：常规属性 [[查看](#1-常规属性)]
 
 #### 3. 创建沙箱 `iframe`
 
