@@ -1011,9 +1011,9 @@
 - 通过 `querySelector` 查找 `iframe[${WUJIE_APP_ID}="${id}"]` 找到 `iframe` 容器
 - 通过自身属性 `WUJIE_APP_ID` 获取应用实例
 
-> 添加属性是由 `wujie` 内部实现，使用者无需手动添加，这里写出来是作为增加对 `wujie` 的了解
+> 属性是由 `wujie` 内部实现，使用者无需手动添加，这里写出来是作为增加对 `wujie` 的了解
 
-`WUJIE_APP_ID` 定义都来自 `active` 激活应用时创建容器：
+添加标签 `WUJIE_APP_ID` 都来自 `active` 激活应用时创建容器：
 
 - `createIframeContainer`：创建 `iframe` 容器 [[查看](#创建-iframe-容器)]
 - `createWujieWebComponent`：创建 `shadowRoot` 容器
