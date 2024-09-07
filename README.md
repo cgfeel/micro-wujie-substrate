@@ -407,7 +407,7 @@
 | 应用内的动态样式      | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | `alive` 和 `umd` 首次激活、重建模式每次激活 |
 | `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                                   | 切换 `umd` 应用、`umd` 预执行后启动         |
 
-> 加载的顺序按照表格从上至下，单例应用是通过动态加载样式的
+> 加载的顺序从上至下，单例应用是通过动态加载样式的
 
 切换应用时如何加载样式：
 
@@ -420,9 +420,11 @@
 #### 6. 应用中的 `script` 在哪里加载
 
 - `start`：通过 `execQueue` 队列加载：`js-loader`、子应用静态 `script` [[查看](#-start-启动应用)]
-- `patchRenderEffect`：激活应用时，将入口 `script` 注入沙箱中，动态添加 `script chunk` [[查看](#patchrendereffect-为容器打补丁)]
+- `rewriteAppendOrInsertChild`：动态添加 `script chunk` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-`spa` 应用基本都是动态加载 `script chunk`：
+> 顺序从上至下：单例应用入口 `script` 通过 `start` 注入沙箱，然后通过 `rewriteAppendOrInsertChild` 动态加载
+
+切换应用时如何加载 `script`：
 
 - `alive` 模式：切换应用不会销毁实例，所以下次激活时不用重复加载 `script`
 - `umd` 模式：卸载应用 `unmount` 时，只清空 `shadowRoot` 不清空沙箱，切换应用不需要重复加载 `script`
