@@ -521,7 +521,7 @@
 
 **问题 1：`activated` 重复调用**
 
-预加载 `alive` 模式的应用，默认 `exec` 不预执行，在启动应用的候生命周期 `activated` 会调用 2 次：
+预加载 `alive` 模式的应用，默认 `exec` 不预执行，在启动应用时生命周期 `activated` 会调用 2 次：
 
 - `start` 应用时队列执行 `mount` 调用 1 次
 - `start` 之后返回 `destory` 前调用 1 次
@@ -535,8 +535,8 @@
 预加载优化有 4 点：
 
 1. 提前缓存应用入口资源，加载并缓存资源中的样式和 `script` [[查看](#2-资源缓存集合)]
-2. 提前将 `template` 注入沙箱 `body` 作为临时容器，见：`active` [[查看](#-active-激活应用)]
-3. 提前将 `script` 注入沙箱 `head`，见：`start` [[查看](#-start-启动应用)]
+2. 提前将 `template` 注入沙箱 `body` 作为临时容器，见：`active` [[查看](#4-创建容器渲染资源)]
+3. 提前将 `script` 注入沙箱 `head`，见：创建容器渲染资源 [[查看](#-start-启动应用)]
 4. 提前收集样式元素打补丁，见：`styleSheetElements` [[查看](#2-stylesheetelements-收集样式表)]
 
 不同模式下预加载对应的优化点：
