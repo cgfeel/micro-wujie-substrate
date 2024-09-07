@@ -400,12 +400,12 @@
 
 #### 5. 应用中的 `css` 在哪里加载
 
-| 分类                  | 加载方式                                                                         | 场景                                        |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------------------------------- |
-| 应用内的静态样式      | `processCssLoader` [[查看](#processcssloader处理-css-loader)]                    | `preloadApp`、首次 `startApp` 初始化实例    |
-| 手动配置 `css-loader` | `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)] | `alive` 模式首次激活、其他模式每次激活      |
-| 应用内的动态样式      | `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]                    | `alive` 和 `umd` 首次激活、重建模式每次激活 |
-| `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                 | 切换 `umd` 应用、`umd` 预执行后启动         |
+| 分类                  | 加载方式                                                                                           | 场景                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| 应用内的静态样式      | `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                      | `preloadApp`、首次 `startApp` 初始化实例    |
+| 手动配置 `css-loader` | `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                   | `alive` 模式首次激活、其他模式每次激活      |
+| 应用内的动态样式      | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | `alive` 和 `umd` 首次激活、重建模式每次激活 |
+| `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                                   | 切换 `umd` 应用、`umd` 预执行后启动         |
 
 > 加载的顺序也按照表格从上至下
 
