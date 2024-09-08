@@ -1090,7 +1090,7 @@
 
 遍历 `scriptResultList` 根据属性分类添加到上述 3 个集合，关于属性见：`processTpl` 提取资源 [[查看](#processtpl-提取资源)]
 
-> 无论是同步代码还是异步代码，`getExternalScripts` 提取的 `script` 都是应用中的静态资源，而不是动态添加的 `script`；而像 `React` 和 `Vue` 这样的单例应用通常只暴露一个静态的 `script` 作为入口，其余的 `script` 和样式动态添加，见：`execQueue` 应用启动执行队列 [[查看](#1-execqueue-应用启动执行队列)]
+> 无论是同步代码还是异步代码，`getExternalScripts` 提取的 `script` 都是应用中的静态资源，而不是动态添加的 `script`；而像 `React` 和 `Vue` 这样的单例应用通常只暴露一个静态的 `script` 作为入口，其余的 `script` 和样式动态添加，见：`rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 **遍历的集合下标是 `promise` 有 2 处：**
 
