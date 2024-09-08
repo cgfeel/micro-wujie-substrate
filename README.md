@@ -1114,7 +1114,7 @@
 
 需要说明的是：
 
-- 开始提取 `execQueue` 是在 `start` 返回 `Promise` 之前执行，队列方法和 `Promise` 内部方法是上下文关系
+- 开始提取 `execQueue` 是在 `start` 返回 `Promise` 之前执行，队列方法和 `Promise` 内部方法是上下文
 - 所以队列开始时，返回的 `Promise` 还没有将最后要执行的队列插入 `execQueue`
 
 循环插入队列共有 3 处：
