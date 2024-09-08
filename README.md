@@ -1200,7 +1200,7 @@
 
 - 优先执行 `beforeScriptResultList` 注入 `script`，如果存在的话
 - 然后依次执行 `mount`、`domContentLoadedTrigger`
-- 执行 `beforeScriptResultList` 注入 `script`，如果存在的话
+- 执行 `afterScriptResultList` 注入 `script`，如果存在的话
 - 执行 `domLoadedTrigger`
 - 执行返回的 `Promise` 对象中的同步方法，将最后的 `resolve` 插入队列
 
