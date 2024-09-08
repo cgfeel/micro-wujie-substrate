@@ -1189,9 +1189,9 @@
 
 关闭 `fiber` 模式，第 1 个微任务或宏任务：
 
-- `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
-- 同步代码存在，第 1 个队列是微任务，否则继续往下看
-- `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
+- `beforeScriptResultList` 存在外联 `script`，第 1 个宏任务由 `onload` 发起
+- 同步代码存在，第 1 个微任务由 `Promise` 发起，否则继续往下看
+- `afterScriptResultList` 存在外联 `script`，第 1 个宏任务由 `onload` 发起
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
 > 顺序从上至下有 1 条满足后面的就不用再看
