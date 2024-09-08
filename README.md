@@ -1386,7 +1386,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
 
-一道思考题：子应用中静态 `script` 是怎么注入到沙箱 `iframe`
+一道思考题：应用中的 `script` 是怎么注入到沙箱 `iframe`
 
 1. 通过 `importHTML` 提取应用资源 [[查看](#importhtml-加载资源)]
 2. 通过 `processTpl` 提取资源中的样式和 `script`，并替换成注释 [[查看](#processtpl-提取资源)]
