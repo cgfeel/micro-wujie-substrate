@@ -1211,7 +1211,7 @@
 - 队列中无论是 `appendChild` 还是 `dispatchEvent` 都是同步操作
 - 只有通过 `src` 加载的 `script` 会通过宏任务 `onload` 回调执行 `execQueue.shift()()`
 
-> 如果 `start` 在返回 `Promise` 之前，队列中只有同步方法会存在问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
+> `start` 在返回 `Promise` 之前，队列中只有同步方法会存在问题，见：`start` 启动应用的 `bug` [[查看](#4-start-启动应用的-bug)]
 
 为什么关注 `asyncScriptResultList` 执行顺序：
 
