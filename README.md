@@ -1198,7 +1198,7 @@
 
 在 `fiber` 关闭的情况下会优先执行同步任务：
 
-- 会优先执行 `beforeScriptResultList` 注入 `script`，如果存在的话
+- 优先执行 `beforeScriptResultList` 注入 `script`，如果存在的话
 - 然后依次执行 `mount`、`domContentLoadedTrigger`
 - 执行 `beforeScriptResultList` 注入 `script`，如果存在的话
 - 执行 `domLoadedTrigger`
