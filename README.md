@@ -1196,13 +1196,20 @@
 
 > 顺序从上至下有 1 条满足后面的就不用再看
 
-在 `fiber` 关闭的情况下会优先执行同步任务：
+在 `fiber` 关闭的情况下，会优先执行当前宏任务中的同步任务
 
-- 优先执行 `beforeScriptResultList` 注入 `script`，如果存在的话
-- 然后依次执行 `mount`、`domContentLoadedTrigger`
-- 执行 `afterScriptResultList` 注入 `script`，如果存在的话
-- 执行 `domLoadedTrigger`
-- 执行返回的 `Promise` 对象中的同步方法，将最后的 `resolve` 插入队列
+- 决定队列：`beforeScriptResultList`、`afterScriptResultList`
+- 在第 1 个注入沙箱的外联 `script` 之前全部都同步执行
+- 之后每注入一个外联 `script` 后面的队列就放放入下个宏任务执行
+
+虽然同步代码会优先 `onload` 执行微任务，但是插入内联 `script` 是同步任务，会优先执行
+
+> 然后在执行下个宏任务前按照：关闭 `fiber` 模式，执行第 1 微任务或宏任务
+
+如果上述两个队列不存在会依次执行：
+
+- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`
+- 返回的 `Promise` 对象同步方法中插入 `resolve`
 
 > 以上都结束之后，才开始按照上述：关闭 `fiber` 模式，第 1 微任务或宏任务
 
