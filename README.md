@@ -1179,20 +1179,32 @@
 
 > 因为异步代码属于微任务，上下文必然会优先执行
 
-`fiber` 模式，第 1 任务：
+`fiber` 模式，第 1 微任务或宏任务：
 
 - `beforeScriptResultList` 存在的话，第 1 个队列是宏任务，否则继续往下看
 - 同步代码存在的话，第 1 个队列是微任务，否则继续往下看
 - 以上都不存在的话会通过 `mount` 发起第一个宏任务
 
-非 `fiber` 模式，第 1 个任务：
+> `fiber` 模式下队列是执行完 1 个，提取下一个再执行
 
-- `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
-- 同步代码存在的话，第 1 个队列是微任务
-- `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务
+关闭 `fiber` 模式，第 1 个微任务或宏任务：
+
+- 同步代码存在，第 1 个队列是微任务，这是除异步代码外唯一的微任务集合，优先于宏任务执行，否则继续往下看
+- `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
+- `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
-> 执行顺序从上至下，有 1 条满足后面的就不用再看
+> 顺序从上至下有 1 条满足后面的就不用再看
+
+在 `fiber` 关闭的情况下会优先执行同步任务：
+
+- 会优先执行 `beforeScriptResultList` 注入 `script`，如果存在的话
+- 然后依次执行 `mount`、`domContentLoadedTrigger`
+- 执行 `beforeScriptResultList` 注入 `script`，如果存在的话
+- 执行 `domLoadedTrigger`
+- 执行返回的 `Promise` 对象中的同步方法，将最后的 `resolve` 插入队列
+
+> 以上都结束之后，才开始按照上述：关闭 `fiber` 模式，第 1 微任务或宏任务
 
 为什么外联 `script` 是宏任务：
 
