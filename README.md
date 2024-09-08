@@ -1189,7 +1189,7 @@
 
 关闭 `fiber` 模式，第 1 个微任务或宏任务：
 
-- 同步代码存在，第 1 个队列是微任务，这是除异步代码外唯一的微任务集合，优先于宏任务执行，否则继续往下看
+- 同步代码存在，第 1 个队列是微任务，这是除异步代码外唯一的微任务集合，优先于宏任务执行
 - `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
 - `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
