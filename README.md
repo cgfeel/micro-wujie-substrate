@@ -932,6 +932,8 @@
 - 通过 `renderTemplateToShadowRoot` 将 `template` 渲染到 `shadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 - 包括 `umd` 模式和重建模式，注入 `template` 之前 `shadowRoot` 仅仅是个空壳
 
+> `alive` 初次加载的时候也需要注入资源到 `shadowRoot`
+
 注入资源后会发生什么：
 
 - `startApp` 添加的 `loading` 因为资源注入而撑开挂载节点，变得可见 [[查看](#启动应用时添加删除-loading)]
