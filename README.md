@@ -1189,31 +1189,16 @@
 
 关闭 `fiber` 模式，第 1 个微任务或宏任务：
 
-- 同步代码存在，第 1 个队列是微任务，这是除异步代码外唯一的微任务集合，优先于宏任务执行
 - `beforeScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
+- 同步代码存在，第 1 个队列是微任务，否则继续往下看
 - `afterScriptResultList` 存在外联 `script`，第 1 个队列是宏任务，否则继续往下看
 - 在最后返回的 `Promise` 对象 `resolve` 完成任务前执行 `asyncScriptResultList`
 
 > 顺序从上至下有 1 条满足后面的就不用再看
 
-在 `fiber` 关闭的情况下，会优先执行当前宏任务中的同步任务
+虽然关闭了 `fiber`，但队列中的任务依旧是按照顺序，执行完 1 个，提取下个队列再执行
 
-- 决定队列：`beforeScriptResultList`、`afterScriptResultList`
-- 在第 1 个注入沙箱的外联 `script` 之前全部都同步执行
-- 之后每注入一个外联 `script` 后面的队列就放放入下个宏任务执行
-
-虽然同步代码会优先发起微任务：
-
-- 只要没有外联 `script` 通过 `onload` 提取发起下个队列，队列中的任务都是同步执行，优先于微任务
-
-> 然后在执行下个宏任务前按照：关闭 `fiber` 模式，执行第 1 微任务或宏任务
-
-如果上述两个队列不存在会依次执行：
-
-- `mount`、`domContentLoadedTrigger`、`domLoadedTrigger`
-- 返回的 `Promise` 对象同步方法中插入 `resolve`
-
-> 以上都结束之后，才开始按照上述：关闭 `fiber` 模式，第 1 微任务或宏任务
+- 队列的方法是同步的，虽然方法内部可能会发起微任务
 
 为什么外联 `script` 是宏任务：
 
