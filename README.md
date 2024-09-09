@@ -1443,7 +1443,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 7. 动态加载 `script chunk`
 
-单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但根据打包工具不同，入口 `script` 稍微不同。
+单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但根据打包工具不同，入口 `script` 注入方式稍有不同。
 
 | 打包工具           | 入口 `script`                | 注入方式                     |
 | ------------------ | ---------------------------- | ---------------------------- |
