@@ -1443,7 +1443,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 7. 动态加载 `script chunk`
 
-单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但会根据大包工具入口 `script` 稍微不同。
+单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但根据打包工具不同，入口 `script` 稍微不同。
 
 | 打包工具           | 入口 `script`                | 注入方式                     |
 | ------------------ | ---------------------------- | ---------------------------- |
@@ -1451,7 +1451,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `react-create-app` | 带有 `defer` 的外联 `script` | 内联 `script` 并忽略 `defer` |
 | `umijs`            | 外联 `script`                | 内联 `script`                |
 
-无论是哪种方式注入 `script`，都会作为同步代码，但根据加载模式的不同，入口渲染会有差异
+无论是哪种类型 `script`，都会作为同步代码注入沙箱，但根据应用不同的模式，执行阶段会不同
 
 - `umd` 模式：由基座主动触发 `mount` [[查看](#-mount-挂载应用)]
 - 其他模式：同步代码注入沙箱立即执行
