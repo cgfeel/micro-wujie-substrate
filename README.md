@@ -1231,9 +1231,7 @@
 
 > 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
 
-#### 4. 动态加载 `script chunk`
-
-#### 5. `start` 启动应用的 `bug`
+#### 4. `start` 启动应用的 `bug`
 
 问题 1：
 
@@ -1442,6 +1440,21 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 通过在返回的 `Promise` 函数中添加队列最后要执行的任务
 - `resolve` 释放返回的微任务，用于通知 `start` 完毕
+
+#### 7. 动态加载 `script chunk`
+
+单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但会根据大包工具入口 `script` 稍微不同。
+
+| 打包工具           | 入口 `script`                | 注入方式                     |
+| ------------------ | ---------------------------- | ---------------------------- |
+| `vite`             | 外联 `module`                | 外联 `module`                |
+| `react-create-app` | 带有 `defer` 的外联 `script` | 内联 `script` 并忽略 `defer` |
+| `umijs`            | 外联 `script`                | 内联 `script`                |
+
+无论是哪种方式注入 `script`，都会作为同步代码，但根据加载模式的不同，入口渲染会有差异
+
+- `umd` 模式：由基座主动触发 `mount` [[查看](#-mount-挂载应用)]
+- 其他模式：同步代码注入沙箱立即执行
 
 #### 📝 `mount` 挂载应用
 
