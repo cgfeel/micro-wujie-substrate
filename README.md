@@ -1441,9 +1441,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 通过在返回的 `Promise` 函数中添加队列最后要执行的任务
 - `resolve` 释放返回的微任务，用于通知 `start` 完毕
 
-#### 7. 动态加载 `script chunk`
+#### 7. 动态加载样式和 `script`
 
-单例应用会将静态 `script` 作为入口 `script`，然后动态加载 `script chunk`，但根据打包工具不同，入口 `script` 注入方式稍有不同。
+单例应用会将静态 `script` 作为入口 `script`，然后动态加载样式和 `script`，但根据打包工具不同，入口 `script` 注入方式也不同。
 
 | 打包工具           | 入口 `script`                | 注入方式                     |
 | ------------------ | ---------------------------- | ---------------------------- |
@@ -1451,10 +1451,29 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `react-create-app` | 带有 `defer` 的外联 `script` | 内联 `script` 并忽略 `defer` |
 | `umijs`            | 外联 `script`                | 内联 `script`                |
 
-无论是哪种类型 `script`，都会作为同步代码注入沙箱，但根据应用不同的模式，执行阶段会不同
+无论是哪种类型 `script`，都会作为同步代码注入沙箱：
 
-- `umd` 模式：由基座主动触发 `mount` [[查看](#-mount-挂载应用)]
-- 其他模式：同步代码注入沙箱立即执行
+- 每个同步代码队列都是一个微任务
+- `fiber` 开启状态下每个微任务都会发起宏任务 `requestIdleCallback`
+
+无论宏任务还是微任务，下个队列一定是在当前任务结束后发起，根据情况划分：
+
+| 分类          | `fiber`  | 加载方式                            | 注入方式                     |
+| ------------- | -------- | ----------------------------------- | ---------------------------- |
+| 内联样式      | --       | 无需载                              | 上下文同步                   |
+| 外联样式      | --       | `getExternalStyleSheets` 发起微任务 | 上下文同步                   |
+| 外联 `script` | 默认配置 | `getExternalScripts` 发起微任务     | `requestIdleCallback` 宏任务 |
+| 外联 `script` | 手动关闭 | `getExternalScripts` 发起微任务     | 上下文同步                   |
+| 内联 `script` | 默认配置 | 无需载                              | `requestIdleCallback` 宏任务 |
+| 内联 `script` | 手动关闭 | 无需载                              | 上下文同步                   |
+
+> 没有微任务的情况在当前任务上下文执行
+
+能够明确知道动态加载执行的顺序：
+
+- 内联样式：当前任务上下文同步执行
+- 内联 `script` - 关闭 `fiber`：当前任务上下文同步执行
+- 外联样式通过 `ignore` 作为浏览器加载：会在下一个微任务或宏任务之前完成执行
 
 #### 📝 `mount` 挂载应用
 
