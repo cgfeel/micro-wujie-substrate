@@ -1064,6 +1064,8 @@
 
 - `asyncScriptResultList`：子应用中带有 `async` 的 `script`
 
+> 还有一种特殊情况，动态加载 `chunk script`
+
 总共 8 处，然后根据用途还可以细分如下
 
 **必须会添加到队列有 4 处：**
@@ -1228,6 +1230,8 @@
 | 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行          | 调用 `injectFiberTask` 时提供 `fiberTasks` 为 `null`        |
 
 > 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
+
+#### 4. 动态加载 `script chunk`
 
 #### 4. `start` 启动应用的 `bug`
 
