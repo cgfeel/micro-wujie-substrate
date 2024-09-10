@@ -1467,7 +1467,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 内联 `script` | 默认配置 | 无需载                              | `requestIdleCallback` 宏任务 |
 | 内联 `script` | 手动关闭 | 无需载                              | 上下文同步                   |
 
-> 没有微任务的情况在当前任务上下文执行
+> 没有微任务的情况在当前任务上下文执行.
 
 能够明确知道动态加载执行的顺序：
 
