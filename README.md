@@ -1100,7 +1100,7 @@
 - 共同点：集合中的每一个方法都返回 `Promise`、需要在微任务中执行 `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 不同点：`syncScriptResultList` 需要等待队列按顺序提取执行，`asyncScriptResultList` 遍历同时立即发起微任务
 
-**插入队列 `execQueue` 的动作全部都是同步任务：**
+**插入队列 `execQueue` 的方法是同步任务：**
 
 - 在阅读执行队列前需要说明的是，所有队列都是在上下文中 `push`
 - 即便是最后返回的 `Promise`，也是在 `Promise` 方法中同步插入执行的队列
