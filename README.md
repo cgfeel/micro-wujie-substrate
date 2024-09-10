@@ -1222,13 +1222,13 @@
 
 在 `micro-app` 有一个 `injectFiberTask`，见 `micro-app` 源码分析中注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]，对比如下：
 
-| 对比项   | `wujie`                                                      | `micro-app`                                                 |
-| -------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| 添加队列 | 根据不同类型，手动添加每一组队列                             | `injectFiberTask`                                           |
-| 集合对象 | `execQueue`                                                  | `fiberLinkTasks`                                            |
-| 添加方式 | `push`                                                       | `push`                                                      |
-| 执行方式 | `this.execQueue.shift()?.()`，在当前队列提取下一个队列并执行 | `serialExecFiberTasks`，通过 `array.redus` 拍平队列依次执行 |
-| 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行          | 调用 `injectFiberTask` 时提供 `fiberTasks` 为 `null`        |
+| 对比项   | `wujie`                                                      | `micro-app`                                                  |
+| -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 添加队列 | 根据不同类型，手动添加每一组队列                             | `injectFiberTask`                                            |
+| 集合对象 | `execQueue`                                                  | `fiberLinkTasks`                                             |
+| 添加方式 | `push`                                                       | `push`                                                       |
+| 执行方式 | `this.execQueue.shift()?.()`，在当前队列提取下一个队列并执行 | `serialExecFiberTasks`，通过 `array.reduce` 拍平队列依次执行 |
+| 立即执行 | `asyncScriptResultList`，遍历集合添加到微任务中执行          | 调用 `injectFiberTask` 时提供 `fiberTasks` 为 `null`         |
 
 > 比较而言 `micro-app` 的 `injectFiberTask`，更简洁、抽象，灵活度也更高
 
