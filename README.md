@@ -1387,8 +1387,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 3. 通过 `processCssLoader` 加载样式并还原到入口资源 [[查看](#processcssloader处理-css-loader)]
 4. 通过 `active` 将处理的入口资源注入容器 [[查看](#-active-激活应用)]
 5. 通过 `patchRenderEffect` 为容器打补丁 [[查看](#patchrendereffect-为容器打补丁)]
-6. 通过 `start` 提取 `script` 加入队列并依次提取，其中包括应用入口 `script` [[查看](#-start-启动应用)]
-7. 通过 `insertScriptToIframe` 将提取的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+6. 通过 `start` 提取 `script` 加入队列，其中包括应用入口 `script` [[查看](#-start-启动应用)]
+7. 通过 `insertScriptToIframe` 将队列中的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 8. 由于已打补丁，通过 `rewriteAppendOrInsertChild` 处理动态添加的 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 9. 再次执行 `insertScriptToIframe` 将动态添加的以及后续队列的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
