@@ -1261,8 +1261,8 @@
 
 排除范围：
 
-- `processTpl` 提取带有 `async` 的外联 `script`，将作为异步代码注入沙箱，不影响队列
-- `rewriteAppendOrInsertChild` 动态添加的 `script` 不存在 `async` 属性
+- `processTpl` 提取带有 `async` 的外联 `script`，将作为异步代码注入沙箱，不影响队列 [[查看](#processtpl-提取资源)]
+- `rewriteAppendOrInsertChild` 动态添加的 `script` 不存在 `async` 属性 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 `preloadApp` 出现问题的场景：
 
