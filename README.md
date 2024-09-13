@@ -1376,7 +1376,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 通过 `importHTML` 包装方法 `getExternalScripts` 提取要注入沙箱的静态 `script` 集合 [[查看](#getexternalscripts加载-script-资源)]
 
 - `getExternalScripts` 返回的 `script` 集合中，属性 `contentPromise` 是一个微任务
-- 这也就是为什么同步代码和异步代码都是通过微任务将 `script` 添加到 `iframe` 中执行的原因
+- 这也就是为什么同步代码和异步代码都是通过微任务将 `script` 添加到沙箱中执行的原因
 
 > 为了保证其顺序，也因此不管是微任务也好，还是宏任务也好，都要求在上一个队列执行完后提取执行下一个队列
 
