@@ -1304,8 +1304,8 @@
 
 设计初衷：
 
-- 因为异步代码 `asyncScriptResultList` 它本身和 `execQueue` 队列集合是没有关系的
-- 但异步代码也是执行 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe`
+- 因为异步代码 `asyncScriptResultList` 和 `execQueue` 队列集合是没有关系
+- 但异步代码也是通过 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe`
 - 如果异步代码也去调用 `execQueue.shift()()`，可能会造成队列执行顺序错乱
 
 复现问题 1：没有 `script`
