@@ -1313,14 +1313,14 @@
 - 点开 `static` 应用，打开调试面板，刷新页面什么都没返回
 - 点开 `react` 应用，返回 `destroy` 方法
 
-复现问题 1：存在 `async` 的 `script`
+复现问题 1：存在 `async` 的 `script` 可以正常注入
 
-- 原理和问题 1 一样，子应用中添加路由 `/async`，在页面中添加一段 `async` 属性的 `script` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/async/index.html)]
+- 子应用中添加路由 `/async`，在页面中添加一段 `async` 属性的 `script` [[查看](https://github.com/cgfeel/micro-wujie-app-static/blob/main/async/index.html)]
 - 在基座中添加相应的组件 `AsyncPage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/AsyncPage.tsx)]
 
 复现结果：
 
-- 和问题 1 一样，子应用中 `script` 的 `async` 会通过异步集合 `asyncScriptResultList` 添加到沙箱 `iframe` 中
+- 子应用中 `script` 的 `async` 会通过异步集合 `asyncScriptResultList` 添加到沙箱 `iframe` 中
 - `asyncScriptResultList` 不会影响 `execQueue`
 
 修复问题 1：
