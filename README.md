@@ -1326,7 +1326,7 @@
 修复问题 1：
 
 - 源码 334 行，第 1 个执行队列 `this.execQueue.shift()();` 前主动添加一个微任务 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L334)]
-- 这样确保最后一个队列提取一定是在微任务下执行，而返回的 `Promise` 函数内部属于上下文
+- 这样确保队列任务中最少包含 1 个微任务，而返回的 `Promise` 内部函数属于上下文
 - 这样在执行额外添加的微任务前，返回的 `Promise` 已经将最后的队列插入 `execQueue`
 - 这样确保了队列最后能够顺利 `resolve`
 
