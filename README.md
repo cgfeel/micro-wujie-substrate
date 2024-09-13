@@ -1250,6 +1250,21 @@
 - 手动关闭 `fiber`
 - 静态应用没有 `script`
 
+`preloadApp` 出现问题的场景：
+
+- 预加载本身不会导致问题，因为预加载默认不会 `start`，即便配置 `exec` 启动应用 `start`，问题也会发生在 `startApp` 切换应用时
+
+`startApp` 启动应用 `start` 问题的场景：
+
+| 触发条件     | 包含模式         | 问题                                                |
+| ------------ | ---------------- | --------------------------------------------------- |
+| 预加载后启动 | `alive` 模式应用 | 生命周期 `activated` 可能会不执行，`destroy` 不返回 |
+| 预执行后启动 | 所有模式         | 卡在 `await sandbox.preload` 暂停不再执行           |
+| 初次启动     | `umd` 和重建模式 | `destroy` 不返回                                    |
+| 切换应用     | 重建模式         | `destroy` 不返回                                    |
+
+> 关于预加载和预执行，见：通过 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
+
 问题 2：
 
 - 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`
@@ -1263,20 +1278,6 @@
 
 - `processTpl` 提取带有 `async` 的外联 `script`，将作为异步代码注入沙箱，不影响队列 [[查看](#processtpl-提取资源)]
 - `rewriteAppendOrInsertChild` 动态添加的 `script` 不存在 `async` 属性 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-
-`preloadApp` 出现问题的场景：
-
-- 预加载本身不会导致问题，因为预加载默认不会 `start`，即便配置 `exec` 启动应用 `start`，问题也会发生在 `startApp` 切换应用时
-
-`startApp` 启动应用 `start` 问题的场景：
-
-| 触发条件             | 包含模式                                           | 问题 1                                              | 问题 2                             |
-| -------------------- | -------------------------------------------------- | --------------------------------------------------- | ---------------------------------- |
-| `alive` 预加载后启动 | 已激活还未启动的 `alive` 模式应用                  | 生命周期 `activated` 可能会不执行，`destroy` 不返回 | 流程中断导致后续 `script` 加载失败 |
-| 非 `alive` 应用启动  | `umd` 模式预加载后首次启动，重建模式每次启动和切换 | `destroy` 不返回                                    | 流程中断导致后续 `script` 加载失败 |
-| `exec` 预执行后启动  | 所有模式                                           | 卡在 `await sandbox.preload` 暂停不再执行           | 流程中断导致后续 `script` 加载失败 |
-
-> 在触发条件中有两个概念：预加载和预执行，见：通过 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
 
 非 `fiber` 出现问题的模式：
 
