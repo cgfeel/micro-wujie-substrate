@@ -1267,8 +1267,8 @@
 
 `fiber` 下能正常执行：
 
-- 除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
-- `start` 返回的 `Promise` 内部函数属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
+- 除了最后返回的 `Promise`，所有队列都通过宏任务 `requestIdleCallback` 中执行
+- `start` 返回的 `Promise` 内部函数属于上下文，优先于宏任务添加到队列
 
 > `fiber` 只能提供手动配置关闭，默认为 `true`
 
