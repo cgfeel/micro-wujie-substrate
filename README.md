@@ -1268,7 +1268,7 @@
 问题 2：
 
 - 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`
-- 将导致无法提取执行下一个队列，造成 `execQueue` 队列面的 `script` 将不能插入沙箱 `iframe`
+- 将导致无法提取执行下一个队列，造成 `execQueue` 队列后面的 `script` 将不能插入沙箱
 
 原因：
 
