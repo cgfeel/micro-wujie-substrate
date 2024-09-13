@@ -1336,10 +1336,10 @@ this.execQueue.push(() => Promise.resolve().then(
 this.execQueue.shift()();
 ```
 
-复现问题 2：`jsBeforeLoaders` 打断应用加载
+复现问题 2：手动注入 `script` 打断 `execQueue` 队列
 
 - 复现前确保 `react` 应用正常，复制一份 `ReactPage.tsx` 作为 `BeforePage.tsx` [[查看](https://github.com/cgfeel/micro-wujie-substrate/blob/main/src/pages/BeforePage.tsx)]
-- 添加 `jsBeforeLoaders`：要求带有 `src` 和 `async`
+- 配置手动注入 `script`：要求带有 `src` 和 `async`
 
 复现结果：
 
