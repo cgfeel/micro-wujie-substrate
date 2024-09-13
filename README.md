@@ -1267,8 +1267,10 @@
 
 `fiber` 下能正常执行：
 
-- 没有手动关闭 `fiber` 除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
-- 而返回的 `Promise` 内部函数属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
+- 除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
+- `start` 返回的 `Promise` 内部函数属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
+
+> `fiber` 只能提供手动配置关闭，默认为 `true`
 
 静态提取和动态注入的 `script` 能正常执行：
 
