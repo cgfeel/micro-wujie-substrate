@@ -1409,7 +1409,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `umd` 模式初次启动会重复调用 `removeLoading`：
 
 - 第 1 遍：在 `start` 执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
-- 第 2 遍：将应用入口 `script` 注入沙箱后，发起 `mount` 挂在 [[查看](#-mount-挂载应用)]
+- 第 2 遍：将应用入口 `script` 注入沙箱后，发起 `mount` 挂载应用 [[查看](#-mount-挂载应用)]
 
 > 重复删除 `loading` 只能导致重复执行，不会出现使用上的问题
 
