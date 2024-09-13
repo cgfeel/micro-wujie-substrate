@@ -1248,8 +1248,8 @@
 产生问题的前提必须以下 3 个条件全满足：
 
 - 手动关闭 `fiber`
-- 没有外联的 `module`
-- 没有手动配置 `ignore`，浏览器加载 `script`
+- 静态应用没有 `script`，或全部采用 `async` 加载的 `script`
+- 提取的 `script` 没有动态添加外联 `script`
 
 问题 2：
 
