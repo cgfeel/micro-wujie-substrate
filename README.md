@@ -1302,6 +1302,12 @@
 
 - 执行顺序见：队列执行顺序 [[查看](#3-队列执行顺序)]
 
+设计初衷：
+
+- 因为异步代码 `asyncScriptResultList` 它本身和 `execQueue` 队列集合是没有关系的
+- 但异步代码也是执行 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe`
+- 如果异步代码也去调用 `execQueue.shift()()`，可能会造成队列执行顺序错乱
+
 复现问题 1：没有 `script`
 
 - `static-app`：创建一个没有 `script`，没有 `style` 的静态子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
@@ -1343,13 +1349,7 @@ this.execQueue.shift()();
 
 复现结果：
 
-- `ReactPage.tsx` 正常，`BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
-
-问题 2 的设计初衷：
-
-- 因为异步代码 `asyncScriptResultList` 它本身和 `execQueue` 队列集合是没有关系的
-- 但异步代码也是执行 `insertScriptToIframe` 将 `script` 插入沙箱 `iframe` 中
-- 如果异步代码也去调用 `execQueue.shift()()`，那么就会造成队列执行顺序错乱了
+- `BeforePage.tsx` 应用加载过程中被 `jsBeforeLoaders` 打断不会 `mount` 应用
 
 修复问题 2：
 
