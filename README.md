@@ -1360,9 +1360,7 @@ beforeScriptResultList.forEach(({ async, ...beforeScriptResult }) => {})
 afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 ```
 
-因为只有通过配置手动添加 `async` 的 `script` 才会出现这个问题
-
-> 由于目前还在研究阶段，没有对官方提 PR。
+由于目前还在研究阶段，没有对官方提 `PR`。
 
 **关于 `bug` 的总结：**
 
