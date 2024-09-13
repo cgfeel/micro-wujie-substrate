@@ -1253,15 +1253,16 @@
 问题 2：
 
 - 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`
-- 将导致无法提取执行下一个队列，造成流程中断后面的 `script` 将不能插入沙箱 `iframe`
+- 将导致无法提取执行下一个队列，造成 `execQueue` 队列面的 `script` 将不能插入沙箱 `iframe`
 
 原因：
 
 - 沙箱注入外联 `script` 后，会根据 `async` 去判断要不要执行下一条队列
 
-额外产生的影响：
+排除范围：
 
-- 队列暂停，等待执行 `start` 后续流程将会在所在的 `async` 方法内中断
+- `processTpl` 提取带有 `async` 的外联 `script`，将作为异步代码注入沙箱，不影响队列
+- `rewriteAppendOrInsertChild` 动态添加的 `script` 不存在 `async` 属性
 
 `preloadApp` 出现问题的场景：
 
