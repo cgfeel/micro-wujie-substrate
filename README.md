@@ -1234,7 +1234,7 @@
 
 #### 4. `start` 启动应用的 `bug`
 
-问题 1：
+**问题 1：**
 
 - 如果 `execQueue` 除了最后返回的 `Promise` 对象之外，没有微任务也没有宏任务
 - 那么返回的 `Promise` 内部方法中插入 `execQueue` 末尾的队列永远无法执行
@@ -1265,7 +1265,12 @@
 
 > 关于预加载和预执行，见：`preloadApp` [[查看](#preloadapp-预加载流程)]
 
-问题 2：
+`fiber` 下能正常执行：
+
+- 没有手动关闭 `fiber` 除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
+- 而返回的 `Promise` 内部函数属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
+
+**问题 2：**
 
 - 如果 `beforeScriptResultList` 或 `afterScriptResultList` 存在 `async` 属性的 `script`
 - 将导致无法提取执行下一个队列，造成 `execQueue` 队列后面的 `script` 将不能插入沙箱
@@ -1279,25 +1284,9 @@
 - `processTpl` 提取带有 `async` 的外联 `script`，将作为异步代码注入沙箱，不影响队列 [[查看](#processtpl-提取资源)]
 - `rewriteAppendOrInsertChild` 动态添加的 `script` 不存在 `async` 属性 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-非 `fiber` 出现问题的模式：
+问题 2 的场景包含了问题 1，此外因打断 `nextScriptElement` 从而导致后续队列无法执：
 
-| 模式                                          | 原因                                                               |
-| --------------------------------------------- | ------------------------------------------------------------------ |
-| 模式 ①：应用内不存在 `script`                 | 返回的 `Promise` 函数中还没有添加 `resolve` 队列时，队列已停止调用 |
-| 模式 ②：应用内只有内联 `script`               | 和模式 ① 一样                                                      |
-| 模式 ③：应用内所有 `script` 带有 `async` 属性 | 和模式 ① 一样                                                      |
-
-手动注入带有 `async` 属性的 `script`：
-
-| 模式                             | 原因                                                                                                          |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 模式 ④：`beforeScriptResultList` | 不会执行 `nextScriptElement` 从而导致后续队列无法执行                                                         |
-| 模式 ⑤：`afterScriptResultList`  | 和模式 ③ 一样，区别在于只终止了 `domLoadedTrigger`、返回的 `Promise` 对象，以及 `async` 中等待 `start` 的方法 |
-
-`fiber` 下在模式 ①、②、③ 都是正常执行：
-
-- 没有特殊声明默认为 `fiber`，除了最后返回的 `Promise`，所有队列都包裹在 `requestIdleCallback`
-- 而返回的 `Promise` 函数内部在当前任务属于上下文，优先于宏任务 `requestIdleCallback` 添加到队列
+- 执行顺序见：队列执行顺序 [[查看](#3-队列执行顺序)]
 
 存在子应用同步代码会正常执行模式 ①、②、③：
 
