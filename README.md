@@ -1406,10 +1406,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 没有提供 `__WUJIE_UNMOUNT` 的所有模式，因为 `start` 不能像 `active` 那样判断当前应用是初次加载还是切换应用
 
-`umd` 模式 `start` 时会重复调用 `removeLoading`：
+`umd` 模式初次启动会重复调用 `removeLoading`：
 
-- 第 1 遍：在执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
-- 第 2 遍：将应用入口 `script` 注入沙箱后，`mount` 时沙箱 `window` 已绑定 `__WUJIE_MOUNT`
+- 第 1 遍：在 `start` 执行队列前，`__WUJIE_UNMOUNT` 还没有挂载
+- 第 2 遍：将应用入口 `script` 注入沙箱后，发起 `mount` 挂在 [[查看](#-mount-挂载应用)]
 
 > 重复删除 `loading` 只能导致重复执行，不会出现使用上的问题
 
