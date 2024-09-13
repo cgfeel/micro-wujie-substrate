@@ -1390,7 +1390,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 6. 通过 `start` 提取 `script` 加入队列，其中包括应用入口 `script` [[查看](#-start-启动应用)]
 7. 通过 `insertScriptToIframe` 将队列中的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 8. 由于已打补丁，通过 `rewriteAppendOrInsertChild` 处理动态添加的 `script` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
-9. 再次执行 `insertScriptToIframe` 将动态添加的以及后续队列的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
+9. 再次执行 `insertScriptToIframe` 将动态添加的 `script` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 > `React` 入口 `script` 将作为同步代码在微任务中注入沙箱，然后通过微任务动态加载 `chunk script`
 
