@@ -1302,11 +1302,6 @@
 
 - 执行顺序见：队列执行顺序 [[查看](#3-队列执行顺序)]
 
-非 `fiber` 模式手动插入带有 `src` 属性且 `content` 为空的 `script`，不存在属性 `async` 可正常执行：
-
-- 因为 `window.__WUJIE.execQueue.shift()()` 是通过 `script` 的 `onload` 执行
-- `onload` 是一个宏任务，会在当前宏任务执行完毕之后再执行，没有 `async` 就不会中断流程
-
 复现问题 1：没有 `script`
 
 - `static-app`：创建一个没有 `script`，没有 `style` 的静态子应用 [[查看](https://github.com/cgfeel/micro-wujie-app-static)]
