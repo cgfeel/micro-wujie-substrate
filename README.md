@@ -1489,13 +1489,21 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 不执行挂载的情况：
 
-- `alive` 模式：只有 `execFlag` 还未激活时才会通过 `start` 执行 `mount`
-- `umd` 模式：`mountFlag` 已经挂载的情况
+| 模式    | 判断条件    | 说明                                        |
+| ------- | ----------- | ------------------------------------------- |
+| `alive` | `execFlag`  | 只有还未激活时才会通过 `start` 执行 `mount` |
+| `umd`   | `mountFlag` | 已挂载后将不再重复操作                      |
 
-除了重建模式外，切换应用永远不会触发 `mount`：
+> 只有初次加载才会调用 `mount`，而重建模式每次都是初次加载
 
-- 挂载应用只能通过 `start` 启动应用，非重建模式下切换应用不执行 `start` [[查看](#-start-启动应用)]
-- 但是重建模式下 `mount` 挂载应用，除了发起下一个队列不会执行其他操作
+无论什么模式挂载应用是为了提取执行下一个队列 `execQueue`，除此之外：
+
+- `alive` 模式：通过沙箱 `window` 调用生命周期 `activated`
+- `umd` 模式：发起 `__WUJIE_MOUNT`，调用生命周期，设置已挂载
+
+> `activated` 会重复调用，见：预加载中的 `bug` [[查看](#6预加载中的-bug)]
+
+因此除了 `execQueue` 提取执行下个队列外，`mount` 只适用于 `umd` 模式初次加载应用
 
 #### 1. `umd` 方式启动
 
