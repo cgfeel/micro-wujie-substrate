@@ -1506,6 +1506,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 因此除了 `execQueue` 提取执行下个队列外，`mount` 只适用于 `umd` 模式初次加载应用
 
 - `umd` 切换应用会在 `startApp` 发起 `__WUJIE_MOUNT`，而不需 `mount` [[查看](#22-umd-模式切换应用)]
+- `alive` 切换应用只需要切换容器挂载点，不需要重新挂载
 
 #### 1. `umd` 方式启动
 
