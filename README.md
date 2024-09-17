@@ -1535,9 +1535,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 执行方式和 `fiber` 模式是一样的，因为他们是上下文关系
 
-非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 导致的 `bug`：
+非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 将导致无法执行，不展示应用：
 
-- `__WUJIE_MOUNT` 无法执行，不展示应用
 - 因为 `mount` 应用时，异步的微任务还没有绑定 `__WUJIE_MOUNT` 到沙箱 `windnow` 上
 - 再次切换应用会恢复正常
 
