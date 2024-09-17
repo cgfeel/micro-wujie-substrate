@@ -1510,7 +1510,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 1. `umd` 方式启动
 
-- 从沙箱 `window` 中检测到 `__WUJIE_MOUNT` 才能执行当前流程
+从沙箱 `window` 中检测到 `__WUJIE_MOUNT` 才能执行当前流程
+
+- 应用 `start` 时，由同步代码注入沙箱挂载 `__WUJIE_MOUNT` 方法 [[查看](#-start-启动应用)]
+
+流程：
+
 - 再次关闭挂载节点 `loading` 状态，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 - 使用沙箱 `window` 调用生命周期 `beforeMount`
 - 调用子应用的 `__WUJIE_MOUNT` 去渲染应用
