@@ -1514,6 +1514,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 应用 `start` 时，由同步代码注入沙箱挂载 `__WUJIE_MOUNT` 方法 [[查看](#-start-启动应用)]
 
+> `mount` 方法会在同步代码之后在队列中调用
+
 流程：
 
 - 再次关闭挂载节点 `loading` 状态，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
