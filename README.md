@@ -1542,9 +1542,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 可以参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
 
-解决办法见：`start` 启动应用的 `bug` - 问题 1 [[查看](#4-start-启动应用的-bug)]
+解决办法见：`start` 启动应用的 `bug` - `问题 1` [[查看](#4-start-启动应用的-bug)]
 
-> 从这点再次说明：请谨慎关闭 `fiber`
+- 生产过程中，请谨慎关闭 `fiber`
+- 如果没有必要的情况，请勿异步挂载 `__WUJIE_MOUNT` 和 `__WUJIE_UNMOUNT`
 
 #### 2. `alive` 模式
 
