@@ -1537,7 +1537,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 将根据入口 `script` 注入方式决定：
 
-- 外联 `script`：正常执行，因为 `mount` 将会通过 `onload` 宏任务发起
+- 外联 `script`：正常执行，因为发起渲染后，通过 `onload` 在下个宏任务中执行 `mount`
 - 内联 `script`：初次加载不执行，同步提取执行 `mount` 时，微任务中的 `__WUJIE_MOUNT` 还未绑定
 
 > 参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
