@@ -1528,7 +1528,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `fiber` 模式下 `__WUJIE_MOUNT` 都能正常执行：
 
-- 入口 `script` 注入沙箱后，无论异步还是同步绑定 `__WUJIE_MOUNT`，都会在 `mount` 前完成绑定
+- 入口 `script` 注入沙箱后，无论同步还是异步，都会在 `mount` 前绑定 `__WUJIE_MOUNT`
 - 因为 `fiber` 模式下 `mount` 包裹在宏任务 `requestIdleCallback` 中
 
 非 `fiber` 模式下，同步绑定 `__WUJIE_MOUNT` 正常执行：
