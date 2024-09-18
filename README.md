@@ -1554,9 +1554,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 解决办法：
 
 - 在 `processTpl` 提取入口文件后，追加一个空的 `script` [[查看](#processtpl-提取资源)]
-- 这样在入口 `script` 注入后，至少还有 1 个微任务确保异步发起 `__WUJIE_MOUNT` 先挂载
+- 这样在入口 `script` 注入后，至少还有 1 个微任务，确保异步发起 `__WUJIE_MOUNT` 先挂载
 
-> 由于备注中提到异步渲染，所以对于不同的绑定方式做了不同的说明
+> 由于在源码备注中提到异步渲染，所以对于不同的绑定方式做了不同的说明
 
 #### 2. `alive` 模式
 
