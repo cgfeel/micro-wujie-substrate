@@ -1526,9 +1526,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 删除 `loading` 存在重复执行的情况，见：队列前的准备 - 关闭加载状态 [[查看](#5-队列前的准备)]
 
-`fiber` 模式下异步绑定 `__WUJIE_MOUNT` 正常执行：
+`fiber` 模式下 `__WUJIE_MOUNT` 都能正常执行：
 
-- 注入 `script` 后，都会在 `mount` 前优先绑定 `__WUJIE_MOUNT` 到沙箱 `window`
+- 入口 `script` 注入沙箱后，无论异步还是同步绑定 `__WUJIE_MOUNT`，都会在 `mount` 前完成绑定
 - 因为 `fiber` 模式下 `mount` 包裹在宏任务 `requestIdleCallback` 中
 
 非 `fiber` 模式下，同步绑定 `__WUJIE_MOUNT` 正常执行：
@@ -1540,12 +1540,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 外联 `script`：正常执行，因为 `mount` 将会通过 `onload` 宏任务发起
 - 内联 `script`：初次加载不执行，同步提取执行 `mount` 时，微任务中的 `__WUJIE_MOUNT` 还未绑定
 
-> 可以参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
+> 参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
 
 解决办法见：`start` 启动应用的 `bug` - `问题 1` [[查看](#4-start-启动应用的-bug)]
 
 - 生产过程中，请谨慎关闭 `fiber`
 - 如果没有必要的情况，请勿异步挂载 `__WUJIE_MOUNT` 和 `__WUJIE_UNMOUNT`
+
+> 由于备注中提到异步渲染，所以对于不同的绑定方式做了不同的说明
 
 #### 2. `alive` 模式
 
