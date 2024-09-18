@@ -1539,7 +1539,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 因为发起渲染后，通过 `onload` 在下个宏任务中执行 `mount`
 
-否则根据同步代码队列中最后一个队列绝对：
+否则根据同步代码队列中最后一个队列决定：
 
 - 入口 `script`：不执行渲染，同步提取执行 `mount` 时，微任务中的 `__WUJIE_MOUNT` 还未绑定
 - 非入口 `script`：正常执行，说明入口文件在此之前已绑定 `__WUJIE_MOUNT` 到沙箱 `window`
