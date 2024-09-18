@@ -1533,12 +1533,14 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 非 `fiber` 模式下，同步上下文绑定 `__WUJIE_MOUNT`：
 
-- 执行方式和 `fiber` 模式是一样的，因为他们是上下文关系
+- 同样会优先绑定 `__WUJIE_MOUNT`，因为他们是上下文关系
 
-非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 将导致无法执行，不展示应用：
+非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 将根据入口 `script` 注入方式决定：
 
-- 因为 `mount` 应用时，异步的微任务还没有绑定 `__WUJIE_MOUNT` 到沙箱 `windnow` 上
-- 再次切换应用会恢复正常
+- 外联 `script`：可以正常加载，因为 `mount` 将会通过 `onload` 宏任务发起
+- 内联 `script`：同步提取执行下一个队列，执行 `mount` 时异步的 `__WUJIE_MOUNT` 还未绑定
+
+> 可以参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
 
 解决办法见：`start` 启动应用的 `bug` - 问题 1 [[查看](#4-start-启动应用的-bug)]
 
