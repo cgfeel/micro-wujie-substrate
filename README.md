@@ -1535,17 +1535,26 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 同样会优先绑定 `__WUJIE_MOUNT`，因为他们是上下文关系
 
-非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 将根据入口 `script` 注入方式决定：
+非 `fiber` 模式下，异步绑定 `__WUJIE_MOUNT` 入口文件是外联 `script` 正常执行：
 
-- 外联 `script`：正常执行，因为发起渲染后，通过 `onload` 在下个宏任务中执行 `mount`
-- 内联 `script`：初次加载不执行，同步提取执行 `mount` 时，微任务中的 `__WUJIE_MOUNT` 还未绑定
+- 因为发起渲染后，通过 `onload` 在下个宏任务中执行 `mount`
 
-> 参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
+否则根据同步代码队列中最后一个队列绝对：
 
-解决办法见：`start` 启动应用的 `bug` - `问题 1` [[查看](#4-start-启动应用的-bug)]
+- 入口 `script`：不执行渲染，同步提取执行 `mount` 时，微任务中的 `__WUJIE_MOUNT` 还未绑定
+- 非入口 `script`：正常执行，说明入口文件在此之前已绑定 `__WUJIE_MOUNT` 到沙箱 `window`
+
+> 关于入口 `script` 参考：动态加载样式和 `script` [[查看](#7-动态加载样式和-script)]
+
+因此建议：
 
 - 生产过程中，请谨慎关闭 `fiber`
 - 如果没有必要的情况，请勿异步挂载 `__WUJIE_MOUNT` 和 `__WUJIE_UNMOUNT`
+
+解决办法：
+
+- 在 `processTpl` 提取入口文件后，追加一个空的 `script` [[查看](#processtpl-提取资源)]
+- 这样在入口 `script` 注入后，至少还有 1 个微任务确保异步发起 `__WUJIE_MOUNT` 先挂载
 
 > 由于备注中提到异步渲染，所以对于不同的绑定方式做了不同的说明
 
