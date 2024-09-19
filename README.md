@@ -1670,7 +1670,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback` [[查看](#41-degrade-主动降级渲染)]
 - 监听 `popstate` 后退，会根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
-劫持容器通过 `renderIframeReplaceApp` 注销容器时发起 `unmount` [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]：
+劫持容器通过 `renderIframeReplaceApp`，在注销渲染容器时发起 `unmount` [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]：
 
 - 之后，浏览器后退，还原容器到挂载点，无需 `unmount`
 - 之后，浏览器前进，再次注销容器发起 `unmount`
