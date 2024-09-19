@@ -1636,13 +1636,6 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `activeFlag` 失活、清理路由、触发生命周期 `deactivated`
 - 不清理容器，也不注销应用，下次切换回应用时也不需要重复加载资源
 
-重建模式切换应用会注销 2 次：
-
-1. 切出应用：容器销毁，见：`disconnectedCallback` [[查看](#disconnectedcallback-卸载组件)]
-2. 切回应用：`startApp` 时 `destroy` 销毁应用实例 [[查看](#23-destroy-注销应用)]
-
-> 其他模式也可以通过手动 `destroy` 注销应用，但不建议
-
 `startApp` 触发应用 `umount` 的场景：
 
 | 模式               | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
@@ -1654,19 +1647,23 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 重建模式初始实例   | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 | `alive`            | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 
-以下模式会执行 2 次 `umount`：
+存在应用实例的情况下，`umd` 模式和重建模式下会重复卸载：
 
-- `umd` 模式：容器注销 1 次，`startApp` 启动 1 次
-- 重建模式：容器注销 1 次，`startApp` 启动通过 `destory` 销毁实例 1 次
+| 操作 | 注销方式                                                                      | 重见模式 | `umd` 模式 | `alive` 模式 |
+| ---- | ----------------------------------------------------------------------------- | -------- | ---------- | ------------ |
+| 切出 | 容器销毁，见：`disconnectedCallback` [[查看](#disconnectedcallback-卸载组件)] | ✅       | ✅         | ❗️          |
+| 切回 | 通过 `startApp` 发起 `unmount` [[查看](#22-umd-模式切换应用)]                 | ❎       | ✅         | ❎           |
+| 切回 | 注销实例 `destroy` [[查看](#23-destroy-注销应用)]                             | ✅       | ❎         | ❎           |
+
+- 容器注销 `alive` 模式也会 `unmount`，但除了发起生命周期事件外不做额外操作
+- 其余模式应用切出、切回都会执行一次卸载
 
 > 前提条件：应用实例已存在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
 其他触发应用 `umount` 的场景：
 
-- 手动 `destroy` 注销应用 [[查看](#-destroy-销毁实例)]
-- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`
-
-> 这 2 个场景执行方式参考：容器注销 `unmount` 执行流程
+- 手动 `destroy` 注销应用，但不建议 [[查看](#其他默认提供的方法)]
+- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
 关于 `onunload`：
 
