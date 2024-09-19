@@ -1610,11 +1610,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `this.bus.$clear`：清空子应用所有订阅的通信，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 非降级渲染需要清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
-- 最后将实例的 `head`、`body` 下的元素全部删除：
+- 最后将实例的 `head`、`body` 下的元素全部删除
 
 所有删除的元素会在下次 `active` 激活应用时，重新注入应用资源：
 
-- 清空的监听事件，也会在下次 `active` 激活应用时重新监听
+- 清空的监听事件，也会在激活应用时重新监听
 
 > 关于事件清理，见：`shadowRoot` 容器事件 [[查看](#shadowrootbodyhead_cachelisteners容器事件)]
 
