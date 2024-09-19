@@ -1599,22 +1599,24 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 子应用沙箱 `window` 中已绑定 `__WUJIE_UNMOUNT`
 - 不是 `alive` 模式并且不是 `hrefFlag` 劫持容器，见：特殊属性 [[查看](#2-特殊属性)]
 
-卸载 `umd` 模式子应用：
+`umd` 模式卸载和挂载流程一致，见：`umd` 方式启动 [[查看](#1-umd-方式启动)]
 
 - 使用沙箱 `window` 触发生命周期 `beforeUnmount`
 - 调用子应用挂载在 `window` 上的 `__WUJIE_UNMOUNT`
 - 使用沙箱 `window` 触发生命周期 `afterUnmount`
 - `mountFlag` 标记为未挂载
-- `this.bus.$clear`：清空子应用所有监听的事件，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 
-非 `degrade` 降级需要对 `shadowRoot` 补充操作：
+和挂载应用不同的是：
 
-- 清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
+- `this.bus.$clear`：清空子应用所有订阅的通信，见：`WuJie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
+- 非降级渲染需要清空 `shadowRoot` 下所有元素，并清理记录在实例 `head`、`body` 的事件
+- 最后将实例的 `head`、`body` 下的元素全部删除：
 
-最后将实例的 `head`、`body` 下的元素全部删除
+所有删除的元素会在下次 `active` 激活应用时，重新注入应用资源：
 
-- 所有删除的元素会在下次 `active` 激活应用时，重新注入应用资源
 - 清空的监听事件，也会在下次 `active` 激活应用时重新监听
+
+> 关于事件清理，见：`shadowRoot` 容器事件 [[查看](#shadowrootbodyhead_cachelisteners容器事件)]
 
 #### 4. 触发场景
 
