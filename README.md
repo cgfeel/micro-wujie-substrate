@@ -1571,9 +1571,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 #### 3. 执行下一个队列
 
-- `this.execQueue.shift()?.()`
+`this.execQueue.shift()?.()`
+
 - 这是所有模式必须做的流程，也是重建模式在 `mount` 时唯一做的事
-- 综上所述，`mount` 挂载应用似乎只关心 `umd` 初次渲染应用，设计的过于鸡肋
+- 综上所述，`mount` 挂载应用似乎只关心 `umd` 初次渲染应用
 
 #### 📝 `unmount` 卸载应用
 
