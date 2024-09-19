@@ -1670,10 +1670,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback` [[查看](#41-degrade-主动降级渲染)]
 - 监听 `popstate` 后退，会根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
-劫持容器不触发 `unmount`：
+劫持容器如何触发 `unmount`：
 
-- 通过 `locationHrefSet` 发起的劫持容器是唯一不需要处理卸载的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
-- 劫持容器会随 `Dom` 渲染来决定是否从 `Dom tree` 中删除
+- 劫持容器会在替换容器前通过注销容器的方式发起 `unmount`
+- 之后参考上诉存在应用实例的情况下，不同模式切回应用的操作方式
+
+> 卸载容器通过 `locationHrefSet` 发起的劫持，容器本身是不需要 `unmount` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 #### 5. 容器在哪清除
 
