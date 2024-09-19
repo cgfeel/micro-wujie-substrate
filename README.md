@@ -1641,7 +1641,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 重建模式切换应用会注销 2 次：
 
 1. 切出应用：容器销毁
-2. 切回应用：应用销毁 `destroy`
+2. 切回应用：应用实力销毁 `destroy`
 
 > 其他模式也可以通过手动 `destroy` 注销应用，但不建议
 
