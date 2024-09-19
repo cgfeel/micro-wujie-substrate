@@ -1649,8 +1649,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | ------------------ | --------------------- | ------ | ------ | ------ |
 | `umd` 切换应用     | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
 | `umd` 预执行后启动 | `active` 前 `unmount` | 执行   | 不执行 | 执行   |
-| `umd` 预加载后启动 | 自动 `destroy`        | 执行   | 不执行 | 执行   |
-| 重建模式存在实例   | 自动 `destroy`        | 执行   | 不执行 | 不执行 |
+| `umd` 预加载后启动 | 应用实例 `destroy`    | 执行   | 不执行 | 执行   |
+| 重建模式存在实例   | 应用实例 `destroy`    | 执行   | 不执行 | 不执行 |
 | 重建模式初始实例   | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 | `alive`            | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 
