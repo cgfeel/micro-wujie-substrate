@@ -1649,7 +1649,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 存在应用实例的情况下，`umd` 模式和重建模式下会重复 `umount`：
 
-| 操作 | 注销方式                                                                      | 重见模式 | `umd` 模式 | `alive` 模式 |
+| 操作 | 注销方式                                                                      | 重建模式 | `umd` 模式 | `alive` 模式 |
 | ---- | ----------------------------------------------------------------------------- | -------- | ---------- | ------------ |
 | 切出 | 容器销毁，见：`disconnectedCallback` [[查看](#disconnectedcallback-卸载组件)] | ✅       | ✅         | ❗️          |
 | 切回 | 通过 `startApp` 发起 `unmount` [[查看](#22-umd-模式切换应用)]                 | ❎       | ✅         | ❎           |
