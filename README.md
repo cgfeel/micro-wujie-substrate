@@ -1567,6 +1567,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 使用沙箱 `window` 调用生命周期 `activated`
 - 这里存在 `activated` 调用 2 次的情况，见：预加载中的 `bug` [[查看](#6预加载中的-bug)]
 
+> 就目前来看这一步是多余的，除了 `alive` 预执行，`activated` 都会在 `startApp` 中调用 [[查看](#21-alive-保活模式运行应用)]
+
 #### 3. 执行下一个队列
 
 - `this.execQueue.shift()?.()`
