@@ -1647,7 +1647,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 重建模式初始实例   | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 | `alive`            | 不执行 `unmount`      | 不执行 | 不执行 | 不执行 |
 
-存在应用实例的情况下，`umd` 模式和重建模式下会重复卸载：
+存在应用实例的情况下，`umd` 模式和重建模式下会重复 `umount`：
 
 | 操作 | 注销方式                                                                      | 重见模式 | `umd` 模式 | `alive` 模式 |
 | ---- | ----------------------------------------------------------------------------- | -------- | ---------- | ------------ |
@@ -1655,8 +1655,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | 切回 | 通过 `startApp` 发起 `unmount` [[查看](#22-umd-模式切换应用)]                 | ❎       | ✅         | ❎           |
 | 切回 | 注销实例 `destroy` [[查看](#23-destroy-注销应用)]                             | ✅       | ❎         | ❎           |
 
-- 容器注销 `alive` 模式也会 `unmount`，但除了发起生命周期事件外不做额外操作
-- 其余模式应用切出、切回都会执行一次卸载
+- 容器注销 `alive` 模式也会 `unmount`，但不卸载资源
+- 其余模式应用切出、切回都会执行一次 `unmount`
 
 > 前提条件：应用实例已存在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
