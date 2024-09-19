@@ -1672,7 +1672,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 劫持容器通过 `renderIframeReplaceApp`，在注销渲染容器时发起 `unmount` [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]：
 
-- 之后，浏览器后退，还原容器到挂载点，无需 `unmount`
+- 之后，浏览器后退，还原渲染容器到挂载点，无需 `unmount`
 - 之后，浏览器前进，再次注销渲染容器发起 `unmount`
 - 之后，通过基座切回应用，参考上述：存在应用实例的情况下，不同模式的操作方式
 
