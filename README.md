@@ -1585,6 +1585,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `activeFlag` 失活，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
 - 清理路由，见：`clearInactiveAppUrl` [[查看](#clearinactiveappurl清理路由)]
 
+> 重建模式只做这一步
+
 #### 2. 卸载 `alive` 模式的应用
 
 - 使用沙箱 `window` 触发生命周期 `deactivated`
@@ -1637,9 +1639,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 重建模式切换应用会注销 2 次：
 
 1. 切出应用：容器销毁
-2. 切回应用：应用销毁
-
-> 重建模式卸载组件虽然只做流程 1，但会销毁实力重新创建
+2. 切回应用：应用销毁 `destroy`
 
 `startApp` 触发应用 `umount`：
 
