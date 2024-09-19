@@ -1443,6 +1443,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `react-create-app` | 带有 `defer` 的外联 `script` | 内联 `script` 并忽略 `defer` |
 | `umijs`            | 外联 `script`                | 内联 `script`                |
 
+> 注入方式见：`getExternalScripts` [[查看](#getexternalscripts加载-script-资源)]
+
 无论是哪种类型 `script`，都会作为同步代码注入沙箱：
 
 - 每个同步代码队列都是一个微任务
