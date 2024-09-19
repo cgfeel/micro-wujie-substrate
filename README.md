@@ -1596,7 +1596,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 准备卸载 `umd` 模式子应用，要求：
 
 - `mountFlag` 状态已挂载，见：`Wujie` 实例中关键属性 [[查看](#-wujie-实例中关键属性)]
-- 子应用中存在 `__WUJIE_UNMOUNT`
+- 子应用沙箱 `window` 中已绑定 `__WUJIE_UNMOUNT`
 - 不是 `alive` 模式并且不是 `hrefFlag` 劫持容器，见：特殊属性 [[查看](#2-特殊属性)]
 
 卸载 `umd` 模式子应用：
