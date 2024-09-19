@@ -1663,12 +1663,11 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 其他触发应用 `umount` 的场景：
 
 - 手动 `destroy` 注销应用，但不建议 [[查看](#其他默认提供的方法)]
-- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload`，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
+- 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
 关于 `onunload`：
 
-- 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback`
-- 不巧的是这个事件随时可能会被浏览器删除
+- 仅存在降级时 `iframe` 容器，用于代替 `web component` 中的 `disconnectedCallback` [[查看](#41-degrade-主动降级渲染)]
 - 监听 `popstate` 后退，会根据 `hrefFlag` 决定是否重新渲染并监听 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
 
 劫持容器不触发 `unmount`：
