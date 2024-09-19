@@ -1676,7 +1676,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 之后，浏览器前进，再次注销渲染容器发起 `unmount`
 - 之后，通过基座切回应用，参考上述：存在应用实例的情况下，不同模式的操作方式
 
-> 卸载容器通过 `locationHrefSet` 发起的劫持，劫持容器本身是不需要 `unmount` [[查看](#locationhrefset拦截子应用-locationhref)]
+> 应用通过 `locationHrefSet` 发起的劫持，劫持容器本身是不需要 `unmount` [[查看](#locationhrefset拦截子应用-locationhref)]
 
 #### 5. 容器在哪清除
 
