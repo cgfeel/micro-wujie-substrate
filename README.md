@@ -1643,7 +1643,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 其他模式也可以通过手动 `destroy` 注销应用，但不建议
 
-`startApp` 触发应用 `umount`：
+`startApp` 触发应用 `umount` 的场景：
 
 | 模式               | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
 | ------------------ | --------------------- | ------ | ------ | ------ |
