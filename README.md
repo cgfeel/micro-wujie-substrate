@@ -1643,6 +1643,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 1. 切出应用：容器销毁
 2. 切回应用：应用销毁 `destroy`
 
+> 其他模式也可以通过手动 `destroy` 注销应用，但不建议
+
 `startApp` 触发应用 `umount`：
 
 | 模式               | 卸载场景              | 流程 1 | 流程 2 | 流程 3 |
