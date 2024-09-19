@@ -1633,7 +1633,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `alive` 模式 `unmount` 时只做了 3 件事：
 
-- `activeFlag` 失活、清理路由、触发声明周期事件
+- `activeFlag` 失活、清理路由、触发生命周期事件
 - 不清理容器，也不注销应用，下次切换回应用时也不需要重复加载资源
 
 重建模式切换应用会注销 2 次：
