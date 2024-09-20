@@ -1687,7 +1687,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 重建模式，除了初次 `startApp` 之外每次一次启动就是一次 `destory`
 - 除了 `alive` 模式，预加载没有预执行的情况下，首次 `startApp` 都会 `destory`
 
-> 清空后的 `iframe` 只能通过创建 `WuJie` 实例才能重建
+> 清空后的沙箱只能通过创建 `WuJie` 实例才能重建
 
 **容器 `iframe` - `document`**
 
