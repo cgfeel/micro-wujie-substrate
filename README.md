@@ -92,7 +92,7 @@
 通过以上了解初步印象是：`Tencent` 对通信非常偏爱
 
 - 比如：应用和基座通信，沙箱和容器 `Dom` 通信、`proxy` 和沙箱 `window` 通信等等
-- 除此之外在其他产品也能看出来，比如：小程序 `postMessage`，还有 `alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]
+- 除此之外在其它产品也能看出来，比如：小程序 `postMessage`，还有 `alloy-worker` [[查看](https://github.com/AlloyTeam/alloy-worker)]
 
 ## `wujie` 复现
 
@@ -403,7 +403,7 @@
 | 分类                  | 加载方式                                                                                           | 场景                                        |
 | --------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | 应用内的静态样式      | `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                      | `preloadApp`、首次 `startApp` 初始化实例    |
-| 手动配置 `css-loader` | `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                   | `alive` 模式首次激活、其他模式每次激活      |
+| 手动配置 `css-loader` | `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                   | `alive` 模式首次激活、其它模式每次激活      |
 | 应用内的动态样式      | `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | `alive` 和 `umd` 首次激活、重建模式每次激活 |
 | `umd` 模式恢复样式    | `rebuildStyleSheets` [[查看](#-rebuildstylesheets-重新恢复样式)]                                   | 切换 `umd` 应用、`umd` 预执行后启动         |
 
@@ -551,7 +551,7 @@
 
 - 和重建模式一样，预加载后 `startApp` 会销毁实例，只能用于提前缓存资源
 - 预执行后 `startApp` 会清空容器重新注入资源
-- 只有 `umd` 需要用到 `styleSheetElements` 恢复样式，其他模式只记录不使用
+- 只有 `umd` 需要用到 `styleSheetElements` 恢复样式，其它模式只记录不使用
 
 除此之外可以通过 `setupApp` 提前缓存配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 
@@ -679,7 +679,7 @@
 注入容器分为 3 种情况：
 
 - `degrade` 主动降级：无论切换应用还是初始化都会创建新的 `iframe` 容器
-- `shadowRoot` 切换应用：只有 `alive` 模式更换挂载节点，其他模式重新注入资源
+- `shadowRoot` 切换应用：只有 `alive` 模式更换挂载节点，其它模式重新注入资源
 - `shadowRoot` 应用初始化：创建容器后注入资源
 
 有 2 种情况会 `active` 激活应用：
@@ -714,7 +714,7 @@
 
 需要等待 `iframeReady` 的场景：
 
-- 除了 `alive` 和 `umd` 模式切换应用时 `iframeReady` 已加载完毕，其他情况都有可能需要等待
+- 除了 `alive` 和 `umd` 模式切换应用时 `iframeReady` 已加载完毕，其它情况都有可能需要等待
 - 如果加载顺利的话，`iframeReady` 会在 `active` 之前加载完毕，见：`iframeGenerator` [[查看](#iframegenerator创建沙箱-iframe)]
 
 > 在 `qiankun` 中有个 `frameworkStartedDefer`，用途是一样的，见：`startSingleSpa` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#23-startsinglespa-%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8)]
@@ -769,7 +769,7 @@
 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 同步路由来自当前 `url` 还是资源入口链接 | 资源入口链接 | 短连接集合 |
 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 是否同步路由到基座                      | 不需要       | 短连接集合 |
 
-> 只有 `url` 是必选属性，其他都可选；`active` 的 `url` 存在 `bug`，见：特殊属性 [[查看](#2-特殊属性)]
+> 只有 `url` 是必选属性，其它都可选；`active` 的 `url` 存在 `bug`，见：特殊属性 [[查看](#2-特殊属性)]
 
 执行过程，从左到右：
 
@@ -778,7 +778,7 @@
 | `alive` 预执行              | 执行              | 执行              |
 | `alive` 预执行后 `startApp` | 不执行            | 执行              |
 | `alive` 切换应用            | 不执行            | 执行              |
-| 其他模式                    | 执行              | 执行              |
+| 其它模式                    | 执行              | 执行              |
 
 - `syncUrlToIframe`：同步主应用路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 - `syncUrlToWindow`：同步子应用路由到主应用 [[查看](#syncurltowindow同步子应用路由到主应用)]
@@ -811,7 +811,7 @@
 1. 通过 `setupApp` 根据应用保存不同的配置，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 2. 通过不同的组件分开 `startApp`，从而配置不同的属性
 
-> 同理也适用于其他固定的配置信息，需要根据不同的应用做出差异化的表现
+> 同理也适用于其它固定的配置信息，需要根据不同的应用做出差异化的表现
 
 不要试图通过样式去匹配不同 `iframe` 容器的 `id`：
 
@@ -1157,7 +1157,7 @@
 - `syncScriptResultList` + `deferScriptResultList`：同步代码
 - 返回的 `Promise` 对象
 
-> 只有异步代码是立即添加微任务，其他按照 `execQueue` 队列顺序等待提取并执行
+> 只有异步代码是立即添加微任务，其它按照 `execQueue` 队列顺序等待提取并执行
 
 `fiber` 没有关闭的情况下有 7 处宏任务：
 
@@ -1694,12 +1694,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除，但是每次激活应用就是对容器一次重建：
 
 - `alive` 模式，将 `document` 的 `html` 元素添加到新容器
-- 其他模式，重新注入 `template` 到新容器
+- 其它模式，重新注入 `template` 到新容器
 
 那实例中的 `document` 存在的意义是什么呢：
 
 - `alive` 模式，区别切换和首次加载，且换应用不需要注入资源
-- 其他模式记录容器 `document` 上的事件，下次激活应用还原到新容器，见：事件恢复 [[查看](#记录恢复-iframe-容器事件)]
+- 其它模式记录容器 `document` 上的事件，下次激活应用还原到新容器，见：事件恢复 [[查看](#记录恢复-iframe-容器事件)]
 
 > 降级模式下，切换和首次加载应用的区别在于 `iframe` 容器是否恢复事件
 
@@ -1724,7 +1724,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 预加载，容器怎么处理：
 
 - `alive` 模式：将 `shadowRoot.host` 挂载到指定节点返回，不销毁不清空也不注入资源
-- 其他模式：全部 `destroy` 注销后重新创建实例
+- 其它模式：全部 `destroy` 注销后重新创建实例
 
 预执行，容器怎么处理：
 
@@ -1974,8 +1974,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 为什么？
 
 - 对于重建模式，每次都会销毁实例重建，`url` 以 `startApp` 提供的配置为准 [[查看](#3-创建新的沙箱实例)]
-- 其他不销毁实例的模式下，`active` 设置 `url` 后仅做了同步路由的操作 [[查看](#syncurltoiframe同步主应用路由到子应用)]
-- 其他关于路由、`location` 等操作已在构造函数完成 [[查看](#-constructor-构造函数)]
+- 其它不销毁实例的模式下，`active` 设置 `url` 后仅做了同步路由的操作 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+- 其它关于路由、`location` 等操作已在构造函数完成 [[查看](#-constructor-构造函数)]
 - 而应用资源则在 `active` 之前已通过 `importHTML` 加载完毕 [[查看](#importhtml-加载资源)]
 
 只能说 `url` 分开赋值有可能造成隐患，如何彻底杜绝呢？
@@ -2023,7 +2023,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `code` 根据 `ignore` 来决定提供的内容：
 
 - `ignore`：空字符，样式只能作为外联加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
-- 其他情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- 其它情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 > 因此通过 `ignore` 实现外联加载的样式，引用的资源需要设为绝对路径或 `base64`，否则会因为路径不对找不到资源
 
@@ -2211,7 +2211,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 返回 `iframe.contentDocument.scripts`，因为所有的 `script` 存放在沙箱 `iframe` 中
 
-其他情况全部在 `shadowRoot` 获取，但是获取前需要转换下参数：
+其它情况全部在 `shadowRoot` 获取，但是获取前需要转换下参数：
 
 - `getElementsByTagName`：不需要处理
 - `getElementsByClassName`：转换成元素类名 `.{$arg}`
@@ -2246,7 +2246,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 优先从 `shadowRoot` 查询，查询不到再去沙箱 `iframe` 中查询
 - 但不会去查沙箱 `iframe` 中的 `base` 元素，因为他会影响路由
 
-> 从上面可以明确知道，存放 `script` 一定是沙箱 `iframe`，其他元素一定是 `shadowRoot`，否则就会匹配错乱
+> 从上面可以明确知道，存放 `script` 一定是沙箱 `iframe`，其它元素一定是 `shadowRoot`，否则就会匹配错乱
 
 **代理：查询 `html` 元素**
 
@@ -2267,7 +2267,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 `ownerProperties`、`shadowProperties`：
 
 - 如果 `property` 是 `activeElement`，且 `shadowRoot` 中不存在的情况下返回 `shadowRoot.body`
-- 其他一律从 `shadowRoot` 中返回对应的属性
+- 其它一律从 `shadowRoot` 中返回对应的属性
 
 `shadowMethods`：
 
@@ -2369,7 +2369,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 iframeWindow.history.replaceState(null, "", args[0])
 ```
 
-其他情况：
+其它情况：
 
 - 通过 `getTargetValue` 直接从沙箱 `location` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
 
@@ -2696,7 +2696,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 - `qiankun` 的 `importEntry` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#212-prefetch-%E6%89%A7%E8%A1%8C%E9%A2%84%E5%8A%A0%E8%BD%BD)]
 - `micro-app` 的 `HTMLLoader` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#12-htmlloader-%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90)]
 
-> 除了 `qiankun` 使用的是 `import-html-entry` [[查看](https://github.com/kuitos/import-html-entry)]，其他都是单独开发的
+> 除了 `qiankun` 使用的是 `import-html-entry` [[查看](https://github.com/kuitos/import-html-entry)]，其它都是单独开发的
 
 参数为包含 3 个属性的 `params` 对象：
 
@@ -3194,14 +3194,14 @@ return (cache[key] = Promise.resolve());
 
 `contentPromise` 内联 `script` 加载情况：
 
-- 全部在 `Promise` 中返回代码字符，包括存在 `module` 等其他属性
+- 全部在 `Promise` 中返回代码字符，包括存在 `module` 等其它属性
 - 内联 `script` 虽然判断了 `ignore`，但是不存在这种情况，见下方 `ignore` 说明
 
 `contentPromise` 外联 `script` 加载情况：
 
 - `module`：在 `Promise` 中以空字符返回
 - `ignore`：限 `async` 或 `defer` 非 `module` 将通过 `fetchAssets` 加载资源，否则在 `Promise` 中返回空字符
-- 其他情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
+- 其它情况都会通过 `fetchAssets` 加载资源 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
 `Promise` 返回空字符的情况，之后会通过 `insertScriptToIframe` 作为外联 `script` 加载 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
@@ -3223,7 +3223,7 @@ return (cache[key] = Promise.resolve());
 通过 `fetchAssets` 不同的加载方式：
 
 - `async` 或 `defer` 下使用 `fiber` 决定是否通过宏任务 `requestIdleCallback` 空闲加载
-- 其他全部直接加载
+- 其它全部直接加载
 
 加载外联 `script` 时传递给 `fetchAssets` 的参数：
 
@@ -3698,7 +3698,7 @@ return (cache[key] = Promise.resolve());
 
 - 但目前来看似乎做了多余的工作
 - 为 `html` 元素设置 `innerHTML` 时候，会根据情况自动补全 `head` 和 `body`
-- 并且会丢弃外部包裹的 `html` 根元素及其他相关声明
+- 并且会丢弃外部包裹的 `html` 根元素及其它相关声明
 
 > 用 `code` 做了一个静态的资源补全的演示 [[查看](https://codepen.io/levi0001/pen/JjQpQbb)]
 
@@ -3803,7 +3803,7 @@ return (cache[key] = Promise.resolve());
 | 更新 `position` | `relative`                          | 不更新                              |
 | 更新 `overflow` | `hidden`                            | `hidden`                            |
 
-> 其他 `position` 状态不做处理
+> 其它 `position` 状态不做处理
 
 创建 `loadingContainer` 元素：
 
@@ -4142,7 +4142,7 @@ return (cache[key] = Promise.resolve());
 | `options.targetWindow` 存在                                                                                                                                                               | `options.targetWindow`                                   |
 | 事件包含在 `appWindowAddEventListenerEvents` 中，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L169)] | 优先采用 `options.targetWindow`，不存在采用沙箱 `window` |
 | `__WUJIE_RAW_WINDOW__` 存在，见：`patchIframeVariable` [[查看](#patchiframevariable-为子应用-window-添加属性)]                                                                            | 沙箱 `window`                                            |
-| 其他情况                                                                                                                                                                                  | 全局 `window`                                            |
+| 其它情况                                                                                                                                                                                  | 全局 `window`                                            |
 
 > 优先权：`targetWindow` > 沙箱 `window` > 全局 `window`
 
@@ -4265,7 +4265,7 @@ window.onfocus = () => {
 
 **通过插件 `windowPropertyOverride` 打补丁**
 
-官方文档遗漏了这个插件，原理和其他插件一样，通过 `execHooks` 提取并执行：
+官方文档遗漏了这个插件，原理和其它插件一样，通过 `execHooks` 提取并执行：
 
 - 执行时会将沙箱 `window` 传过去，用于手动打补丁
 
@@ -4309,7 +4309,7 @@ window.onfocus = () => {
 
 - 用于转发事件时作为回调对象，可以是函数也可以是一个包含 `handleEvent` 的对象
 
-> `handlerTypeMap` 目前除了记录外，没有其他用途，见：记录沙箱 `document` 上的事件 [[查看](#记录沙箱-document-上的事件)]
+> `handlerTypeMap` 目前除了记录外，没有其它用途，见：记录沙箱 `document` 上的事件 [[查看](#记录沙箱-document-上的事件)]
 
 **1.2. 通过 `execHooks` 提取并执行插件函数**
 
@@ -4328,7 +4328,7 @@ window.onfocus = () => {
 | `degrade` 降级，见：提取配置初始化属性 [[查看](#2-提取配置初始化属性)]                                                                                                                | 降级容器 `document`                     |
 | `mainDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L154)]        | 基座 `document`                         |
 | `mainAndAppAddEventListenerEvents` 事件互斥，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)] | 分别调用：基座 `document`、`shadowRoot` |
-| 其他                                                                                                                                                                                  | `shadowRoot`                            |
+| 其它                                                                                                                                                                                  | `shadowRoot`                            |
 
 如果基座也是子应用会怎样：
 
@@ -4604,7 +4604,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 带有 `ignore` 属性的静态 `script`                                    | 注释元素      |
 | 不允许的 `esModule`，见：`processTpl` [[查看](#processtpl-提取资源)] | 注释元素      |
 | `jsExcludes` 屏蔽 `script`                                           | 排除不注入    |
-| 其他类型的 `script`                                                  | 内联 `script` |
+| 其它类型的 `script`                                                  | 内联 `script` |
 
 **2. 配置 `script`**
 
@@ -5279,7 +5279,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | `host`、`hostname`、`protocol`、`port`、`origin` | 按照子应用的入口资源来                                          | 按照基座来                            |
 | `href`                                           | 通过 `relace` 替换成子应用 `origin`                             | 按照基座来                            |
 | `replace`                                        | 通过 `relace` 替换成基座 `origin`，因为沙箱 `iframe` 和基座同域 | 按照基座来                            |
-| 其他属性                                         | 从沙箱 `location` 中取                                          | 从沙箱 `location` 中取                |
+| 其它属性                                         | 从沙箱 `location` 中取                                          | 从沙箱 `location` 中取                |
 | `fetch` 请求                                     | 相对路径按照 `base` 元素来补全                                  | 相对路径按照 `base` 元素来补全        |
 | 配置并重写 `fetch`                               | 相对路径将通过 `proxyLocation` 来补全                           | 相对路径将通过 `proxyLocation` 来补全 |
 
@@ -5488,7 +5488,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 外联样式            | 匹配     | 元素不变            | 直接操作                                                                                  |
 | 内联样式            | 不匹配   | 元素不变            | 直接操作                                                                                  |
 | 外联样式            | 不匹配   | 加载为内联样式      | 无法关联                                                                                  |
-| 其他元素            | 不匹配   | 元素不变            | 直接操作                                                                                  |
+| 其它元素            | 不匹配   | 元素不变            | 直接操作                                                                                  |
 
 > 除了上述罗列的操作方式外，均可以通过给元素添加特定属性，来查找并操作元素
 
@@ -5520,7 +5520,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `link` 元素不是样式：
 
-- 添加元素并返回，不做其他处理
+- 添加元素并返回，不做其它处理
 - 判定样式的 3 个条件：`rel`、`type`、链接以 `.css` 结尾
 
 > `link` 是外联样式，将创建一个注释元素并返回
@@ -5782,7 +5782,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 内联 `script`：忽略通知
 - 外联样式 - `ignore`：直接将动态添加的样式添加到容器，加载事件不变
 - 外联样式 - 非 `ignore`：加载后作为内联样式注入容器，然后调用 `manualInvokeElementEvent`
-- 其他元素：忽略通知
+- 其它元素：忽略通知
 
 流程：
 
@@ -5845,7 +5845,7 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 以下情况都将认为是可实例化的函数：
 
-- 原型 `constructor` 指向自身的普通函数，原型除了 `constructor` 外还有其他属性
+- 原型 `constructor` 指向自身的普通函数，原型除了 `constructor` 外还有其它属性
 - 以大写开头的函数：`/^function\b\s[A-Z].*/`
 - 以 `class` 开头的类
 
@@ -5935,7 +5935,7 @@ const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype
 
 优先从映射表 `setFnCacheMap` 获取对象属性 [[查看](#1-setfncachemap-存储绑定上下文的方法)]：
 
-| `setFnCacheMap` | 符合条件的函数                 | 其他                                   |
+| `setFnCacheMap` | 符合条件的函数                 | 其它                                   |
 | --------------- | ------------------------------ | -------------------------------------- |
 | 存在优先返回    | 不再考虑                       | 不再考虑                               |
 | 不存在          | 绑定上下文后保存在映射表并返回 | 不考虑                                 |
@@ -6069,7 +6069,7 @@ proxyWindow.addEventListener;
 
 - 通过 `reduce` 将 `fnList` 数组中的函数拍平执行，初始值为提供的原始 `code`
 - 这样即便 `fnList` 数组没有任何函数，也能够将原始的 `code` 返回
-- 如果 `fnList` 中提供了函数，将 `code` 及其他参数传过去，返回新的值依次执行并返回最终替换结果
+- 如果 `fnList` 中提供了函数，将 `code` 及其它参数传过去，返回新的值依次执行并返回最终替换结果
 
 由于调用时，传递过来的数组仅仅是通过 `map` 过滤了 `plugins`：
 
@@ -6376,7 +6376,7 @@ proxyWindow.addEventListener;
 | `umd` 模式切换        | 使用 `template` 恢复，不需要 | 用于恢复容器样式                     |
 | 重建模式切换          | 使用缓存的外联样式替换资源   | 重新记录，不参与渲染                 |
 
-- `styleSheetElements` 仅限 `umd` 模式切换时使用，其他情况只保留记录不使用
+- `styleSheetElements` 仅限 `umd` 模式切换时使用，其它情况只保留记录不使用
 - `styleCache` 缓存所有外联样式，包括静态提取、动态及手动添加，一旦缓存下次直接从缓存中获取
 
 **`scriptCache`：缓存外联 `script` 资源**
@@ -6417,7 +6417,7 @@ proxyWindow.addEventListener;
 | 预加载                | 缓存所有外联 `script`  | 不使用             |
 | `active` 预加载后启动 | 外联 `script` 使用缓存 | 收集并执行队列     |
 | 重建模式切换          | 外联 `script` 使用缓存 | 重新收集并执行队列 |
-| 其他模式切换          | 不使用                 | 不使用             |
+| 其它模式切换          | 不使用                 | 不使用             |
 
 - `scriptCache`：仅首次加载时收集外联 `script`，包括静态提取、动态及手动添加，再次加载使用缓存
 - `execQueue`：首次启动会执行收集提取队列，再次启动仅重建模式需要重新操作
@@ -6494,7 +6494,7 @@ proxyWindow.addEventListener;
 - `renderTemplateToHtml` 将资源转换为 `html` 时，会将 `head` 和 `body` 记录在应用实例 [[查看](#rendertemplatetohtml渲染-template-为-html-元素)]
 - `umd` 模式切换应用时会还原实例中的 `head` 和 `body`，如果卸载时不清空事件会导致重复监听
 
-为啥其他模式不需要：
+为啥其它模式不需要：
 
 - `alive`模式：不销毁资源、不记录事件、再次切换应用不重新注入资源、也不需要 `start`
 - 重建模式：每次都重建容器、重启应用，虽也记录和清理事件，但最终都会通过 `destroy` 彻底销毁
@@ -6736,7 +6736,7 @@ proxyWindow.addEventListener;
 | --                 | --                                 | ◀️ 只能后退，还原渲染容器 |
 
 - 劫持容器是 `iframe` 网页，内部的链接将不再被劫持记录 `history`，因此只能后退
-- 而通过基座链接切换到其他应用，后退将无法还原劫持容器，原因在上述第 2 点已说明
+- 而通过基座链接切换到其它应用，后退将无法还原劫持容器，原因在上述第 2 点已说明
 
 如何判断执行的是前进还是后退：
 
