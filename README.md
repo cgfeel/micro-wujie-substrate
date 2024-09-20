@@ -1687,14 +1687,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 重建模式，除了初次 `startApp` 之外每次一次启动就是一次 `destory`
 - 除了 `alive` 模式，预加载没有预执行的情况下，首次 `startApp` 都会 `destory`
 
-> 清空后的沙箱只能通过创建 `WuJie` 实例才能重建 [[查看](#-constructor-构造函数)]
+> 清除后的沙箱只能通过创建 `WuJie` 实例才能重建 [[查看](#-constructor-构造函数)]
 
-**容器 `iframe` - `document`**
+**容器 `iframe`**
 
-和沙箱 `iframe` 一样，只要不是 `destroy` 就不会清除，但是每次激活应用就是对容器一次重建：
+容器 `iframe` 会将 `document` 绑定到应用实例同名属性：
 
-- `alive` 模式，将 `document` 的 `html` 元素添加到新容器
-- 其它模式，重新注入 `template` 到新容器
+- 用于分辨应用是否为初次 `active`，和沙箱一样只在 `destroy` 时清除
+
+但每次 `active` 应用就是对容器一次重建：
+
+- `alive` 模式：将 `document` 的 `html` 元素添加到新容器
+- 其它模式：重新注入 `template` 到新容器
 
 那实例中的 `document` 存在的意义是什么呢：
 
