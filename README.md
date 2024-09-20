@@ -1628,8 +1628,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 容器注销触发的方式：
 
-- `iframe` 容器：`onunload`
-- `shadowRoot` 容器：`disconnectedCallback`
+- `iframe` 容器：`onunload` [[查看](#41-degrade-主动降级渲染)]
+- `shadowRoot` 容器：`disconnectedCallback` [[查看](#disconnectedcallback-卸载组件)]
 
 `alive` 模式 `unmount` 时只做了 3 件事：
 
