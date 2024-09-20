@@ -1707,11 +1707,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 降级模式下，切换和首次加载应用的区别在于 `iframe` 容器是否恢复事件
 
-预加载，容器怎么处理：
+降级预加载 `iframe` 容器会添加到沙箱 `body` 中：
 
-- 降级预加载 `iframe` 容器会添加到沙箱 `iframeBody` 中
-- 注入资源前会根据提供的挂载点 `el`，将 `iframeBody` 清空
-- 这样确保启动的子应用资源只会存放在新的 `iframe` 渲染容器里
+- 注入资源前会根据提供的挂载点 `el`，将清空沙箱 `body`
+- 这样确保启动的子应用资源只会存放在新建的 `iframe` 渲染容器里
 
 预执行，容器怎么处理：
 
