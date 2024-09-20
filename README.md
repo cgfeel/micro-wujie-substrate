@@ -1712,9 +1712,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 注入资源前会根据提供的挂载点 `el`，将清空沙箱 `body`
 - 这样确保启动的子应用资源只会存放在新建的 `iframe` 渲染容器里
 
-预执行，容器怎么处理：
-
-- 方式也和预加载是一样的
+> 预执行，容器处理方式也和预加载是一样的
 
 **容器 `shadowRoot`**
 
