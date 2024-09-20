@@ -75,7 +75,7 @@
 珠峰的课程中有个错误：
 
 - 官方文档不建议手动注销 `destroyApp` 子应用，如果还需要使用子应用的话 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
-- `startApp` 会返回一个方法 `destory`，可以直接用于注销应用，而不用传给 `destroyApp`，同样也不建议主动注销，会导致下次打开该子应用有白屏时间
+- `startApp` 会返回一个方法 `destroy`，可以直接用于注销应用，而不用传给 `destroyApp`，同样也不建议主动注销，会导致下次打开该子应用有白屏时间
 
 ### 搭建子应用
 
@@ -524,7 +524,7 @@
 预加载 `alive` 模式的应用，默认 `exec` 不预执行，在启动应用时生命周期 `activated` 会调用 2 次：
 
 - `start` 应用时队列执行 `mount` 调用 1 次
-- `start` 之后返回 `destory` 前调用 1 次
+- `start` 之后返回 `destroy` 前调用 1 次
 
 **问题 2：缺失必要的参数检查**
 
@@ -1684,8 +1684,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 所有模式下都在 `destroy` 注销实例时设置为 `null`：
 
-- 重建模式，除了初次 `startApp` 之外每次一次启动就是一次 `destory`
-- 除了 `alive` 模式，预加载没有预执行的情况下，首次 `startApp` 都会 `destory`
+- 重建模式，除了初次 `startApp` 之外每次一次启动就是一次 `destroy`
+- 除了 `alive` 模式，预加载没有预执行的情况下，首次 `startApp` 都会 `destroy`
 
 > 清除后的沙箱只能通过创建 `WuJie` 实例才能重建 [[查看](#-constructor-构造函数)]
 
@@ -1720,7 +1720,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - `alive` 模式，不会自动清除容器，重新激活应用时也不需要再次注入资源
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源 [[查看](#3-卸载-umd-模式的应用)]
-- 重建模式，每次切换应用 `active` 前都会 `destory` 后重建实例
+- 重建模式，每次切换应用 `active` 前都会 `destroy` 后重建实例
 
 预加载，容器怎么处理：
 
@@ -6178,7 +6178,7 @@ proxyWindow.addEventListener;
 
 - `deleteWujieById`：会从映射表 `idToSandboxCacheMap` 中删除实例和缓存实例的配置
 
-> 仅能通过 `destory` 销毁应用实例时才能删除映射表 [[查看](#-destroy-销毁实例)]
+> 仅能通过 `destroy` 销毁应用实例时才能删除映射表 [[查看](#-destroy-销毁实例)]
 
 实例映射表在应用中具有唯一性：
 
