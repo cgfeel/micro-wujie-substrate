@@ -1722,12 +1722,23 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源 [[查看](#3-卸载-umd-模式的应用)]
 - 重建模式，每次切换应用 `active` 前都会 `destroy` 后重建实例
 
-预加载，容器怎么处理：
+初次加载，通过 `shadowRoot.host` 挂载容器到指定节点：
 
-- `alive` 模式：将 `shadowRoot.host` 挂载到指定节点返回，不销毁不清空也不注入资源
-- 其它模式：全部 `destroy` 注销后重新创建实例
+| 执行方式        | 挂载节点      |
+| --------------- | ------------- |
+| 预执行 & 预加载 | 沙箱 `body`   |
+| 初次 `startApp` | 配置节点 `el` |
 
-预执行，容器怎么处理：
+> 挂载之后会通过 `renderTemplateToShadowRoot` 注入资源到容器 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+
+预加载后 `startApp`，容器怎么处理：
+
+| 模式     | 挂载节点                                                 | 容器资源                 |
+| -------- | -------------------------------------------------------- | ------------------------ |
+| `alive`  | 将 `shadowRoot.host` 从沙箱 `body` 移动到 `el` 配置节点  | 不销毁不清空也不注入资源 |
+| 其它模式 | `destroy` 注销应用后重建实例，将容器挂载到 `el` 配置节点 | 重新注入资源             |
+
+预执行后 `startApp`，容器怎么处理：
 
 - `alive` 模式：和预加载一样，不销毁不清空也不注入资源
 - `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空 `shadowRoot`
