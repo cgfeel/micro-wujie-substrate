@@ -1740,9 +1740,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 预执行后 `startApp`，容器怎么处理：
 
-- `alive` 模式：和预加载一样，不销毁不清空也不注入资源
-- `umd` 模式：`active` 之前会先 `unmount`，卸载应用时清空 `shadowRoot`
-- 重建模式：全部 `destroy` 注销后重新创建实例
+- `umd` 模式：`active` 之前会先通过 `unmount` 清空 `shadowRoot`，然后重新注入资源
+- 其它模式：和预加载一样
 
 **劫持容器 `iframe`**
 
