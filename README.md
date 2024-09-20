@@ -1749,8 +1749,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 由 `locationHrefSet` 劫持子应用 `location.href` 创建的容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 
-- 由基座路由变更导致基座重新渲染，从而在 `Dom tree` 中移除
-- `degrade` 模式下因为存在 `bug` 不会劫持，因此不存在劫持容器
+劫持容器本身不会主动清除，只能通过重新渲染，从而在 `Dom tree` 中移除：
+
+- 由基座路由变更导致基座重新渲染
+- 或由浏览器前进后退导致重新渲染
+
+> `degrade` 模式下因为存在 `bug` 不会劫持，因此不存在劫持容器
 
 劫持容器的恢复有 2 个办法：
 
