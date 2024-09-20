@@ -1660,7 +1660,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 > 前提条件：应用实例已存在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)]
 
-其他触发应用 `umount` 的场景：
+其它触发应用 `umount` 的场景：
 
 - 手动 `destroy` 注销应用，但不建议 [[查看](#其他默认提供的方法)]
 - 监听 `popstate`，浏览器前进后退触发 `iframe` 容器 `onunload` [[查看](#processappforhrefjump-监听前进和后端)]
@@ -6793,7 +6793,7 @@ proxyWindow.addEventListener;
 
 > 在 `wujie` 中只能通过 `active` 自动创建 `web component`，不支持手动添加 `wujie-app` 到 `Dom tree`
 
-#### 其他默认提供的方法
+#### 其它默认提供的方法
 
 - `setupApp`：缓存配置，提供对外接口默认不执行，见：文档 [[查看](https://wujie-micro.github.io/doc/api/setupApp.html)]
 - `destroyApp`：注销应用，对外提供的包装方法，见：文档 [[查看](https://wujie-micro.github.io/doc/api/destroyApp.html)]
