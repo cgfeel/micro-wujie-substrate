@@ -1799,7 +1799,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 调用场景：
 
-- `active` 激活应用：将资源注入 `shadowRoot` 之后 [[查看](#-active-激活应用)]
+- `active` 激活应用：将资源注入 `shadowRoot` 之后 [[查看](#5-完成激活应用)]
 - `rebuildStyleSheets`：`umd` 模式切换应用，重建样式之后 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
 不会执行操作的情况：
