@@ -1735,7 +1735,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 | 模式     | 挂载节点                                                 | 容器资源                 |
 | -------- | -------------------------------------------------------- | ------------------------ |
-| `alive`  | 将 `shadowRoot.host` 从沙箱 `body` 移动到 `el` 配置节点  | 不销毁不清空也不注入资源 |
+| `alive`  | 将 `shadowRoot.host` 从沙箱 `body` 移动到 `el` 配置节点  | 不销毁不清空也不重新注入 |
 | 其它模式 | `destroy` 注销应用后重建实例，将容器挂载到 `el` 配置节点 | 重新注入资源             |
 
 预执行后 `startApp`，容器怎么处理：
