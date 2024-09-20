@@ -1722,6 +1722,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `umd` 模式，`unmount` 时会清空容器，下次激活时重新注入资源 [[查看](#3-卸载-umd-模式的应用)]
 - 重建模式，每次切换应用 `active` 前都会 `destroy` 后重建实例
 
+> `shadowRoot` 的存在和 `iframe` 容器中的 `document` 一样，用于区分是否为初次加载
+
 初次加载，通过 `shadowRoot.host` 挂载容器到指定节点：
 
 | 执行方式        | 挂载节点      |
