@@ -1836,15 +1836,15 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 在这里不得不吐槽一下，`wujie` 处理样式真的很零乱：
 
-| 方法                                                                                                                                                                      | 样式类型 | 用途                                             |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------ |
-| 1. `processTpl` [[查看](#processtpl-提取资源)]                                                                                                                            | 静态样式 | 将资源中的静态样式替换成注释                     |
-| 2. `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                                                                                          | 静态样式 | 加载从资源中提取的静态样式并替换资源中对应的注释 |
-| 3. `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                                                                                       | 静态样式 | 手动添加样式到应用头部和尾部                     |
-| 4. `patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]                                                                                                             | 所有类型 | 为容器中已存在的样式打补丁                       |
-| 5. `rewriteAppendOrInsertChild`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L158)] | 动态样式 | 拦截应用动态添加样式                             |
-| 6. `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)]                                                                                       | 动态样式 | 劫持处理样式元素的操作                           |
-| 7. `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]                                                                           | 动态样式 | 为动态样式打补丁                                 |
+| 方法                                                                                                  | 样式类型 | 用途                                             |
+| ----------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------ |
+| 1. `processTpl` [[查看](#processtpl-提取资源)]                                                        | 静态样式 | 将资源中的静态样式替换成注释                     |
+| 2. `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                      | 静态样式 | 加载从资源中提取的静态样式并替换资源中对应的注释 |
+| 3. `processCssLoaderForTemplate` [[查看](#processcssloaderfortemplate手动添加样式)]                   | 静态样式 | 手动添加样式到应用头部和尾部                     |
+| 4. `patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]                                         | 所有类型 | 为容器中已存在的样式打补丁                       |
+| 5. `rewriteAppendOrInsertChild` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 动态样式 | 拦截应用动态添加样式                             |
+| 6. `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)]                   | 动态样式 | 劫持处理样式元素的操作                           |
+| 7. `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]       | 动态样式 | 为动态样式打补丁                                 |
 
 - 对于方法：2、3，对比加载 `script`，方法全部归纳在 `start` [[查看](#-start-启动应用)]
 - 对于打补丁的方法：4、7，执行的过程是一样的
