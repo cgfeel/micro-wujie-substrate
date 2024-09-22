@@ -1951,8 +1951,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 用途：
 
 - `unmount` 注销应用：`umd` 模式决定是否要卸载应用 [[查看](#3-卸载-umd-模式的应用)]
-- `clearInactiveAppUrl` 清理路由：也是 `unmount` 时触发 [[查看](#clearinactiveappurl清理路由)]
-- `popstate` 后退时：判断是否是从 `locationHrefSet` 拦截的页面离开
+- `clearInactiveAppUrl` 是否清理路由：也是 `unmount` 时触发 [[查看](#clearinactiveappurl清理路由)]
+- `popstate` 后退时：判断是否是从 `locationHrefSet` 拦截的页面离开 [[查看](#processappforhrefjump-监听前进和后端)]
 
 **`el`：挂载容器**
 
