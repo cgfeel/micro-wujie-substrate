@@ -2043,7 +2043,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 修改内联样式中的相对路径资源链接，按照子应用入口链接转换为绝对路径
 
-`code` 根据 `ignore` 来决定样式加载方式：
+样式根据 `ignore` 来决定样式加载方式：
 
 - `ignore`：样式只能作为外联，通过浏览器加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 - 其它情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
