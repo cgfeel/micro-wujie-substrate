@@ -2067,12 +2067,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 空字符采用应用的 `base`，如内联样式
 - 其余参考 `getAbsolutePath`，样式的 `src` 为 `url`，应用入口链接为 `base` [[查看](#getabsolutepath获取绝对路径)]
 
-之后再提取样式中的路径，去匹配 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
+之后再提取样式中的路径，去匹配 `baseUrl`：
 
-- 空字符：`baseUrl`，这样是错误情况，拿不到任何资源
-- 相对路径：`baseUrl` + `url`
-- 字符串 - 非 `url`：`baseUrl.origin` + `/` + `url`
-- 绝对路径：`url` 不做处理，忽略 `baseUrl`
+- 空字符：`baseUrl`，这样是错误情况，拿到的是 `baseUrl`，得不到真实资源
+- 其余参考 `getAbsolutePath`，资源链接为 `url`，`baseUrl` 为 `base` [[查看](#getabsolutepath获取绝对路径)]
 
 最后说说正则：
 
