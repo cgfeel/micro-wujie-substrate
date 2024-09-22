@@ -1934,12 +1934,12 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 属性值的更新：
 
-- `constructor` 构建：`undefined`
-- `destroy` 销毁：`null`
-- `active` 激活应用：`false`
+- `constructor` 构建，默认值：`undefined` [[查看](#-constructor-构造函数)]
+- `destroy` 销毁：`null` [[查看](#-destroy-销毁实例)]
+- `active` 激活应用：`false` [[查看](#1-更新配置应用信息)]
 - `locationHrefSet` 拦截子应用：设置 `true` [[查看](#locationhrefset拦截子应用-locationhref)]
-- `popstate` 前进时，页面来自 `locationHrefSet` 拦截：`true`
-- `popstate` 后退时，从 `locationHrefSet` 拦截的页面离开：`false`
+- `popstate` 前进时，页面来自 `locationHrefSet` 拦截：`true` [[查看](#processappforhrefjump-监听前进和后端)]
+- `popstate` 后退时，从 `locationHrefSet` 拦截的页面离开：`false` [[查看](#processappforhrefjump-监听前进和后端)]
 
 因此得出：
 
