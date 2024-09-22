@@ -1917,7 +1917,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `provide`              | 为子应用提供通信 `bus`、代理的 `location`，可选对象：传递数据 `props`、`shadowRoot` 容器，见：文档 [[查看](https://wujie-micro.github.io/doc/api/wujie.html#wujie)] | 在构造函数里提供 `bus`、`location`，在 `active` 中提供 `props` 和 `shadowRoot`                   | `null`                                               |
 | `styleSheetElements`   | 收集应用中动态添加的样式，`:host` 和字体补丁样式 [[查看](#2-stylesheetelements-收集样式表)]                                                                         | `[]`                                                                                             | `null`                                               |
 | `sync`                 | 单向同步路由，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#sync)]                                                                           | `udefined`，只在 `active` 时通过配置文件设置 [[查看](#3-同步路由)]                               | 不处理                                               |
-| `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性                                                       | `undefined`，只在 `active` 时候记录                                                              | 不处理                                               |
+| `template`             | `string` 类型，记录通过 `processCssLoader` 处理后的资源，在 `alive` 或 `umd` 模式下切换应用时可保证资源一致性 [[查看](#processcssloader处理-css-loader)]            | `undefined`，只在 `active` 时候记录                                                              | 不处理                                               |
 
 > 像 `degrade` 和 `plugin` 这样在实例化就定义好值，除了销毁后设置 `null`，不能中途更新值。也就是说对于像 `alive` 模式的应用，预加载配置的信息，不会因为 `startApp` 配置不同，而加载应用发生改变
 
