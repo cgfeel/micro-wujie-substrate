@@ -2006,7 +2006,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `WuJie`：构造函数实例化 [[查看](#-constructor-构造函数)]
 - `initBase`：初始化设置沙箱 `base` 元素 [[查看](#base标签操作)]
 - `importHTML`：加载应用资源 [[查看](#importhtml-加载资源)]
-- `active`：激活应用 [[查看](#-active-激活应用)]
+- `active`：激活应用同步路由 [[查看](#3-同步路由)]
 - `syncUrlToIframe`：同步基座的路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 > 顺序从上至下，只列举了和 `url` 直接关联的方法，不包含通过 `url` 衍生对象，例如：`proxyLocation`
