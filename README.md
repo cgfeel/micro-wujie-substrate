@@ -1964,9 +1964,9 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 属性值的更新：
 
-- `constructor` 构建：`undefined`
-- `destroy` 销毁：`null`
-- `active` 激活应用：沙箱 `iframe` 的 `body`，或配置指定的 `el` 节点
+- `constructor` 构建，默认值：`undefined` [[查看](#-constructor-构造函数)]
+- `destroy` 销毁：`null` [[查看](#-destroy-销毁实例)]
+- `active` 激活应用：配置指定的 `el` 节点，否则为沙箱 `iframe` 的 `body` [[查看](#-active-激活应用)]
 
 用途：
 
