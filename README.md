@@ -2101,7 +2101,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 连起来看 `replace` 中第二个函数中的参数：
 
 - `_m`：匹配的全部字符，这里用不上
-- `pre`：以 `url(` 开头跟着 1 个引号，但不能是 `"data:`、`'data:`、`data:`
+- `pre`：以 `url(` 开头可以跟着 1 个引号，但不能是 `"data:`、`'data:`、`data:`
 - `url`：`post` 之前所有的内容
 - `post`：`')`、`")`、`)`
 
