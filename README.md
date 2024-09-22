@@ -2062,10 +2062,10 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `processCssLoader`：处理应用中的静态样式替换 [[查看](#processcssloader处理-css-loader)]
 - `getCssLoader`：来自动态添加和手动添加的样式替换，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 
-处理前会根据 `src` 计算 `baseUrl`
+处理前会根据样式 `src` 计算 `baseUrl`：
 
-- 空字符：采用应用的 `base`，如内联样式
-- 其余参考 `getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
+- 空字符采用应用的 `base`，如内联样式
+- 其余参考 `getAbsolutePath`，样式的 `src` 为 `url`，应用入口链接为 `base` [[查看](#getabsolutepath获取绝对路径)]
 
 之后再提取样式中的路径，去匹配 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
 
