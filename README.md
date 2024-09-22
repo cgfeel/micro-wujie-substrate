@@ -2045,10 +2045,17 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 `code` 样式根据 `ignore` 来决定样式加载方式：
 
-- `ignore`：`code` 为空字符，作为外联样式，通过浏览器加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
+- `ignore`：`code` 为空字符，作为外联样式通过浏览器加载，见：`getExternalStyleSheets` [[查看](#getexternalstylesheets加载样式资源)]
 - 其它情况：全部提供样式代码，即便是外联样式也会通过 `fetchAssets` 加载 [[查看](#fetchassets加载资源缓存后返回-promise)]
 
-> 因此通过 `ignore` 实现外联加载的样式，引用的资源需要设为绝对路径或 `base64`，否则会因为路径不对找不到资源
+> 对于 `cssExcludes` 排除的样式不会作为应用中的样式进行处理
+
+因此：
+
+- `ignore`：由于提供的是空字符，不做任何处理
+- 其他情况：匹配并替换相对路径为绝对路径
+
+> 通过外联加载的样式，引用的资源需要设为绝对路径或 `base64`，否则会因为路径不对找不到资源
 
 调用场景：
 
