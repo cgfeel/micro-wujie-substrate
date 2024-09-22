@@ -1930,6 +1930,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 专门用来加载通过 `location.href` 跳转链接时，临时建立一个 `iframe` 来替换容器
 - 比如子应用通过 `location.href` 转向第三方页面，这时就新建 `iframe` 充当临时容器
 
+> 存储的值类型为 `boolean`，仅用于表明当前是否为劫持容器
+
 属性值的更新：
 
 - `constructor` 构建：`undefined`
