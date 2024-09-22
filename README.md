@@ -2065,9 +2065,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 处理前会根据 `src` 计算 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
 
 - 空字符：采用应用的 `base`，如内联样式
-- 相对路径：`base` + `src`
-- 字符串 - 非 `url`：`base.origin` + `/` + `src`
-- 绝对路径：忽略 `base`，采用绝对路径
+- 其余参考 `defaultGetPublicPath`，`src` 作为 `entry`，`base` 作为 `location.href` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
 之后再提取样式中的路径，去匹配 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
 
