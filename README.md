@@ -2067,6 +2067,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 空字符：采用应用的 `base`，如内联样式
 - 其余参考 `defaultGetPublicPath`，`src` 作为 `entry`，`base` 作为 `location.href` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
+> 注意：`defaultGetPublicPath` 总结了 `URL` 获取资源路径，在这里不需要查找上一级
+
 之后再提取样式中的路径，去匹配 `baseUrl`，见：`getAbsolutePath` [[查看](#getabsolutepath获取绝对路径)]
 
 - 空字符：`baseUrl`，这样是错误情况，拿不到任何资源
