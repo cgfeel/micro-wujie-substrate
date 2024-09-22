@@ -2009,7 +2009,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `active`：激活应用同步路由 [[查看](#3-同步路由)]
 - `syncUrlToIframe`：同步基座的路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
-> 顺序从上至下，只列举了和 `url` 直接关联的方法，不包含通过 `url` 衍生对象，例如：`proxyLocation`
+> 顺序从上至下，只列举了和 `url` 直接关联的方法，不包含通过 `url` 衍生对象，例如：`proxyLocation` [[查看](#wujie-中的代理)]
 
 那 `preloadApp` 和 `startApp` 提供的应用名不一样呢？
 
