@@ -2105,6 +2105,8 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `url`：`post` 之前所有的内容
 - `post`：`')`、`")`、`)`
 
+> 从这能看出来匹配的是 `url(.*)` 的资源路径，但不能是 `base64`
+
 最终将 `url` 替换成绝对路径返回：
 
 - `pre` + `absoluteUrl` + `post`
