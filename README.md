@@ -1867,7 +1867,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - 由于 `umd` 模式初次 `start` 之后，再次启动不会重新注入执行 `script`
 - 因此应用中的动态样式也不会重新注入，需要在 `__WUJIE_MOUNT` 前通过 `styleSheetElements` 恢复样式
 
-> `styleSheetElements` 的样式收集来自 2 处 [[查看](#2-stylesheetelements-收集样式表)]
+> `styleSheetElements` 的样式收集来自 3 处 [[查看](#2-stylesheetelements-收集样式表)]
 
 恢复方式：
 
