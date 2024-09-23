@@ -2310,7 +2310,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 代理的是一个空对象 `{}`，在 `get` 和 `set` 中：
 
-- 第一个对象也称为 `_fakeDocument`（假的 `document`），不会从这个对象上做任何操作
+- 第一个对象也称为 `_fakeDocument`（假的），不会从这个对象上做任何操作
 - 因此读取属性从 `iframe.contentWindow.location` 对象中获取
 
 设计初衷：
