@@ -2160,7 +2160,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 - `__WUJIE_RAW_DOCUMENT_QUERY_SELECTOR_ALL__`：见：`initIframeDom` [[查看](#initiframedom初始化-iframe-的-dom-结构)]
 - 通过 `getOwnPropertyDescriptor` 获取 `property` 描述信息为不可配置且不可写
 
-返回 `getTargetValue` 获取沙箱 `window` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]：
+通过 `getTargetValue` 获取沙箱 `window` 的属性 [[查看](#gettargetvalue-从对象中获取属性)]：
 
 - 符合 `setFnCacheMap` 要求的属性，需要绑定 `this` 为沙箱 `window` [[查看](#1-setfncachemap-存储绑定上下文的方法)]
 - 不符合 `setFnCacheMap` 要求直接从沙箱 `window` 中找到属性并返回，找不到返回 `undefined`
