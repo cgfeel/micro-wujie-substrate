@@ -2193,7 +2193,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 代理的是一个空对象 `{}`，且只有 `get` 取值：
 
-- 在 `get` 操作中，第一个参数也称为 `_fakeDocument`（假的 `document`），不会从这个对象上做任何操作
+- 在 `get` 操作中，第一个参数也称为 `_fakeDocument`（假的），不会从这个对象上做任何操作
 
 取值前的准备工作：
 
