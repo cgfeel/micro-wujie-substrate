@@ -2181,9 +2181,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **一道思考题：`proxyWindow` 中的 `document` 指向谁？**
 
-先说答案：
-
-- 会通过 `getTargetValue` 从沙箱 `window` 中直接获取 `document` 属性
+会通过 `getTargetValue` 从沙箱 `window` 中直接获取 `document` 属性
 
 > `proxyWindow` 和 `proxyLocation` 可以包裹在 `script module` 中，但是 `proxyDocument` 不行，因为 `Dom` 本身是从上至下的树状结构
 
