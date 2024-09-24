@@ -2306,6 +2306,27 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 - 通过 `getTargetValue` 从全局 `document` 中获取 [[查看](#gettargetvalue-从对象中获取属性)]
 
+**`proxyDocument` 下遗漏了 `location`**
+
+使子应用从 `document` 拿到的 `location` 和 `window.loaction` 不一致，见：`proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
+
+解决办法和 `proxyWindow` 一样，增加 `location` 拦截：
+
+```
+const { shadowRoot, proxyLocation } = iframe.contentWindow.__WUJIE;
+if (propKey === "location") {
+  return proxyLocation;
+}
+```
+
+同样需要在沙箱 `iframe` 初始化时增加指向，第 545 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L545)]：
+
+```
+ownerProperties.concat('location').forEach((propKey) => {
+  // ...
+});
+```
+
 #### 3. 代理空对象作为 `proxyLocation`
 
 代理的是一个空对象 `{}`，在 `get` 和 `set` 中：
@@ -2340,6 +2361,18 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 | `window.location`   | `proxyLocation` | 沙箱 `location` |
 | `document.location` | 沙箱 `location` | 沙箱 `location` |
 | `location`          | `proxyLocation` | 沙箱 `location` |
+
+> 详细见 `proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+
+沙箱 `location` 和 `proxyLocation` 有什么不同：
+
+- 沙箱 `location` 和基座同域
+- `proxyLocation` 按照子应用入口链接决定 `location`
+
+如何确保正确拿到子应用入口链接的 `location`：
+
+- 不要通过 `document` 获取 `location`
+- 降级容器下只能通过 `window.__WUJIE.proxyLocation` 获取
 
 拦截的方法：
 
