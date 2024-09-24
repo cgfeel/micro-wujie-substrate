@@ -2308,7 +2308,7 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 **`proxyDocument` 下遗漏了 `location`**
 
-使子应用从 `document` 拿到的 `location` 和 `window.loaction` 不一致，见：`proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
+子应用中从 `document` 拿到的 `location` 和 `window.loaction` 不一致，见：`proxyLocation` [[查看](#3-代理空对象作为-proxylocation)]
 
 解决办法和 `proxyWindow` 一样，增加 `location` 拦截：
 
