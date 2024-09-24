@@ -2326,9 +2326,20 @@ afterScriptResultList.forEach(({ async, ...afterScriptResult }) => {})
 
 这样就意味着：
 
-- 应用中所有的 `script` 的 `location` 操作都指向 `proxyLocation`
+- 应用中所有的内联 `script` 的 `location` 操作都指向 `proxyLocation`
 - 应用的 `window` 指向 `proxyWindow`，而 `proxyWindow` 的 `location` 指向 `proxyLocation`
 - 而沙箱 `iframe` 读取操作的 `location` 对象，不会受到来自 `proxyLocation` 对象任何污染
+
+`location` 不同的指向：
+
+- 外联 `script` 和 `script module`：沙箱 `location`
+- 内联 `script` 根据环境和获取的对象不同，指向也不同
+
+| 分类                | `shadowRoot`    | `iframe` 容器   |
+| ------------------- | --------------- | --------------- |
+| `window.location`   | `proxyLocation` | 沙箱 `location` |
+| `document.location` | 沙箱 `location` | 沙箱 `location` |
+| `location`          | `proxyLocation` | 沙箱 `location` |
 
 拦截的方法：
 
