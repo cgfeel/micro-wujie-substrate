@@ -2559,7 +2559,7 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 仅在 `insertScriptToIframe` 注入 `script` 到沙箱 `iframe` 时，包裹模块用到 [[查看](#insertscripttoiframe为沙箱插入-script)]
 
-- 仅限非降级 `degrade` 模式，降级的 `iframe` 容器也不提供 `proxyWindow`
+- `degrade` 降级、外联 `script`、`script module` 不包裹模块，不提供 `proxyWindow`
 
 那 `degrade` 降级时真的不需要代理 `window` 吗？
 
