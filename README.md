@@ -2457,9 +2457,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 用 `iframe` 替换子应用容器，并更新当前 `url` 中对应的 `search`
 - 由于拦截的很直接粗暴，切换会很突兀，需要通过 `degradeAttrs` 进行适配 [[查看](#41-degrade-主动降级渲染)]
 
-这意味着：
+这意味着实际使用过程中，哪怕没有考虑需要 `degrade` 主动降级：
 
-- 实际使用过程中，哪怕没有考虑需要 `degrade` 主动降级
 - 但只要应用中存在 `location.href` 更新页面链接，就需要添加 `degradeAttrs` 配置
 
 设计初衷：
