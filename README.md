@@ -2615,8 +2615,8 @@ iframeWindow.history.replaceState(null, "", args[0])
 | ------------------------------------------------------------------------------- | ------ | ------------------------------------------ |
 | `getCurUrl` 必要参数                                                            | 通用   | 获取应用的 `url` 传递给 `loader` 插件      |
 | `patchElementEffect` 给应用元素打补丁 [[查看](#patchelementeffect为元素打补丁)] | 通用   | 让元素 `baseURI` 通过 `proxyLocation` 获取 |
-| `proxyDocument`                                                                 | 通用   | 代理中属性 `documentURI`、`URL` 的指向     |
-| `proxyWindow`                                                                   | 非降级 | 代理中属性 `location` 的指向               |
+| `proxyDocument` [[查看](#2-代理空对象作为-proxydocument)]                       | 通用   | 代理中属性 `documentURI`、`URL` 的指向     |
+| `proxyWindow` [[查看](#1-代理沙箱-window-作为-proxywindow)]                     | 非降级 | 代理中属性 `location` 的指向               |
 | `insertScriptToIframe` [[查看](#insertscripttoiframe为沙箱插入-script)]         | 非降级 | 包裹注入沙箱的 `script` 作为 `location`    |
 
 > 其中 `getCurUrl` 和 `patchElementEffect` 中的 `baseURI` 的操作方式一模一样，见：重复提取样式的 `bug` [[查看](#2-重复提取样式的-bug)]
