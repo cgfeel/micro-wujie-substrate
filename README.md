@@ -2533,13 +2533,6 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 遍历集合中的属性，劫持容器 `document` 中对应的属性
 - 如果是可执行的方法，绑定 `this` 为容器 `document` 并返回，否则直接返回属性
 
-不需要考虑的属性：
-
-- 获取元素集合：`getElementsByClassName`、`getElementsByName`
-- 查询 `html` 元素：`documentElement`、`scrollingElement`
-- 获取集合：`forms`、`images`、`links`
-- 查询方法：`querySelector`、`querySelectorAll`
-
 容器中所有的元素通过 `patchElementEffect` 将 `ownerDocument` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]：
 
 - 所以无论是 `documentProxyProperties` 包含的属性，还是不需要考虑的属性，都可以直接从容器 `document` 中获取，因为在此之前，它们的 `ownerDocument` 已指向沙箱 `iframe.contentDocument`
