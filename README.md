@@ -2432,11 +2432,11 @@ ownerProperties.concat('location').forEach((propKey) => {
 - 外部链接通过 `locationHrefSet` 创建临时的劫持容器 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 应用内部路由通过 `history.replace` 进行处理，如下演示
 
-> 子应用的 `history` 在沙箱 `iframe` 初始化时已经打补丁了，见：`patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
-
 ```
 iframeWindow.history.replaceState(null, "", args[0])
 ```
+
+> 子应用的 `history` 在沙箱 `iframe` 初始化时已经打补丁了，见：`patchIframeHistory` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
 其它情况：
 
