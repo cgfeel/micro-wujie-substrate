@@ -2389,7 +2389,7 @@ ownerProperties.concat('location').forEach((propKey) => {
 
 - `host`、`hostname`、`protocol`、`port`、`origin`
 
-获取 `href`：
+获取 `href`：将 `origin` 修改为子应用
 
 - 获取沙箱 `iframe` 的 `location.href`，返回之前要将主应用的 `origin` 替换为子应用的 `origin`
 - 因为沙箱 `iframe` 和基座同域，而应用中资源的 `url` 是基于子应用的 `origin`
