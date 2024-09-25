@@ -2809,17 +2809,25 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `startApp` 初次加载沙箱实例 [[查看](#3-创建新的沙箱实例)]
 - `alive` 模式应用预加载后 `startApp` 会再次提取资源 [[查看](#21-alive-保活模式运行应用)]
 
-预加载后会重复执行：
+预加载后会重复执行（执行顺序从上至下）：
 
-| 预加载流程                         | `alive` 模式                                                                       | 重建模式                                            |
-| ---------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 声明实例 `WuJie`                   | ❎ 映射在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] | ✅                                                  |
-| 调用生命周期 `beforeLoad`          | ✅                                                                                 | ✅                                                  |
-| 加载资源 `importHTML`              | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 提取资源 `processTpl`              | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 处理样式 `processCssLoader`        | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 激活应用 `active`                  | ✅                                                                                 | ✅                                                  |
-| `getExternalScripts` 加载 `script` | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)] |
+| 预加载流程                                                                       | `alive` 模式                                                                       | 重建模式                                            |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
+| 声明实例 `WuJie` [[查看](#-constructor-构造函数)]                                | ❎ 映射在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] | ✅                                                  |
+| 调用生命周期 `beforeLoad`，见：文档 [[查看](#beforeload)]                        | ✅                                                                                 | ✅                                                  |
+| 加载资源 `importHTML` [[查看](#importhtml-加载资源)]                             | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 提取资源 `processTpl` [[查看](#processtpl-提取资源)]                             | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 处理样式 `processCssLoader` [[查看](#processcssloader处理-css-loader)]           | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 激活应用 `active` [[查看](#-active-激活应用)]                                    | ✅                                                                                 | ✅                                                  |
+| `getExternalScripts` 加载 `script` [[查看](#getexternalscripts加载-script-资源)] | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)] |
+
+- 预加载最后会通过 `getExternalScripts` 提前获取 `script` [[查看](#getexternalscripts加载-script-资源)]
+- 预执行则是将 `getExternalScripts` 传入 `start` 提前获取 `script` 并注入沙箱 [[查看](#-start-启动应用)]
+
+`umd` 预执行后启动和 `alive` 流程一样的，不同在于：
+
+- 不执行声明周期 `beforeLoad`，不调用 `start` 启动应用
+- 而是通过 `mount` 发起挂载 [[查看](#22-umd-模式切换应用)]
 
 **1. 提取必要的配置：**
 
