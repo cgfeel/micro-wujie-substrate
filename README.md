@@ -2767,7 +2767,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `qiankun` 的 `importEntry` [[查看](https://github.com/cgfeel/micro-qiankun-substrate?tab=readme-ov-file#212-prefetch-%E6%89%A7%E8%A1%8C%E9%A2%84%E5%8A%A0%E8%BD%BD)]
 - `micro-app` 的 `HTMLLoader` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#12-htmlloader-%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90)]
 
-> 除了 `qiankun` 使用的是 `import-html-entry` [[查看](https://github.com/kuitos/import-html-entry)]，其它都是单独开发的
+> 除了 `qiankun` 使用的是 `import-html-entry`，其它都是单独开发的 [[查看](https://github.com/kuitos/import-html-entry)]
 
 参数为包含 3 个属性的 `params` 对象：
 
