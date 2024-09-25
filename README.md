@@ -2715,7 +2715,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 通过 `renderElementToContainer` 将渲染容器中的 `html` 元素添加到沙箱 `body` 中 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 - 通过 `renderIframeReplaceApp` 创建新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
-非主动降级 `degrade` 则替换 `shadowRoot`：
+非 `degrade` 降级则替换 `shadowRoot`：
 
 - 通过 `renderIframeReplaceApp` 创建新的 `iframe` 替换渲染容器 [[查看](#renderiframereplaceapp加载-iframe-替换子应用)]
 
