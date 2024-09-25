@@ -2829,6 +2829,10 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 不执行声明周期 `beforeLoad`，不调用 `start` 启动应用
 - 而是通过 `mount` 发起挂载 [[查看](#22-umd-模式切换应用)]
 
+以上重复执行的流程中，资源会在首次加载时存入缓存
+
+- 之后重复调用将会优先从缓存中获取，见：资源缓存集合 [[查看](#2-资源缓存集合)]
+
 **1. 提取必要的配置：**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
