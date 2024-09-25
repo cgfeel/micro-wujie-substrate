@@ -2632,14 +2632,14 @@ iframeWindow.history.replaceState(null, "", args[0])
 
 降级模式下子应用和基座的 `location` 也不是同一个对象，对比如下：
 
-| 分类        | 非降级模式             | `degrade` 子应用      | `degrade` 基座  |
-| ----------- | ---------------------- | --------------------- | --------------- |
-| `location`  | `proxyLocation`        | 沙箱 `iframeLocation` | `proxyLocation` |
-| `url` 获取  | 子应用入口链接         | `host` 和基座同域     | 子应用入口链接  |
-| `host`      | 子应用                 | 基座同域              | 子应用          |
-| `reload`    | 屏蔽                   | 不屏蔽                | 屏蔽            |
-| `href` 更新 | 创建 `iframe` 代替容器 | 在沙箱 `iframe` 跳转  | 目前用不到      |
-| `replace`   | 替换绝对路径和基座同域 | 不做任何处理          | 目前用不到      |
+| 分类        | 非降级模式             | `degrade` 子应用     | `degrade` 基座  |
+| ----------- | ---------------------- | -------------------- | --------------- |
+| `location`  | `proxyLocation`        | 沙箱 `location`      | `proxyLocation` |
+| `url` 获取  | 子应用入口链接         | `host` 和基座同域    | 子应用入口链接  |
+| `host`      | 子应用                 | 基座同域             | 子应用          |
+| `reload`    | 屏蔽                   | 不屏蔽               | 屏蔽            |
+| `href` 更新 | 创建 `iframe` 代替容器 | 在沙箱 `iframe` 跳转 | 目前用不到      |
+| `replace`   | 替换绝对路径和基座同域 | 不做任何处理         | 目前用不到      |
 
 > 原因参考：`proxyLocation` 在哪里调用 [[查看](#proxylocation-在哪里调用)]
 
