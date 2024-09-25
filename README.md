@@ -2826,7 +2826,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 `umd` 预执行后启动和 `alive` 流程一样的，不同在于：
 
-- 不执行声明周期 `beforeLoad`，不调用 `start` 启动应用
+- 不重复调用生命周期 `beforeLoad`，不重复调用 `start` 启动应用
 - 而是通过 `mount` 发起挂载 [[查看](#22-umd-模式切换应用)]
 
 以上重复执行的流程中，资源会在首次加载时存入缓存
