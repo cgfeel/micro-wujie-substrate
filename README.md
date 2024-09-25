@@ -2809,12 +2809,17 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `startApp` 初次加载沙箱实例 [[查看](#3-创建新的沙箱实例)]
 - `alive` 模式应用预加载后 `startApp` 会再次提取资源 [[查看](#21-alive-保活模式运行应用)]
 
-`alive` 模式预加载后重复执行的原因：
+预加载后会重复执行：
 
-- 提取 `getExternalScripts` 交给 `start` 启动应用前获取 `script` 集合 [[查看](#-start-启动应用)]
-- 预加载时已通过 `processCssLoader` 加载样式替换 `template` [[查看](#processcssloader处理-css-loader)]
-- 替换后的资源通过 `active` 保存在实例 `template` 中，但 `script` 需要重新提取 [[查看](#-active-激活应用)]
-- 重新提取资源会尽可能从缓存中获取 [[查看](#2-资源缓存集合)]
+| 预加载流程                         | `alive` 启动                    | 重建模式启动             |
+| ---------------------------------- | ------------------------------- | ------------------------ |
+| 声明实例 `WuJie`                   | ❎ 映射在 `idToSandboxCacheMap` | ✅                       |
+| 调用生命周期 `beforeLoad`          | ✅                              | ✅                       |
+| 加载资源 `importHTML`              | ❎ 存储在实例 `template`        | ✅                       |
+| 提取资源 `processTpl`              | ❎ 存储在实例 `template`        | ✅                       |
+| 处理样式 `processCssLoader`        | ❎ 存储在实例 `template`        | ✅                       |
+| 激活应用 `active`                  | ✅                              | ✅                       |
+| `getExternalScripts` 加载 `script` | ✅ 通过 `start` 再次获取        | ✅ 通过 `start` 再次获取 |
 
 **1. 提取必要的配置：**
 
