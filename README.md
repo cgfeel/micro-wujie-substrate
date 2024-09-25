@@ -2772,7 +2772,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 参数为包含 3 个属性的 `params` 对象：
 
 - `url`：资源连接
-- `html`：静态资源，存在则优先使用
+- `html`：静态资源，提供则优先使用
 - `opts`：包含加载和处理 `HTML` 的相关配置
 
 `opts` 包含 4 个可选属性：
