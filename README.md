@@ -2811,15 +2811,15 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 预加载后会重复执行（执行顺序从上至下）：
 
-| 预加载流程                                                                       | `alive` 模式                                                                       | 重建模式                                            |
-| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 声明实例 `WuJie` [[查看](#-constructor-构造函数)]                                | ❎ 映射在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] | ✅                                                  |
-| 调用生命周期 `beforeLoad`，见：文档 [[查看](#beforeload)]                        | ✅                                                                                 | ✅                                                  |
-| 加载资源 `importHTML` [[查看](#importhtml-加载资源)]                             | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 提取资源 `processTpl` [[查看](#processtpl-提取资源)]                             | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 处理样式 `processCssLoader` [[查看](#processcssloader处理-css-loader)]           | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
-| 激活应用 `active` [[查看](#-active-激活应用)]                                    | ✅                                                                                 | ✅                                                  |
-| `getExternalScripts` 加载 `script` [[查看](#getexternalscripts加载-script-资源)] | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)] |
+| 预加载流程                                                                                                      | `alive` 模式                                                                       | 重建模式                                            |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
+| 声明实例 `WuJie` [[查看](#-constructor-构造函数)]                                                               | ❎ 映射在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] | ✅                                                  |
+| 调用生命周期 `beforeLoad`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/lifecycle.html#beforeload)] | ✅                                                                                 | ✅                                                  |
+| 加载资源 `importHTML` [[查看](#importhtml-加载资源)]                                                            | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 提取资源 `processTpl` [[查看](#processtpl-提取资源)]                                                            | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 处理样式 `processCssLoader` [[查看](#processcssloader处理-css-loader)]                                          | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 激活应用 `active` [[查看](#-active-激活应用)]                                                                   | ✅                                                                                 | ✅                                                  |
+| `getExternalScripts` 加载 `script` [[查看](#getexternalscripts加载-script-资源)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)] |
 
 - 预加载最后会通过 `getExternalScripts` 提前获取 `script` [[查看](#getexternalscripts加载-script-资源)]
 - 预执行则是将 `getExternalScripts` 传入 `start` 提前获取 `script` 并注入沙箱 [[查看](#-start-启动应用)]
