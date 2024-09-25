@@ -2805,9 +2805,9 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 调用场景有 3 处：
 
-- `preloadApp` 预加载
-- `startApp` 初次加载沙箱实例
-- `alive` 模式应用预加载后 `startApp` 会再次提取资源
+- `preloadApp` 预加载 [[查看](#3-预加载微任务-runpreload)]
+- `startApp` 初次加载沙箱实例 [[查看](#3-创建新的沙箱实例)]
+- `alive` 模式应用预加载后 `startApp` 会再次提取资源 [[查看](#21-alive-保活模式运行应用)]
 
 `alive` 模式预加载后重复执行的原因：
 
