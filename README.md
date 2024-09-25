@@ -2829,6 +2829,8 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 不重复调用生命周期 `beforeLoad`，不重复调用 `start` 启动应用
 - 而是通过 `mount` 发起挂载 [[查看](#22-umd-模式切换应用)]
 
+> 然而 `umd` 预执行时通过 `start` 已发起了 `mount`，所以 `startApp` 时需要先 `unmount` 后再次 `mount`
+
 以上重复执行的流程中，资源会在首次加载时存入缓存
 
 - 之后重复调用将会优先从缓存中获取，见：资源缓存集合 [[查看](#2-资源缓存集合)]
