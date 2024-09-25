@@ -2782,6 +2782,18 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `loadError`：应用加载资源失败后触发，`startApp` 时配置
 - `fiber`：空闲加载，默认为 `true`
 
+在 `importHTML` 中会用到的 `plugins`：
+
+- `htmlLoader`：运行时对子应用的 `html` 文本进行修改，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+- `jsExcludes`：排除应用中外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
+- `jsIgnores`：使用浏览器加载的外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
+- `cssExcludes`：排除应用中外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
+- `cssIgnores`：使用浏览器加载的外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+
+由于 `importHTML` 中只能通过 `processTpl` 提取静态资源 [[查看](#processtpl-提取资源)]
+
+- 因此上述 `plugins` 提到的外联 `script` 和外联样式也都是静态资源
+
 最终返回 `Promise<htmlParseResult>`，其中 `htmlParseResult` 包含：
 
 - `template`：处理后的资源内容
