@@ -2811,15 +2811,15 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 预加载后会重复执行：
 
-| 预加载流程                         | `alive` 启动                    | 重建模式启动             |
-| ---------------------------------- | ------------------------------- | ------------------------ |
-| 声明实例 `WuJie`                   | ❎ 映射在 `idToSandboxCacheMap` | ✅                       |
-| 调用生命周期 `beforeLoad`          | ✅                              | ✅                       |
-| 加载资源 `importHTML`              | ❎ 存储在实例 `template`        | ✅                       |
-| 提取资源 `processTpl`              | ❎ 存储在实例 `template`        | ✅                       |
-| 处理样式 `processCssLoader`        | ❎ 存储在实例 `template`        | ✅                       |
-| 激活应用 `active`                  | ✅                              | ✅                       |
-| `getExternalScripts` 加载 `script` | ✅ 通过 `start` 再次获取        | ✅ 通过 `start` 再次获取 |
+| 预加载流程                         | `alive` 模式                                                                       | 重建模式                                            |
+| ---------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
+| 声明实例 `WuJie`                   | ❎ 映射在 `idToSandboxCacheMap` [[查看](#1-idtosandboxcachemap存储无界实例和配置)] | ✅                                                  |
+| 调用生命周期 `beforeLoad`          | ✅                                                                                 | ✅                                                  |
+| 加载资源 `importHTML`              | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 提取资源 `processTpl`              | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 处理样式 `processCssLoader`        | ❎ 存储在实例 `template` [[查看](#4-创建容器渲染资源)]                             | ✅                                                  |
+| 激活应用 `active`                  | ✅                                                                                 | ✅                                                  |
+| `getExternalScripts` 加载 `script` | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)]                                | ✅ 通过 `start` 再次获取 [[查看](#-start-启动应用)] |
 
 **1. 提取必要的配置：**
 
