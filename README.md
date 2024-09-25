@@ -2649,11 +2649,21 @@ iframeWindow.history.replaceState(null, "", args[0])
 - 但是降级后的 `iframe` 容器使用的是沙箱 `window`，而不是 `proxyWindow`
 - 这样就需要从 `patchWindowEffect` 着手打补丁了 [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 
-怎么打补丁：
+通过 `getOwnPropertyNames` 打补丁，见源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L231)]：
 
-- 通过 `Object.getOwnPropertyNames` 遍历沙箱 `window` 拿到属性 `location`
-- 从 `iframeWindow.__WUJIE` 中获取 `degrade`
-- 如果存在降级，通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
+```
+const { degrade, proxyLocation } = iframeWindow__WUJIE;
+Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
+  // 新增补丁
+  if (key === "location" && degrade) {
+    Object.defineProperty(iframeWindow, key, {
+      get: () => proxyLocation,
+    });
+  }
+});
+```
+
+> 如果存在降级，通过 `Object.defineProperty` 劫持并指向 `proxyLocation`
 
 复现问题：
 
