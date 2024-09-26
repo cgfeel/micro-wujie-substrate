@@ -3018,7 +3018,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 - 的确，对于屏蔽预加载资源这块的优化还是应该再考虑的
 - 比如说只有当 `stylesheet` 匹配到外联样式，且又存在预加载资源的情况进行屏蔽
-- 其他的情况修正相对路径后替换入口资源
+- 其他的情况修正 `link` 预加载相对路径后，替换入口资源 `template`
 
 **3.提取或替换 `style` 内联样式：**
 
