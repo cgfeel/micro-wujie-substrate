@@ -2983,12 +2983,13 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 预加载和空闲加载的资源替换备注的方式：
 
 - `genLinkReplaceSymbol`：第 2 个参数为 `true`，替换备注后将彻底废弃不再还原
+- 因为静态样式会通过 `getExternalStyleSheets` 在渲染前实现预加载，不需要通过浏览器重复预加载 [[查看](#getexternalstylesheets加载样式资源)]
 
-> 样式会通过 `getExternalStyleSheets` 预加载，但 `getEmbedHTML` 时因提供的参数不同，无法还原样式 [[查看](#getembedhtml转换样式)]
+> 在 `getEmbedHTML` 时会因提供的参数不同，而忽略还原这部分资源 [[查看](#getembedhtml转换样式)]
 
 通过 `rel` 区分引入的资源类型
 
-- `stylesheet`：引入的外联样式
+- `stylesheet`：引入的外联样式，需要加载并还原的静态样式
 - `preload`：预加载资源
 - `modulepreload` 用于预加载 `esModule`，不匹配 `link`
 - `prefetch`：空闲加载资源
@@ -3006,6 +3007,12 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
 
 > 补充说明：`processTpl` 提取的外联样式，全部是应用中的静态样式，动态样式需要通过 `patchRenderEffect` 重写方法拦截写入 [[查看](#patchrendereffect-为容器打补丁)]
+
+那预加载的链接资源，比如 `NextJS` 中预加载的链接，不是被注释了？
+
+- 的确，对于屏蔽预加载资源这块的优化还是应该再考虑考虑的
+- 比如说只有当 `stylesheet` 匹配到外联样式，且又存在预加载资源的情况进行屏蔽
+- 其他的情况修正相对路径后替换入口资源
 
 **3.提取或替换 `style` 内联样式：**
 
