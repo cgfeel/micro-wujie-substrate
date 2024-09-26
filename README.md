@@ -2881,7 +2881,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `qiankun`：通过 `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__` 获取，见：示例 [[查看](https://github.com/cgfeel/micro-qiankun-app-cra/blob/main/src/public-path.ts)]
 - `micro-app`：通过 `window.__MICRO_APP_PUBLIC_PATH__` 获取，见：示例 [[查看](https://github.com/cgfeel/micro-app-react-project/blob/main/src/public-path.ts)]
 
-> 相对来说 `wujie` 对子硬用的倾入是最少的
+> 相对来说 `wujie` 对子应用的倾入是最少的
 
 **4. 包装获取样式和 `script` 的方法：**
 
