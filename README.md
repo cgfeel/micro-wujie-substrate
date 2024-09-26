@@ -2916,8 +2916,8 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 `alive` 模预加载后启动也会重复调用 `importHTML`：
 
-- `preloadApp`：预加载执行 1 次，会提前加载资源 [[查看](#preloadapp-预加载流程)]
-- `startApp`：启动应用执行 1 次，会使用预加载已缓存的资源 [[查看](#startapp-启动流程)]
+- `preloadApp`：预加载执行 1 次，会提前加载资源 [[查看](#3-预加载微任务-runpreload)]
+- `startApp`：启动应用执行 1 次，会使用预加载已缓存的资源 [[查看](#21-alive-保活模式运行应用)]
 
 `umd` 模式预加载后启动也会重复调用 `importHTML`：
 
