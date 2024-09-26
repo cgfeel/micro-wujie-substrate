@@ -2940,7 +2940,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 用于从加载内容中提取出 `scripts` 和样式，相当于：
 
-- `micro-app` 中的 `flatChildren`，见：`micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
+- `micro-app` 中的 `flatChildren`，见：`micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]
 
 接受 3 个参数：
 
