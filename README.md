@@ -3067,7 +3067,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 不替换 `script` 为注释的情况有 3 种：
 
-| 类型          | 条件                                   | 原因                                     |
+| 类型          | 条件                                   | 原因                                     | 处理方式       |
 | ------------- | -------------------------------------- | ---------------------------------------- | -------------- |
 | 所有          | `isValidJavaScriptType` 检测不符合要求 | 说明不是可执行的 `script`                | 直接返回不处理 |
 | 外联 `script` | 存在多个入口 `script`                  | `entry` 和 `matchedScriptEntry` 同时存在 | 抛出 `Error`   |
