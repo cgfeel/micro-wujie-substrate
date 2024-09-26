@@ -3130,7 +3130,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 - `async`：不会有任何问题，作为异步代码注入沙箱，见：队列执行顺序 [[查看](#3-队列执行顺序)]
 - `defer`：操作 `Dom` 不存在问题，因为在此之前资源已通过 `active` 注入 [[查看](#-active-激活应用)]
-- `defer`：多个静态 `script` 相互依赖，会因为 `defer` 丢失，立即执行而找不到依赖
+- `defer`：多个静态 `script` 相互依赖，可能因 `defer` 丢失而立即执行，从而找不到依赖
 
 外联 `script` 中存在 `async` 或 `defer` 属性，会在上述插入集合的对象中添加 2 个属性：
 
