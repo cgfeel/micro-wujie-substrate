@@ -3119,6 +3119,8 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
 
+> 和上述：外联样式收集的 `src` 校正，处理方式是一样的
+
 `parseTagAttributes` 提取属性：
 
 - `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为键值对象返回
