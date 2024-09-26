@@ -3115,7 +3115,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 > 赋值属性的对象见上述总结
 
-外联样式收集的 `src` 校正：
+外联 `script` 收集的 `src` 校正：
 
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
 
