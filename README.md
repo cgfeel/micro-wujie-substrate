@@ -3046,7 +3046,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 `esModule` 有 2 种情况会被忽略：
 
 - 览器支持 `esModule`：但 `script` 带有属性 `nomodule`
-- 或浏览器不支持 `esModule`：但 `isModuleScript` 为 `true`，当前 `script` 是 `esModule`
+- 浏览器不支持 `esModule`：但 `isModuleScript` 为 `true`，即当前 `script` 是 `esModule`
 
 外联 `script` 还需要声明 3 个对象：
 
