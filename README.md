@@ -3005,8 +3005,14 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 外联样式收集的 `src` 校正：
 
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
+- 参考 `defaultGetPublicPath`，资源链接为 `entry`，`baseURI` 为 `location.href` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
-> 补充说明：`processTpl` 提取的外联样式，全部是应用中的静态样式，动态样式需要通过 `patchRenderEffect` 重写方法拦截写入 [[查看](#patchrendereffect-为容器打补丁)]
+> `getEntirePath` 规则和 `defaultGetPublicPath` 一致，但不需要提取上一级链接
+
+补充说明：
+
+- `processTpl` 提取的外联样式，全部是应用中的静态样式
+- 动态样式需要通过 `patchRenderEffect` 重写方法拦截写入 [[查看](#patchrendereffect-为容器打补丁)]
 
 那预加载的链接资源，比如 `NextJS` 中预加载的链接，不是被注释了？
 
