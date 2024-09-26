@@ -2983,7 +2983,8 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 预加载和空闲加载的资源替换备注的方式：
 
 - `genLinkReplaceSymbol`：第 2 个参数为 `true`，替换备注后将彻底废弃不再还原
-- 因为提取的样式，之后会通过 `getExternalStyleSheets` 发起预加载 [[查看](#getexternalstylesheets加载样式资源)]
+
+> 样式会通过 `getExternalStyleSheets` 预加载，但 `getEmbedHTML` 时因提供的参数不同，无法还原样式 [[查看](#getembedhtml转换样式)]
 
 通过 `rel` 区分引入的资源类型
 
