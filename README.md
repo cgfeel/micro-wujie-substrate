@@ -2829,7 +2829,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 - 之后重复调用将会优先从缓存中获取，见：资源缓存集合 [[查看](#2-资源缓存集合)]
 
-**1. 提取必要的配置：**
+**1. 提取必要的配置**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
 - `htmlLoader`：作为替换资源入口 `template` 的方法，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
@@ -2858,7 +2858,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 > 对于子应用中静态资源标记 `ignore` 的策略是用注释替换，将不会作为应用中的资源加载
 
-**2. 获取资源：**
+**2. 获取资源**
 
 通过 `getHtmlParseResult` 获取资源，接受 3 个参数：
 
@@ -2870,7 +2870,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 > `getHtmlParseResult` 相当于 `micro-app` 中的 `extractSourceDom` [[查看](https://github.com/cgfeel/micro-app-substrate?tab=readme-ov-file#13-extractsourcedom-%E6%88%90%E5%8A%9F%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%9B%9E%E8%B0%83)]
 
-**3. 处理返回资源：**
+**3. 处理返回资源**
 
 - 应用入口链接通过 `getPublicPath` 获取资源路径链接，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 - 使用 `processTpl` 将资源中的样式和 `script` 提取出来，并用注释替换 [[查看](#processtpl-提取资源)]
@@ -2883,7 +2883,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 > 相对来说 `wujie` 对子应用的倾入是最少的
 
-**4. 包装获取样式和 `script` 的方法：**
+**4. 包装获取样式和 `script` 的方法**
 
 在返回的对象中包含了 2 个包装方法：
 
