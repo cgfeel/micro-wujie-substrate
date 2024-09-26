@@ -2938,7 +2938,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 目录：`template.ts` - `processTpl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/template.ts#L143)]
 
-用于从加载内容中提取出 `scripts` 和 `styles`，相当于：
+用于从加载内容中提取出 `scripts` 和样式，相当于：
 
 - `micro-app` 中的 `flatChildren`，见：`micro-app` 源码分析，注 ⑭ [[查看](https://github.com/cgfeel/micro-app-substrate)]
 
