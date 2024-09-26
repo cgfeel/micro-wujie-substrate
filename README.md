@@ -3065,15 +3065,17 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `code`：内联 `script` 的代码内容
 - `isPureCommentBlock`：`script` 每一行为空，或者是以 `//` 开头的单例注释
 
-不处理 `script` 的情况有 3 种：
+不替换 `script` 为注释的情况有 3 种：
 
-- `isValidJavaScriptType` 检测不符合要求：说明不是可执行的 `script`，直接返回不处理
-- 存在多入口 `script`：`entry` 和 `matchedScriptEntry` 同时存在，抛出 `Error`
-- `src` 属性值为空：直接返回不处理（难道不是注释掉更合理吗？）
+| 类型          | 条件                                   | 原因                                     |
+| ------------- | -------------------------------------- | ---------------------------------------- | -------------- |
+| 所有          | `isValidJavaScriptType` 检测不符合要求 | 说明不是可执行的 `script`                | 直接返回不处理 |
+| 外联 `script` | 存在多个入口 `script`                  | `entry` 和 `matchedScriptEntry` 同时存在 | 抛出 `Error`   |
+| 外联 `script` | `src` 属性值为空                       | 没有资源链接                             | 直接返回不处理 |
 
 `entry` 入口资源按照 `matchedScriptEntry` 决定设置为外联 `script` 的 `src`：
 
-- 但 `entry` 作为导出对象的属性，目前没有被调用
+- 但 `entry` 仅作为导出对象的属性，目前没有被调用
 
 用注释替换 `script` 有 4 种：
 
