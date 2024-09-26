@@ -3035,7 +3035,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 先声明以下对象：
 
-- `scriptIgnore`：提取带有 `ignore` 属性的 `script`
+- `scriptIgnore`：提取的 `script` 带有 `ignore` 属性
 - `isModuleScript`：判断是否是 `esModule`
 - `isCrossOriginScript`：提取跨域行为 `crossorigin` 的 `script`
 - `crossOriginType`：跨域类型，只提取 `anonymous` 不发送凭据，`use-credentials` 发送凭据，否则为空字符
