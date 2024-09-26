@@ -3067,11 +3067,13 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 不替换 `script` 为注释的情况有 3 种：
 
-| 类型          | 条件                                   | 原因                                     | 处理方式       |
-| ------------- | -------------------------------------- | ---------------------------------------- | -------------- |
-| 所有          | `isValidJavaScriptType` 检测不符合要求 | 说明不是可执行的 `script`                | 直接返回不处理 |
-| 外联 `script` | 存在多个入口 `script`                  | `entry` 和 `matchedScriptEntry` 同时存在 | 抛出 `Error`   |
-| 外联 `script` | `src` 属性值为空                       | 没有资源链接                             | 直接返回不处理 |
+| 类型          | 条件                                   | 原因                                     |
+| ------------- | -------------------------------------- | ---------------------------------------- |
+| 所有          | `isValidJavaScriptType` 检测不符合要求 | 说明不是可执行的 `script`                |
+| 外联 `script` | 存在多个入口 `script`                  | `entry` 和 `matchedScriptEntry` 同时存在 |
+| 外联 `script` | `src` 属性值为空                       | 没有资源链接                             |
+
+> 除了多个入口 `script` 会抛出 `Error`，其他情况都直接发挥资源不做处理
 
 `entry` 入口资源按照 `matchedScriptEntry` 决定设置为外联 `script` 的 `src`：
 
