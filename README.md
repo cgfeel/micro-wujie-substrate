@@ -3054,7 +3054,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `matchedScriptSrcMatch`：匹配带有 `src` 的 `script`
 - `matchedScriptSrc`：提取外联 `script` 的 `src` 值
 
-> `matchedScriptSrcMatch` 值应该放入外部声明，目前重复执行了匹配
+> `matchedScriptSrcMatch` 值应该放入 `if` 模块外部声明， 用于减少匹配次数
 
 所有外联 `script` 是不包含 `type="text/ng-template"` 的：
 
