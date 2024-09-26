@@ -3027,9 +3027,9 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `genIgnoreAssetReplaceSymbol`：带有 `ignore` 属性的内联样式，注释中的 `url` 为 `style file`
 - `getInlineStyleReplaceSymbol`：非 `ignore` 的内联样式，备注中按照集合中的索引替换成备注
 
-收集样式只有 1 种情况：
+收集内联样式只有 1 种情况：
 
-- 非 `ignore` 的内联样式：记录代码为 `content` 在 `styles` 集合中
+- 非 `ignore` 静态引入样式：记录样式代码为 `content` 在 `styles` 集合中
 
 **4.提取或替换 `script`：**
 
