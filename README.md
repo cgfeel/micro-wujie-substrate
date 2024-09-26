@@ -3126,7 +3126,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `<script(.*)>` 标签中所有带有 `=` 的属性，将其作为键值对象返回
 - 因此对于只有属性名的 `async` 和 `defer`，不会提取也不会恢复
 
-造成的问题：
+因丢失 `async` 和 `defer` 造成的问题：
 
 - `async`：不会有任何问题，作为异步代码注入沙箱，见：队列执行顺序 [[查看](#3-队列执行顺序)]
 - `defer`：操作 `Dom` 不存在问题，因为在此之前资源已通过 `active` 注入 [[查看](#-active-激活应用)]
