@@ -2782,13 +2782,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - `loadError`：应用加载资源失败后触发，`startApp` 时配置
 - `fiber`：空闲加载，默认为 `true`
 
-在 `importHTML` 中会用到的 `plugins`：
-
-- `htmlLoader`：运行时对子应用的 `html` 文本进行修改，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
-- `jsExcludes`：排除应用中外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-excludes)]
-- `jsIgnores`：使用浏览器加载的外联 `script`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-ignores)]
-- `cssExcludes`：排除应用中外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
-- `cssIgnores`：使用浏览器加载的外联样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+> 在 `importHTML` 中会用到的 `plugins` 见下面总结：1. 提取必要的配置
 
 由于 `importHTML` 中只能通过 `processTpl` 提取静态资源 [[查看](#processtpl-提取资源)]
 
@@ -2838,7 +2832,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 **1. 提取必要的配置：**
 
 - 从 `opts` 提取：`fetch`、`fiber`、`plugins`、`loadError`，见上述总结
-- `htmlLoader`：作为替换资源入口 `template` 的方法
+- `htmlLoader`：作为替换资源入口 `template` 的方法，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 - 通过 `getEffectLoaders` 提取 `plugins`
 - 声明一个资源路径计算函数 `getPublicPath`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
 
