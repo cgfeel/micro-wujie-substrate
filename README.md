@@ -2996,9 +2996,9 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 > 浏览器通常不加载不存在 `rel` 属性的 `link` 元素，关于这个特性用 `codepen` 做了演示 [[查看](https://codepen.io/levi0001/pen/rNEJxZr)]
 
-收集样式只有 1 种情况：
+收集外联样式只有 1 种情况：
 
-- 非 `ignore` 的外联引入样式：记录 `src` 在 `styles` 集合中
+- 非 `ignore` 静态引入样式：记录 `src` 在 `styles` 集合中
 
 > 通过 `processCssLoader` 仅还原收集在 `styles` 集合的样式 [[查看](#processcssloader处理-css-loader)]
 
