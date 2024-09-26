@@ -2904,11 +2904,6 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 通过插件排除的外联资源将直接被过滤，如：`jsExcludes`、`cssExcludes`
 - 通过插件忽略的外联资源将添加 `ignore` 属性，如：`jsIgnores`、`cssIgnores`
 
-`ignore` 筛选规则：
-
-- `script` [[查看](#getexternalscripts加载-script-资源)]
-- 样式 [[查看](#getexternalstylesheets加载样式资源)]
-
 **5. 从缓存中提取资源**
 
 重建模式下，每次切换应用就是一次实例初始化，会重复调用 `importHTML` 提取资源，此时会尽量通过缓存获取资源，见：资源缓存集合 [[查看](#2-资源缓存集合)]
