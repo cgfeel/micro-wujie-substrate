@@ -2844,7 +2844,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 `htmlLoader` 声明规则：
 
-- 提供 `plugin` 但不提供 `htmlLoader`，通过 `compose` 直接返回传入的资源 [[查看](#compose-用柯里化的方式拍平一组函数)]
+- 提供 `plugin` 但不提供 `htmlLoader`，通过 `compose` 获取的函数，直接返回传入的资源 [[查看](#compose-用柯里化的方式拍平一组函数)]
 - 通过 `plugin` 提供 `htmlLoader`，通过 `compose` 依次使用自定义的 `htmlLoader` 替换资源 [[查看](#compose-用柯里化的方式拍平一组函数)]
 - 不提供 `plugins` 使用 `defaultGetTemplate` 直接返回传入的资源
 
