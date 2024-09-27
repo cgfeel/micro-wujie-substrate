@@ -3166,8 +3166,8 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 参数：
 
-- `sandbox`：应用实例，用于获取 `cssLoader` [[查看](#通过配置替换资源)]
-- `template`：已替换注释的应用入口资源，见：`processTpl` [[查看](#processtpl-提取资源)]
+- `sandbox`：应用实例，用于获取 `proxyLocation`、`replace` 以及 `cssLoader` [[查看](#通过配置替换资源)]
+- `template`：已替换资源为注释的应用入口资源，见：`processTpl` [[查看](#processtpl-提取资源)]
 - `getExternalStyleSheets`：通过 `importHTML` 获取的包装方法，用于提取静态样式 [[查看](#getexternalstylesheets加载样式资源)]
 
 触发场景有 3 个：
