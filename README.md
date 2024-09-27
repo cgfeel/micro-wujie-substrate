@@ -3593,6 +3593,8 @@ return (cache[key] = Promise.resolve());
 - `processCssLoaderForTemplate`：处理手动添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
 - `rewriteAppendOrInsertChild`：处理应用中动态添加的内联和外联样式
 
+> `getCssLoader` 时 `replace` 会根据配置绑定在实例，因为上述方法都在应用 `active` 之后调用
+
 `processCssLoaderForTemplate` 来自激活应用时渲染容器，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
 
 - `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
