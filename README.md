@@ -3206,7 +3206,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 - 在 `processTpl` 中提取资源中的样式，替换成特定的注释 [[查看](#processtpl-提取资源)]
 - 之后通过 `getEmbedHTML` 将提取的样式加载后，替换对应的注释，修正回来
 
-> 动态添加的样式通过 `rewriteAppendOrInsertChild` 拦截并注入容器，不存在需要替换的注释
+> 动态添加的样式通过 `rewriteAppendOrInsertChild` 拦截并注入容器，不需要替换注释
 
 参数：
 
