@@ -3180,7 +3180,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 **第一步：获取并更新样式集合**
 
-- 通过 `getCurUrl` 获取应用的 `base url`，为 `proxyLocation` 的：`host` + `pathname`
+- 通过 `getCurUrl` 获取应用的 `base url`，为 `proxyLocation` 的：`origin` + `pathname`
 - 通过 `compose` 获取 `cssLoader` [[查看](#compose-用柯里化的方式拍平一组函数)]
 - 通过 `getExternalStyleSheets` 遍历样式集合，为每一个 `contentPromise` 添加一个微任务 [[查看](#getexternalstylesheets加载样式资源)]
 
