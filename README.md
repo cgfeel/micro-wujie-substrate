@@ -3387,7 +3387,7 @@ return (cache[key] = Promise.resolve());
 
 通过 `src` 加载 `script` 需要注意：
 
-- 外联 `script` 没有包裹 `proxyLocation`，调用 `location` 是建立在基座 `url` 上
+- 外联 `script` 没有包裹 `proxyLocation`，调用 `location` 是建立在基座 `url` 上 [[查看](#wujie-中的代理)]
 - 需要通过 `window.$wujie.location` 来代替 `location`
 
 **2. `importHTML` 中的包装方法**
