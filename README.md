@@ -3531,7 +3531,7 @@ return (cache[key] = Promise.resolve());
 
 调用场景：
 
-- 全部来自 `processCssLoader` 加载样式资源 [[查看](#processcssloader处理-css-loader)]
+- `processCssLoader` 加载样式资源 [[查看](#processcssloader处理-css-loader)]
 
 发挥的作用：
 
