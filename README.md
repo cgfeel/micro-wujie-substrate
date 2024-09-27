@@ -3420,7 +3420,7 @@ return (cache[key] = Promise.resolve());
 发挥的作用：
 
 - 在 `importHTML` 包裹 `getExternalScripts` 方法确保不会立即执行 [[查看](#importhtml-加载资源)]
-- 而在调用场景中通过 `await` 可以确保执行前优先发起任务
+- 而在调用场景中通过 `await` 可以确保执行前优先发起任务加载 `script`
 
 发起的任务由 `scripts` 集合中的 `contentPromise` 决定：
 
