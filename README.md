@@ -3523,7 +3523,7 @@ return (cache[key] = Promise.resolve());
 
 - 内联的静态样式都允许
 - 外联的样式不在 `cssExcludes` 配置列表中，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-excludes)]
-- 所有符合要求且匹配 `cssIgnores` 的外联样式，需要标记 `ignore` 为 `true`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
+- 所有符合要求且匹配 `cssIgnores` 的外联样式，将作为外联样式通过浏览器加载，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-ignores)]
 
 样式从哪里来：
 
