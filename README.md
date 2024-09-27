@@ -3156,7 +3156,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 #### `processCssLoader`：处理 `css-loader`
 
-处理 `css-loader` 来自备注，实际上主要的目的是替换应用入口资源中对应的备注
+处理 `css-loader` 来自备注，实际上主要的目的是，使用加载的样式替换应用入口资源中对应的备注
 
 目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
