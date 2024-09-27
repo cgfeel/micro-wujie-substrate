@@ -3557,9 +3557,9 @@ return (cache[key] = Promise.resolve());
 - `js-loader`：插件，在运行时对子应用的 `script` 脚本进行替换，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#js-loader)]
 - `replace`：启动配置，在运行时处理子应用的 `html`、`js`、`css` 进行替换，见：文档 [[查看](https://wujie-micro.github.io/doc/api/preloadApp.html#replace)]
 
-这些方法将通过以下方式调用并替换资源
+> 这些方法将在不同的场景下调用并替换资源
 
-`processCssLoader` 替换应用中的静态样式和 `template` [[查看](#processcssloader处理-css-loader)]：
+`processCssLoader` 加载应用中的静态样式替换 `template` 中的注释 [[查看](#processcssloader处理-css-loader)]：
 
 - 为样式资源属性 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
 - 通过 `getEmbedHTML` 将加载的样式替换 `template` 中对应的注释
