@@ -3173,8 +3173,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 触发场景有 3 个：
 
 - `preloadApp`：预加载应用 [[查看](#3-预加载微任务-runpreload)]
-- `startApp`：`umd` 模式初次加载 [[查看](#3-创建新的沙箱实例)]
-- `startApp`：重建模式每次加载 [[查看](#3-创建新的沙箱实例)]
+- `startApp`：`umd` 模式初次加载，重建模式每次加载 [[查看](#2-存在应用实例运行或销毁应用)]
 
 > 预加载应用时会将应用的资源提取并替换样式后，保存到实例 `template` 中，`alive` 模式的应用启动时无需再次提取样式
 
@@ -3415,8 +3414,8 @@ return (cache[key] = Promise.resolve());
 
 调用场景：
 
-- `preloadApp`：预加载没有预执行时调用 [[查看](#preloadapp-预加载流程)]
-- `start`：启动应用，包括 `preloadApp` 预执行、以及 `startApp` 启动应用 [[查看](#-start-启动应用)]
+- `preloadApp`：预加载 [[查看](#3-预加载微任务-runpreload)]
+- `startApp`：启动应用，包括 `alive` 初次加载、以及重加模式每次启动 [[查看](#2-存在应用实例运行或销毁应用)]
 
 发挥的作用：
 
