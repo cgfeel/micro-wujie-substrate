@@ -3361,7 +3361,7 @@ return (cache[key] = Promise.resolve());
 - `importHTML`：包装后作为返回对象的属性，用于加载应用中静态 `script`，下面会详细说明
 - `rewriteAppendOrInsertChild`：处理应用中动态加载的 `script`
 
-> `SPA` 类型的应用，如 `React` 通常会静态加载入口文件，然后动态注入 `script`
+> 单例应用如 `React` 通常会静态加载入口文件，然后动态注入 `script`
 
 手动配置的 `js-loader` 不会通过 `getExternalScripts` 加载资源：
 
