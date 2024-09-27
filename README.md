@@ -3158,7 +3158,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 处理 `css-loader` 来自备注，主要做了 3 件事：
 
-1. 提取插件中的 `css-loader` 为每个提取的样式集合项添加微任务 [[查看](#compose-用柯里化的方式拍平一组函数)]
+1. 提取插件中的 `css-loader` 为每个提取的样式集合项添加微任务替换样式 [[查看](#compose-用柯里化的方式拍平一组函数)]
 2. 通过 `getEmbedHTML` 加载样式，执行 `css-loader` [[查看](#getembedhtml转换样式)]
 3. 通过 `replace` 替换资源，目前存在问题，无效
 
