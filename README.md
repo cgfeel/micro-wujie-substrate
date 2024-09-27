@@ -3415,7 +3415,7 @@ return (cache[key] = Promise.resolve());
 调用场景：
 
 - `preloadApp`：预加载 [[查看](#3-预加载微任务-runpreload)]
-- `startApp`：启动应用，包括 `alive` 初次加载、以及重加模式每次启动 [[查看](#2-存在应用实例运行或销毁应用)]
+- `startApp`：`alive` 初次加载、重加模式每次启动 [[查看](#2-存在应用实例运行或销毁应用)]
 
 发挥的作用：
 
