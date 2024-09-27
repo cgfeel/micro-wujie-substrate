@@ -3574,7 +3574,7 @@ return (cache[key] = Promise.resolve());
 
 因为 `replace` 必须在应用 `active` 是绑定在实例：
 
-- 而 `processCssLoader` 是在 `active` 之前调用，执行时 `sandbox.replace` 方法还不存在
+- 而 `processCssLoader` 是在 `active` 之前调用，执行时应用实例中还不存在方法 `replace`
 
 `getCssLoader` 柯里化处理运行时的样式：
 
