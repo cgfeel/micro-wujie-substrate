@@ -3172,9 +3172,9 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 触发场景有 3 个：
 
-- `preloadApp`：预加载应用
-- `startApp`：初次加载应用（不包含预加载后 `alive` 模式的应用）
-- `startApp`：重建模式每次切换应用
+- `preloadApp`：预加载应用 [[查看](#3-预加载微任务-runpreload)]
+- `startApp`：`umd` 模式初次加载 [[查看](#3-创建新的沙箱实例)]
+- `startApp`：重建模式每次加载 [[查看](#3-创建新的沙箱实例)]
 
 > 预加载应用时会将应用的资源提取并替换样式后，保存到实例 `template` 中，`alive` 模式的应用启动时无需再次提取样式
 
