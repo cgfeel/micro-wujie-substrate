@@ -3156,13 +3156,13 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 
 #### `processCssLoader`：处理 `css-loader`
 
+目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
+
 处理 `css-loader` 来自备注，主要做了 3 件事：
 
 1. 提取插件中的 `css-loader` 为每个提取的样式集合项添加微任务替换样式 [[查看](#compose-用柯里化的方式拍平一组函数)]
 2. 通过 `getEmbedHTML` 加载样式，执行 `css-loader` [[查看](#getembedhtml转换样式)]
 3. 通过 `replace` 替换资源，目前存在问题，无效
-
-目录：`entry.ts` - `processCssLoader` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L56)]
 
 参数：
 
