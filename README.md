@@ -3562,7 +3562,7 @@ return (cache[key] = Promise.resolve());
 `processCssLoader` 加载应用中的静态样式替换 `template` 中的注释 [[查看](#processcssloader处理-css-loader)]：
 
 - 为样式资源属性 `contentPromise` 追加一个微任务，通过 `css-loader` 替换样式
-- 通过 `getEmbedHTML` 将加载的样式替换 `template` 中对应的注释
+- 通过 `getEmbedHTML` 将加载的样式替换 `template` 中对应的注释 [[查看](#getembedhtml转换样式)]
 - 最后通过 `replace` 替换已更新资源后的 `template`
 
 > 调用 `processCssLoader` 之前就一定会通过 `importHTML` 提取资源 [[查看](#importhtml-加载资源)]
