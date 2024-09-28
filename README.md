@@ -3698,9 +3698,7 @@ return (cache[key] = Promise.resolve());
 
 - `startApp` 启动应用时通过 `addLoading` 设置，见：启动应用时添加、删除 `loading` [[查看](#启动应用时添加删除-loading)]
 
-为什么 `addLoading` 后就不需要清空容器：
-
-- 因为容器在 `addLoading` 时已清空
+> `addLoading` 时容器就已清空，之后不再需要清空，只需要根据情况删除 `loading` 状态
 
 调用场景：
 
