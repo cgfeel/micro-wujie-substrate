@@ -3591,7 +3591,7 @@ return (cache[key] = Promise.resolve());
 `getCssLoader` 调用场景：
 
 - `processCssLoaderForTemplate`：处理手动添加样式 [[查看](#processcssloaderfortemplate手动添加样式)]
-- `rewriteAppendOrInsertChild`：处理应用中动态添加的内联和外联样式
+- `rewriteAppendOrInsertChild`：处理应用中动态添加的内联和外联样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 > `getCssLoader` 时 `replace` 会根据配置绑定在实例，因为上述方法都在应用 `active` 之后调用
 
