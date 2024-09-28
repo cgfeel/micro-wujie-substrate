@@ -3684,9 +3684,11 @@ return (cache[key] = Promise.resolve());
 
 流程：
 
-- 通过 `getContainer` 定位到容器 `container`
+- 使用 `selectorOrElement` 通过 `getContainer` 定位到容器 `container`
 - 如果 `container` 存在，且不包含提供的 `element`，将其添加到 `container`
 - 返回定位的容器 `container`
+
+> 上面已说明目前 `selectorOrElement` 只提供 `HTMLElement`，所以 `container` 必须存在
 
 需要注意的是：
 
