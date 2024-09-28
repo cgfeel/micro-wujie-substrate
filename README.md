@@ -3600,7 +3600,7 @@ return (cache[key] = Promise.resolve());
 - `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 - `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
 
-`rewriteAppendOrInsertChild` 会通过 `patchRenderEffect` 重写方法 [[查看](#patchrendereffect-为容器打补丁)]：
+`rewriteAppendOrInsertChild` 会通过 `patchRenderEffect` 重写方法 [[查看](#patchrendereffect-为容器打补丁)]
 
 - `patchRenderEffect` 同样来自激活应用时渲染容器，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
 - 但是拦截动态样式是在 `start` 启动应用时注入 `script` 到沙箱之后 [[查看](#2-执行队列)]
