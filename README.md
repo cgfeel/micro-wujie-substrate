@@ -3898,7 +3898,10 @@ return (cache[key] = Promise.resolve());
 
 #### 启动应用时添加、删除 `loading`
 
-目录：`shadow.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts)]
+目录：
+
+- `shadow.ts` - `addLoading` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L286)]
+- `shadow.ts` - `removeLoading` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L321)]
 
 **`addLoading` 添加 `loading`**
 
