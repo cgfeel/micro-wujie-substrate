@@ -3617,7 +3617,7 @@ return (cache[key] = Promise.resolve());
 `getJsLoader` 只能通过 `insertScriptToIframe` 调用，分别来自以下场景 [[查看](#insertscripttoiframe为沙箱插入-script)]：
 
 - `start` 启动应用：手动添加 `script`、应用内静态 `script`（含入口文件）[[查看](#-start-启动应用)]
-- `rewriteAppendOrInsertChild`：应用中动态添加的 `script`，包括 `chunk`
+- `rewriteAppendOrInsertChild`：应用中动态添加的 `script`，包括 `chunk script`
 
 > 上面提到的应用内动态添加的样式，也是通过 `rewriteAppendOrInsertChild` 执行的；也就是说应用内动态添加的 `script` 和样式，会先注入 `script` 到沙箱后，然后再拦截动态添加的样式和 `script`
 
