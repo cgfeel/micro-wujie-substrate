@@ -3922,7 +3922,7 @@ return (cache[key] = Promise.resolve());
 
 流程：
 
-- 通过 `getContainer` 获取挂载节点，通过 `clearChild` 清空节点
+- 通过 `getContainer` 根据 `el` 获取挂载节点，并使用 `clearChild` 清空节点
 - 通过 `getComputedStyle` 获取当前挂载节点的样式，根据样式更新节点：定位、`overflow`、属性
 - 创建一个 `loading` 元素添加到挂载节点里
 
