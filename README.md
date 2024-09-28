@@ -3669,6 +3669,8 @@ return (cache[key] = Promise.resolve());
 - `active` 激活应用：`degrade` 降级时创建容器 [[查看](#41-degrade-主动降级渲染)]
 - `processAppForHrefJump` 监听后退操作：用降级的 `iframe` 容器替换劫持容器 [[查看](#processappforhrefjump-监听前进和后端)]
 
+> 上述场景会先通过 `initRenderIframeAndContainer` 创建空白容器，之后再注入资源
+
 #### `renderElementToContainer`：将节点元素挂载到容器
 
 目录：`shadow.ts` - `renderElementToContainer` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/shadow.ts#L70)]
