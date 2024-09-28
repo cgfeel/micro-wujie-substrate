@@ -3602,7 +3602,7 @@ return (cache[key] = Promise.resolve());
 
 `rewriteAppendOrInsertChild` 会通过 `patchRenderEffect` 重写方法 [[查看](#patchrendereffect-为容器打补丁)]
 
-- `patchRenderEffect` 同样来自激活应用时渲染容器，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
+- `patchRenderEffect` 同样来自 `active` 激活应用时渲染容器，见：创建容器渲染资源 [[查看](#4-创建容器渲染资源)]
 - 但是拦截动态样式是在 `start` 启动应用时注入 `script` 到沙箱之后 [[查看](#2-执行队列)]
 
 > `replace` 的参数只有 `code`，拿不到资源类型，只能根据具体代码进行替换，如果需要更多的信息，建议通过 `css-loader` 或 `js-loader`
