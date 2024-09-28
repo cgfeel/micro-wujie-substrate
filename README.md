@@ -3651,9 +3651,9 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `id`：应用名
-- `parent`：挂载节点
-- `degradeAttrs`：`iframe` 属性
+- `id`：应用名，透传给 `createIframeContainer` 用于给容器添加属性
+- `parent`：挂载节点，用于挂载容器，来自配置 `el`
+- `degradeAttrs`：`iframe` 属性 [[查看](#41-degrade-主动降级渲染)]
 
 流程：
 
