@@ -3657,7 +3657,7 @@ return (cache[key] = Promise.resolve());
 
 流程：
 
-- 通过 `createIframeContainer` 创建 `iframe` 容器
+- 使用 `id` 和 `degradeAttrs`，通过 `createIframeContainer` 创建 `iframe` 容器
 - 通过 `renderElementToContainer` 挂载容器到指定节点 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 - 拿到 `iframe` 容器的 `document`，并写入空白 `html`
 - 将 `iframe` 容器和挂载节点都返回
