@@ -3749,7 +3749,7 @@ return (cache[key] = Promise.resolve());
 
 - `aclive` 模式：切换容器挂在点，不重新注入资源
 - `umd` 模式：激活应用前会清空 `shadowRoot`，激活时重新注入 `template`
-- 重建模式：每次激活都会注入 `template`
+- 重建模式：销毁重建应用实例，每次激活都会注入 `template`
 
 > 除了 `alive` 模式仅限首次激活，其他模式每次 `active` 都会调用 `renderTemplateToShadowRoot`
 
