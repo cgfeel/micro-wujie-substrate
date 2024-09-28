@@ -3879,7 +3879,7 @@ return (cache[key] = Promise.resolve());
 - 从实例中获取 `proxyLocation`，通过 `getCurUrl` 拿到应用 `origin` + `pathname` 作为应用入口链接
 - 在 `cssLoader` 中需要提供：加载的样式内容、样式的链接，应用入口链接
 
-提取样式的步骤和 `processCssLoader` 提取应用静态样式一样 [[查看](#processcssloader处理-css-loader)]：
+提取样式的步骤和 `processCssLoader` 提取应用静态样式一样 [[查看](#processcssloader处理-css-loader)]
 
 - 通过 `getExternalStyleSheets` 为每个手动样式添加一个 `Promise` 对象 `contentPromise`
 - 通过 `Promis.all` 加载所有 `contentPromise`，提取列表中每一项 `src`、`content`
@@ -3889,7 +3889,7 @@ return (cache[key] = Promise.resolve());
 
 手动添加样式的疑惑：
 
-- 忘记为手动添加的样式通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
+- 忘记为手动添加的样式元素通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
 - 但是手动添加的样式按理说子应用中不会匹配做相应操作
 
 应用中的元素如何打补丁：
