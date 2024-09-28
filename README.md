@@ -3802,7 +3802,7 @@ return (cache[key] = Promise.resolve());
 
 返回：
 
-- 整个完成渲染并更新资源的 `html` 元素
+- 完成渲染并更新资源的 `html` 元素
 
 调用场景：
 
