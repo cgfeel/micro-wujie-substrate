@@ -3751,8 +3751,6 @@ return (cache[key] = Promise.resolve());
 - `umd` 模式：激活应用前会清空 `shadowRoot`，激活时重新注入 `template`
 - 重建模式：销毁重建应用实例，每次激活都会注入 `template`
 
-> 除了 `alive` 模式仅限首次激活，其他模式每次 `active` 都会调用 `renderTemplateToShadowRoot`
-
 `alive` 再次激活不会用到 `renderTemplateToShadowRoot`：
 
 - 容器会绑定在实例属性 `shadowRoot` 中，再次激活直接挂载到指定节点 `el`
