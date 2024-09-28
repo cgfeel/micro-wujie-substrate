@@ -3840,7 +3840,7 @@ return (cache[key] = Promise.resolve());
 - 绝对路径：原封不动返回绝对路径
 - 相对路径：返回：`baseUrl/相对路径`
 
-> `baseUrl` 通过 `patchElementEffect` 处理指向 `proxyLocation`：`host` + `pathname` [[查看](#patchelementeffect为元素打补丁)]
+> `baseUrl` 通过 `patchElementEffect` 处理指向 `proxyLocation`：`origin` + `pathname` [[查看](#patchelementeffect为元素打补丁)]
 
 容器中所有元素都通过沙箱 `document` 创建，因为：
 
