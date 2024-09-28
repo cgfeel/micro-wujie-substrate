@@ -3680,6 +3680,8 @@ return (cache[key] = Promise.resolve());
 - `element`：挂载的节点，类型：`Element | ChildNode`
 - `selectorOrElement`：容器，类型：`string | HTMLElement`
 
+> 若 `selectorOrElement` 提供字符会通过 `document.querySelector` 查找元素，目前没有用到
+
 流程：
 
 - 通过 `getContainer` 定位到容器 `container`
