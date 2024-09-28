@@ -3876,7 +3876,7 @@ return (cache[key] = Promise.resolve());
 
 除此之外：
 
-- 从应用实例中获取 `proxyLocation`，通过 `getCurUrl` 拿到应用 `host` + `pathname`
+- 从应用实例中获取 `proxyLocation`，通过 `getCurUrl` 拿到应用 `origin` + `pathname`
 - 在 `cssLoader` 中需要提供：加载的样式内容、样式的链接，应用的链接
 
 提取样式的步骤和 `processCssLoader` 提取应用静态样式一样 [[查看](#processcssloader处理-css-loader)]：
