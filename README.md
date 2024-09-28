@@ -3572,7 +3572,7 @@ return (cache[key] = Promise.resolve());
 - `replace` 不能替换应用中的静态样式，只能用 `css-loader` 代替
 - `replace` 在 `processCssLoader` 不可用
 
-因为 `replace` 必须在应用 `active` 是绑定在实例：
+因为 `replace` 必须在应用 `active` 时绑定在实例：
 
 - 而 `processCssLoader` 是在 `active` 之前调用，执行时应用实例中还不存在方法 `replace`
 
