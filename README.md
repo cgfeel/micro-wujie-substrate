@@ -3887,10 +3887,9 @@ return (cache[key] = Promise.resolve());
 - 根据加载的样式类型决定将样式插入 `head` 头部，还是 `body` 尾部
 - 通过 `Promise.all` 将最终处理的 `html` 元素返回
 
-手动添加样式的疑惑：
+手动添加样式元素忘记通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
 
-- 忘记为手动添加的样式元素通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
-- 但是手动添加的样式按理说子应用中不会匹配做相应操作
+- 原因应该是：手动添加的样式，在子应用中不会匹配做相应操作
 
 应用中的元素如何打补丁：
 
