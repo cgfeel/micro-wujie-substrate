@@ -3718,7 +3718,7 @@ return (cache[key] = Promise.resolve());
 - `iframeWindow`：沙箱的 `window`
 - `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
-调用场景全部来自 `degrade` 降级下 `active` 激活应用 [[查看](#41-degrade-主动降级渲染)]：
+调用场景全部来自 `degrade` 降级下 `active` 激活应用 [[查看](#41-degrade-主动降级渲染)]
 
 - 首次 `aclive`：将应用资源注入 `iframe` 容器
 - 非 `alive` 模式再激活：同首次激活一样，每次激活都会新建 `iframe` 容器
@@ -3741,12 +3741,17 @@ return (cache[key] = Promise.resolve());
 - `iframeWindow`：沙箱的 `window`
 - `template`：通过 `active` 透传过来的应用入口资源 [[查看](#-active-激活应用)]
 
-调用场景来自非 `degrade` 降级下 `active` 激活应用 [[查看](#42-挂载子应用切换初始化预加载)]：
+调用场景
 
-- 首次 `aclive`：将应用资源注入 `shadowRoot`
-- `umd` 模式再激活：将资源重新注入已清空的 `shadowRoot`
+- 来自非 `degrade` 降级下 `active` 激活应用 [[查看](#42-挂载子应用切换初始化预加载)]
 
-> 重建模式每次都是首次 `active`
+所有模式首次激活都会将 `template` 注入 `shadowRoot`，再次激活规则如下：
+
+- `aclive` 模式：切换容器挂在点，不重新注入资源
+- `umd` 模式：激活应用前会清空 `shadowRoot`，激活时重新注入 `template`
+- 重建模式：每次激活都会注入 `template`
+
+> 除了 `alive` 模式仅限首次激活，其他模式每次 `active` 都会调用 `renderTemplateToShadowRoot`
 
 `alive` 再次激活不会用到 `renderTemplateToShadowRoot`：
 
