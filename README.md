@@ -3862,13 +3862,17 @@ return (cache[key] = Promise.resolve());
 
 - 将更新后的 `html` 元素作为 `Promise` 返回，无论是 `resolve` 成功，还是 `reject` 拒绝
 
-先提取 3 个 `plugin`：
+先提取 3 组 `plugins`：
 
 - `cssLoader`：用于每条样式加载成功后自定义处理，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-loader)]
 - `cssBeforeLoaders`：插入应用容器 `head` 头部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-before-loaders)]
 - `cssAfterLoaders`：插入应用容器 `body` 尾部的样式，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#css-after-loaders)]
 
 > 其中 `cssLoader` 通过 `getCssLoader` 柯里化返回函数，见：通过配置替换资源 [[查看](#通过配置替换资源)]
+
+其中 `cssLoader` 和 `cssBeforeLoaders` 会在应用实例初始化时添加 2 个默认的 `plugin`：
+
+- 见：提取配置初始化属性 [[查看](#2-提取配置初始化属性)]
 
 除此之外：
 
