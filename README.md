@@ -4214,7 +4214,7 @@ return (cache[key] = Promise.resolve());
 2. 通过 `updateBase` 更新呢 `base` 元素，用于修正应用中相对路径的基础链接 [[查看](#base标签操作)]
 3. 通过 `syncUrlToWindow` 同步子应用路由到基座，以 `hash` 形式存在 [[查看](#syncurltowindow同步子应用路由到主应用)]
 
-> 若更新 `history` 记录中没有提供 `url`，只执行 `rawHistoryPushState` 更新
+> 若更新 `history` 记录中没有提供 `url`，只执行 `rawHistoryPushState` 更新记录，不切换链接
 
 `mainUrl` 计算方式：
 
