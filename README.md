@@ -3971,12 +3971,12 @@ return (cache[key] = Promise.resolve());
 调用场景：
 
 - `start` 启动应用，见：队列前的准备 [[查看](#5-队列前的准备)]
-- `mount` 挂载应用时，仅限 `umd` 模式切换应用 [[查看](#1-umd-方式启动)]
+- `mount` 挂载应用时 [[查看](#1-umd-方式启动)]
 
 规则：
 
 - `alive` 和 `umd` 只有初次加载会调用 `start`，重建模式每次启动都会 `start`
-- `mount` 也必须是通过 `start` 发起挂载
+- `mount` 也必须是通过 `start` 发起挂载，且仅限 `umd` 初次启动
 
 #### 记录、恢复 `iframe` 容器事件
 
