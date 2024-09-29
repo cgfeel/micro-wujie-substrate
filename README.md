@@ -955,7 +955,7 @@
 - 在实例构造时通过 `patchIframeVariable` 将其注入沙箱 `window` [[查看](#patchiframevariable-为子应用-window-添加属性)]
 - `shadowRoot` 仅限非降级状态下才能提供
 
-在子应用中获取跟节点：
+在子应用中获取根节点：
 
 | 分类            | `iframe` 容器                  | `shadowRoot` 容器              |
 | --------------- | ------------------------------ | ------------------------------ |
@@ -4059,7 +4059,7 @@ return (cache[key] = Promise.resolve());
 
 不需要恢复 `document` 事件：
 
-- `shadowRoot`：因为本身就是跟节点，`degrade` 降级时每次都是新建 `iframe` 容器
+- `shadowRoot`：因为本身就是根节点，`degrade` 降级时每次都是新建 `iframe` 容器
 - 重建模式：每次激活都是新的应用实例
 
 > `degrade` 降级下，`alive` 模式通过 `recoverEventListeners` 恢复事件
