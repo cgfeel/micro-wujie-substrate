@@ -4218,7 +4218,7 @@ return (cache[key] = Promise.resolve());
 
 `mainUrl` 计算方式：
 
-- `url`：更新 `history` 记录的链接，链接基于子应用 `origin`
+- `url`：来自子应用更新 `history` 记录的链接，链接基于子应用 `origin`
 - `baseUrl`：基座 `origin` + 沙箱的 `pathname` + `search` + `hash`
 - `entry`：将 `url` 中子应用 `origin` 替换为空，得到计划更新的：`pathname` + `search` + `hash`
 - `mainUrl`：通过 `getAbsolutePath` 基于 `entry` 和 `baseUrl` 获取链接 [[查看](#getabsolutepath获取绝对路径)]
