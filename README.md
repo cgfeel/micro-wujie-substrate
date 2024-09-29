@@ -4037,8 +4037,8 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `oldRootElement`：初始激活时绑定容器的 `html` 元素
-- `newRootElement`：再次激活是重新创建的容器 `html` 元素
+- `oldRootElement`：切换应用前 `active` 时绑定容器的 `html` 元素
+- `newRootElement`：再次激活时 `active` 重新创建的容器 `html` 元素
 - `iframeWindow`：沙箱 `window`
 
 流程：
