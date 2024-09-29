@@ -3950,7 +3950,7 @@ return (cache[key] = Promise.resolve());
 
 什么时候可见：
 
-- `active` 激活应用时，通过 `renderTemplateToShadowRoot` 或 `renderTemplateToIframe`，将容器添加到挂载节点撑开节点高度时
+- `active` 激活应用时，通过 `renderTemplateToShadowRoot` 或 `renderTemplateToIframe`，将容器添加到挂载节点撑开节点高度时 [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
 
 在哪清除：
 
