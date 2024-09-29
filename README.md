@@ -3984,7 +3984,11 @@ return (cache[key] = Promise.resolve());
 
 仅用于 `degrade` 主动降级
 
-目录：`iframe.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts)]
+目录：
+
+- `iframe.ts` - `recordEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L286)]
+- `iframe.ts` - `recoverEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L324)]
+- `iframe.ts` - `recoverEventListeners` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/iframe.ts#L348)]
 
 **1. `recordEventListeners`：记录容器中所有事件**
 
