@@ -3998,7 +3998,7 @@ return (cache[key] = Promise.resolve());
 
 流程：
 
-- 重写子应用 `addEventListener` 和 `removeEventListener`
+- 重写沙箱 `Node` 属性 `addEventListener` 和 `removeEventListener`
 - 根据操作从实例 `elementEventCacheMap` 映射表中添加或删除记录，见：降级容器事件 [[查看](#elementeventcachemap降级容器事件)]
 - 然后再监听或删除子应用相关事件
 
