@@ -4075,7 +4075,7 @@ return (cache[key] = Promise.resolve());
 参数：
 
 - `render`：`shadowRoot` 或沙箱 `document`
-- `id`：应用名称，用于透传给重写方法用于获取实例
+- `id`：应用名称，用于透传给重写方法中获取实例
 - `degrade`：主动降级，非降级模式记录事件
 
 必做：劫持对象重写方法
