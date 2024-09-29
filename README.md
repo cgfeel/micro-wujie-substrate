@@ -4023,7 +4023,7 @@ return (cache[key] = Promise.resolve());
 流程：
 
 - 通过 `createTreeWalker` 拿到 `rootElement` 下所有 `Element` 节点
-- 遍历元素通过 `elementEventCacheMap` 获取事件监听对象，记录到一个新的 `WeakMap` 对象上
+- 遍历元素通过 `elementEventCacheMap` 获取事件监听对象，记录到一个新的 `WeakMap` 对象上 [[查看](#elementeventcachemap降级容器事件)]
 - 将拿到事件集合重新在节点上监听
 - 将筛选赋值后的 `WeakMap` 更新实例映射表 `elementEventCacheMap` [[查看](#elementeventcachemap降级容器事件)]
 
