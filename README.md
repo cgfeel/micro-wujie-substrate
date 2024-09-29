@@ -3978,6 +3978,8 @@ return (cache[key] = Promise.resolve());
 - `alive` 和 `umd` 只有初次加载会调用 `start`，重建模式每次启动都会 `start`
 - `mount` 也必须是通过 `start` 发起挂载，且仅限 `umd` 初次启动
 
+> `umd` 模式初次加载会重复调用 `removeLoading` [[查看](#5-队列前的准备)]
+
 #### 记录、恢复 `iframe` 容器事件
 
 仅用于 `degrade` 主动降级
