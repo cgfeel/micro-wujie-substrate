@@ -4368,7 +4368,9 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 - 通过 `Object.defineProperty` 指向沙箱 `document.getSelection`
 - 用处：修正应用中文本范围或光标的当前位置
-- 原理：容器负责渲染，沙箱负责执行 `script`，元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
+- 原理：容器负责渲染，沙箱负责执行 `script`
+
+> 容器中的元素通过 `patchElementEffect` 指向沙箱 `document` [[查看](#patchelementeffect为元素打补丁)]
 
 匹配 ②：`windowProxyProperties` 集合包含的属性，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L192)]
 
