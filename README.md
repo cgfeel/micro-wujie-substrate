@@ -4402,7 +4402,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 重写方法的意义，举个例子：
 
 ```
-// 子应用内
+// 子应用内 `window` 指向 `proxyWindow`，降级情况直接使用沙箱 `window`
 (function(window, self, global, location) {
   window.onfocus = () => {
     this;
@@ -4414,10 +4414,31 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
   window.__WUJIE.proxyLocation,
 );
 
-// 通过 `Object.getOwnPropertyDescriptor` 相当于将事件绑定在基座 `window`
+// 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
+Object.defineProperty(iframeWindow, 'onfocus', {
+  enumerable: descriptor.enumerable,
+  configurable: true,
+  get: () => window[e],
+  set:
+    descriptor.writable || descriptor.set
+      ? (handler) => {
+        window[e] = typeof handler === "function" ? handler.bind(iframeWindow) : handler;
+      }
+      : undefined,
+});
+
+// 上面的代码相当于如下
 window.onfocus = () => {
-  this; // 这里 this 指向沙箱  window
+  this; // 这里 this 指向沙箱 window
 }
+
+// proxyWindow 通过 `getTargetValue` 指向沙箱 `window`
+const proxyWindow = new Proxy(iframe.contentWindow, {
+  get: (target: Window, p: PropertyKey): any => {
+    // 其他代码省略...
+    return getTargetValue(target, p);
+  }
+});
 ```
 
 - 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
