@@ -4458,7 +4458,7 @@ window.onfocus = () => {
 
 参数：
 
-- `iframeWindow`：沙箱的 `window`，用于 ① 获取沙箱及插件，② 提取接口和对象用于重写属性
+- `iframeWindow`：沙箱的 `window`，用于 ① 为沙箱 `Document` 打补丁，② 提取应用实例
 
 **1. 处理 `addEventListener` 和 `removeEventListener`**
 
