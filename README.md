@@ -4448,7 +4448,7 @@ const proxyWindow = new Proxy(iframe.contentWindow, {
 
 **通过插件 `windowPropertyOverride` 打补丁**
 
-官方文档遗漏了这个插件，原理和其它插件一样，通过 `execHooks` 提取并执行：
+官方文档遗漏了这个插件，原理和其它插件一样，通过 `execHooks` 提取 `plugins` 并执行：
 
 - 执行时会将沙箱 `window` 传过去，用于手动打补丁
 
