@@ -4383,7 +4383,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 **绑定全局 `window` 上所有的 `on` 开头的事件**
 
 - 监听除了 `onload`、`onbeforeunload`、`onunload` 之外所有 `on` 开头的事件
-- 通过 `Object.getOwnPropertyNames` 遍历 `window` 筛选匹配的事件
+- 通过 `Object.getOwnPropertyNames` 遍历全局 `window` 筛选匹配的事件
 
 流程：
 
