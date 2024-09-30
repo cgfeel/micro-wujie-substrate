@@ -4347,7 +4347,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 
 - 通过 `Object.getOwnPropertyNames` 遍历沙箱 `window` 匹配属性名执行绑定
 
-> 问题来了：这难道不就是 `qiankun` 中被诟病的快照吗？
+> 问题来了：这难道不就是 `qiankun` 中被诟病的性能低下的快照吗？
 
 匹配 ①：`getSelection`：
 
