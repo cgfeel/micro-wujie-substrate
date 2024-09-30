@@ -4429,7 +4429,7 @@ Object.defineProperty(iframeWindow, 'onfocus', {
       : undefined,
 });
 
-// 上面的代码相当于如下
+// 上面的代码相当于如下，上下文改变了，但事件触发来自基座 `window`
 window.onfocus = () => {
   this; // 这里 this 指向沙箱 window
 }
