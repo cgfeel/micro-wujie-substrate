@@ -4405,6 +4405,8 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 // 子应用内 `window` 指向 `proxyWindow`，降级情况直接使用沙箱 `window`
 (function(window, self, global, location) {
   window.onfocus = () => {
+    // proxyWindow 通过 getTargetValue 将 onfocus 指向沙箱 window
+    // 由于是剪头函数，不会绑定上下文，上下文为当前函数模块
     this;
   }
 }).bind(window.__WUJIE.proxy)(
