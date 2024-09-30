@@ -4416,6 +4416,14 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
   window.__WUJIE.proxyLocation,
 );
 
+// proxyWindow 通过 `getTargetValue` 指向沙箱 `window`
+const proxyWindow = new Proxy(iframe.contentWindow, {
+  get: (target: Window, p: PropertyKey): any => {
+    // 其他代码省略...
+    return getTargetValue(target, p);
+  }
+});
+
 // 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
 Object.defineProperty(iframeWindow, 'onfocus', {
   enumerable: descriptor.enumerable,
@@ -4433,14 +4441,6 @@ Object.defineProperty(iframeWindow, 'onfocus', {
 window.onfocus = () => {
   this; // 这里 this 指向沙箱 window
 }
-
-// proxyWindow 通过 `getTargetValue` 指向沙箱 `window`
-const proxyWindow = new Proxy(iframe.contentWindow, {
-  get: (target: Window, p: PropertyKey): any => {
-    // 其他代码省略...
-    return getTargetValue(target, p);
-  }
-});
 ```
 
 - 这样当基座触发 `window.onfocus` 时，就会调用来自子应用的监听事件
