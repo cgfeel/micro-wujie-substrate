@@ -561,12 +561,12 @@
 
 `wujie` 中的预加载机制和 `qiankun`、`micro-app` 不同点：
 
-| 模式           | `qiankun`      | `micro-app`         | `wujie`      |
-| -------------- | -------------- | ------------------- | ------------ |
-| 手动预加载     | `prefetchApps` | `microApp.preFetch` | `preloadApp` |
-| 预加载启动配置 | `prefetch`     | `preFetchApps`      | ❎ 不支持    |
-| 分级加载       | ❎ 不支持      | 细粒度最好          | 支持         |
-| 优先权         | 预加载         | 预加载              | 应用启动     |
+| 模式           | `qiankun`      | `micro-app`         | `wujie`                                 |
+| -------------- | -------------- | ------------------- | --------------------------------------- |
+| 手动预加载     | `prefetchApps` | `microApp.preFetch` | `preloadApp`                            |
+| 预加载启动配置 | `prefetch`     | `preFetchApps`      | ❎ 不支持                               |
+| 分级加载       | ❎ 不支持      | 细粒度最好          | 支持                                    |
+| 优先权         | 预加载         | 预加载              | `startApp` [[查看](#startapp-启动流程)] |
 
 - 关于分级加载在上述已经总结，见：通过 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
 
