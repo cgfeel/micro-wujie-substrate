@@ -4406,7 +4406,7 @@ window.addEventListener('popstate', () => {}, { target: window.parent });
 (function(window, self, global, location) {
   window.onfocus = () => {
     // proxyWindow 通过 getTargetValue 将 onfocus 指向沙箱 window
-    // 由于是剪头函数，不会绑定上下文，上下文为当前函数模块
+    // 由于是箭头函数，不会绑定上下文，上下文为当前函数模块
     this;
   }
 }).bind(window.__WUJIE.proxy)(
