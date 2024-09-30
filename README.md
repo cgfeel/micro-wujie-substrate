@@ -557,6 +557,21 @@
 
 - 这样避免预加载和启动应用时重复填写配置信息
 
+#### 8.`wujie` 预加载机制
+
+`wujie` 中的预加载机制和 `qiankun`、`micro-app` 不同点：
+
+| 模式           | `qiankun`      | `micro-app`         | `wujie`      |
+| -------------- | -------------- | ------------------- | ------------ |
+| 手动预加载     | `prefetchApps` | `microApp.preFetch` | `preloadApp` |
+| 预加载启动配置 | `prefetch`     | `preFetchApps`      | ❎ 不支持    |
+| 分级加载       | 不支持         | 最好                | 支持         |
+| 优先权         | 预加载         | 预加载              | 应用启动     |
+
+- 关于分级加载在上述已经总结，见：通过 `exec` 预执行 [[查看](#5-通过-exec-预执行)]
+
+> 由于优先权不同，会直接影响到应用的加载机制、生命周期调用等情况，具体需要根据实际开发来看
+
 ### `WuJie` 应用类
 
 目录：`sandbox.ts` - `WuJie` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sandbox.ts#L50)]
