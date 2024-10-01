@@ -4425,7 +4425,7 @@ const proxyWindow = new Proxy(iframe.contentWindow, {
 });
 
 // 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在基座 `window`
-Object.defineProperty(iframeWindow, 'onfocus', {
+Object.defineProperty(iframeWindow, e, {
   enumerable: descriptor.enumerable,
   configurable: true,
   get: () => window[e],
