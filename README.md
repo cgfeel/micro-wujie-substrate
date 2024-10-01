@@ -4624,6 +4624,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - `shadowRoot` [[查看](#2-代理空对象作为-proxydocument)]
 - `iframe` 容器 [[查看](#1-劫持空对象作为-proxydocument)]
 
+> 在降级的 `iframe` 容器中对比了 `proxyDocument` 差异
+
 **4. 处理 `document` 专属事件**
 
 根据渲染的方式，将沙箱 `document` 转发给容器或基座 `document`：
