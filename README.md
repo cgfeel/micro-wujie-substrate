@@ -4615,7 +4615,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 通过 `Object.getOwnPropertyDescriptor` 从沙箱 `Document` 获取属性描述信息
 - 通过 `Object.defineProperty ` 劫持沙箱 `Document` 上的属性
 - 通过 `get` 直接从 `proxyDocument` 返回对应属性值
-- 通用描述信息，决定 `enumerable` 是否可枚举
+- 通过描述信息，决定 `enumerable` 是否可枚举
 
 > 不同在于：不能通过 `set` 重写属性值
 
