@@ -4537,8 +4537,36 @@ window.onfocus = () => {
 举例：
 
 ```
-// 在子应用中绑定事件到 `document`
-document.onscroll = function() {};
+// 在子应用中绑定事件到 `document`，无论是否降级都指向沙箱 `documet`
+(function(window, self, global, location) {
+  document.onscroll = function() {
+    this;  // 沙箱 document
+  }
+}).bind(window.__WUJIE.proxy)(
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxy,
+  window.__WUJIE.proxyLocation,
+);
+
+// 通过 `Object.getOwnPropertyDescriptor` 将事件绑定在不同的容器上
+Object.defineProperty(iframeWindow.Document.prototype, e, {
+  enumerable: descriptor.enumerable,
+  configurable: true,
+
+  // 根据 degrade 从指定容器获取事件
+  get: () => (sandbox.degrade ? sandbox.document[e] : sandbox.shadowRoot.firstElementChild[e]),
+  set:
+    descriptor.writable || descriptor.set
+      ? (handler) => {
+          // 绑定上下文为沙箱 document
+          const val = typeof handler === "function" ? handler.bind(iframeWindow.document) : handler;
+
+          // 根据 degrade 决定事件监听的容器
+          sandbox.degrade ? (sandbox.document[e] = val) : (sandbox.shadowRoot.firstElementChild[e] = val);
+        }
+      : undefined,
+});
 
 // `degrade` 中相当于挂载事件到 `iframe` 容器的 `document` 上
 sandbox.document.onscroll = function() {};
