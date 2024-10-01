@@ -4575,6 +4575,8 @@ sandbox.document.onscroll = function() {};
 sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 ```
 
+> 以上示例中，当拦截事件后监听对象从沙箱 `document` 转变为容器 `documennt`，但是监听事件中的回调函数中 `this` 仍旧为沙箱 `document`
+
 由于要绑定事件到监听对象上，所以必须从指定对象提取 2 个集合：
 
 - `elementOnEvents`：沙箱 `html` 元素上所有 `on` 开头的事件
