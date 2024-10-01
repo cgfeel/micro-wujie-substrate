@@ -4655,6 +4655,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 遍历 `ownerProperties` 集合劫持 `head` 和 `body`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L147)]
 - 从沙箱 `document` 中劫持对象设置为不可重写，`get` 时指向 `proxyDocument`
 
+> 除此之外还设置 `body` 和 `head` 可枚举，可配置
+
 **6. 运行插件钩子函数**
 
 文档没提，流程和 `windowPropertyOverride` 一样，见：`patchWindowEffect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
