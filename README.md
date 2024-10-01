@@ -4505,13 +4505,13 @@ window.onfocus = () => {
 
 无论添加还是删除事件，都要提供参数：`type`、`callback`、`options`，不同的是监听对象：
 
-| 条件                                                                                                                                                                                  | 监听对象                                |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `appDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]         | 沙箱 `document`                         |
-| `degrade` 降级，见：提取配置初始化属性 [[查看](#2-提取配置初始化属性)]                                                                                                                | 降级容器 `document`                     |
-| `mainDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L154)]        | 基座 `document`                         |
-| `mainAndAppAddEventListenerEvents` 事件互斥，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)] | 分别调用：基座 `document`、`shadowRoot` |
-| 其它                                                                                                                                                                                  | `shadowRoot`                            |
+| 条件                                                                                                                                                                                  | 监听对象                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `appDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L151)]         | 沙箱 `document`               |
+| `degrade` 降级，见：提取配置初始化属性 [[查看](#2-提取配置初始化属性)]                                                                                                                | 降级容器 `document`           |
+| `mainDocumentAddEventListenerEvents`，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L154)]        | 基座 `document`               |
+| `mainAndAppAddEventListenerEvents` 事件互斥，见：源码 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/common.ts#L166)] | 基座 `document`、`shadowRoot` |
+| 其它                                                                                                                                                                                  | `shadowRoot`                  |
 
 如果基座也是子应用会怎样：
 
