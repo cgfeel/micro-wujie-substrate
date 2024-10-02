@@ -4729,7 +4729,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 来自子应用动态设置资源链接，通过 `getAbsolutePath` 重新配置最终的链接 [[查看](#getabsolutepath获取绝对路径)]
 
-处理链接有 3 种情况：
+处理链接有 2 种情况：
 
 - 相对路径：按照 `baseURI` 取转换为绝对路径
 - 绝对路径或是 `hash`：不处理直接返回
