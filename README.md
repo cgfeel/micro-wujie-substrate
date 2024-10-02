@@ -4762,7 +4762,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 参数：
 
 - `scriptResult`：需要插入的 `script` 对象
-- `iframeWindow`：沙箱 `window`
+- `iframeWindow`：沙箱 `window`，用于 ① 获取沙箱 `document`，② 获取应用实例，③ 回调透传
 - `rawElement`：动态添加的 `script` 元素，用于 `setTagToScript` 打标记，可选参数
 
 `scriptResult` 有 2 个类型：
