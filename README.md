@@ -4844,14 +4844,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 2.1. 为 `scriptElement` 添加属性：
 
-| 属性                           | 条件                                                     |
-| ------------------------------ | -------------------------------------------------------- |
-| 注入 `script` 的键值对 `attrs` | 键名不和 `ScriptObject`、`ScriptObjectLoader` 的属性同名 |
-| `src`                          | 链接不为空的外联 `script`                                |
-| `crossorigin`                  | 跨域的外联 `script`，属性值为 `crossoriginType`          |
-| `type`                         | 注入的 `script` 类型为 `module`                          |
-| `async`                        | 丢弃                                                     |
-| `defer`                        | 丢弃                                                     |
+| 属性                           | 条件                                            |
+| ------------------------------ | ----------------------------------------------- |
+| 注入 `script` 的键值对 `attrs` | 键名不和 `scriptResult` 的属性同名              |
+| `src`                          | 链接不为空的外联 `script`                       |
+| `crossorigin`                  | 跨域的外联 `script`，属性值为 `crossoriginType` |
+| `type`                         | 注入的 `script` 类型为 `module`                 |
+| `async`                        | 丢弃                                            |
+| `defer`                        | 丢弃                                            |
 
 2.2. `content` 存在且不为空，作为内联 `script`：
 
