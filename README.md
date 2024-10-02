@@ -4817,7 +4817,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 不存在或为空 | 存在且不为空 | 外联 `script`   | 空字符         |
 | 不存在或为空 | 不存在或为空 | `script` 不加载 | 空字符         |
 
-> `degrade` 降级或 `esModule` 不包裹在模块内，其余情况代码均在 `proxy` 模块内执行，见：流程图 [[查看](#wujie-中的代理)]
+> 只有 `shadowRoot` 容器下内联 `script` 包裹在 `proxy` 模块内执行，其他情况 `script` 直接运行在容器下，见：流程图 [[查看](#wujie-中的代理)]
 
 通过沙箱 `iframe` 获取应用实例，用于提取对象：`replace`、`plugins`、`proxyLocation`：
 
