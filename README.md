@@ -4678,6 +4678,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 | 沙箱 `iframe` | 忽略                            | 沙箱 `document` |
 | 降级 `iframe` | 忽略                            | 降级 `document` |
 
+`getRootNode` 原理拆解：
+
+- `shadowRoot` 及容器下的元素默认拿到的是 `shadowRoot`，只有当 `composed` 为 `true` 拿到的是全局 `documennt`
+- 当容器拿到 `shadowRoot` 时将其指正为沙箱 `documet`，否则为全局 `documennt`
+
 `appendChild`：在元素内追加子元素、`insertBefore`：在元素之前插入元素
 
 - 通过原生方法动态添加元素，然后使用 `patchElementEffect` 为元素打补丁 [[查看](#patchelementeffect为元素打补丁)]
