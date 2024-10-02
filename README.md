@@ -4823,7 +4823,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 - 用于获取 `jsLoader` 替换 `content`，见：通过配置替换资源 [[查看](#通过配置替换资源)]
 - `proxyLocation` 会通过 `getCurUrl` 得到链接为：子应用：`origin` + `pathname`
-- 将 `content`、`src`、得到的链接这 3 个对象作为参数透传给 `jsLoader`，用于替换要注入的 `content`
+- 将 `content`、`src`、得到的链接，作为参数透传给 `jsLoader` 用于替换要注入的 `script` 内容
 
 > 除此之外 `proxyLocation` 还用于作为 `proxy` 模块中的 `location`
 
