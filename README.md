@@ -4093,6 +4093,11 @@ return (cache[key] = Promise.resolve());
 - `id`：应用名称，用于透传给重写方法中获取实例
 - `degrade`：主动降级，非降级模式记录事件
 
+调用场景全部来自 `active` 时渲染容器 [[查看](#4-创建容器渲染资源)]
+
+- `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
+- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
+
 必做：劫持对象重写方法
 
 | 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                                                                                           |
