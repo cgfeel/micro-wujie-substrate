@@ -4819,10 +4819,11 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 只有非 `degrade` 降级下，内联 `script` 包裹在 `proxy` 模块内执行，其他情况 `script` 直接运行在沙箱下，见：流程图 [[查看](#wujie-中的代理)]
 
-通过沙箱 `iframe` 获取应用实例，用于提取对象：`replace`、`plugins`、`proxyLocation`：
+通过沙箱 `iframe` 获取应用实例，并提取对象：`replace`、`plugins`、`proxyLocation`：
 
 - 用于获取 `jsLoader` 替换 `content`，见：通过配置替换资源 [[查看](#通过配置替换资源)]
-- `proxyLocation` 会通过 `getCurUrl` 透传链接为子应用：`origin` + `pathname`
+- `proxyLocation` 会通过 `getCurUrl` 得到链接为：子应用：`origin` + `pathname`
+- 将 `content`、`src`、得到的链接这 3 个对象作为参数透传给 `jsLoader`，用于替换要注入的 `content`
 
 > 除此之外 `proxyLocation` 还用于作为 `proxy` 模块中的 `location`
 
