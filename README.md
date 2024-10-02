@@ -4100,6 +4100,8 @@ return (cache[key] = Promise.resolve());
 | `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`  | `shadowRoot`     |
 | `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲染资源到 `iframe` 容器 | 容器 `documennt` |
 
+> 调用场景来自 `active`，但执行拦截是通过 `start` 启动应用添加入口 `script` 后
+
 必做：劫持对象重写方法
 
 | 劫持方法       | `render` | `render.head` | `render.body` | 重写方法                                                                                           |
