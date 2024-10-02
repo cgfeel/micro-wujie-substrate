@@ -4734,7 +4734,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 相对路径：按照 `baseURI` 取转换为绝对路径
 - 绝对路径或是 `hash`：不处理直接返回
 
-> `baseURI` 为子应用 `origin` + `pathname`，见：`patchElementEffect` [[查看](#patchrendereffect-为容器打补丁)]
+> `baseURI` 为子应用 `origin` + `pathname`，见：`patchElementEffect` [[查看](#patchelementeffect为元素打补丁)]
 
 调用场景：
 
