@@ -4680,8 +4680,10 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `getRootNode` 原理拆解：
 
-- `shadowRoot` 及容器下的元素默认拿到的是 `shadowRoot`，只有当 `composed` 为 `true` 拿到的是全局 `documennt`
-- 当容器拿到 `shadowRoot` 时将其指正为沙箱 `documet`，否则为全局 `documennt`
+- `shadowRoot` 及容器下的元素默认拿到的是 `shadowRoot`，需要将其指正为沙箱 `documet`
+- `shadowRoot` 下通过 `composed` 为 `true` 拿到的是全局 `documennt`，无需修正
+
+> 问题是：降级的 `iframe` 容器不需要统一修正吗？
 
 `appendChild`：在元素内追加子元素、`insertBefore`：在元素之前插入元素
 
