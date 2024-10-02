@@ -4089,14 +4089,16 @@ return (cache[key] = Promise.resolve());
 
 参数：
 
-- `render`：`shadowRoot` 或沙箱 `document`
+- `render`：`shadowRoot` 或降级容器 `document`
 - `id`：应用名称，用于透传给重写方法中获取实例
 - `degrade`：主动降级，非降级模式记录事件
 
 调用场景全部来自 `active` 时渲染容器 [[查看](#4-创建容器渲染资源)]
 
-- `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)]
-- `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]
+| 调用方法                                                                                 | 用途                       | 提供的容器       |
+| ---------------------------------------------------------------------------------------- | -------------------------- | ---------------- |
+| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`    | `shadowRoot`     |
+| `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲渲染资源到 `iframe` 容器 | 容器 `documennt` |
 
 必做：劫持对象重写方法
 
