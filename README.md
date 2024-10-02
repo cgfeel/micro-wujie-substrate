@@ -4095,10 +4095,10 @@ return (cache[key] = Promise.resolve());
 
 调用场景全部来自 `active` 时渲染容器 [[查看](#4-创建容器渲染资源)]
 
-| 调用方法                                                                                 | 用途                       | 提供的容器       |
-| ---------------------------------------------------------------------------------------- | -------------------------- | ---------------- |
-| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`    | `shadowRoot`     |
-| `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲渲染资源到 `iframe` 容器 | 容器 `documennt` |
+| 调用方法                                                                                 | 用途                     | 提供的容器       |
+| ---------------------------------------------------------------------------------------- | ------------------------ | ---------------- |
+| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`  | `shadowRoot`     |
+| `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲染资源到 `iframe` 容器 | 容器 `documennt` |
 
 必做：劫持对象重写方法
 
