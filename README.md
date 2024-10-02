@@ -4829,16 +4829,16 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 `script` 注入类型：
 
-| 来源                                                                  | 元素类型      |
-| --------------------------------------------------------------------- | ------------- |
-| `jsLoader` 手动提供的外联 `script`                                    | 外联 `script` |
-| `jsIgnores` 屏蔽 `fetch` 加载的外联 `script`                          | 外联 `script` |
-| `jsIgnores` 屏蔽 `script` 带有 `async` 或 `defer` 属性且非 `esModule` | 内联 `script` |
-| 类型为 `module` 的外联 `script`                                       | 外联 `script` |
-| 带有 `ignore` 属性的静态 `script`                                     | 注释元素      |
-| 不允许的 `esModule`，见：`processTpl` [[查看](#processtpl-提取资源)]  | 注释元素      |
-| `jsExcludes` 屏蔽 `script`                                            | 排除不注入    |
-| 其它类型的 `script`                                                   | 内联 `script` |
+| 来源                                                                               | 元素类型      |
+| ---------------------------------------------------------------------------------- | ------------- |
+| `jsLoader` 手动提供的外联 `script`                                                 | 外联 `script` |
+| `jsIgnores` 屏蔽 `fetch` 加载的外联 `script`                                       | 外联 `script` |
+| `jsIgnores` 屏蔽 `script` 带有 `async` 或 `defer` 属性且非 `esModule`              | 内联 `script` |
+| 类型为 `module` 的外联 `script`                                                    | 外联 `script` |
+| 带有 `ignore` 属性的静态 `script`，见：`processTpl` [[查看](#processtpl-提取资源)] | 注释元素      |
+| 不允许的 `esModule`，见：`processTpl` [[查看](#processtpl-提取资源)]               | 注释元素      |
+| `jsExcludes` 屏蔽 `script`                                                         | 排除不注入    |
+| 其它类型的 `script`                                                                | 内联 `script` |
 
 **2. 配置 `script`**
 
