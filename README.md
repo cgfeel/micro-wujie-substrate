@@ -4867,6 +4867,8 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 使用 `proxy` 作为模块的：`this`、`window`、`self`、`global` [[查看](#1-代理沙箱-window-作为-proxywindow)]
 - 使用 `proxyLocation` 作为模块的 `location` [[查看](#3-代理空对象作为-proxylocation)]
 
+> `document` 通过 `patchDocumentEffect` 打补丁拦截沙箱 `document` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
+
 修复 `webpack` 当 `publicPath` 为 `auto` 无法加载资源的问题：
 
 - 通过 `Object.getOwnPropertyDescriptor` 获取 `scriptElement` 属性 `src` 的描述信息
