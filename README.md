@@ -4857,12 +4857,15 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 2.2. `content` 存在且不为空，作为内联 `script`：
 
+内联 `script` 存在两种情况，见：流程图 [[查看](#wujie-中的代理)]
+
+- 包裹在函数模块内：非降级 `degrade` 不是 `esModule`
+- 直接注入沙箱：`degrade` 或 `esModule`
+
 将整个 `script` 内容包裹在一个函数模块里：
 
 - 使用 `proxy` 作为模块的：`this`、`window`、`self`、`global` [[查看](#1-代理沙箱-window-作为-proxywindow)]
 - 使用 `proxyLocation` 作为模块的 `location` [[查看](#3-代理空对象作为-proxylocation)]
-
-> 要求：非降级 `degrade` 不是 `esModule`，见：流程图 [[查看](#wujie-中的代理)]
 
 修复 `webpack` 当 `publicPath` 为 `auto` 无法加载资源的问题：
 
