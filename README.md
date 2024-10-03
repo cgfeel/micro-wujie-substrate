@@ -4846,12 +4846,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 | 属性                           | 条件                                            |
 | ------------------------------ | ----------------------------------------------- |
-| 注入 `script` 的键值对 `attrs` | 键名不和 `scriptResult` 的属性同名              |
+| 注入 `script` 的键值对 `attrs` | 为了避免冲突，不能和 `scriptResult` 属性同名    |
 | `src`                          | 链接不为空的外联 `script`                       |
 | `crossorigin`                  | 跨域的外联 `script`，属性值为 `crossoriginType` |
 | `type`                         | 注入的 `script` 类型为 `module`                 |
 | `async`                        | 丢弃                                            |
 | `defer`                        | 丢弃                                            |
+
+> 属性冲突举例：`scriptResult` 计算环境不支持 `esMoudle`，而 `attr` 设置属性 `module`
 
 2.2. `content` 存在且不为空，作为内联 `script`：
 
