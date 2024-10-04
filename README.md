@@ -4957,6 +4957,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 要求：`script` 带有 `src`， `content` 为空
 - 满足条件无论是 `onload` 还是 `onerror` 都会调用 `afterExecScript`
 
+> 问题：外联 `script` 无论加载成功还是失败，都回调相同的方法，无法区分
+
 注入操作：
 
 - 在容器中添加 `scriptElement`，使用沙箱 `window` 调用 `callback` 通知完成注入
