@@ -4916,7 +4916,22 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 - 错误条件：① 内联 `script`；② `degrade` 降级或是 `esModule`
 - 处理方法：输出 `error`，调用 `execNextScript` 以便执行下个队列
 
-> 问题：非 `degrade` 且不是 `esModule` 的内联 `script` 难道就不会加载失败了吗？
+原因：
+
+- `js` 作为内联 `script` 加载失败，或 `jsLoader` 加载失败
+
+问题：加载 `script` 失败，但包裹在函数模块内就不算加载成功了
+
+- 会导致注入 `script` 执行错误，正确的做法应该将判断位置紧邻 `jsLoader` 下
+
+```
+let code = jsLoader(content, src, getCurUrl(proxyLocation));
+
+// 紧邻 jsLoader
+if (/^<!DOCTYPE html/i.test(code)) {
+  // 错误处理...
+}
+```
 
 打标记：
 
