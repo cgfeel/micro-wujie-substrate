@@ -5009,7 +5009,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | 提供 `html` 资源                            | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)]       | 已完成                                 |
 | 提供 `html` 资源                            | 没有静态样式                                                  | `await this.iframeReady` 确保完成      |
 
-> 执行顺序从左到右，因为 `fetch` 既不是微任务也不是宏任务，在拿到结果前会执行已挂载的宏任务
+因为 fetch 既不是微任务也不是宏任务，在拿到结果前会执行已挂载的宏任务
+
+> 执行顺序从左到右，每行一种执行方式
 
 原因：
 
