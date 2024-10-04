@@ -5046,7 +5046,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 参数：
 
 - `iframeWindow`：沙箱 `window`，用于：① 打补丁；② 存原生方法
-- `wujie`：应用实例，用于：获取资源链接和 `degrade`
+- `wujie`：应用实例，用于获取资源链接和 `degrade`
 - `mainHostPath`：基座 `origin`
 - `appHostPath`：子应用 `origin`
 
