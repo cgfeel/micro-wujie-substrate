@@ -5060,7 +5060,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 因为 `initIframeDom` 之前通过 `stopIframeLoading` 检测沙箱 `document` 改变 [[查看](#stopiframeloading实现一个纯净的沙箱-iframe)]
 - 沙箱 `document` 因配置了 `src`，实例化后加载基座 `origin` 完成变更
-- 因此执行 `initIframeDom` 时要使用一个空白的 ` html` 去替换原先加载的页面
+- 因此执行 `initIframeDom` 确保沙箱初始化时 `html` 为空
 
 **第二步：注入 `iframeWindow` 全局属性**
 
