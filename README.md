@@ -4911,16 +4911,14 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 
 > 问题：外联 `script` 注入沙箱加载失败后，触发的也是 `onload`，回调函数和参数没做区分
 
-错误的情况：注入 `script` 代码是 `html` 格式，说明加载失败了
+错误的情况：注入 `script` 代码是 `html` 格式
 
 - 错误条件：① 内联 `script`；② `degrade` 降级或是 `esModule`
 - 处理方法：输出 `error`，调用 `execNextScript` 以便执行下个队列
 
-原因：
+> 原因：`js` 作为内联 `script` 加载失败，或 `jsLoader` 加载失败
 
-- `js` 作为内联 `script` 加载失败，或 `jsLoader` 加载失败
-
-问题：加载 `script` 失败，但包裹在函数模块内就不算加载成功了
+问题：加载 `script` 失败，但包裹在函数模块内就不算加载失败了
 
 - 会导致注入 `script` 执行错误，正确的做法应该将判断位置紧邻 `jsLoader` 下
 
