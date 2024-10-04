@@ -5006,12 +5006,15 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | `importHTML` [[查看](#importhtml-加载资源)] | `processCssLoader` [[查看](#processcssloader处理-css-loader)] | `active` [[查看](#1-更新配置应用信息)] |
 | ------------------------------------------- | ------------------------------------------------------------- | -------------------------------------- |
 | 通过 `src` 加载应用资源                     | 已完成                                                        | 已完成                                 |
-| 提供 `html` 资源                            | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)]       | 已完成                                 |
-| 提供 `html` 资源                            | 没有静态样式                                                  | `await this.iframeReady` 确保完成      |
-
-因为 fetch 既不是微任务也不是宏任务，在拿到结果前会执行已挂载的宏任务
+| 提供 `html` 或使用缓存                      | `getEmbedHTML` 加载样式 [[查看](#getembedhtml转换样式)]       | 已完成                                 |
+| 提供 `html` 或使用缓存                      | 没有静态样式                                                  | `await this.iframeReady` 确保完成      |
 
 > 执行顺序从左到右，每行一种执行方式
+
+因为 `fetch` 既不是微任务也不是宏任务，在拿到结果前会执行已挂载的微任务和宏任务
+
+- 如果从初始化到替换入口资源 `iframeReady` 都还未完成执行
+- 将会在 `active` 中通过 `await` 确保注入资源前沙箱已完成初始化
 
 原因：
 
