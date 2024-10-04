@@ -5082,7 +5082,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `syncIframeUrlToWindow`：监听沙箱前进后退 [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 - `patchWindowEffect`：修正 `iframeWindow` 的 `effect` [[查看](#patchwindoweffect修正-iframewindow-的-effect)]
 - `patchDocumentEffect`：修正沙箱 `document` 的 `effect` [[查看](#patchdocumenteffect修正沙箱-document-的-effect)]
-- `patchNodeEffect`：修正 `node` 的 `effect` [[查看](#patchnodeeffect修正容器节点的-effect)]
+- `patchNodeEffect`：修正容器节点的 `effect` [[查看](#patchnodeeffect修正容器节点的-effect)]
 - `patchRelativeUrlEffect`：修复动态添加元素资源 [[查看](#patchrelativeurleffect修复动态添加元素资源)]
 
 #### `base`：标签操作
