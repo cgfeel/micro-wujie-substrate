@@ -4978,7 +4978,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 参数：
 
-- `sandbox`：应用实例，用于打补丁、绑定 `iframeReady` 用于确保沙箱初始化
+- `sandbox`：应用实例，用于获取应用`id`、透传参数打补丁、绑定 `iframeReady` 确保沙箱初始化
 - `attrs`：手动配置 `iframe` 元素属性，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html#attrs)]
 - `mainHostPath`：基座 `origin`
 - `appHostPath`：子应用的 `origin`
