@@ -4925,10 +4925,19 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 ```
 let code = jsLoader(content, src, getCurUrl(proxyLocation));
 
-// 紧邻 jsLoader
+// 紧邻 jsLoader，同时需要提升相关对象
+nextScriptElement.textContent =
+  "if(window.__WUJIE.execQueue && window.__WUJIE.execQueue.length){ window.__WUJIE.execQueue.shift()()}";
+
+const container = rawDocumentQuerySelector.call(iframeWindow.document, "head");
+const execNextScript = () => !async && container.appendChild(nextScriptElement);
+
 if (/^<!DOCTYPE html/i.test(code)) {
-  // 错误处理...
+  error(WUJIE_TIPS_SCRIPT_ERROR_REQUESTED, scriptResult);
+  return execNextScript();
 }
+
+// 添加属性以及内联 `script` 包裹属性挪后执行...
 ```
 
 打标记：
