@@ -4937,7 +4937,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
   return execNextScript();
 }
 
-// 添加属性以及内联 `script` 包裹属性挪后执行...
+// 添加属性以及内联 `script` 包裹在函数模块，挪后执行...
 ```
 
 打标记：
