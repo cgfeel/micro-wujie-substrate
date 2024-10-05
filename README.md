@@ -5184,7 +5184,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 记录沙箱初始化时的 `document` 作为 `oldDoc`，此时链接是 `about:blank`
 - 发起并返回微任务，`Promise` 同步函数中创建并执行函数 `loop` 作为 `document` 检测
-- 在 `loop` 中发起宏任务，由于 `appendChild` 沙箱是同步操作，所以在宏任务执行前会加载沙箱 `iframe`
+- 在 `loop` 中发起宏任务，在宏任务执行前会通过上下文加载沙箱 `iframe` 到基座
 - 在宏任务中获取沙箱当前 `document` 和 `oldDoc` 进行比较
 - 如果沙箱 `iframe` 没有完成实例化导致 `document` 不变，将重新发起一轮 `loop` 宏任务
 - 直到 `iframe` 完成实例化，`document` 发生改变，停止加载并通过 `resolve` 在返回的微任务中添加队列
