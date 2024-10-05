@@ -5114,6 +5114,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 但在 `initBase` 中只获取 `location.href` 中的 `pathname`，这个值是相同的
 
+调用场景：
+
+- `initIframeDom`：初始化 `iframe` 的 `dom` 结构 [[查看](#initiframedom初始化-iframe-的-dom-结构)]
+
 流程：
 
 - 通过 `iframeWindow` 拿到沙箱的 `document` 并创建 `base` 元素
@@ -5132,12 +5136,26 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `appHostPath`：子应用 `origin`
 - `mainHostPath`：基座 `origin`
 
+调用场景：
+
+- `patchIframeHistory`：劫持沙箱 `iframe` 的 `history` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
+
 流程：
 
-- 通过 `new URL` 将沙箱当前的 `url` 中基座的 `origin` 替换成子应用 `origin`
+- 通过 `new URL` 将沙箱当前的 `url` 中 `mainHostPath` 替换成 `appHostPath`，作为 `baseUrl`
 - 调用 `iframe` 原生的方法查找 `base` 元素并更新 `href` 属性
 
-> 源码中 `baseUrl.href` 即是 `appHostPath + baseUrl.pathname`，没必要算 2 次
+`baseUrl` 可能存在 3 个结果：
+
+| 分类           | 说明                              | `baseUrl`                          |
+| -------------- | --------------------------------- | ---------------------------------- |
+| 相对路径       | `mainHostPath` 不存在             | `appHostPath` + 相对路径 `pathame` |
+| 绝对路径       | `mainHostPath` 存在，替换为空字符 | `appHostPath` + 相对路径 `pathame` |
+| 第三方绝对路径 | `mainHostPath` 不存在             | `iframeWindow.location.href`       |
+
+因此为了在更新 `base` 元素时，最终仍旧以子应用链接为基准
+
+- 只取 `pathname` 再次计算：`appHostPath` + `baseUrl.pathname`
 
 #### `stopIframeLoading`：实现一个纯净的沙箱 `iframe`
 
