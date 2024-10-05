@@ -5102,8 +5102,17 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 参数：
 
-- `iframeWindow`：沙箱 `window`，用于获取沙箱 `document` 和初始化的 `href`
+- `iframeWindow`：沙箱 `window`，用于获取沙箱 `document` 和沙箱初始化的 `location`
 - `url`：子应用的入口链接
+
+沙箱初始化后，`proxy` 已完成创建，根据 `degrade` 不同指向也不同
+
+- 非降级：`proxyLocation`
+- 降级：沙箱 `location`
+
+由于指向对象不同，拿到的结果不同，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+
+- 但在 `initBase` 中只获取 `location.href` 中的 `pathname`，这个值是相同的
 
 流程：
 
