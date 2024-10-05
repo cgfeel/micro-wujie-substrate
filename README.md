@@ -5178,6 +5178,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 若沙箱没有完成实例化就 `stop`，此时链接为 `about:blank` 会导致子应用路由无法运行
 - 如果沙箱实例化时采用 `document.write` 擦除，路由的同步功能将失败
 
+> 由此得出 `stopIframeLoading` 初始化沙箱时，擦除 `iframe` 的必要性
+
 流程：
 
 - 记录沙箱 `document` 初始化时作为 `oldDoc`，此时链接是 `about:blank`
