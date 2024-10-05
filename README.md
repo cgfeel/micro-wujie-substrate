@@ -5171,7 +5171,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 子应用的 `script` 运行在一个和基座同域的 `iframe` 沙箱中
 - 设置 `src` 为 `mainHostPath`，即基座 `origin` 会主动加载基座
-- 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时中断加载，防止污染子应用
+- 所以必须在 `iframe` 实例化完成前，还没有加载完 `html` 时停止加载，防止污染子应用
 
 来自文档的提醒 [[查看](https://wujie-micro.github.io/doc/guide/information.html#%E7%BB%86%E8%8A%82)]：
 
