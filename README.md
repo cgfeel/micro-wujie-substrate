@@ -5091,8 +5091,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 目的：在沙箱 `iframe` 中添加一个 `base` 元素
 
-- 由于容器渲染时通过 `patchElementEffect` 将每个元素 `ownerDocument` 指向沙箱 `document` [[查看](#patchrendereffect-为容器打补丁)]
-- 所以需要在沙箱 `iframe` 通过 `base` 元素，修正容器中所有资源的相对链接
+- 由于 `iframeGenerator` 设置沙箱和基座同域 [[查看](#iframegenerator创建沙箱-iframe)]
+- 所以需要在沙箱中通过 `base` 元素，基于应用链接，修正容器中所有资源的相对路径
 
 操作分 2 部分，即：初始化和动态更新
 
