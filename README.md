@@ -5191,6 +5191,11 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 由于沙箱 `iframe` 在初始化之前已经设置不可见，所以加载过程也全程不可见
 
+添加 `iframe` 元素是上下文同步任务，但加载 `url` 的过程既不是微任务也不是宏任务
+
+- 因此加载 `url` 时一定会优先执行当前已挂在的微任务和宏任务
+- 因此 `loop` 反复检测 `document` 也就合理了
+
 #### `syncIframeUrlToWindow` 监听沙箱前进后退
 
 沙箱 `iframe` 中监听 `popstate` 前进后退、`hashchange` 监听 `hash` 变化，同步路由到主应用
