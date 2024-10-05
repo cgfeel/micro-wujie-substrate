@@ -5128,7 +5128,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 参数：
 
-- `iframeWindow`：沙箱 `window`，用于获取沙箱 `document` 和当前的 `href`
+- `iframeWindow`：沙箱 `window`，用于获取沙箱 `document` 和沙箱当前的 `href`
 - `appHostPath`：子应用 `origin`
 - `mainHostPath`：基座 `origin`
 
