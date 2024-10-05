@@ -5187,7 +5187,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 在 `loop` 中发起宏任务，在宏任务执行前会通过上下文加载沙箱 `iframe` 到基座
 - 在宏任务中获取沙箱当前 `document` 和 `oldDoc` 进行比较
 - 如果沙箱 `iframe` 没有完成实例化导致 `document` 不变，将重新发起一轮 `loop` 宏任务
-- 直到 `iframe` 完成实例化，`document` 发生改变，停止加载并通过 `resolve` 在返回的微任务中添加队列
+- 直到 `iframe` 完成实例化，`document` 发生改变，停止加载并通过 `resolve` 结束当前微任务
 
 > 由于沙箱 `iframe` 在初始化之前已经设置不可见，所以加载过程也全程不可见
 
