@@ -5117,7 +5117,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 流程：
 
 - 通过 `iframeWindow` 拿到沙箱的 `document` 并创建 `base` 元素
-- 通过 `anchorElementGenerator` 创建 2 个链接元素：基座 `origin`，子应用入口链接 [[查看](#anchorelementgenerator转换-url)]
+- 通过 `anchorElementGenerator` 创建 2 个链接对象：基座 `origin`，子应用入口链接 [[查看](#anchorelementgenerator转换-url)]
 - 使用子应用 `origin` + 基座 `pathname` 作为 `base` 元素的 `href`，之后插入沙箱 `head` 中
 
 > 初始化时沙箱 `iframe` 的链接为 `mainHostPath`：基座 `origin`，而 `pathname` 为空
