@@ -5182,7 +5182,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 流程：
 
-- 记录沙箱 `document` 初始化时作为 `oldDoc`，此时链接是 `about:blank`
+- 记录沙箱初始化时的 `document` 作为 `oldDoc`，此时链接是 `about:blank`
 - 发起并返回微任务，`Promise` 同步函数中创建并执行函数 `loop` 作为 `document` 检测
 - 在 `loop` 中发起宏任务，由于 `appendChild` 沙箱是同步操作，所以在宏任务执行前会加载沙箱 `iframe`
 - 在宏任务中获取沙箱当前 `document` 和 `oldDoc` 进行比较
