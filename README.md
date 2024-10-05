@@ -3762,7 +3762,7 @@ return (cache[key] = Promise.resolve());
 
 所有模式首次激活都会将 `template` 注入 `shadowRoot`，再次激活规则如下：
 
-- `aclive` 模式：切换容器挂在点，不重新注入资源
+- `aclive` 模式：切换容器挂载点，不重新注入资源
 - `umd` 模式：激活应用前会清空 `shadowRoot`，激活时重新注入 `template`
 - 重建模式：销毁重建应用实例，每次激活都会注入 `template`
 
@@ -5193,7 +5193,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 添加 `iframe` 元素是上下文同步任务，但加载 `url` 的过程既不是微任务也不是宏任务
 
-- 因此加载 `url` 时一定会优先执行当前已挂在的微任务和宏任务
+- 因此加载 `url` 时一定会优先执行当前已挂载的微任务和宏任务
 - 因此 `loop` 反复检测 `document` 也就合理了
 
 #### `syncIframeUrlToWindow` 监听沙箱前进后退
