@@ -4992,6 +4992,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | -------------- | --------------- | -------- | ------ | ----------------- |
 | `mainHostPath` | `display: none` | `attrs`  | 应用名 | `WUJIE_DATA_FLAG` |
 
+> 将沙箱设置和基座同域的目的是为了子应用能够和基座通信，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/communication.html#window-%E9%80%9A%E4%BF%A1)]
+
 将 `iframe` 添加到 `body` 末尾，通过 `patchIframeVariable` 为沙箱 `window` 添加属性 [[查看](#patchiframevariable-为子应用-window-添加属性)]
 
 - 来自备注：变量需要提前注入，在入口函数通过变量防止死循环。
