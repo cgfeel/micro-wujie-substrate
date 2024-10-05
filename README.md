@@ -5233,9 +5233,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 劫持容器和降级的 `iframe` 容器创建方式是一样的 [[查看](#创建-iframe-容器)]：
 
-- 创建 `iframe` 元素，定义一个宽高 `100%` 的样式
+- 创建 `iframe` 元素，定义一个宽高 `100%` 的样式，作为劫持容器
 - 通过 `setAttrsToElement` 为 `iframe` 添加样式、`src`、`degradeAttrs`
-- 通过 `renderElementToContainer` 清空容器挂载元素，并添加 `iframe` 元素 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
+- 通过 `renderElementToContainer` 清空容器挂载元素，并添加劫持容器 [[查看](#renderelementtocontainer将节点元素挂载到容器)]
 
 ### 辅助方法 - 路由同步和链接处理
 
