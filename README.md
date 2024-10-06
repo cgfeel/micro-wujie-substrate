@@ -5257,10 +5257,6 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 应用初始化 `active` 时，路由会先通过 `syncUrlToIframe` 同步到子应用，之后再反向同步 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
-不做处理的情况：
-
-- 没有配置 `sync` 同步路由并且在基座链接 `search` 中找不到当前应用名
-
 整个同步的流程概览：
 
 - 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`
@@ -5289,6 +5285,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - `sync` 已配置：通过 `encodeURIComponent` 更新 `queryMap[id]` 的值
 - `sync` 未配置：从 `queryMap` 中删除应用对应的值
+
+> `sync` 未配置且当前网址 `search` 中找不到当前应用名，将在第二步之前返回 `null` 不做任何操作
 
 `queryMap[id]` 更新方式
 
