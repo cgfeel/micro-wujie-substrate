@@ -5345,7 +5345,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 使用 `getSyncUrl` 前提：配置 `sync` 同步路由，且 `execFlag` 应用还未启动
 
-- `sync` 决定了要不要转换路由，若没有提供 `syncUrlToWindow` 会删除网址中子应用的路由 [[查看](#syncurltowindow同步子应用路由到主应用)]
+- `sync` 决定了要不要转换路由，若未提供，`syncUrlToWindow` 时将删除网址中子应用路由 [[查看](#syncurltowindow同步子应用路由到主应用)]
 - `execFlag` 决定了当前是否为首次加载
 
 不提模式首次加载：
