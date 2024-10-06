@@ -5269,7 +5269,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 **第二步：处理短路径**
 
-遍历 `prefix` 拿到短链名 `shortPath` 和对应的长链接 `longPath`：
+遍历 `prefix` 键名拿到短链名 `shortPath`，根据短连接获取长链接 `longPath`：
 
 - 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
 - 更新会取最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
