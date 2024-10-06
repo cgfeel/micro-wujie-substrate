@@ -5318,7 +5318,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 从沙箱 `location` 中提取：`pathname`、`search`、`hash`，用于决定是否更新路由
 - 从应用实例中获取：`id`、`url`、`sync`，`execFlag`、`prefix`，用于计算子应用路由
-- 从应用实例中获取：`inject` 得到基座 `origin` 为沙箱 `iframe` 更新 `history`
+- 从应用实例中获取：`inject` 得到基座 `origin`，用于为沙箱 `iframe` 更新 `history`
 
 同步路由到子应用最终目的：
 
