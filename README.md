@@ -5367,7 +5367,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新 `history`
 
 - `appRoutePath` 一旦同步，子应用内切换路由，无需再次从基座执行同步，而是自身实现更新
-- 计算结果如果没有变化，则不需要更新 `history`
+
+> 计算结果如果没有变化，则不需要更新 `history`
 
 #### `clearInactiveAppUrl`：清理路由
 
