@@ -5335,7 +5335,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 绝对路径的 `url`：劫持 `location.href` 拦截路由 [[查看](#locationhrefset拦截子应用-locationhref)]
 - 返回空字符：当前网址中找不到和应用对应的路由
 
-> 这两种情况也使用源入口链接计算子应用路由
+> 这两种情况也使用资源入口做计算，其中绝对路径的 `url` 存在问题，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
 因此对于配置 `sync` 同步路由，且 `execFlag` 应用还未启动才需要转换：
 
