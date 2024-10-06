@@ -5255,7 +5255,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `syncIframeUrlToWindow`：监听沙箱 `window`：`popstate`、`hashchange` [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 - `patchIframeHistory`：劫持沙箱 `history`：`pushState`、`replaceState` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
-> 应用初始化 `active` 时，路由会先通过 `syncUrlToIframe` 同步到子应用，之后再反向同步 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+应用初始化 `active` 时，路由会先通过 `syncUrlToIframe` 同步到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+
+- 之后路由再反向同步到主应用，这样做能够实现 `prefix` 短链替换
 
 整个同步的流程概览：
 
