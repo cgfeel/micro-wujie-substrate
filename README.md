@@ -5259,6 +5259,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 没有配置 `sync` 同步路由并且在基座链接 `search` 中找不到当前应用名
 
+整个同步的流程：
+
+- 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`，更新对比页面网址决定是否更新
+
 **第一步：提取配置**
 
 - 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
