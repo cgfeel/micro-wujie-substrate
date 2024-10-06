@@ -5341,9 +5341,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 其中绝对路径的 `url` 存在问题，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
-> 匹配不到子应用路由时同样也使用资源入口链接做计算
+> 匹配不到子应用路由时，同样也使用资源入口链接做计算
 
-因此对于配置 `sync` 同步路由，且 `execFlag` 应用还未启动才需要转换：
+使用 `getSyncUrl` 前提：配置 `sync` 同步路由，且 `execFlag` 应用还未启动：
 
 - `sync` 决定了 `syncUrlToWindow` 要不要通过 `prefix` 转换为短连接 [[查看](#syncurltowindow同步子应用路由到主应用)]
 - `execFlag` 决定了当前是否为首次加载，再次加载沙箱 `iframe` 的路由已完成了转换
