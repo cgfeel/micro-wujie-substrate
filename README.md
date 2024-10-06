@@ -5360,7 +5360,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 **第二步：比较路由进行同步**
 
-根据以上方式计算出路由 `syncUrl` 通过 `appRouteParse` 转换获取 `appRoutePath` [[查看](#approuteparse-提取链接)]
+根据以上方式计算出路由 `syncUrl`，通过 `appRouteParse` 转换获取 `appRoutePath` [[查看](#approuteparse-提取链接)]
 
 - 同样得到：`pathname` + `search` + `hash`
 
