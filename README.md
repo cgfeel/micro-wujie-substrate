@@ -5259,9 +5259,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 没有配置 `sync` 同步路由并且在基座链接 `search` 中找不到当前应用名
 
-整个同步的流程：
+整个同步的流程概览：
 
-- 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`，更新对比页面网址决定是否同步全局 `history`
+- 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`
+- 更新对比页面网址决定是否需要替换全局 `history` 记录
 
 **第一步：提取配置**
 
