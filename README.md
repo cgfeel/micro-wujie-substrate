@@ -5364,16 +5364,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 同样得到：`pathname` + `search` + `hash`
 
-比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新路由
+比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新 `history`
 
 - `appRoutePath` 一旦同步，子应用内切换路由，无需再次从基座执行同步，而是自身实现更新
-
-> 这也是为什么一直强调首次加载的原因
-
-子应用路由和资源入口链接提取的路由一致的情况下，不需要更新路由：
-
-- 首次加载沙箱的路由是 `/`，应用入口链接虽然和基座不同，但路由也有可能是 `/`
-- 切换应用，沙箱链接已为：基座 `origin` + `appRoutePath`，路由都是 `appRoutePath`
+- 计算结果如果没有变化，则不需要更新 `history`
 
 #### `clearInactiveAppUrl`：清理路由
 
