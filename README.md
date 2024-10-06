@@ -5276,12 +5276,15 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 **第三步：同步路由**
 
-`sync` 已配置：
+同步方式：
 
-- 通过 `encodeURIComponent` 更新 `queryMap[id]` 的值为 `curUrl`
+- `sync` 已配置：通过 `encodeURIComponent` 更新 `queryMap[id]` 的值
+- `sync` 未配置：从 `queryMap` 中删除应用对应的值
+
+`queryMap[id]` 更新方式
+
 - 如果 `validShortPath` 匹配到值，优先替换 `curUrl` 中 `longPath` 部分为 `{短链名}`
-
-> `sync` 未配置：从 `queryMap` 中删除应用对应的值
+- 否则使用 `curUrl` 作为路由
 
 **第四步：更新路由**
 
