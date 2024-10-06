@@ -5257,7 +5257,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 应用初始化 `active` 时，路由会先通过 `syncUrlToIframe` 同步到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
-- 之后路由再反向同步到主应用，这样做能够实现 `prefix` 短链替换
+- 之后路由再反向同步到主应用，这样做能够实现 `prefix` 短链接替换
 
 整个同步的流程概览：
 
