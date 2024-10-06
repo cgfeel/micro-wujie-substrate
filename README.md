@@ -5343,10 +5343,12 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 匹配不到子应用路由时，同样也使用资源入口链接做计算
 
-使用 `getSyncUrl` 前提：配置 `sync` 同步路由，且 `execFlag` 应用还未启动：
+使用 `getSyncUrl` 前提：配置 `sync` 同步路由，且 `execFlag` 应用还未启动
 
 - `sync` 决定了 `syncUrlToWindow` 要不要通过 `prefix` 转换为短连接 [[查看](#syncurltowindow同步子应用路由到主应用)]
 - `execFlag` 决定了当前是否为首次加载，再次加载沙箱 `iframe` 的路由已完成了转换
+
+> 以上任意条件不成立都不会使用短连接替换当前路由，也就没有必要通过 `getSyncUrl` 做转换，直接使用资源入口链接做计算即可
 
 首次加载包括：刷新页面、切换未加载过的应用，这样得到 2 个路由：
 
