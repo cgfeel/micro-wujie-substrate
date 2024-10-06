@@ -5261,7 +5261,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 整个同步的流程：
 
-- 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`，更新对比页面网址决定是否更新
+- 从当前网址中提取并检查 `winUrlElement` 中的 `queryMap`，更新对比页面网址决定是否同步全局 `history`
 
 **第一步：提取配置**
 
