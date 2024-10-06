@@ -5374,6 +5374,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 目录：`sync.ts` - `clearInactiveAppUrl` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/sync.ts#L72)]
 
+调用场景：
+
+- 仅限 `unmount` 卸载应用 [[查看](#-unmount-卸载应用)]
+
 清理子应用过期的同步参数：
 
 - 通过 `anchorElementGenerator` 将当前的链接转换为链接对象 `winUrlElement` [[查看](#anchorelementgenerator转换-url)]
@@ -5387,13 +5391,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 将条件匹配的子应用路由从当前网址中删除
 
-筛选后转换为 `search` 更新 `HTMLAnchorElement` 对象，之后比较全局 `location.href`：
+筛选后转换为 `search` 更新 `winUrlElement` 对象，之后比较全局 `location.href`：
 
-- 如果不一致 `replace` 替换 `history` 链接
-
-调用场景：
-
-- 仅限 `unmount` 卸载应用 [[查看](#-unmount-卸载应用)]
+- 如果不一致，通过 `replace` 替换 `history` 记录
 
 #### `appRouteParse` 提取链接
 
