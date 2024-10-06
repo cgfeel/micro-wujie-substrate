@@ -5255,6 +5255,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `syncIframeUrlToWindow`：监听沙箱 `window`：`popstate`、`hashchange` [[查看](#synciframeurltowindow-监听沙箱前进后退)]
 - `patchIframeHistory`：劫持沙箱 `history`：`pushState`、`replaceState` [[查看](#patchiframehistory-劫持沙箱-iframe-的-history)]
 
+> 应用初始化 `active` 时会先通过 `syncUrlToIframe` 同步路由到子应用，然后再同步路由到基座 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+
 不做处理的情况：
 
 - 没有配置 `sync` 同步路由并且在基座链接 `search` 中找不到当前应用名
