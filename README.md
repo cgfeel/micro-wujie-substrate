@@ -5279,6 +5279,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
 - 更新会取最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
 
+> `longPath` 通过 `startsWith` 头匹配，不支持正则匹配语法
+
 **第三步：同步路由**
 
 同步方式：
