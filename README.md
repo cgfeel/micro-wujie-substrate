@@ -5376,8 +5376,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 清理子应用过期的同步参数：
 
-- 通过 `anchorElementGenerator` 将当前的链接转换为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
-- 通过 `getAnchorElementQueryMap` 将链接对象的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
+- 通过 `anchorElementGenerator` 将当前的链接转换为链接对象 `winUrlElement` [[查看](#anchorelementgenerator转换-url)]
+- 通过 `getAnchorElementQueryMap` 提取 `winUrlElement` 的 `search` 转化为键值对 [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 
 遍历 `search` 对象所有的 `key`，作为应用名提取并筛选应用，要求：
 
