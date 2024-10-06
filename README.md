@@ -5350,26 +5350,23 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 以上任意条件不成立都不会使用短连接替换当前路由，也就没有必要通过 `getSyncUrl` 做转换，直接使用资源入口链接做计算即可
 
-首次加载包括：刷新页面、切换未加载过的应用，这样得到 2 个路由：
+首次加载包括：
 
-- `preAppRoutePath`：首次加载沙箱 `location` 为基座 `origin`，计算的到的路由为 `/`
-- `appRoutePath`：根据资源入口链接，得到 `pathname` + `search` + `hash`
-
-> `appRoutePath` 将作为计划同步的路由，一旦同步，下次切换应用无需再更新路由
-
-只有 `umd` 模式需要区分首次加载：
-
-- `alive` 只有首次加载才需要同步路由到子应用，重建模式每次都是首次加载
-
-通过 `getSyncUrl` 获取资源链接，有可能来自 `locationHrefSet` 路由劫持 [[查看](#locationhrefset拦截子应用-locationhref)]：
-
-- 劫持路由会记录完整的 `url`，例如：`project={https://example.com}`
-- 对于 `http` 开头的链接全部以资源入口作为链接
+| 模式         | 刷新页面 | 切换应用                                         |
+| ------------ | -------- | ------------------------------------------------ |
+| `alive` 模式 | ✅       | 仅首次加载应用计算路由                           |
+| `umd` 模式   | ✅       | 仅首次加载应用计算路由，再次加载使用资源入口链接 |
+| 重建模式     | ✅       | 每次启动应用都是首次加载                         |
 
 **第二步：比较路由进行同步**
 
-- `appRoutePath` 需要通过 `appRouteParse` 计算得到 [[查看](#approuteparse-提取链接)]
-- 比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新路由
+根据以上方式计算出路由 `syncUrl` 通过 `appRouteParse` 转换获取 `appRoutePath` [[查看](#approuteparse-提取链接)]
+
+- 同样得到：`pathname` + `search` + `hash`
+
+比较 `preAppRoutePath` 和 `appRoutePath`，若不相等则通过沙箱 `replaceState` 更新路由
+
+- `appRoutePath` 一旦同步，子应用内切换路由，无需再次从基座执行同步，而是自身实现更新
 
 子应用路由和资源入口链接提取的路由一致的情况下，不需要更新路由：
 
