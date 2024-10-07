@@ -5514,7 +5514,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - 应用 `project` 存在，`prefix` 不存在短路径名 `test`，错误返回 `{test}`
 
-> 此错误会影响到：同步路由到子应用，因为拿不到正确的路由，造成子应用渲染失败
+> 此错误会影响到：`syncUrlToIframe`，因为拿不到正确的路由，造成子应用渲染失败
 
 #### `getAbsolutePath`：获取绝对路径
 
