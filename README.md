@@ -5340,7 +5340,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | 空字符           | 资源入口链接     | 当前网址中找不到和子应用对应的路由                                                     |
 | 不存在短路径     | 错误的短路径     | 获取的路由不正确，见：`getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]             |
 
-> 错误的短路径通常来自手动访问一个不存在的路由，如：`{test}`
+> 错误的短路径通常来自手动访问一个不存在的路由，如：`{不存在的短路径名}`
 
 其中绝对路径的 `url` 存在问题，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
