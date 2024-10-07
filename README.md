@@ -5485,7 +5485,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 存在一个语意上的 `bug`：
 
-- 正则匹配得到短路径，如果在 `prefix` 集合中不存在短路径名，则
+- 正则匹配得到短路径，如果在 `prefix` 集合中不存在短路径名，则原封不动返回
 
 正常加载的情况下不会出现问题，先看同步路由的流程：
 
@@ -5503,9 +5503,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 上面的例子中 `{home}` 应该通过 `endecodeURIComponent` 编译，这里为了演示直接展示了
 
-除非手动提供错误的链接，还是上面的例子：
+除非手动提供错误的链接，错误举例，手动访问：`/react?project={test}`
 
-- 手动访问路由 `/react?project={test}`，会因 `prefix` 找不到返回字符类型的路由：`undefined`
+- 应用 `project` 存在，`prefix` 不存在短路径名 `test`，错误返回 `{test}`
 
 #### `getAbsolutePath`：获取绝对路径
 
