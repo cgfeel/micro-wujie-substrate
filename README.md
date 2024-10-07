@@ -5338,7 +5338,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | `pathname`       | ✅               | 匹配到子应用路由                                                                |
 | 绝对路径的 `url` | ❎               | 劫持 `location.href` 拦截路由 [[查看](#locationhrefset拦截子应用-locationhref)] |
 | 空字符           | ❎               | 当前网址中找不到和子应用对应的路由                                              |
-| 匹配问题的短路径 | ❎               | 获取的路由不存在，见：`getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]      |
+| 不存在短路径     | ❎               | 获取的路由不正确，见：`getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]      |
 
 其中绝对路径的 `url` 存在问题，见：`processAppForHrefJump` [[查看](#processappforhrefjump-监听前进和后端)]
 
