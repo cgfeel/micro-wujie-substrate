@@ -5471,6 +5471,10 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - 空字符：没有匹配到子应用路由
 - 返回错误的短路径：因手动范围不粗在的路由，下面有描述
 
+调用场景：
+
+- `syncUrlToIframe`：同步主应用路由到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
+
 提取路由：
 
 - 通过 `anchorElementGenerator` 转换基座链接为 `HTMLAnchorElement` 对象 [[查看](#anchorelementgenerator转换-url)]
@@ -5509,6 +5513,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 除非手动提供错误的链接，错误举例，手动访问：`/react?project={test}`
 
 - 应用 `project` 存在，`prefix` 不存在短路径名 `test`，错误返回 `{test}`
+
+> 此错误会影响到：同步路由到子应用，因为拿不到正确的路由，造成子应用渲染失败
 
 #### `getAbsolutePath`：获取绝对路径
 
