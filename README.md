@@ -5257,7 +5257,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 应用初始化 `active` 时，路由会先通过 `syncUrlToIframe` 同步到子应用 [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
-- 之后路由再反向同步到主应用，这样做能够实现 `prefix` 短链接替换
+- 之后路由再反向同步到主应用，这样做能够实现 `prefix` 短路径替换
 
 整个同步的流程概览：
 
@@ -5266,11 +5266,11 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 **第一步：提取配置**
 
-- 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短链接，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
+- 从应用实例中获取：`sync` 同步路由、`id` 应用名、`prefix` 短路径，见：文档 [[查看](https://wujie-micro.github.io/doc/api/startApp.html)]
 - 提取当前的 `url` 转变为链接对象 `winUrlElement`，见：`anchorElementGenerator` [[查看](#anchorelementgenerator转换-url)]
 - 使用 `winUrlElement` 拿到 `queryMap`，见：`getAnchorElementQueryMap` [[查看](#getanchorelementquerymap-转化-urlsearch-为键值对象)]
 - 从沙箱 `location` 中提取 `pathname` + `search` + `hash`，作为当前子应用目标路由 `curUrl`
-- 声明一个变量 `validShortPath` 用于记录匹配的短链接名
+- 声明一个变量 `validShortPath` 用于记录匹配的短路径键名
 
 **第二步：处理短路径**
 
@@ -5459,7 +5459,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 参数：
 
 - `id`：应用名，用于从 `search` 键值对中取出路由
-- `prefix`：配置的短链接集合，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
+- `prefix`：配置的短路径集合，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/sync.html#%E7%9F%AD%E8%B7%AF%E5%BE%84)]
 
 返回字符类型的子应用路由，有 3 种情况：
 
