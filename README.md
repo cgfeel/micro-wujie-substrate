@@ -5499,7 +5499,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | 回到同步路由到子应用           | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 因拿到空字符，采用资源入口链接作为沙箱路由                                                |
 | 同步路由到基座                 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 假定子应用路由是 `/home/path`，短路径对应 `home`，基座路由更新为：`/react?project={home}` |
 | 刷新页面，再次同步路由到子应用 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 基座路由为：`/react?project={home}`                                                       |
-| 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 匹配返回 `/home/path` 作为子应用路由                                                      |
+| 获取需要同步的路由             | `getSyncUrl`                                                       | 匹配返回 `/home/path` 作为子应用路由                                                      |
 | 再次同步路由到基座             | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 基座路由 `search` 没有变化，不做更新                                                      |
 
 由此可以看出路由中的短路径都来自 `syncUrlToWindow` 更新到基座，更新前已通过 `prefix` 匹配并提取
