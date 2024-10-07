@@ -5438,6 +5438,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - `anchorElement`：`HTMLAnchorElement` 类型的对象
 
+> 通常传递过来的参数，来自 `anchorElementGenerator` 返回的链接对象 [[查看](#anchorelementgenerator转换-url)]
+
 返回：
 
 - `search` 键值对象：类型 `{ [key: string]: string }`
