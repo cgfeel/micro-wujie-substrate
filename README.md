@@ -5428,7 +5428,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - `HTMLAnchorElement` 对象
 
-`syncUrlToIframe` 同步路由时可能会通过 `appRouteParse` 透传相对路径作为 `url` [[查看](#syncurltoiframe同步主应用路由到子应用)]：
+`syncUrlToIframe` 同步路由时可能会通过 `appRouteParse` 透传相对路径作为 `url` [[查看](#syncurltoiframe同步主应用路由到子应用)]
 
 - 这时创建的资源会根据沙箱中 `base` 元素决定 `href` [[查看](#base标签操作)]
 
