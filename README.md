@@ -5424,13 +5424,11 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 - `url`：链接 `string` 类型
 
+> 若 `url` 为相对路径，创建的链接对象会根据沙箱中 `base` 元素决定 `href` [[查看](#base标签操作)]
+
 返回：
 
-- `HTMLAnchorElement` 对象
-
-`syncUrlToIframe` 同步路由时可能会通过 `appRouteParse` 透传相对路径作为 `url` [[查看](#syncurltoiframe同步主应用路由到子应用)]
-
-- 这时创建的资源会根据沙箱中 `base` 元素决定 `href` [[查看](#base标签操作)]
+- `HTMLAnchorElement` 链接对象
 
 #### `getAnchorElementQueryMap` 转化 `url.search` 为键值对象
 
