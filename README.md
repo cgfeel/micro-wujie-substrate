@@ -781,8 +781,8 @@
 
 | 同步方法                                                           | `sync`                                  | `url`        | `prefix`   |
 | ------------------------------------------------------------------ | --------------------------------------- | ------------ | ---------- |
-| `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 同步路由来自当前 `url` 还是资源入口链接 | 资源入口链接 | 短连接集合 |
-| `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 是否同步路由到基座                      | 不需要       | 短连接集合 |
+| `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 同步路由来自当前 `url` 还是资源入口链接 | 资源入口链接 | 短路径集合 |
+| `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 是否同步路由到基座                      | 不需要       | 短路径集合 |
 
 > 只有 `url` 是必选属性，其它都可选；`active` 的 `url` 存在 `bug`，见：特殊属性 [[查看](#2-特殊属性)]
 
@@ -5274,7 +5274,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 **第二步：处理短路径**
 
-遍历 `prefix` 键名拿到短链名 `shortPath`，根据短连接获取长链接 `longPath`：
+遍历 `prefix` 键名拿到短链名 `shortPath`，根据短路径获取长链接 `longPath`：
 
 - 要求 `curUrl` 必须以 `longPath` 开头，更新 `validShortPath` 为 `shortPath`
 - 更新会取最大 `longPath` 结果，例如：`/a/b/c` 会优先于 `/a/b`
@@ -5329,7 +5329,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 | 网址中子应用的理由         | `sync` | `execFlag` | 处理方式                                                                 |
 | -------------------------- | ------ | ---------- | ------------------------------------------------------------------------ |
-| 通过 `prefix` 转换的短连接 | 已配置 | 还未启动   | 通过 `getSyncUrl` 获取子应用路由 [[查看](#getsyncurl获取需要同步的-url)] |
+| 通过 `prefix` 转换的短路径 | 已配置 | 还未启动   | 通过 `getSyncUrl` 获取子应用路由 [[查看](#getsyncurl获取需要同步的-url)] |
 
 使用 `getSyncUrl` 根据返回的结果，有 3 种情况：
 
@@ -5475,16 +5475,16 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 > 如果应用名不存在 `queryMap` 的键名中，拿到的是空字符
 
-处理路由的前提是路由通过 `prefix` 替换了路由为短连接 `project={short-name}`：
+处理路由的前提是路由通过 `prefix` 替换了路由为短路径 `project={short-name}`：
 
-- 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的短连接
-- 将短连接从 `prefix` 找到对应的完整路径，替换后返回 `pathname`
+- 判断依据：提供了 `prefix`，通过正则匹配路由大括号中间的短路径
+- 将短路径从 `prefix` 找到对应的完整路径，替换后返回 `pathname`
 
 > 如果因为不匹配得到空字符，是无法通过正则匹配，仍旧是空字符
 
 存在一个语意上的 `bug`：
 
-- 正则匹配得到短连接，如果在 `prefix` 集合中找不到对应路由怎么办？
+- 正则匹配得到短路径，如果在 `prefix` 集合中找不到对应路由怎么办？
 
 正常加载的情况下不会出现问题，先看同步路由的流程：
 
@@ -5493,12 +5493,12 @@ if (/^<!DOCTYPE html/i.test(code)) {
 | 初次加载，同步路由到子应用     | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 假定基座路由为 `/react`                                                                   |
 | 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 找不到 `search`，返回空字符                                                               |
 | 回到同步路由到子应用           | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 因拿到空字符，采用资源入口链接作为沙箱路由                                                |
-| 同步路由到基座                 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 假定子应用路由是 `/home/path`，短连接对应 `home`，基座路由更新为：`/react?project={home}` |
+| 同步路由到基座                 | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 假定子应用路由是 `/home/path`，短路径对应 `home`，基座路由更新为：`/react?project={home}` |
 | 刷新页面，再次同步路由到子应用 | `syncUrlToIframe` [[查看](#syncurltoiframe同步主应用路由到子应用)] | 基座路由为：`/react?project={home}`                                                       |
 | 获取需要同步的路由             | `getSyncUrl` [[查看](#getsyncurl获取需要同步的-url)]               | 匹配返回 `/home/path` 作为子应用路由                                                      |
 | 再次同步路由到基座             | `syncUrlToWindow` [[查看](#syncurltowindow同步子应用路由到主应用)] | 基座路由 `search` 没有变化，不做更新                                                      |
 
-由此可以看出路由中的短连接都来自 `syncUrlToWindow` 更新到基座，更新前已通过 `prefix` 匹配并提取
+由此可以看出路由中的短路径都来自 `syncUrlToWindow` 更新到基座，更新前已通过 `prefix` 匹配并提取
 
 > 上面的例子中 `{home}` 应该通过 `endecodeURIComponent` 编译，这里为了演示直接展示了
 
