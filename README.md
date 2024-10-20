@@ -5469,7 +5469,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `pathname`：匹配到子应用路由
 - 绝对路径的 `url`：劫持 `href` 实现的拦截路由，见：`pushUrlToWindow` [[查看](#pushurltowindow推送-url-到基座路由)]
 - 空字符：没有匹配到子应用路由
-- 返回错误的短路径：因手动范围不粗在的路由，下面有描述
+- 返回错误的短路径：因手动范围不存在的路由，下面有描述
 
 调用场景：
 
