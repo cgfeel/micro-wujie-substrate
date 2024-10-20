@@ -5533,7 +5533,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 直接返回 `url` 有 2 个情况：
 
-- 空字符
+- `url` 是空字符
 - `hash` 为 `true`，且 `url` 以 `#` 开
 
 其余返回，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
