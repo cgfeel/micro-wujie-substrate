@@ -5573,7 +5573,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | ------------------- | ------------------------------- | ------------------------------ |
 | `URL` 对象          | 不考虑                          | `entry.href`                   |
 | `http` 开头绝对路径 | 不考虑                          | `entry`                        |
-| 以 `/` 开头相对路径 | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `/` + `entry`  |
+| 以 `/` 开头相对路径 | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `entry`        |
 | 空字符              | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `base.pathame` |
 
 **特性 3：`entry` 是非 `/` 开头相对路径，会根据 `base.pathname` 提供资源链接**
