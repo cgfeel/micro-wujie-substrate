@@ -5583,7 +5583,9 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | 非 `/` 结尾     | `base.origin` + `/` + `entry`             |
 | 以 `/` 结尾     | `base.origin` + `base.pathname` + `entry` |
 
-> 这种情况会丢失 `base` 中的 `search` 和 `hash`
+**需要说明的是：**
+
+当 `base` 作为 `url` 拼接时，会丢弃自身的 `search` 和 `hash`
 
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
