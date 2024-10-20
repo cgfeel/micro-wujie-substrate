@@ -5598,7 +5598,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 补充说明：
 
 - 因为调用场景只有 `importHTML`，透传参数 `url` 类型为 `string` [[查看](#importhtml-加载资源)]
-- 在源码中有判断 `entry` 类型是否为 `object`，通过在 `fetch` 中使用，得出这个对象只能为 `URL` 对象
+- 在源码中有判断 `entry` 类型是否为 `object`，通过在 `fetch` 中使用，得出对象类型只能是 `URL`
 
 返回：根据参数 `entry` 资源链接有 4 种不可变的情况
 
