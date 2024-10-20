@@ -5541,6 +5541,50 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `url` 作为 `entry`，且一定是字符型
 - `base` 作为 `location.href`
 
+#### `new URL`：处理并返回 `URL` 对象
+
+`js` 原生 `class`，在 `wujie` 中很多资源会用到，包括下面的 `defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
+
+参数：
+
+- `url`：表示绝对或相对 `URL` 的 `DOMString`，在总结中统一描述为 `entry`
+- `base`：表示基准 `URL` 的字符串
+
+**特性 1：在不提供 `base` 的情况下 `entry` 只能是绝对路径的 `URL`**
+
+示范：
+
+```js
+// right
+new URL("https://developer.mozilla.org/zh-CN/docs/Web/API/URL/URL");
+
+// Uncaught TypeError: Failed to construct 'URL': Invalid URL
+new URL("/zh-CN/docs/Web/API/URL/URL");
+```
+
+因此：
+
+- 如果 `entry` 传入的是 `URL` 对象，那么也一定是一个绝对路径
+- 只有 `entry` 是字符类型的时候才可以作为相对路径
+
+**特性 2：根据 `entry` 返回资源链接有 4 种不可变的情况**
+
+| `entry` 类型        | `base`                          | 返回的 `href`                  |
+| ------------------- | ------------------------------- | ------------------------------ |
+| `URL` 对象          | 不考虑                          | `entry.href`                   |
+| `http` 开头绝对路径 | 不考虑                          | `entry`                        |
+| 以 `/` 开头相对路径 | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `/` + `entry`  |
+| 空字符              | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `base.pathame` |
+
+**特性 3：`entry` 是非 `/` 开头相对路径，会根据 `base.pathname` 提供资源链接**
+
+| `base.pathname` | 返回                                      |
+| --------------- | ----------------------------------------- |
+| 非 `/` 结尾     | `base.origin` + `/` + `entry`             |
+| 以 `/` 结尾     | `base.origin` + `base.pathname` + `entry` |
+
+> 这种情况会丢失 `base` 中的 `search` 和 `hash`
+
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
 目录：`utils.ts` - `defaultGetPublicPath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L253)]
