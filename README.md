@@ -5613,7 +5613,12 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 **2. 根据 `entry` 返回 4 种不可变的情况**
 
-- 和 `new URL` 特性 2 一样，透传 `entry` 之外，会将 `location.href` 作为 `base`
+- 和 `new URL` 特性 2 一样，`location.href` 作为 `base`，
+- 返回的 `url` 将取 `pathname` 上一级：`url.replace(/\/$/, '')` + `/`
+
+> 如果 `pathname` 是 `/` 不存在上一级，则得到的是 `url.origin` + `/`
+
+相对 `URL` 特性 2，`wujie` 使用情况如下：
 
 | `entry` 类型        | `location.href` | 返回                                     | 使用频率 |
 | ------------------- | --------------- | ---------------------------------------- | -------- |
