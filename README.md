@@ -5600,7 +5600,20 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 - 因为调用场景只有 `importHTML`，透传参数 `url` 类型为 `string` [[查看](#importhtml-加载资源)]
 - 在源码中有判断 `entry` 类型是否为 `object`，通过在 `fetch` 中使用，得出对象类型只能是 `URL`
 
-返回：根据参数 `entry` 资源链接有 4 种不可变的情况
+参考 `new URL` 有 2 种情况 [[查看](#new-url处理并返回-url-对象)]
+
+**特性 1. 不存在，`entry` 可以是相对路径**
+
+无论 `entry` 是什么路径，都会将 `location.href` 作为 `base`
+
+- `entry` 为绝对路径：忽略 `base`
+- `entry` 为相对路径：通过 `location.href` 作为 `base` 进行拼接，加载基座路由作为子应用
+
+> 于是忽略特性 1，只看剩余特性
+
+**2. 根据 `entry` 返回 4 种不可变的情况**
+
+- 和 `new URL` 特性 2 一样，透传 `entry` 之外，会将 `location.href` 作为 `base`
 
 | `entry` 类型        | `location.href` | 返回                                     | 使用频率 |
 | ------------------- | --------------- | ---------------------------------------- | -------- |
