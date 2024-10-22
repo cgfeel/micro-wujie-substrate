@@ -3020,9 +3020,7 @@ Object.getOwnPropertyNames(iframeWindow).forEach((key) => {
 外联样式收集的 `src` 校正：
 
 - 绝对路径不变，相对路径通过 `getEntirePath` 基于入口资源路径 `baseURI` 转为绝对路径
-- 参考 `defaultGetPublicPath`，资源链接为 `entry`，`baseURI` 为 `location.href` [[查看](#defaultgetpublicpath获取资源链接的-path)]
-
-> `getEntirePath` 规则和 `defaultGetPublicPath` 一致，但不需要提取上一级链接
+- 参考 `new URL`，资源链接为 `entry`，`baseURI` 为 `base` [[查看](#new-url处理并返回-url-对象)]
 
 补充说明：
 
@@ -4247,7 +4245,7 @@ return (cache[key] = Promise.resolve());
 - `entry`：将 `url` 中子应用 `origin` 替换为空，得到计划更新的：`pathname` + `search` + `hash`
 - `mainUrl`：通过 `getAbsolutePath` 基于 `entry` 和 `baseUrl` 获取链接 [[查看](#getabsolutepath获取绝对路径)]
 
-> 只要 `entry` 不为空，`baseUrl` 默认忽略 `search` + `hash`，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
+> 只要 `entry` 不为空，`baseUrl` 默认忽略 `search` + `hash`，见：`new URL` [[查看](#new-url处理并返回-url-对象)]
 
 `rawHistoryPushState.call` 指定的上下文是沙箱的 `history`：
 
