@@ -5602,7 +5602,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 参考 `new URL` 有 2 种情况 [[查看](#new-url处理并返回-url-对象)]
 
-- 和 `new URL` 特性 2 一样，`entry` 作为 `url`，`location.href` 作为 `base`，
+- 和 `new URL` 参数一样：`entry` 作为 `url`，`location.href` 作为 `base`，
 
 **特性 1. 不存在，`entry` 可以是相对路径**
 
