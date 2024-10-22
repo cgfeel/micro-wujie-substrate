@@ -5602,6 +5602,8 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 参考 `new URL` 有 2 种情况 [[查看](#new-url处理并返回-url-对象)]
 
+- 和 `new URL` 特性 2 一样，`entry` 作为 `url`，`location.href` 作为 `base`，
+
 **特性 1. 不存在，`entry` 可以是相对路径**
 
 无论 `entry` 是什么路径，都会将 `location.href` 作为 `base`
@@ -5611,43 +5613,39 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 > 于是忽略特性 1，只看剩余特性
 
-**2. 根据 `entry` 返回 4 种不可变的情况**
+**特性 2：根据 `entry` 返回资源链接有 4 种不可变的情况 [[查看](#new-url处理并返回-url-对象)]**
 
-- 和 `new URL` 特性 2 一样，`location.href` 作为 `base`，
-- 返回的 `url` 将取 `pathname` 上一级：`url.replace(/\/$/, '')` + `/`
+返回的 `url` 将取 `pathname` 上一级，如果 `pathname` 不存在上一级，则得到的是 `url.origin` + `/`
 
-> 如果 `pathname` 是 `/` 不存在上一级，则得到的是 `url.origin` + `/`
+```
+const paths = pathname.split("/");
+paths.pop();
 
-相对 `URL` 特性 2，`wujie` 使用情况如下：
+return `${origin}${paths.join("/")}/`;
+```
 
-| `entry` 类型        | `location.href` | 返回                                     | 使用频率 |
-| ------------------- | --------------- | ---------------------------------------- | -------- |
-| `URL`               | 不考虑          | `/`                                      | 不使用   |
-| `http` 开头绝对路径 | 不考虑          | `entry` 上级 + `/`                       | 基本是   |
-| 以 `/` 开头的字符   | `http` 开头链接 | `location.origin` + `entry` 上级 + `/`   | 极少     |
-| 空字符              | `http` 开头链接 | `location.origin` + `pathame` 上级 + `/` | 有错误   |
+相对 `URL` 特性 2，`wujie` 中 `entry` 类型情况如下：
 
-> 如果 `entry` 或 `pathname` 不存在上级，返回空字符
+| `entry` 类型        | 使用情况                             |
+| ------------------- | ------------------------------------ |
+| `URL` 对象          | 不使用，若提供统一错误返回 `/`       |
+| `http` 开头绝对路径 | 基本是                               |
+| 以 `/` 开头相对路径 | 不建议，将基座路由作为子应用资源链接 |
+| 空字符              | 不建议，将基座作为子应用资源链接     |
 
-`entry` 存在的问题：
+`entry` 为 `URL` 对象存在的问题：
 
-- `URL`类型：应返回对象链接开头到最后一个 `/`，同时保留对 `object` 的判断返回 `/`
-- 提供空字符：函数本身并没有错，但会造成重复加载基座造，见：`startApp` 的 `bug` [[查看](#4-startapp-的-bug)]
+- 应返获取 `url.href` 进行操作，同时保留对 `object` 的判断返回 `/`
 
 通常情况下应用入口链接是完整的绝对路径，但子应用不同环境下 `origin` 不一样怎么办？
 
 - 配置环境变量，用来区分生成环境和开发环境
 
-返回：`entry` 是非链接、非 `/` 开头的字符，会根据 `location.pathname` 提供资源链接
+**特性 3：`entry` 是非 `/` 开头相对路径，会根据基座 `pathname` 提供资源链接 [[查看](#new-url处理并返回-url-对象)]**
 
-| `location.pathname` | 返回                                     |
-| ------------------- | ---------------------------------------- |
-| 非 `/` 结尾         | `location.origin` + `entry` 上级 + `/`   |
-| 以 `/` 结尾         | `location.origin` + `pathname` + `entry` |
+同样不建议这样使用，将使用基座作为子应用资源链接
 
-> 只要 `entry` 不是链接，也不是非空字符，会丢弃 `location` 中的 `search` 和 `hash` 后计算资源链接
-
-获取资源链接总结：
+**获取资源链接总结：**
 
 - 通常提供的 `entry` 是 `http` 开头的绝对路径
 - 非绝对路径通常加载基座自身路由作为资源，这种情况使用路由库来处理更合适
