@@ -5604,7 +5604,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 - 和 `new URL` 参数一样：`entry` 作为 `url`，`location.href` 作为 `base`
 
-**特性 1. 不存在，`entry` 可以是相对路径**
+**特性 1. 不存在，`entry` 可以是相对路径 [[查看](#new-url处理并返回-url-对象)]**
 
 无论 `entry` 是什么路径，都会将 `location.href` 作为 `base`
 
