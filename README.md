@@ -5534,10 +5534,9 @@ if (/^<!DOCTYPE html/i.test(code)) {
 - `url` 是空字符
 - `hash` 为 `true`，且 `url` 以 `#` 开
 
-其余返回，见：`defaultGetPublicPath` [[查看](#defaultgetpublicpath获取资源链接的-path)]
+其余返回，见：`new URL` [[查看](#new-url处理并返回-url-对象)]
 
-- `url` 作为 `entry`，且一定是字符型
-- `base` 作为 `location.href`
+- 透传自身 `url` 和 `base`
 
 #### `new URL`：处理并返回 `URL` 对象
 
