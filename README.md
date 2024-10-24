@@ -5550,7 +5550,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 参数：
 
 - `url`：表示绝对或相对 `URL` 的 `DOMString`，在当前总结中统一描述为 `entry`
-- `base`：表示基准 `URL` 的字符串
+- `base`：表示基准 `URL` 的字符串，可选参数
 
 **特性 1：在不提供 `base` 的情况下 `entry` 只能是绝对路径的 `URL`**
 
