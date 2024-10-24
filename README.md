@@ -5578,7 +5578,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | 以 `/` 开头相对路径 | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `entry`        |
 | 空字符              | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `base.pathame` |
 
-当 `base` 是以 `/` 开头相对路径，`entry` 以下 2 个情况会报错：
+当 `base` 是相对路径，`entry` 以下 2 个情况会报错：
 
 - 以 `/` 开头相对路径
 - 空字符
