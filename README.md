@@ -5536,8 +5536,8 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 直接返回参数 `url` 有 2 个情况：
 
-- `url` 是空字符
-- `hash` 为 `true`，且 `url` 以 `#` 开
+- `url` 是空字符，这点和 `URL` 行为是不一致的，`URL` 对象此时会返回 `base`
+- `hash` 为 `true`，且 `url` 以 `#` 开头
 
 其余返回，见：`new URL` [[查看](#new-url处理并返回-url-对象)]
 
