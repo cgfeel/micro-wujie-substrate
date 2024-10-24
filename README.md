@@ -5541,7 +5541,7 @@ if (/^<!DOCTYPE html/i.test(code)) {
 
 其余返回，见：`new URL` [[查看](#new-url处理并返回-url-对象)]
 
-- 透传自身 `url` 和 `base`
+- 透传自身 `url` 和 `base`，获取 `href` 值
 
 #### `new URL`：处理并返回 `URL` 对象
 
