@@ -5636,6 +5636,8 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 无论哪种情况当 `base` 作为 `entry` 拼接时，会丢弃自身的 `search` 和 `hash`
 
+- 即便 `entry` 是空字符，`base` 也同样遵循这一特征
+
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
 目录：`utils.ts` - `defaultGetPublicPath` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L253)]
