@@ -5583,12 +5583,48 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 - 以 `/` 开头相对路径
 - 空字符
 
-**特性 3：`entry` 是非 `/` 开头相对路径，会根据 `base.pathname` 提供资源链接**
+**特性 3：`entry` 为非 `/` 开头的相对路径，将作为可变路径**
 
-| `base.pathname` | 返回                                      |
-| --------------- | ----------------------------------------- |
-| 非 `/` 结尾     | `base.origin` + `/` + `entry`             |
-| 以 `/` 结尾     | `base.origin` + `base.pathname` + `entry` |
+① 当 `entry` 以 `.` 开头，将查找 `base.pathname` 的资源目录：
+
+- `.`：当前目录
+- `..`：上级目录
+
+> 如果不是 `/` 开头，也不是 `.` 开头的相对路径，默认和一个 `.` 开头行为一样
+
+目录可以通过 `/` 间隔循环往上查找：
+
+| `../.`   | `../..`            | `../../..`                       |
+| -------- | ------------------ | -------------------------------- |
+| 上级目录 | 上级目录的上级目录 | 依次类推，直到 `pathname` 为 `/` |
+
+> 同样可以省略当面目录中的 `.`，例如：`../.` 的路径和 `../` 一样
+
+② `base` 根据末尾字符分 2 种情况，假定有这样两个 `url`：
+
+| 结尾字符         | 链接                                               | `pathname`                                 |
+| ---------------- | -------------------------------------------------- | ------------------------------------------ |
+| `/` 填充尾部资源 | `https://github.com/cgfeel/micro-wujie-substrate/` | `/cgfeel/micro-wujie-substrate/index.html` |
+| 非 `/` 保持不变  | `https://github.com/cgfeel/micro-wujie-substrate`  | `/cgfeel/micro-wujie-substrate`            |
+
+③ 结合 `entry` 和 `base`，查找 `pathname` 目录如下：
+
+| `entry` | `/` 结尾                         | 非 `/` 结尾 |
+| ------- | -------------------------------- | ----------- |
+| `.`     | `/cgfeel/micro-wujie-substrate/` | `/cgfeel/`  |
+| `..`    | `/cgfeel/`                       | `/`         |
+| `../..` | `/`                              | `/`         |
+
+④ 现在回过头来看 `./name` 以及 `../name` 这样的 `entry` 可以拆分成 2 部分：
+
+- 第 1 部分：`new URL('./', base)`，参考上述 3 步计算目录，假定结果为 `tmpUrl`
+- 第 2 部分：
+
+最后得到：计算 `base` 的上级资源目录 + `entry` 的 `pathname`，例如：`../name`
+
+- 先计算：`new URL('..', 'https://github.com/cgfeel/micro-wujie-substrate/')`
+- 得到：`https://github.com/cgfeel/`
+- 然后拼接：`new URL('/name', 'https://github.com/cgfeel/')`
 
 **需要说明的是：**
 
