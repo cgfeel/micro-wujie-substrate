@@ -5618,17 +5618,23 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 ④ 现在回过头来看 `./name` 以及 `../name` 这样的 `entry` 可以拆分成 2 部分：
 
 - 第 1 部分：`new URL('./', base)`，参考上述 3 步计算目录，假定结果为 `tmpUrl`
-- 第 2 部分：
+- 第 2 部分：将 `tmpUrl` + `name`
 
-最后得到：计算 `base` 的上级资源目录 + `entry` 的 `pathname`，例如：`../name`
+`/` 填充尾部资源计算得到：
 
-- 先计算：`new URL('..', 'https://github.com/cgfeel/micro-wujie-substrate/')`
-- 得到：`https://github.com/cgfeel/`
-- 然后拼接：`new URL('/name', 'https://github.com/cgfeel/')`
+| `https://github.com/cgfeel/micro-wujie-substrate/`          |
+| ----------------------------------------------------------- |
+| `https://github.com/cgfeel/micro-wujie-substrate/` + `name` |
+
+非 `/` 填充尾部资源计算得到：
+
+| `https://github.com/cgfeel/micro-wujie-substrate` |
+| ------------------------------------------------- |
+| `https://github.com/cgfeel/` + `name`             |
 
 **需要说明的是：**
 
-当 `base` 作为 `url` 拼接时，会丢弃自身的 `search` 和 `hash`
+无论哪种情况当 `base` 作为 `entry` 拼接时，会丢弃自身的 `search` 和 `hash`
 
 #### `defaultGetPublicPath`：获取资源链接的 `path`
 
