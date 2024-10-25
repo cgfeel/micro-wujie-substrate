@@ -5632,7 +5632,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | ------------------------------------------------- |
 | `https://github.com/cgfeel/` + `name`             |
 
-**需要说明的是：**
+**特性 4：需要说明的是 `base` 拼接时会丢弃部分信息：**
 
 无论哪种情况当 `base` 作为 `entry` 拼接时，会丢弃自身的 `search` 和 `hash`
 
