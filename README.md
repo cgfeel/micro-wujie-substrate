@@ -5615,7 +5615,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | `..`    | `/cgfeel/`                       | `/`         |
 | `../..` | `/`                              | `/`         |
 
-④ 现在回过头来看 `./name` 以及 `../name` 这样的 `entry` 可以拆分成 2 部分：
+④ 现在回过头来看 `./name` 这样的 `entry` 可以拆分成 2 部分：
 
 - 第 1 部分：`new URL('./', base)`，参考上述 3 步计算目录，假定结果为 `tmpUrl`
 - 第 2 部分：将 `tmpUrl` + `name`
@@ -5631,6 +5631,8 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | `https://github.com/cgfeel/micro-wujie-substrate` |
 | ------------------------------------------------- |
 | `https://github.com/cgfeel/` + `name`             |
+
+> 同理 `..` 和 `../..` 这样的 `entry` 也遵循以上特征，就不一一举例了
 
 **特性 4：需要说明的是 `base` 拼接时会丢弃部分信息：**
 
