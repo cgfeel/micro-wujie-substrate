@@ -5755,6 +5755,8 @@ return `${origin}${paths.join("/")}/`;
 
 ### 辅助方法 - 应用动态注入 `DOM`
 
+作为单例应用，如：`React`、`Vue`，子应用通过动态添加 `Dom` 并完成渲染
+
 #### `handleStylesheetElementPatch`：为应用中动态样式打补丁
 
 目录：`effect.ts` - `handleStylesheetElementPatch` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L64)]
