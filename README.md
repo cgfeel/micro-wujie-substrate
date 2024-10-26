@@ -5771,7 +5771,9 @@ return `${origin}${paths.join("/")}/`;
 不处理的情况：
 
 - `degrade` 降级：没有 `shadowRoot`，`iframe` 容器也不存在兼容样式的问题
-- 通过 `cssIgnores` 动态添加的外联样式
+- 设置 `cssIgnores` 通过浏览器添加的外联样式
+
+> 只能对内联样式打补丁
 
 用途：
 
