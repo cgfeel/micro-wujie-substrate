@@ -5604,7 +5604,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 ② `base` 根据末尾字符分 2 种情况，假定有这样两个 `url`：
 
-| 结尾字符 | 链接                                               | `pathname`                       | 末尾填充资源 |
+| 结尾字符 | 链接                                               | `pathname`                       | 末尾填充     |
 | -------- | -------------------------------------------------- | -------------------------------- | ------------ |
 | `/`      | `https://github.com/cgfeel/micro-wujie-substrate/` | `/cgfeel/micro-wujie-substrate/` | `index.html` |
 | 非 `/`   | `https://github.com/cgfeel/micro-wujie-substrate`  | `/cgfeel/micro-wujie-substrate`  | 不填充       |
