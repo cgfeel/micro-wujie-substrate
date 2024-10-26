@@ -5802,7 +5802,7 @@ return `${origin}${paths.join("/")}/`;
 - `rewriteAppendOrInsertChild`：动态添加内联和外联样式 2 处 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 - `patchStylesheetElement`：拦截样式操作有 4 处 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-单页应用动态添加样式的步骤：
+单页应用动态添加内联样式，打补丁的步骤：
 
 1. 通过 `active` 注入资源到容器后，使用 `patchRenderEffect` 重写添加 `Dom` 的方法 [[查看](#patchrendereffect-为容器打补丁)]
 2. 通过 `start` 将入口 `script` 添加到沙箱 `iframe`，开始渲染 [[查看](#-start-启动应用)]
@@ -5810,9 +5810,11 @@ return `${origin}${paths.join("/")}/`;
 4. 通过 `patchStylesheetElement` 为动态添加的样式元素操作打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 5. 通过 `handleStylesheetElementPatch` 提取动态样式打补丁
 
-> 这里能够打补丁的样式一定是内联样式，如果是外联样式将会加载后作为内联样式打补丁
+外联样式将会加载后作为内联样式添加到应用：
 
-应用中通过原生方法添加的样式，将通过 `rewriteAppendOrInsertChild` 直接打补丁，例如：
+- 然后通过 `rewriteAppendOrInsertChild` 直接打补丁，见源码第 221 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L221)]
+
+应用中通过原生方法添加的样式，将通过 `rewriteAppendOrInsertChild` 直接打补丁：
 
 ```js
 // 动态添加内联样式
