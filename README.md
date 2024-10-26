@@ -5738,7 +5738,7 @@ return `${origin}${paths.join("/")}/`;
 
 于是在 `proxyLocation` 中做了一次拦截，用来修正取值 [[查看](#3-代理空对象作为-proxylocation)]：
 
-- 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
+> 但 `degrade` 下沙箱的 `location` 指向沙箱 `window`，见：`proxyLocation` 的问题 [[查看](#proxylocation-的问题)]
 
 `degrade` 下沙箱 `location` 和非降级模式 `proxyLocation` 取值的区别：
 
