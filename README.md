@@ -5784,7 +5784,7 @@ return `${origin}${paths.join("/")}/`;
 - `patchCssRules`：获取 `shadowRoot` 下所有的内联样式打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
 - `handleStylesheetElementPatch`：只处理通过 `rewriteAppendOrInsertChild` 动态添加的样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
-流程：
+流程：通过防抖的方式将打补丁的宏任务添加到内联样式元素上
 
 - 定义打补丁函数 `patcher`，计划作为宏任务中执行的方法
 - 若元素存在 `_patcher` 属性，通过 `clearTimeout` 取消绑定的宏任务避免重复执行
