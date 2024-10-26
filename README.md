@@ -5755,7 +5755,7 @@ return `${origin}${paths.join("/")}/`;
 
 ### 辅助方法 - 应用动态注入 `DOM`
 
-作为单例应用，如：`React`、`Vue`，子应用通过动态添加 `Dom` 并完成渲染
+单例应用，如：`React`、`Vue`，子应用通过动态添加 `Dom` 并完成渲染，围绕这块做总结
 
 #### `handleStylesheetElementPatch`：为应用中动态样式打补丁
 
