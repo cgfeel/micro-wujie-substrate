@@ -5650,7 +5650,9 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 
 参数：
 
-- `entry`：类型为 `URL` 对象或 `string`，但目前只能是 `string`
+- `entry`：透传自 `importHTML` 的应用入口链接
+
+> 类型为 `URL` 对象或 `string`，但目前只能是 `string`
 
 补充说明：
 
