@@ -5578,6 +5578,8 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 | 以 `/` 开头相对路径 | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `entry`        |
 | 空字符              | `http` 开头绝对路径、`URL` 对象 | `base.origin` + `base.pathame` |
 
+> 这里说的路径不变和下面说的可变，指的是计算 `url` 路径的规则
+
 当 `base` 是相对路径，`entry` 以下 2 个情况会报错：
 
 - 以 `/` 开头相对路径
