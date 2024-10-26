@@ -5666,9 +5666,7 @@ new URL("/zh-CN/docs/Web/API/URL/URL");
 无论 `entry` 是什么路径，都会将 `location.href` 作为 `base`
 
 - `entry` 为绝对路径：忽略 `base`
-- `entry` 为相对路径：通过 `location.href` 作为 `base` 进行拼接，加载基座路由作为子应用
-
-> 于是忽略特性 1，只看剩余特性
+- `entry` 为相对路径：通过 `location.href` 作为 `base` 进行拼接，加载基座路由作为子应用资源目录
 
 **特性 2：根据 `entry` 返回资源链接有 4 种不可变的情况 [[查看](#new-url处理并返回-url-对象)]**
 
