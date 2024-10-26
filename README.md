@@ -5814,6 +5814,8 @@ return `${origin}${paths.join("/")}/`;
 
 - 然后通过 `rewriteAppendOrInsertChild` 直接打补丁，见源码第 221 行 [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L221)]
 
+> 设置 `cssIgnores` 的外联样式将被忽略，不会打补丁
+
 应用中通过原生方法添加的样式，将通过 `rewriteAppendOrInsertChild` 直接打补丁：
 
 ```js
