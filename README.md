@@ -5804,7 +5804,7 @@ return `${origin}${paths.join("/")}/`;
 
 单页应用动态添加样式的步骤：
 
-1. 通过 `active` 注入资源到容器后，通过 `patchRenderEffect` 重写添加 `Dom` 的方法 [[查看](#patchrendereffect-为容器打补丁)]
+1. 通过 `active` 注入资源到容器后，使用 `patchRenderEffect` 重写添加 `Dom` 的方法 [[查看](#patchrendereffect-为容器打补丁)]
 2. 通过 `start` 将入口 `script` 添加到沙箱 `iframe`，开始渲染 [[查看](#-start-启动应用)]
 3. 通过 `rewriteAppendOrInsertChild` 拦截动态添加内容为空的内联样式到 `Dom` 中 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 4. 通过 `patchStylesheetElement` 为动态添加的样式元素操作打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
@@ -5816,17 +5816,18 @@ return `${origin}${paths.join("/")}/`;
 
 ```js
 // 动态添加内联样式
-const style = document.createElement('style');
+const style = document.createElement("style");
 
-style.innerHTML = 'body{color:red}#top:hover{background-color: red;color: white;}';
+style.innerHTML =
+  "body{color:red}#top:hover{background-color: red;color: white;}";
 document.head.appendChild(style);
 
 // 动态添加外联样式
-const link = document.createElement('link');
+const link = document.createElement("link");
 
-link.setAttribute('rel', 'stylesheet');
-link.setAttribute('type', 'text/css');
-link.setAttribute('href', 'reset-min.css');
+link.setAttribute("rel", "stylesheet");
+link.setAttribute("type", "text/css");
+link.setAttribute("href", "reset-min.css");
 document.head.appendChild(link);
 ```
 
