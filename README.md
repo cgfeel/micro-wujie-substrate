@@ -5766,7 +5766,7 @@ return `${origin}${paths.join("/")}/`;
 - `stylesheetElement`：`style` 元素，带有属性 `_patcher` 用于存放宏任务
 - `sandbox`：应用实例，用于获取 `degrade`、`shadowRoot`
 
-> `_patcher` 属性由 `handleStylesheetElementPatch` 动态添加到 `style` 元素
+> `_patcher` 属性由 `handleStylesheetElementPatch` 添加到 `style` 元素
 
 不处理的情况：
 
