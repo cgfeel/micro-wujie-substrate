@@ -5818,8 +5818,7 @@ return `${origin}${paths.join("/")}/`;
 // 动态添加内联样式
 const style = document.createElement("style");
 
-style.innerHTML =
-  "body{color:red}#top:hover{background-color: red;color: white;}";
+style.innerHTML = "body{color:red}";
 document.head.appendChild(style);
 
 // 动态添加外联样式
