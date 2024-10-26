@@ -5806,7 +5806,7 @@ return `${origin}${paths.join("/")}/`;
 
 1. 通过 `active` 注入资源到容器后，通过 `patchRenderEffect` 重写添加 `Dom` 的方法 [[查看](#patchrendereffect-为容器打补丁)]
 2. 通过 `start` 将入口 `script` 添加到沙箱 `iframe`，开始渲染 [[查看](#-start-启动应用)]
-3. 通过 `rewriteAppendOrInsertChild` 拦截动态添加的样式元素打补丁 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
+3. 通过 `rewriteAppendOrInsertChild` 拦截动态添加内容为空的内联样式到 `Dom` 中 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
 动态添加样式，不同的打补丁方式：
 
