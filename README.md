@@ -5706,7 +5706,7 @@ return `${origin}${paths.join("/")}/`;
 
 如果需要将基座链接作为应用资源目录时，这个特性很重要
 
-- `syncUrlToWindow` 同步路由到基座时，会将子应用的路由作为 `search` [[查看](#syncurltowindow同步子应用路由到主应用)]
+- `syncUrlToWindow` 同步路由到基座时，会将子应用的路由添加到基座链接的 `search` [[查看](#syncurltowindow同步子应用路由到主应用)]
 - 将基座链接作为子应用资源目录时，会自动过滤掉基座的 `search` 和 `hash`
 
 **获取资源链接总结：**
