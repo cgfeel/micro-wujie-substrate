@@ -5839,7 +5839,7 @@ document.head.appendChild(link);
 - 单例应用会先添加一个内容为空的 `style` 元素，然后再注入样式
 - 因此需要通过 `patchStylesheetElement` 来打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
 
-为应用中的样式打补丁的不同方式：
+通过以上总结，得出为应用中的样式打补丁的不同方式：
 
 | 分类     | 加载方式                                    | 如何打补丁                                                                       |
 | -------- | ------------------------------------------- | -------------------------------------------------------------------------------- |
@@ -5848,6 +5848,8 @@ document.head.appendChild(link);
 | 内联样式 | 由单页应用创建空的动态样式                  | `patchStylesheetElement` [[查看](#patchstylesheetelement劫持处理样式元素的属性)] |
 | 内联样式 | 原生方法动态添加的样式                      | `handleStylesheetElementPatch`                                                   |
 | 静态样式 | 通过 `importHTML` 提取，不包含任何 `ignore` | `patchCssRules` [[查看](#-patchcssrules-子应用样式打补丁)]                       |
+| 静态样式 | 元素包含任何 `ignore` 属性                  | 被注释代替                                                                       |
+| 静态样式 | 配置 `cssIgnores`，作为浏览器加载的外联样式 | 不打补丁                                                                         |
 
 从上面可以知道动态添加样式来源 `start`，因此：
 
