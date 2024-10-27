@@ -6237,7 +6237,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 - 而应用中存在 2 个容器：存放 `script` 的沙箱容器，除了 `script` 的应用渲染容器
 - 因此需要根据删除的元素，分开查找并删除
 
-沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]：
+沙箱中的 `script` 全部通过 `insertScriptToIframe` 重建注入沙箱 [[查看](#insertscripttoiframe为沙箱插入-script)]
 
 - 没有特定属性下，应用中只能拿到动态添加的 `script` 而拿不到注入沙箱的 `script`
 - 于是需要 `findScriptElementFromIframe` 根据提供的元素，找出注入沙箱的 `script` 并删除 [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
