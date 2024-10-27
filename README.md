@@ -6201,7 +6201,10 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 ```ts
 // 嵌套的子应用的 js-iframe 需要插入子应用的 js-iframe 内部
 if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
-  return rawAppendChild.call(rawDocumentQuerySelector.call(this.ownerDocument, "html"), element);
+  return rawAppendChild.call(
+    rawDocumentQuerySelector.call(this.ownerDocument, "html"),
+    element
+  );
 }
 ```
 
@@ -6220,12 +6223,12 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 - `child`：删除的节点元素
 
-重写方法返回：
+重写方法根据提供的 `child` 处理并返回：
 
-| 参数类型    | 处理方式                                                                                                               | 元素不存在  |
+| 类型        | 处理方式                                                                                                               | 元素不存在  |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找注入沙箱的-script)] | 返回 `null` |
-| 非 `script` | `rawElementRemoveChild` 找到 `script` 删除并返回元素                                                                   | 报错        |
+| 非 `script` | `rawElementRemoveChild` 找到元素删除并返回元素                                                                         | 报错        |
 
 > `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
 
