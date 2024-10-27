@@ -6288,10 +6288,11 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 区别在于：
 
-| 分类   | `rewriteRemoveChild`        | `rewriteContains` |
-| ------ | --------------------------- | ----------------- |
-| 用途   | 删除元素                    | 检查是否包含元素  |
-| 返回值 | 删除的元素，找不到为 `null` | `boolean`         |
+| 分类       | `rewriteRemoveChild`               | `rewriteContains` |
+| ---------- | ---------------------------------- | ----------------- |
+| 用途       | 删除元素                           | 检查是否包含元素  |
+| 返回值     | 删除的元素，找不到为 `null` 或报错 | `boolean`         |
+| 容器上下文 | `head`                             | `body`、`head`    |
 
 #### `manualInvokeElementEvent`：手动触发事件回调
 
