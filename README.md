@@ -6372,7 +6372,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 #### `isConstructable`：判断函数是否可以实例化
 
-对于不可实例化的函数，用于通过 `call` 绑定上下文：`!isConstructable(fn) && fn.bind()`
+对于不可实例化的函数绑定上下文：`!isConstructable(fn) && Function.prototype.bind.call(fn, target)`
 
 目录：`utils.ts` - `isConstructable` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L60)]
 
