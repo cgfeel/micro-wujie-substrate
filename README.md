@@ -6228,7 +6228,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 | 类型        | 元素存在                                                                                                               | 元素不存在  |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找注入沙箱的-script)] | 返回 `null` |
-| 非 `script` | `rawElementRemoveChild` 找到元素删除后返回                                                                             | 报错        |
+| 非 `script` | `rawElementRemoveChild` 直接删除元素并返回                                                                             | 报错        |
 
 > `rawElementRemoveChild` 删除元素前需要确保存在于 `head` 下
 
