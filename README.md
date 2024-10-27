@@ -6009,6 +6009,16 @@ document.head.appendChild(link);
 - `execHooks`：提取插件 `appendOrInsertElementHook`，调用时传递添加的元素和沙箱 `window`
 - 按照条件返回添加的元素
 
+元素不变即：拦截并添加的元素为子应用动态创建的元素，在源码中共有 4 处：
+
+```ts
+// 4 处分别为：不在拦截范围的元素，非样式的 `link`、内联 `style`、非沙箱的 `iframe`
+const res = rawDOMAppendOrInsertBefore.call(this, element, refChild);
+execHooks(plugins, "appendOrInsertElementHook", element, iframe.contentWindow);
+
+return res;
+```
+
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
 
 动态添加的 `newChild` 将引用为新的对象 `element`：
