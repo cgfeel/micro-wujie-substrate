@@ -6272,7 +6272,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 接受一个 `opts` 对象，包含 2 个属性：
 
 - `rawElementContains`：原生查找 `Dom` 的方法，透传自 `patchRenderEffect` [[查看](#patchrendereffect-为容器打补丁)]
-- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取 `script` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
+- `wujieId`：应用名，透传给 `findScriptElementFromIframe` 获取沙箱 `iframe` 和 `script` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
 
 > `patchRenderEffect` 提供 `rawElementContains` 时，通过 `bind` 将上下文根据重写方法来自容器 `head` 还是容器，纠正 `this` 的指向
 
