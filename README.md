@@ -6021,7 +6021,7 @@ return res;
 
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
 
-动态添加的 `newChild` 将引用自子应用中新的对象 `element`：
+声明一个 `newChild` 将引用自子应用中动态添加的对象 `element`：
 
 - 外联元素：无论加载成功或失败，在触发加载事件后都会更新为 `null`
 - 非外联的元素：通过 `rawDOMAppendOrInsertBefore` 添加到容器后，返回元素
