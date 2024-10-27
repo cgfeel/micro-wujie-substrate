@@ -6321,7 +6321,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 - 外联 `script`：无论是否 `ignore`，注入到沙箱后会通过 `loade` 调用 `manualInvokeElementEvent`
 - 内联 `script`：忽略通知
-- 外联样式 - `ignore`：直接将动态添加的样式添加到容器，加载事件不变
+- 外联样式 - `ignore`：直接将动态添加的样式添加到容器，监听事件不变，不需要代理转发
 - 外联样式 - 非 `ignore`：加载后作为内联样式注入容器，然后调用 `manualInvokeElementEvent`
 - 其它元素：忽略通知
 
