@@ -6091,7 +6091,7 @@ return res;
 
 整体分 3 步骤：
 
-- 通过 `setTagToScript` 为内联打标记 [[查看](#为动态添加的-script-打标记)]
+- 通过 `setTagToScript` 为 `script` 元素打标记 [[查看](#为动态添加的-script-打标记)]
 - 加载 `script` 通过 `insertScriptToIframe` 注入沙箱 `iframe` [[查看](#insertscripttoiframe为沙箱插入-script)]
 - 创建一个注释并返回
 
