@@ -5834,7 +5834,7 @@ link.setAttribute("href", "reset-min.css");
 document.head.appendChild(link);
 ```
 
-原生方法和单例应用的不同在于：
+原生方法和单例应用动态添加样式不同在于：
 
 - 单例应用会先添加一个内容为空的 `style` 元素，然后再注入样式
 - 因此需要通过 `patchStylesheetElement` 来打补丁 [[查看](#patchstylesheetelement劫持处理样式元素的属性)]
