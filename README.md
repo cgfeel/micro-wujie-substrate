@@ -4093,10 +4093,10 @@ return (cache[key] = Promise.resolve());
 
 调用场景全部来自 `active` 时渲染容器 [[查看](#4-创建容器渲染资源)]
 
-| 调用方法                                                                                 | 用途                     | 提供的容器       |
-| ---------------------------------------------------------------------------------------- | ------------------------ | ---------------- |
-| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`  | `shadowRoot`     |
-| `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲染资源到 `iframe` 容器 | 容器 `documennt` |
+| 调用方法                                                                                 | 用途                     | 提供的容器      |
+| ---------------------------------------------------------------------------------------- | ------------------------ | --------------- |
+| `renderTemplateToShadowRoot` [[查看](#rendertemplatetoshadowroot-渲染资源到-shadowroot)] | 渲染资源到 `shadowRoot`  | `shadowRoot`    |
+| `renderTemplateToIframe` [[查看](#rendertemplatetoiframe-渲染资源到-iframe-容器)]        | 渲染资源到 `iframe` 容器 | 容器 `document` |
 
 > 调用场景来自 `active`，但执行拦截是通过 `start` 启动应用添加入口 `script` 后
 
@@ -4688,7 +4688,7 @@ sandbox.shadowRoot.firstElementChild.onscroll = function() {};
 `getRootNode` 原理拆解：
 
 - `shadowRoot` 及容器下的元素默认拿到的是 `shadowRoot`，需要将其指正为沙箱 `documet`
-- `shadowRoot` 下通过 `composed` 为 `true` 拿到的是全局 `documennt`，无需修正
+- `shadowRoot` 下通过 `composed` 为 `true` 拿到的是全局 `document`，无需修正
 
 > 问题是：降级的 `iframe` 容器不需要统一修正吗？
 
@@ -6183,12 +6183,18 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 
 **5. `iframe`：动态添加**
 
-根据动态添加元素的属性 `WUJIE_DATA_FLAG` 决定如何添加元素：
+根据动态添加元素的属性 `WUJIE_DATA_FLAG` 的值，决定如何添加元素：
 
-- 存在 `WUJIE_DATA_FLAG`：说明添加的是应用沙箱 `iframe`，追加到当前沙箱 `iframe` 所在基座位置后面
-- 不存在 `WUJIE_DATA_FLAG`：添加到容器 `body` 下，因为拦截的对象就是 `body` 和 `head`
+- 空字符：说明当前子应用是基座，添加的是沙箱 `iframe`，追加到沙箱 `html` 元素末尾
+- `undefined`：说明不是沙箱，添加到容器 `body` 下，因为拦截的对象就是 `body` 和 `head`
 
 > 也可以将 `iframe` 添加到容器 `head`，但是没有意义
+
+`WUJIE_DATA_FLAG` 补充说明：
+
+- 这个属性由 `iframeGenerator` 沙箱初始化时创建，并设置值为空字符 [[查看](#iframegenerator创建沙箱-iframe)]
+- 判定当前基座是子应用，是因为拦截方法来自 `patchRenderEffect`，只有子应用才会被重写方法 [[查看](#patchrendereffect-为容器打补丁)]
+- 追加位置通过 `ownerDocument` 判断为沙箱 `document` 是因为容器中每个元素都通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
 
 #### `rewriteRemoveChild`：重写 `removeChild`
 
