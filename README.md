@@ -5873,6 +5873,8 @@ document.head.appendChild(link);
 - `sandbox`：应用实例，用于透传给 `handleStylesheetElementPatch` [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 - `curUrl`：透传自 `rewriteAppendOrInsertChild`，子应用 `origin` + `pathname` [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)]
 
+> `_hasPatchStyle` 属性由 `patchStylesheetElement` 添加到 `style` 元素
+
 由于 `cssLoader` 是通过 `getCssLoader` 柯里化拿到的函数 [[查看](#通过配置替换资源)]：
 
 - 所以会因没有提供插件而不做处理，但 `cssLoader` 一定是可执行的函数
