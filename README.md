@@ -5974,7 +5974,7 @@ document.head.appendChild(link);
 
 返回函数所需参数：
 
-- `this`：用于 `TS` 指定上下文类型，见：官方文档 [[查看](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#specifying-the-type-of-this-for-functions)]
+- `this`：用于 `typescript` 指定上下文类型，见：`typescript` 文档 [[查看](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#specifying-the-type-of-this-for-functions)]
 - `newChild`：添加的节点
 - `refChild`：替换的节点，可选参数
 
