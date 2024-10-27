@@ -6196,6 +6196,15 @@ dynamicScriptExecStack = dynamicScriptExecStack.then(() =>
 - 判定当前基座是子应用，是因为拦截方法来自 `patchRenderEffect`，只有子应用才会被重写方法 [[查看](#patchrendereffect-为容器打补丁)]
 - 追加位置通过 `ownerDocument` 判断为沙箱 `document` 是因为容器中每个元素都通过 `patchElementEffect` 打补丁了 [[查看](#patchelementeffect为元素打补丁)]
 
+结合上述 3 点再来看这个方法就很清晰了：
+
+```ts
+// 嵌套的子应用的 js-iframe 需要插入子应用的 js-iframe 内部
+if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
+  return rawAppendChild.call(rawDocumentQuerySelector.call(this.ownerDocument, "html"), element);
+}
+```
+
 #### `rewriteRemoveChild`：重写 `removeChild`
 
 目录：`effect.ts` - `rewriteRemoveChild` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/effect.ts#L367)]
