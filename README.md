@@ -6021,9 +6021,9 @@ return res;
 
 > 为了便于总结将以上 3 步操作流程称为：添加元素并返回
 
-声明一个 `newChild` 将引用自子应用中动态添加的对象 `element`：
+声明一个 `element` 将引用自子应用中动态添加的对象 `newChild`：
 
-- 外联元素：无论加载成功或失败，在触发加载事件后都会更新为 `null`
+- 外联元素：无论加载成功或失败，在触发加载事件后都会更新 `element` 为 `null`
 - 非外联的元素：通过 `rawDOMAppendOrInsertBefore` 添加到容器后，返回元素
 
 加载外联资源失败怎么处理：
@@ -6048,7 +6048,7 @@ return res;
 
 外联样式 `href` 为空或不在 `cssExcludes` 列表，返回注释前需要：
 
-- 通过 `getExternalStyleSheets` 处理样式 [[查看](#getexternalstylesheets加载样式资源)]：
+- 通过 `getExternalStyleSheets` 处理样式 [[查看](#getexternalstylesheets加载样式资源)]
 - 执行后将得到带有 `contentPromise` 微任务的样式集合，遍历集合追加微任务来添加样式
 
 > 否则添加注释并返回不做任何处理
