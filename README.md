@@ -6225,7 +6225,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 重写方法根据提供的 `child` 处理并返回：
 
-| 类型        | 处理方式                                                                                                               | 元素不存在  |
+| 类型        | 元素存在                                                                                                               | 元素不存在  |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `script`    | `findScriptElementFromIframe` 找到 `script` 删除并返回元素 [[查看](#findscriptelementfromiframe查找注入沙箱的-script)] | 返回 `null` |
 | 非 `script` | `rawElementRemoveChild` 找到元素删除并返回元素                                                                         | 报错        |
