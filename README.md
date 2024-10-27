@@ -5916,7 +5916,7 @@ document.head.appendChild(link);
 - `get` 操作：用原生方法获取对应的属性
 - `set` 操作：
   - 用原生方法获取对应的属性执行更新
-  - 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
+  - 更新前会通过 `cssLoader` 使用更新的样式和 `curUrl` 去执行替换操作
   - 通过 `nextTick` 发起一个微任务：通过 `handleStylesheetElementPatch` 打补丁 [[查看](#handlestylesheetelementpatch为应用中动态样式打补丁)]
 
 为什么 `cssLoader` 不提供样式的 `url`：
@@ -5932,7 +5932,7 @@ document.head.appendChild(link);
 
 不同在于如果插入的样式是文本，还需要特殊处理：
 
-- 更新前会通过 `cssLoader` 使用更新的样式和 `baseUrl` 进行替换
+- 更新前会通过 `cssLoader` 使用更新的样式和 `curUrl` 去执行替换操作
 - 将更新后的样式插入 `style` 元素后，再次通过 `patchSheetInsertRule` 重写 `insertRule`
 
 > 无论插入的元素是什么类型，最终都要将新增的元素返回
