@@ -6420,8 +6420,9 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 判断中对于 `safari` 老旧版本做了兼容：
 
-```
-const naughtySafari = typeof document.all === "function" && typeof document.all === "undefined";
+```js
+const naughtySafari =
+  typeof document.all === "function" && typeof document.all === "undefined";
 ```
 
 #### `isBoundedFunction`：判断通过 `Function.prototype.bind` 返回的函数
