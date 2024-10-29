@@ -6441,15 +6441,15 @@ const naughtySafari =
 
 通过 `bind` 返回的函数：函数名称以 `bound ` 开头（注意有个空格），没有 `prototype`
 
-```
+```js
 function originalFunction() {}
 const boundFunction = originalFunction.bind(this);
 
-console.log(originalFunction.name);    // originalFunction
-console.log(boundFunction.name);    // bound originalFunction
+console.log(originalFunction.name); // originalFunction
+console.log(boundFunction.name); // bound originalFunction
 
-console.log(originalFunction.prototype);    // {}
-console.log(boundFunction.prototype);    // undefined
+console.log(originalFunction.prototype); // {}
+console.log(boundFunction.prototype); // undefined
 ```
 
 流程：
