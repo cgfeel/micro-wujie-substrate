@@ -6414,7 +6414,9 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 流程：
 
 - 判断 `fn` 是一个函数，会优先从映射表 `callableFnCacheMap` 获取
-- 不存在缓存则判断，是函数记录到映射表，然后返回判断结果
+- 映射表中不存在则执行判断，是函数记录到映射表，然后返回判断结果
+
+> 和 `isConstructable` 不同，`isCallable` 只在明确是函数类型时记录结果
 
 判断中对于老的浏览器做了兼容：
 
