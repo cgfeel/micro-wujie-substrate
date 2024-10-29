@@ -6390,7 +6390,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 - 以大写开头的函数：`/^function\b\s[A-Z].*/`
 - 以 `class` 开头的类
 
-> 以上可以排除箭头函数，因为剪头函数没有 `prototype`，转换字符串为 `() => {}`
+> 以上可以排除箭头函数，因为箭头函数没有 `prototype`，转换字符串为 `() => {}`
 
 返回结果前需要从映射表 `fnRegexCheckCacheMap` 中获取结果：
 
@@ -6837,7 +6837,7 @@ proxyWindow.addEventListener;
 - 键名：从对象中提取的原始方法
 - 键值：通过 `bind` 绑定上下文的方法
 
-> 通过 `bind` 绑定箭头函数上下文无效，剪头函数的上下文为所在作用域的 `this`
+> 通过 `bind` 绑定箭头函数上下文无效，箭头函数的上下文为所在作用域的 `this`
 
 使用场景：
 
