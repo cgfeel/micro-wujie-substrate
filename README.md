@@ -6494,7 +6494,20 @@ const bounded =
 - `!isBoundedFunction`：确保函数没有绑定过上下文 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - `!isConstructable`：确保函数不可实例化，因为实例化的函数有自己的上下文 [[查看](#isconstructable判断函数是否可以实例化)]
 
-> 补充：当函数通过 `bind` 绑定过上下文，再次 `bind` 采用首次绑定的上下文
+补充：当函数通过 `bind` 绑定过上下文，再次 `bind` 采用首次绑定的上下文
+
+```js
+function abc() {
+  console.log(this);
+}
+const c = { name: "c" };
+const d = { name: "d" };
+
+const q = abc.bind(c);
+const z = q.bind(d);
+
+console.log(q, z); // same as { name: 'c' }
+```
 
 由此得知符合条件有 2 类：
 
