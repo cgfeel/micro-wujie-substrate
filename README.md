@@ -6418,7 +6418,7 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 
 > 和 `isConstructable` 不同，`isCallable` 只在明确是函数类型时记录结果
 
-判断中对于老的浏览器做了兼容：
+判断中对于 `safari` 老旧版本做了兼容：
 
 ```
 const naughtySafari = typeof document.all === "function" && typeof document.all === "undefined";
