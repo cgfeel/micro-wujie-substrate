@@ -6458,8 +6458,9 @@ console.log(boundFunction.prototype); // undefined
 
 判断方法：
 
-```
-const bounded = fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype");
+```js
+const bounded =
+  fn.name.indexOf("bound ") === 0 && !fn.hasOwnProperty("prototype");
 ```
 
 只要 `bind` 过的函数都返回 `true`，包括：箭头函数、普通函数
