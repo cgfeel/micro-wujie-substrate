@@ -6395,7 +6395,9 @@ if (element.getAttribute(WUJIE_DATA_FLAG) === "") {
 返回结果前需要从映射表 `fnRegexCheckCacheMap` 中获取结果：
 
 - 查到结果直接返回，不再正则匹配 `fn`
-- 否则将计算的结果哦保存到映射表后烦返回
+- 否则将计算的结果保存到映射表后返回
+
+> 无论计算结果是 `true` 或 `false` 都将保存到映射表，以便下次直接获取结果
 
 #### `isCallable`：判断对象是一个函数
 
