@@ -6587,7 +6587,7 @@ proxyWindow.addEventListener;
 
 #### `compose` 用柯里化的方式拍平一组函数
 
-提供一个数组函数，通过 `reduce` 拍平执行
+提供一组函数以数组的形式作为参数，通过 `reduce` 拍平并依次执行
 
 目录：`utils.ts` - `compose` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/utils.ts#L270)]
 
