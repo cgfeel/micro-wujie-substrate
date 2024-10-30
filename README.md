@@ -6625,9 +6625,19 @@ proxyWindow.addEventListener;
 
 操作原理：
 
-- 通过 `reduce` 将 `fnList` 数组中的函数拍平执行，初始值为提供的原始 `code`
-- 这样即便 `fnList` 数组没有任何函数，也能够将原始的 `code` 返回
-- 如果 `fnList` 中提供了函数，将 `code` 及其它参数传过去，返回新的值依次执行并返回最终替换结果
+- 通过 `reduce` 将 `fnList` 数组中的函数拍平后依次按照顺序执行
+- 函数中的参数 `code` 作为初始值，处理并返回字符为下一个函数继续执行
+
+即便 `fnList` 数组中没有任何函数，也能够将原始的 `code` 返回
+
+- 因为在 `reduce` 处理中 `code` 作为第二个参数，也是预计返回的类型
+
+```js
+fnList.reduce(
+  (newCode, fn) => (isFunction(fn) ? fn(newCode, ...args) : newCode),
+  code || ""
+);
+```
 
 由于调用时，传递过来的数组仅仅是通过 `map` 过滤了 `plugins`：
 
