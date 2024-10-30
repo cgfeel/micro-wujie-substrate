@@ -6568,17 +6568,17 @@ boundExampleFunc.customMethod(); // "I am a custom method"
 
 为什么要用 `getTargetValue`：
 
-- 此函数用于 `Proxy` 代理对象 `get` 操作时，若不提供 `get` 或 `get` 中直接返回属性会报错
+- 此函数用于 `Proxy` 代理对象 `get` 操作时，若不提供 `get` 属性会报错
 - 正确的做法是从代理的原始对象中找到对应的属性并返回
 
-错误演示：
+演示：
 
-```
+```js
 // 代理不提供 `get` 方法，调用方法时报错
 const proxyWindow = new Proxy(window);
 proxyWindow.addEventListener;
 
-// 直接返回属性同样也会报错
+// 正确的方式
 const proxyWindow = new Proxy(window, {
   get: (target, key) => target[key],
 });
