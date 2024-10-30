@@ -6574,7 +6574,7 @@ boundExampleFunc.customMethod(); // "I am a custom method"
 演示：
 
 ```js
-// 代理不提供 `get` 方法，调用方法时报错
+// Uncaught TypeError: Cannot create proxy with a non-object as target or handler
 const proxyWindow = new Proxy(window);
 proxyWindow.addEventListener;
 
