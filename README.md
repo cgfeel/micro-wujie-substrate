@@ -6531,13 +6531,13 @@ console.log(q, z); // same as { name: 'c' }
 
 浅拷贝属性是让绑定的方法和原来的方法属性一致，见下方演示：
 
-```
+```js
 function exampleFunc() {
   console.log("Hello");
 }
 
 exampleFunc.customProperty = "I am a custom property";
-exampleFunc.customMethod = function() {
+exampleFunc.customMethod = function () {
   console.log("I am a custom method");
 };
 
