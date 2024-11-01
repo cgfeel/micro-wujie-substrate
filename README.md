@@ -6667,7 +6667,7 @@ fnList.reduce(
 通过打标记 `WUJIE_SCRIPT_ID`，方便通过：
 
 - `getTagFromScript`：提取 `script` 中的标签，见下方详细说明
-- `findScriptElementFromIframe`：查找注入沙箱的 `script` [[查看](#insertscripttoiframe为沙箱插入-script)]
+- `findScriptElementFromIframe`：查找注入沙箱的 `script` [[查看](#findscriptelementfromiframe查找注入沙箱的-script)]
 
 调用场景，执行过程从上至下：
 
