@@ -6871,7 +6871,7 @@ fnList.reduce(
 类型为 `Partial<Record<string, Promise<htmlParseResult>>>`：
 
 - 键名为资源入口链接
-- 键值类型为应用静态资源信息，见：`importHTML` [[查看](#importhtml-加载资源)]
+- 键值类型为应用静态资源内容，见：`importHTML` [[查看](#importhtml-加载资源)]
 
 如何收集缓存：
 
