@@ -6837,7 +6837,7 @@ fnList.reduce(
 以下要求必须全部都满足：
 
 - `isCallable`：必须是一个函数 [[查看](#iscallable判断对象是一个函数)]
-- `!isBoundedFunction`：不能通过 `bind` 指定过上下文的函数 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
+- `!isBoundedFunction`：没有通过 `bind` 指定过上下文的函数 [[查看](#isboundedfunction判断通过-functionprototypebind-返回的函数)]
 - `!isConstructable`：不能是可实例化的函数 [[查看](#isconstructable判断函数是否可以实例化)]
 
 > 符合条件的函数：箭头函数、普通函数
