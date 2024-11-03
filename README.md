@@ -6858,6 +6858,8 @@ fnList.reduce(
 
 - 调用场景也仅有 `proxyWidow` 中设置沙箱的全局属性 [[查看](#1-代理沙箱-window-作为-proxywindow)]
 
+> 需要说明的是：无论提供的参数是否符合映射要求，`checkProxyFunction` 都不会返回任何结果
+
 #### 2. 资源缓存集合
 
 目录：`entry.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L39)]
