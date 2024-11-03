@@ -6854,6 +6854,10 @@ fnList.reduce(
 - `checkProxyFunction`：添加方法到映射表
 - `getTargetValue`：从对象中获取属性 [[查看](#gettargetvalue-从对象中获取属性)]
 
+`checkProxyFunction` 从取名上看起来像检查函数，实际会将符合条件的函数绑定到映射表中
+
+- 调用场景也仅有 `proxyWidow` 中设置沙箱的全局属性 [[查看](#1-代理沙箱-window-作为-proxywindow)]
+
 #### 2. 资源缓存集合
 
 目录：`entry.ts` [[查看](https://github.com/Tencent/wujie/blob/9733864b0b5e27d41a2dc9fac216e62043273dd3/packages/wujie-core/src/entry.ts#L39)]
