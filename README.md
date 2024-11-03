@@ -6871,15 +6871,13 @@ fnList.reduce(
 类型为 `Partial<Record<string, Promise<htmlParseResult>>>`：
 
 - 键名为资源入口链接
-- 键值类型为应用静态资源内容，见：`importHTML` [[查看](#importhtml-加载资源)]
+- 键值类型为应用静态资源内容
 
 如何收集缓存：
 
 - `importHTML`：加载资源 [[查看](#importhtml-加载资源)]
 
-不缓存的情况：
-
-- 通过插件配置 `htmlLoader`，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
+> 通过插件配置 `htmlLoader` 将不会被缓存，见：文档 [[查看](https://wujie-micro.github.io/doc/guide/plugin.html#html-loader)]
 
 应用实例中通过 `template` 缓存入口资源：
 
