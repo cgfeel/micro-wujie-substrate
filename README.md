@@ -6941,7 +6941,9 @@ fnList.reduce(
 - `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
 - `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
-> 对于动态添加记录在 `styleCache` 的样式，会用于重建模式切换应用时，再次动态拦截中，以提高加载速度
+对于动态添加以及手动添加，记录在 `styleCache` 的样式：
+
+- 会用于重建模式切换应用时，调用 `getExternalStyleSheets` 优先使用缓存，以提高加载速度
 
 不同模式下缓存使用：
 
