@@ -6935,12 +6935,13 @@ fnList.reduce(
 `rewriteAppendOrInsertChild` 将动态添加的样式缓存到 `styleSheetElements`：
 
 - 对于动态添加的外联样式，还会通过调用 `getExternalStyleSheets` 再缓存一份到 `styleCache`
-- 这样对于重建模式切换应用时，会优先使用 `styleCache` 以提高加载速度
 
 缓存的使用：
 
 - `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
 - `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
+
+> 对于动态添加记录在 `styleCache` 的样式，会用于重建模式切换应用时，再次动态拦截中，以提高加载速度
 
 不同模式下缓存使用：
 
