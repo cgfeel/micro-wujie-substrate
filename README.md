@@ -6932,6 +6932,10 @@ fnList.reduce(
 | 用处     | 处理请求，记录缓存 [[查看](#getexternalstylesheets加载样式资源)] | 动态添加样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)] |
 | 缓存类型 | 静态样式                                                         | 动态样式                                                                           | 所有 `:root` 和字体样式                           |
 
+`rewriteAppendOrInsertChild` 将动态添加到样式会缓存到 `styleSheetElements`：
+
+- 对于动态添加的外联样式，则仍旧是通过调用 `getExternalStyleSheets` 缓存到 `styleCache`
+
 缓存的使用：
 
 - `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
