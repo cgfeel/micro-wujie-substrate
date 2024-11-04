@@ -6930,7 +6930,7 @@ fnList.reduce(
 | -------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------- |
 | 缓存位置 | `styleCache`                                                     | `styleSheetElements`、`styleCache`                                                 | `styleSheetElements`                              |
 | 用处     | 处理请求，记录缓存 [[查看](#getexternalstylesheets加载样式资源)] | 动态添加样式 [[查看](#rewriteappendorinsertchild重写-appendchild-和-insertbefore)] | 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)] |
-| 缓存类型 | 静态样式                                                         | 动态样式                                                                           | 所有 `:root` 和字体样式                           |
+| 缓存类型 | 静态样式                                                         | 动态样式                                                                           | `:root` 和字体样式                                |
 
 `rewriteAppendOrInsertChild` 将动态添加到样式会缓存到 `styleSheetElements`：
 
