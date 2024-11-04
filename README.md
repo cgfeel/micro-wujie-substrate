@@ -6934,7 +6934,8 @@ fnList.reduce(
 
 `rewriteAppendOrInsertChild` 将动态添加到样式会缓存到 `styleSheetElements`：
 
-- 对于动态添加的外联样式，则仍旧是通过调用 `getExternalStyleSheets` 缓存到 `styleCache`
+- 对于动态添加的外联样式，还会通过调用 `getExternalStyleSheets` 再缓存一份到 `styleCache`
+- 这样对于重建模式切换应用时，会优先使用
 
 缓存的使用：
 
