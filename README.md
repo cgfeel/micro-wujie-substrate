@@ -6941,10 +6941,6 @@ fnList.reduce(
 - `styleCache`：通过 `processCssLoader` 还原入口资源样式后，记录在实例属性 `template` [[查看](#processcssloader处理-css-loader)]
 - `styleSheetElements`：记录之后通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
-对于动态添加以及手动添加，记录在 `styleCache` 的样式：
-
-- 会用于重建模式切换应用时，调用 `getExternalStyleSheets` 优先使用缓存，以提高加载速度
-
 不同模式下缓存使用：
 
 | 场景                  | `styleCache`                 | `styleSheetElements`                 |
@@ -6953,11 +6949,13 @@ fnList.reduce(
 | 预加载&预执行         | 预加载缓存外联样式           | 预执行收集动态样式，每次渲染收集补丁 |
 | `active` 预加载后启动 | 容器切换，不需要样式缓存     | 不使用                               |
 | `active` 模式切换     | 容器切换，不需要样式缓存     | 不使用                               |
-| `umd` 模式切换        | 使用 `template` 恢复，不需要 | 用于恢复容器样式                     |
+| `umd` 模式切换        | 仅用于恢复手动加载的外联样式 | 用于恢复容器样式                     |
 | 重建模式切换          | 使用缓存的外联样式替换资源   | 重新记录，不参与渲染                 |
 
 - `styleSheetElements` 仅限 `umd` 模式切换时使用，其它情况只保留记录不使用
 - `styleCache` 缓存所有外联样式，包括静态提取、动态及手动添加，一旦缓存下次直接从缓存中获取
+
+> `umd` 模式切换应用，提取静态样式已记录在实例 `template` 中，不需要使用 `styleCache`
 
 **`scriptCache`：缓存外联 `script` 资源**
 
