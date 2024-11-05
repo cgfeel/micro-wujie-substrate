@@ -6987,7 +6987,7 @@ fnList.reduce(
 - `scriptCache`：缓存所有外联 `script`
 - `execQueue`：仅用于收集 `script`，提取并注入沙箱 `iframe`
 
-`scriptCache` 和 `execQueue` 的使用都取决于应用什么时候 `start` [[查看](#-start-启动应用)]：
+`scriptCache` 和 `execQueue` 的使用都取决于应用什么时候 `start` [[查看](#-start-启动应用)]
 
 | 场景                  | `scriptCache`          | `execQueue`        |
 | --------------------- | ---------------------- | ------------------ |
