@@ -7033,6 +7033,8 @@ fnList.reduce(
 
 - 目的为了 `umd` 模式切换应用时，通过 `rebuildStyleSheets` 恢复样式 [[查看](#-rebuildstylesheets-重新恢复样式)]
 
+> `umd` 模式首次启动后，入口资源以及静态样式会缓存到 `template` 中，切换应用时无需重复加载和提取
+
 **集合收集有 3 处**
 
 注入资源到容器后通过 `patchCssRules` 打补丁 [[查看](#-patchcssrules-子应用样式打补丁)]
