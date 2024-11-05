@@ -7002,7 +7002,7 @@ fnList.reduce(
 
 > 因为 `execQueue` 随沙箱一起，只在重建模式下随应用切换销毁重建
 
-`active` 预加载后启动会通过 `importHTML` 重复提取 `getExternalScripts`：
+`active` 预加载后启动会通过 `importHTML` 重复调用 `getExternalScripts` 提取 `script`：
 
 - 原因和解决办法见：`importHTML` - 5. 从缓存中提取资源 [[查看](#importhtml-加载资源)]
 
